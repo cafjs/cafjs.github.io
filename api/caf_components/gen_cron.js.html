@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: gen_cron.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: gen_cron.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*!
+Copyright 2014 Hewlett-Packard Development Company, L.P.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+'use strict';
+/**
+ * Generic cron component.
+ *
+ * A cron is an active object that performs the same task every `interval`
+ *  miliseconds.
+ *
+ * @module caf_components/gen_cron
+ * @augments module:caf_components/gen_component
+ *
+ */
+var assert= require('assert');
+var myUtils = require('./myUtils');
+
+var genComponent = require('./gen_component');
+
+exports.constructor = function($, spec) {
+
+    $ = $ || {_: {$: {} }};
+
+    var that = genComponent.constructor($, spec);
+
+    assert.equal(typeof(spec.env.interval), 'number',
+                 "'spec.env.interval' is not a number");
+
+    var intervalId = null;
+
+    /**
+     * Run-time type information.
+     *
+     * @type {boolean}
+     * @memberof! module:caf_components/gen_cron#
+     * @alias __ca_isCron__
+     */
+    that.__ca_isCron__ = true;
+
+    /**
+     * Gets time in miliseconds between task invocations.
+     *
+     * @return {number} Time in miliseconds between task invocations.
+     *
+     * @memberof! module:caf_components/gen_cron#
+     * @alias __ca_getInterval__
+     */
+    that.__ca_getInterval__ = function() {
+        return spec.env.interval;
+    };
+
+    /**
+     * Starts the cron.
+     *
+     * @param {function()} fun A task to be performed repeatedly. Its type is
+     * `function()`.
+     *
+     * @memberof! module:caf_components/gen_cron#
+     * @alias __ca_start__
+     */
+    that.__ca_start__ = function(fun) {
+        var fun1 = function() {
+            try {
+                fun();
+            } catch (err) {
+                $._.$.log &amp;&amp; $._.$.log.warn('Exception in cron ' + spec.name +
+                                            myUtils.errToPrettyStr(err));
+            }
+        };
+        intervalId = setInterval(fun1, that.__ca_getInterval__());
+    };
+
+    /**
+     * Stops executing periodic tasks.
+     *
+     * Shutting down a cron always stops it.
+     *
+     * @memberof! module:caf_components/gen_cron#
+     * @alias __ca_stop__
+     */
+    that.__ca_stop__ = function() {
+        if (intervalId) {
+            clearInterval(intervalId);
+            intervalId = null;
+        }
+    };
+
+    var super__ca_shutdown__ = myUtils.superior(that, '__ca_shutdown__');
+    that.__ca_shutdown__ = function(data, cb) {
+        that.__ca_stop__();
+        super__ca_shutdown__(data, cb);
+    };
+
+    return that;
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_components_containerUtils.html">caf_components/containerUtils</a></li><li><a href="module-caf_components_gen_component.html">caf_components/gen_component</a></li><li><a href="module-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="module-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="module-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a></li><li><a href="module-caf_components_gen_loader.html">caf_components/gen_loader</a></li><li><a href="module-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="module-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="module-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="module-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="module-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="module-caf_components_main.html">caf_components/main</a></li><li><a href="module-caf_components_myUtils.html">caf_components/myUtils</a></li><li><a href="module-caf_components_naming.html">caf_components/naming</a></li><li><a href="module-caf_components_plug_ca_log.html">caf_components/plug_ca_log</a></li><li><a href="module-caf_components_plug_log.html">caf_components/plug_log</a></li><li><a href="module-caf_components_proxy_log.html">caf_components/proxy_log</a></li><li><a href="module-caf_components_supervisor.html">caf_components/supervisor</a></li><li><a href="module-caf_components_templateUtils.html">caf_components/templateUtils</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Sun Nov 13 2016 19:48:01 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
