@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: ReliableChannel.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: ReliableChannel.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*!
+Copyright 2013 Hewlett-Packard Development Company, L.P.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+'use strict';
+
+/**
+ * A collection of helper functions to create a reliable, unidirectional
+ *  channel from `A` to `B`, using a pair of Shared Maps.
+ *
+ * One Shared Map (the `writer`) is writable by `A` and readable by `B`.
+ * The other one (the `reader`) is writable by `B` and readable by `A`.
+ * `B` writes index numbers in its map  to
+ * acknowledge messages, helping `A` to garbage collect old messages.
+ *
+ * A channel is represented by an unbounded list of messages. However, only
+ * those that have not been acknowledged are actually present in the Shared Map.
+ *
+ * The schema is as follows:
+ *
+ * In the `writer` map:
+ *
+ *     {
+ *         __ca_channels__ : {
+ *            foo : {
+ *                contents:[...],
+ *                index : &lt;number> i.e., index of first msg in `contents`
+ *             }
+ *         }
+ *     }
+ *
+ * in the `reader` map:
+ *
+ *     {
+ *          __ca_acks__ : {
+ *            foo : &lt;number>  (i.e., index of last processed message of 'foo')
+ *          }
+ *     }
+ *
+ * The first message has index 0.
+ *
+ * When `B` consumes all the messages, it resets the ack index to
+ * `foo.index + foo.contents.length -1` .
+ *
+ * When `A` garbage collects the channel, it drops all the acknowledged messages
+ * by comparing `__ca_channels__.foo.index` with `__ca_acks__.foo`, and
+ * shifting the list.
+ *
+ * @module caf_sharing/ReliableChannel
+ */
+var assert = require('assert');
+
+var caf_comp = require('caf_components');
+var myUtils = caf_comp.myUtils;
+
+var CHANNELS_KEY = '__ca_channels__';
+
+var ACKS_KEY = '__ca_acks__';
+
+var FIRST_INDEX = 0;
+
+var UNKNOWN_ACK_INDEX =
+/**
+ * Invalid ack index.
+ *
+ * @type number
+ *
+ * @memberof! module:caf_sharing/ReliableChannel
+ * @alias UNKNOWN_ACK_INDEX
+ */
+exports.UNKNOWN_ACK_INDEX = -1;
+
+var init =
+/**
+ * Initializes a Shared Map containing reliable channels.
+ *
+ * @param {caf.refMap} writerRef A reference to a writable Shared Map.
+ *
+ * @memberof! module:caf_sharing/ReliableChannel
+ * @alias init
+ */
+exports.init = function(writerRef) {
+    var channels = writerRef.get(CHANNELS_KEY);
+    if (!channels) {
+        writerRef.set(CHANNELS_KEY, {});
+    }
+    var acks = writerRef.get(ACKS_KEY);
+    if (!acks) {
+        writerRef.set(ACKS_KEY, {});
+    }
+};
+
+/**
+ * Deletes a channel in a Shared Map.
+ *
+ * @param {caf.refMap} writerRef A reference to a writable Shared Map.
+ * @param {string} channelName The name of the channel.
+ *
+ * @memberof! module:caf_sharing/ReliableChannel
+ * @alias deleteChannel
+ */
+exports.deleteChannel = function(writerRef, channelName) {
+    init(writerRef);
+    var doClean = function(key) {
+        var channels = writerRef.get(key);
+        if (channels &amp;&amp; channels[channelName]) {
+            var newChannels = myUtils.deepClone(channels);
+            delete newChannels[channelName];
+            writerRef.set(key, newChannels);
+        }
+    };
+
+    doClean(CHANNELS_KEY);
+    doClean(ACKS_KEY);
+};
+
+/**
+ * Returns the index of the first message available in the channel.
+ *
+ * @param {caf.refMap} writerRef A reference to a writable Shared Map.
+ * @param {string} channelName The name of the channel.
+ *
+ * @return {number} The index of the first message available in the channel.
+ *
+ * @memberof! module:caf_sharing/ReliableChannel
+ * @alias firstIndex
+ */
+exports.firstIndex = function(writerRef, channelName) {
+    var channels = writerRef.get(CHANNELS_KEY);
+    return ((channels &amp;&amp; channels[channelName] &amp;&amp;
+             (typeof channels[channelName].index === 'number')) ?
+            channels[channelName].index : FIRST_INDEX);
+};
+
+/**
+ * Returns the index of the last ack message.
+ *
+ * @param {caf.refMap} readerRef A reference to a writable Shared Map for
+ * acks.
+ * @param {string} channelName The name of the channel.
+ *
+ * @return {number} The index of the last ack message.
+ *
+ * @memberof! module:caf_sharing/ReliableChannel
+ * @alias firstAckIndex
+ */
+exports.firstAckIndex = function(readerRef, channelName) {
+    var acks = readerRef.get(ACKS_KEY);
+    return ((acks &amp;&amp; (typeof acks[channelName] === 'number')) ?
+            acks[channelName] : UNKNOWN_ACK_INDEX);
+};
+
+/**
+ * Lists all channel names in a Shared Map.
+ *
+ * @param {caf.refMap} writerRef A reference to a writable Shared Map.
+ *
+ * @return {Array.&lt;string>} All the channel names.
+ *
+ * @memberof! module:caf_sharing/ReliableChannel
+ * @alias allChannelNames
+ */
+exports.allChannelNames = function(writerRef) {
+    var channels = writerRef.get(CHANNELS_KEY);
+    return Object.keys(channels);
+};
+
+/**
+ * Sends an array of messages through a channel.
+ *
+ * @param {caf.refMap} writerRef A writable map with messages.
+ * @param {string} channelName The name of the channel.
+ * @param {Array.&lt;caf.json>} messages An array of JSON-serializable messages
+ * to be sent.
+ *
+ * @return {number} An index for the first message in `messages`.
+ * @throws Error If `messages` is not an array or is empty.
+ *
+ * @memberof! module:caf_sharing/ReliableChannel
+ * @alias send
+ */
+exports.send = function(writerRef, channelName, messages) {
+    init(writerRef);
+    var channels = writerRef.get(CHANNELS_KEY);
+    assert(Array.isArray(messages));
+    if (messages.length > 0) {
+        var newChannels = myUtils.deepClone(channels);
+        var chan = newChannels[channelName];
+        if (!chan) {
+            chan = {contents: [], index: FIRST_INDEX};
+            newChannels[channelName] = chan;
+        }
+        var msgIndex = chan.index + chan.contents.length;
+        chan.contents = chan.contents.concat(messages);
+        writerRef.set(CHANNELS_KEY, newChannels);
+        return msgIndex;
+    }
+};
+
+
+/**
+ * Garbage collects acknowledged messages.
+ *
+ * @param {caf.refMap} writerRef A writable map with messages.
+ * @param {caf.refMap} readerRef A read-only map with ack counters.
+ *
+ * @memberof! module:caf_sharing/ReliableChannel
+ * @alias gc
+ */
+exports.gc = function(writerRef, readerRef) {
+    init(writerRef);
+    var channels = writerRef.get(CHANNELS_KEY);
+    var acks = readerRef.get(ACKS_KEY);
+    var newChannels = myUtils.deepClone(channels);
+    var changed = false;
+    if (acks) {
+        Object.keys(acks).forEach(function(key) {
+            var chan = newChannels[key];
+            if (chan) {
+                var nSeen = acks[key] - chan.index + 1;
+                if ((chan.contents.length > 0) &amp;&amp; (nSeen > 0)) {
+                    changed = true;
+                    assert(nSeen &lt;= chan.contents.length);
+                    chan.index = chan.index + nSeen;
+                    chan.contents = chan.contents.slice(nSeen);
+                }
+            }
+
+        });
+    }
+    if (changed) {
+        writerRef.set(CHANNELS_KEY, newChannels);
+    }
+};
+
+/**
+ * Receives messages and updates ack counters accordingly. This operation is
+ * not idempotent, already acknowledged messages are ignored.
+ *
+ *  The return type 'caf.messages' is:
+ *
+ *       {index: number, messages: Array.&lt;caf.json>}
+ *
+ *  where the `index` field corresponds to the first message in `messages` or
+ * UNKNOWN_ACK_INDEX if no messages.
+ *
+ * @param {caf.refMap} writerRef A writable map ack counters.
+ * @param {caf.refMap} readerRef A read-only map with messages.
+ * @param {string} channelName The name of the channel to receive messages from.
+ *
+ * @return {caf.messages} Messages received in the channel that have not been
+ * acknowledged previously.
+ *
+ * @memberof! module:caf_sharing/ReliableChannel
+ * @alias receive
+ */
+exports.receive = function(writerRef, readerRef, channelName) {
+    init(writerRef);
+    var result = {index: UNKNOWN_ACK_INDEX, messages: []};
+    var channels = readerRef.get(CHANNELS_KEY);
+    if (channels) {
+        var chan = channels[channelName];
+        var acks = writerRef.get(ACKS_KEY);
+        var firstAckIndex = ((typeof acks[channelName] === 'number') ?
+                             acks[channelName] : UNKNOWN_ACK_INDEX);
+
+        if (chan &amp;&amp; (chan.contents.length > 0)) {
+            var nAlreadySeen = firstAckIndex - chan.index + 1;
+            assert(nAlreadySeen >= 0);
+            if (chan.contents.length - nAlreadySeen > 0) {
+                result.index = firstAckIndex + 1;
+                result.messages = chan.contents.slice(nAlreadySeen);
+                var newAcks = myUtils.deepClone(acks);
+                newAcks[channelName] = chan.contents.length + chan.index - 1;
+                writerRef.set(ACKS_KEY, newAcks);
+            }
+        }
+    }
+
+    return result;
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li><li><a href="module-caf_sharing_main.html">caf_sharing/main</a></li><li><a href="module-caf_sharing_plug_ca_sharing.html">caf_sharing/plug_ca_sharing</a></li><li><a href="module-caf_sharing_plug_sharing.html">caf_sharing/plug_sharing</a></li><li><a href="module-caf_sharing_proxy_sharing.html">caf_sharing/proxy_sharing</a></li><li><a href="module-caf_sharing_ReliableChannel.html">caf_sharing/ReliableChannel</a></li><li><a href="module-caf_sharing_SharedMap.html">caf_sharing/SharedMap</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_redis.html">caf_redis</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Dec 11 2016 00:44:27 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

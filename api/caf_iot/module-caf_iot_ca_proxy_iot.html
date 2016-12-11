@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Module: caf_iot/ca/proxy_iot</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Module: caf_iot/ca/proxy_iot</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Proxy that a CA uses to interact with an IoT device.</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ca_proxy_iot.js.html">ca/proxy_iot.js</a>, <a href="ca_proxy_iot.js.html#line18">line 18</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><a href="external-caf_components_gen_proxy.html">external:caf_components/gen_proxy</a></li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="NOW"><span class="type-signature"></span>NOW<span class="type-signature"> :number</span></h4>
+
+
+
+
+<div class="description">
+    <p>Force the bundle to execute as soon as it arrives to its destination.</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ca_proxy_iot.js.html">ca/proxy_iot.js</a>, <a href="ca_proxy_iot.js.html#line40">line 40</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="iotApply"><span class="type-signature"></span>iotApply<span class="signature">(method, args)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Force the invocation of a method on the device. No delay or other
+timing constraints are enforced.</p>
+<p>If the device is not connected, it will execute when it comes back
+online.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>method</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A device method to invoke.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>args</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;caf.json></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An array with method arguments.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ca_proxy_iot.js.html">ca/proxy_iot.js</a>, <a href="ca_proxy_iot.js.html#line177">line 177</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="iotMethodsMeta"><span class="type-signature"></span>iotMethodsMeta<span class="signature">()</span><span class="type-signature"> &rarr; {caf.bundleDesc}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Returns the name and arguments of the device methods.</p>
+<p>We use this info internally to add bundle methods that construct
+commands.</p>
+<p> The type <code>caf.bundleDesc</code> is:</p>
+<pre class="prettyprint source"><code>    Object&lt;string, Array.&lt;string>></code></pre><p>where the key is the name of the command, and the value an array of
+strings with the argument names of this command (ignoring the last
+callback).</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ca_proxy_iot.js.html">ca/proxy_iot.js</a>, <a href="ca_proxy_iot.js.html#line80">line 80</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>An object with device
+ method names as keys, and an array with argument names as values.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">caf.bundleDesc</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="newBundle"><span class="type-signature"></span>newBundle<span class="signature">(margin<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {caf.bundleFac}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Creates a new bundle of commands.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>margin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A safety time margin in msec added to the
+starting time to allow bundle propagation. Defaults to a system wide
+margin.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ca_proxy_iot.js.html">ca/proxy_iot.js</a>, <a href="ca_proxy_iot.js.html#line56">line 56</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="module-caf_iot_bundles.html">module:caf_iot/bundles</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A new bundle.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">caf.bundleFac</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="registerToken"><span class="type-signature"></span>registerToken<span class="signature">(tokenStr)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Registers a token with the <code>caf_gadget</code> application instance that
+manages this device.</p>
+<p>After the token has been registered, the device can have access to it
+through its local manager, enabling secure interactions with
+this CA.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tokenStr</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A serialized token to access this CA.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ca_proxy_iot.js.html">ca/proxy_iot.js</a>, <a href="ca_proxy_iot.js.html#line160">line 160</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="sendBundle"><span class="type-signature"></span>sendBundle<span class="signature">(bundle, offset<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Sends to the device a bundle to be executed.</p>
+<p>The <code>offset</code> value could be:</p>
+<ul>
+<li><code>NOW</code>: whenever the bundle arrives to its target, it will start
+executing right away.</li>
+<li><code>undefined</code>: use the current time plus the <code>margin</code> specified in the
+factory method.</li>
+<li><code>number</code>: an offset in msec to be added to the current time plus
+the <code>margin</code> as above.</li>
+</ul>
+<p>To know whether the bundle was late (and ignored) we use responses in
+<code>this.state.acks</code>, i.e., an array of max size <code>this.state.maxAcks</code>,
+and elements of type:</p>
+<pre class="prettyprint source"><code> {response: boolean, index: number}</code></pre><p> where:</p>
+<ul>
+<li><code>response</code>: <code>False</code> if the bundle was late, <code>True</code> otherwise.</li>
+<li><code>index</code>: An identifier for the bundle. It matches the one returned by
+this method.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>bundle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">caf.bundleFac</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A bundle to execute.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>offset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Time offset, see above.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ca_proxy_iot.js.html">ca/proxy_iot.js</a>, <a href="ca_proxy_iot.js.html#line116">line 116</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>An identifier for the bundle.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="sendBundleAt"><span class="type-signature"></span>sendBundleAt<span class="signature">(bundle, atTime)</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Submits a bundle to be executed by the device at a specific time.</p>
+<p>Note that <code>margin</code> is still added. To get rid of
+<code>margin</code>, set it to 0 when the bundle gets created (see <code>newBundle</code>).</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>bundle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">caf.bundleFac</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A bundle to execute.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>atTime</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Time in msec since 1/1/1970 before bundle
+execution or NOW.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ca_proxy_iot.js.html">ca/proxy_iot.js</a>, <a href="ca_proxy_iot.js.html#line143">line 143</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>An id for the bundle.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_iot_bundles.html">caf_iot/bundles</a></li><li><a href="module-caf_iot_ca_ca_iot_methods.html">caf_iot/ca/ca_iot_methods</a></li><li><a href="module-caf_iot_ca_plug_ca_iot.html">caf_iot/ca/plug_ca_iot</a></li><li><a href="module-caf_iot_ca_plug_iot.html">caf_iot/ca/plug_iot</a></li><li><a href="module-caf_iot_ca_proxy_iot.html">caf_iot/ca/proxy_iot</a></li><li><a href="module-caf_iot_constants_iot.html">caf_iot/constants_iot</a></li><li><a href="module-caf_iot_cron_iot_ripper.html">caf_iot/cron_iot_ripper</a></li><li><a href="module-caf_iot_gen_plug_iot.html">caf_iot/gen_plug_iot</a></li><li><a href="module-caf_iot_iot_main.html">caf_iot/iot_main</a></li><li><a href="module-caf_iot_main.html">caf_iot/main</a></li><li><a href="module-caf_iot_platform_iot_main.html">caf_iot/platform_iot_main</a></li><li><a href="module-caf_iot_plug_iot_bundles.html">caf_iot/plug_iot_bundles</a></li><li><a href="module-caf_iot_plug_iot_cloud.html">caf_iot/plug_iot_cloud</a></li><li><a href="module-caf_iot_plug_iot_cron.html">caf_iot/plug_iot_cron</a></li><li><a href="module-caf_iot_plug_iot_handler.html">caf_iot/plug_iot_handler</a></li><li><a href="module-caf_iot_plug_iot_log.html">caf_iot/plug_iot_log</a></li><li><a href="module-caf_iot_plug_iot_queue.html">caf_iot/plug_iot_queue</a></li><li><a href="module-caf_iot_proxy_iot_bundles.html">caf_iot/proxy_iot_bundles</a></li><li><a href="module-caf_iot_proxy_iot_cloud.html">caf_iot/proxy_iot_cloud</a></li><li><a href="module-caf_iot_proxy_iot_cron.html">caf_iot/proxy_iot_cron</a></li><li><a href="module-caf_iot_proxy_iot_handler.html">caf_iot/proxy_iot_handler</a></li><li><a href="module-caf_iot_proxy_iot_queue.html">caf_iot/proxy_iot_queue</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="external-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="external-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Dec 11 2016 00:43:34 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

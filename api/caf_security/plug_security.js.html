@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: plug_security.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: plug_security.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*!
+Copyright 2013 Hewlett-Packard Development Company, L.P.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+'use strict';
+/**
+ * Security plug for authentication.
+ *
+ * Properties:
+ *
+ *       {keysDir: string=, trustedPubKeyFile: string, privateKeyFile: string=,
+ *        publicKeyFile: string=, accountsURL: string, allowNobodyUser: boolean}
+ *
+ * where:
+ *
+ * * `keysDir:` directory for all key material.
+ * * `trustedPubKeyFile`: trusted public key that verifies tokens. Uses
+ * a self-signed certificate in PEM format, see `openssl`.
+ * * `privateKeyFile` and `publicKeyFile`: optional asymetric keys to weaken
+ * tokens. Typically we use a remote service instead.
+ * * `accountsURL`: URL of the accounts service.
+ * * `allowNobodyUser`: whether to allow the `json_rpc.DEFAULT_FROM` client to
+ * authenticate without credentials.
+ *
+ *
+ * @module caf_security/plug_security
+ * @augments external:caf_components/gen_plug
+ *
+ */
+var assert = require('assert');
+var path = require('path');
+var fs = require('fs');
+var caf_comp = require('caf_components');
+var async = caf_comp.async;
+var myUtils = caf_comp.myUtils;
+var genPlug = caf_comp.gen_plug;
+var json_rpc = require('caf_transport').json_rpc;
+var tokens = require('./tokens');
+var secUtils = require('./utils');
+
+var MIN_DURATION_SEC = 0.01; // Safety margin before token expires
+
+exports.newInstance = function($, spec, cb) {
+    try {
+        var that = genPlug.constructor($, spec);
+
+        $._.$.log &amp;&amp; $._.$.log.debug('New security plug');
+
+        var keysDir = spec.env.keysDir || $.loader.__ca_firstModulePath__();
+
+        var loadKey = function(fileName) {
+            if (fileName) {
+                return fs.readFileSync(path.resolve(keysDir, fileName));
+            } else {
+                return null;
+            }
+        };
+
+        var accounts;
+
+        var trustedPubKeyFile = spec.env.trustedPubKeyFile;
+        assert.equal(typeof spec.env.trustedPubKeyFile, 'string',
+                     "'spec.env.trustedPubKeyFile' is not a string");
+        var trustedPubKey = loadKey(trustedPubKeyFile);
+
+        var privateKey = loadKey(spec.env.privateKeyFile);    // optional
+        var publicKey = loadKey(spec.env.publicKeyFile); // optional
+
+        spec.env.accountsURL &amp;&amp;
+            assert.equal(typeof spec.env.accountsURL, 'string',
+                         "'spec.env.accountsURL' is not a string");
+
+
+        var allowNobodyUser = spec.env.allowNobodyUser;
+        assert.equal(typeof spec.env.allowNobodyUser, 'boolean',
+                     "'spec.env.allowNobodyUser' is not a boolean");
+
+        var tokenCache = {};
+
+        that.__ca_getAppName__ = function() {
+            return $._.__ca_getAppName__();
+        };
+
+        var split = json_rpc.splitName(that.__ca_getAppName__());
+        assert.equal(split.length, 2, 'Invalid application name ' +
+                     that.__ca_getAppName__());
+
+        var onlyBasicChars = /^[A-Za-z0-9]*$/;
+
+        var appPublisher = split[0];
+        assert.ok(appPublisher &amp;&amp; onlyBasicChars.test(appPublisher),
+                  "'appPublisher' has non-alphanum characters or is empty:" +
+                  appPublisher);
+
+        var appLocalName = split[1];
+        assert.ok(appLocalName &amp;&amp; onlyBasicChars.test(appLocalName),
+                  "'appLocalName' has non-alphanum characters or is empty:" +
+                  appLocalName);
+
+        /**
+         * Cleans up token caches.
+         *
+         * Called by `cron_security` periodically to force token re-validation.
+         *
+         * @param {caf.cb} cb A callback to continue after cleaning.
+         *
+         * @memberof! module:caf_security/plug_security#
+         * @alias __ca_pulse__
+         */
+        that.__ca_pulse__ = function(cb0) {
+            // force re-validation of tokens so that they can expire.
+            tokenCache = {};
+            cb0(null);
+        };
+
+        /*
+         * `null` means cached  with a negative result (invalid token),
+         * `undefined` means not in the cache,
+         * otherwise you get the validated token.
+         *
+         */
+        var verifyToken = function(tokenStr) {
+            if (typeof tokenStr !== 'string') {
+                return null;
+            }
+            var token = tokenCache[tokenStr];
+            if (token !== undefined) {
+                return token;
+            } else {
+                try {
+                    token = tokens.validate(tokenStr, trustedPubKey);
+                    tokenCache[tokenStr] = token;
+                    return token;
+                } catch (err) {
+                    // did not validate, cache negative result.
+                    tokenCache[tokenStr] = null;
+                    return null;
+                }
+            }
+        };
+
+        var verifyConstraints = function(from, token) {
+            try {
+                var ca = json_rpc.splitName(from);
+                var target = tokens.newPayload(appPublisher, appLocalName,
+                                               ca[0], ca[1], MIN_DURATION_SEC);
+                return tokens.lessOrEqual(target, token);
+            } catch (err) {
+                $._.$.log &amp;&amp; $._.$.log.debug('Exception testing constraints' +
+                                              myUtils.errToPrettyStr(err));
+                return false;
+            }
+        };
+
+        /**
+         * Verifies the provided serialized token is trusted
+         *
+         * @param {string} tokenStr A serialized token to validate.
+         *
+         * @return {caf.token|null} A parsed, validated token, or `null` if
+         * token invalid.
+         *
+         * @memberof! module:caf_security/plug_security#
+         * @alias __ca_verifyToken__
+         */
+        that.__ca_verifyToken__ = function(tokenStr) {
+            return verifyToken(tokenStr);
+        };
+
+        /**
+         * Authenticates the incoming request.
+         *
+         * @param {string} from Principal sending this request.
+         * @param {string} tokenStr Token to authenticate the principal.
+         * @param {caf.cb} cb0 A callback with an error or the authenticated
+         *  token.
+         *
+         * @memberof! module:caf_security/plug_security#
+         * @alias __ca_authenticate__
+         */
+        that.__ca_authenticate__ = function(from, tokenStr, cb0) {
+            var sorry = function(info) {
+                var err = new Error(info);
+                err.from = from;
+                err.tokenStr = tokenStr;
+                err.accountsURL = spec.env.accountsURL;
+                $._.$.log &amp;&amp; $._.$.log.debug('Deny: ' + info +
+                                             JSON.stringify(err));
+                return err;
+            };
+
+            if (typeof from === 'string') {
+                if (allowNobodyUser &amp;&amp; (json_rpc.DEFAULT_FROM === from)) {
+                    // bypass authentication
+                    cb0(null);
+                } else if (typeof tokenStr === 'string') {
+                    var token = verifyToken(tokenStr);
+                    if (!token) {
+                        $._.$.log &amp;&amp; $._.$.log.debug('Invalid Token:' +
+                                                     tokenStr.slice(0, 20));
+                        cb0(sorry('Invalid Token'));
+                    } else if (!verifyConstraints(from, token)) {
+                        var msg = 'Token does not respect constraints';
+                        $._.$.log &amp;&amp; $._.$.log.debug(msg + ' from: ' + from +
+                                                     ' token:' +
+                                                     JSON.stringify(token));
+                        cb0(sorry(msg));
+                    } else {
+                        // all checks clear
+                        cb0(null, token);
+                    }
+                } else {
+                    $._.$.log &amp;&amp; $._.$.log.debug('Missing token');
+                    cb0(sorry("Missing 'token' field"));
+                }
+            } else {
+                cb0(sorry("Missing 'from' field"));
+            }
+        };
+
+        /**
+         * Whether we should block attempts to create a missing CA.
+         *
+         * Only the owner should be allowed to create new CAs, i.e.,
+         * `from === to`.
+         *
+         * @param {string} from Source of the request.
+         * @param {string} to Target CA to be created if missing.
+         * @return {boolean} True if we should only allow returning a reference
+         *  to an existing CA.
+         *
+         * @memberof! module:caf_security/plug_security#
+         * @alias __ca_blockCreate__
+         */
+        that.__ca_blockCreate__ = function(from, to) {
+            if (from !== to) {
+                // only the owner can create a CA.
+                $._.$.log &amp;&amp; $._.$.log.warn('Blocking create of ' + to +
+                                            ' by ' + from);
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        var remoteAttenuateToken = function(megaTokenStr, constraints, cb0) {
+            try {
+                var closeF = function(err) {
+                    accounts = null;
+                    if (err) {
+                        $._.$.log &amp;&amp;
+                            $._.$.log.warn('Accounts session error' +
+                                           myUtils.errToPrettyStr(err));
+                    }
+                };
+                var cb1 = function(err, acc) {
+                    if (err) {
+                        cb0(err);
+                    } else {
+                        accounts = acc;
+                        accounts.attenuateToken(megaTokenStr, constraints, cb0);
+                    }
+                };
+                secUtils.accountsSession(accounts, spec.env.accountsURL,
+                                         closeF, cb1);
+            } catch (err) {
+                cb0(err);
+            }
+        };
+
+        var attenuateOneToken = function(megaTokenStr, constraints, cb0) {
+            try {
+                var ifNull = function(mega, constr, propName) {
+                    return (constr[propName] === null ? mega[propName] :
+                            constr[propName]);
+                };
+                var megaToken = tokens.validate(megaTokenStr, trustedPubKey);
+                var target = tokens
+                    .newPayload(ifNull(megaToken, constraints, 'appPublisher'),
+                                ifNull(megaToken, constraints, 'appLocalName'),
+                                ifNull(megaToken, constraints, 'caOwner'),
+                                ifNull(megaToken, constraints, 'caLocalName'),
+                                constraints.durationInSec);
+
+                if (tokens.lessOrEqual(target, megaToken)) {
+                    var signedToken = tokens.sign(target, privateKey);
+                    tokens.validate(signedToken, publicKey);
+                    cb0(null, signedToken);
+                } else {
+                    var err = new Error('Token is not weaker');
+                    err.megaToken = megaToken;
+                    err.constraints = constraints;
+                    throw err;
+                }
+            } catch (err) {
+                cb0(err);
+            }
+        };
+
+        /**
+         * Weakens an authentication token generating generating one (or many)
+         *  token(s).
+         *
+         * @see {@link module:caf_security/proxy_security#attenuateToken}
+         *
+         * @param {string} megaTokenStr A serialized token.
+         * @param {Array.&lt;caf.tokenDesc> |caf.tokenDesc} tokenDesc A
+         * description of the new token(s).
+         * @param {caf.cb} cb0 A callback to return the new token(s) or an
+         *  error.
+         *
+         * @memberof! module:caf_security/plug_security#
+         * @alias __ca_attenuateToken__
+         */
+
+        that.__ca_attenuateToken__ = function(megaTokenStr, constraints, cb0) {
+            if (privateKey) {
+                if (Array.isArray(constraints)) {
+                    async.map(constraints, function(one, cb1) {
+                        attenuateOneToken(megaTokenStr, one, cb1);
+                    }, cb0);
+                } else {
+                    attenuateOneToken(megaTokenStr, constraints, cb0);
+                }
+            } else {
+                remoteAttenuateToken(megaTokenStr, constraints, cb0);
+            }
+        };
+
+        cb(null, that);
+    } catch (err) {
+        cb(err);
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_security_aggregates.html">caf_security/aggregates</a></li><li><a href="module-caf_security_main.html">caf_security/main</a></li><li><a href="module-caf_security_plug_ca_security.html">caf_security/plug_ca_security</a></li><li><a href="module-caf_security_plug_security.html">caf_security/plug_security</a></li><li><a href="module-caf_security_proxy_security.html">caf_security/proxy_security</a></li><li><a href="module-caf_security_rules.html">caf_security/rules</a></li><li><a href="module-caf_security_tokens.html">caf_security/tokens</a></li><li><a href="module-caf_security_utils.html">caf_security/utils</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li><li><a href="external-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Dec 11 2016 00:44:09 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

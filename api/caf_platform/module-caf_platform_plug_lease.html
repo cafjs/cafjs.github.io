@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Module: caf_platform/plug_lease</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Module: caf_platform/plug_lease</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>A plug to an external service that maintains leases on CAs.</p>
+<p>A lease protects a binding between a CA identifier and a location. This
+binding ensures that CAs are unique across the data center, and therefore,
+they will properly serialize state changes, and provide a consistent view to
+the external world.</p>
+<p>If the node owning the lease crashes, the lease eventually expires.
+At that point a different, randomly picked, node can create a new lease
+and restart the CA safely.</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plug_lease.js.html">plug_lease.js</a>, <a href="plug_lease.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><a href="external-caf_components_gen_plug.html">external:caf_components/gen_plug</a></li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="getLeaseTimeout"><span class="type-signature"></span>getLeaseTimeout<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Gets the duration of a lease in seconds.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plug_lease.js.html">plug_lease.js</a>, <a href="plug_lease.js.html#line54">line 54</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The lease timeout in seconds.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="grabLease"><span class="type-signature"></span>grabLease<span class="signature">(id, cb0)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Grabs a lease that guarantees exclusive ownership of a CA by this
+ node.</p>
+<p>The type of <code>caf.remoteNode</code> is <code>{remoteNode:string}|null</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An identifier for the CA.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb0</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A callback of type
+<code>function(caf.remoteNode)</code>. If we failed to acquire the lease, the
+argument contains the current owner. Otherwise, the argument is
+<code>null</code>, and we got the lease.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plug_lease.js.html">plug_lease.js</a>, <a href="plug_lease.js.html#line73">line 73</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="renewLeases"><span class="type-signature"></span>renewLeases<span class="signature">(ids, cb0)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Renews a list of leases currently owned by this node.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>ids</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A list of identifiers for local CAs.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb0</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A callback of type
+<code>function(Object, Array.&lt;string&gt;)</code> with either
+an error (first) argument, or a (second) argument with a list of CA
+identifiers that we failed to renew.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plug_lease.js.html">plug_lease.js</a>, <a href="plug_lease.js.html#line94">line 94</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_platform_cron_lease.html">caf_platform/cron_lease</a></li><li><a href="module-caf_platform_cron_nodes.html">caf_platform/cron_nodes</a></li><li><a href="module-caf_platform_cron_pulser.html">caf_platform/cron_pulser</a></li><li><a href="module-caf_platform_cron_ripper.html">caf_platform/cron_ripper</a></li><li><a href="module-caf_platform_cron_security.html">caf_platform/cron_security</a></li><li><a href="module-caf_platform_gen_pipe.html">caf_platform/gen_pipe</a></li><li><a href="module-caf_platform_main.html">caf_platform/main</a></li><li><a href="module-caf_platform_pipe_bodyParser.html">caf_platform/pipe_bodyParser</a></li><li><a href="module-caf_platform_pipe_cache.html">caf_platform/pipe_cache</a></li><li><a href="module-caf_platform_pipe_compress.html">caf_platform/pipe_compress</a></li><li><a href="module-caf_platform_pipe_dispatcher.html">caf_platform/pipe_dispatcher</a></li><li><a href="module-caf_platform_pipe_ping.html">caf_platform/pipe_ping</a></li><li><a href="module-caf_platform_pipe_redirect.html">caf_platform/pipe_redirect</a></li><li><a href="module-caf_platform_pipe_security.html">caf_platform/pipe_security</a></li><li><a href="module-caf_platform_pipe_static.html">caf_platform/pipe_static</a></li><li><a href="module-caf_platform_pipe_stats.html">caf_platform/pipe_stats</a></li><li><a href="module-caf_platform_pipeline_main.html">caf_platform/pipeline_main</a></li><li><a href="module-caf_platform_platform_main.html">caf_platform/platform_main</a></li><li><a href="module-caf_platform_plug_lease.html">caf_platform/plug_lease</a></li><li><a href="module-caf_platform_plug_nodes.html">caf_platform/plug_nodes</a></li><li><a href="module-caf_platform_plug_paas.html">caf_platform/plug_paas</a></li><li><a href="module-caf_platform_plug_registry.html">caf_platform/plug_registry</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="external-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="external-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Dec 11 2016 00:43:43 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

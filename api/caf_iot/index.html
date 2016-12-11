@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3>caf_iot 0.2.42</h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>CAF.js (Cloud Assistant Framework)</h1><p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.</p>
+<p>See http://www.cafjs.com</p>
+<h2>CAF for IoT</h2><p><a href="http://ci.cafjs.com/cafjs/caf_iot"><img src="http://ci.cafjs.com/api/badges/cafjs/caf_iot/status.svg" alt="Build Status"></a></p>
+<p>IoT platform that runs on the device and pairs with a Cloud Assistant.</p>
+<p>The IoT device programming model is very similar to programming a CA (see <a href="external-caf_ca.html">external:caf_ca</a>). In fact, most of the code is reused.</p>
+<p>Method execution is serialized by a queue, no global state, similar plugins, and transactional changes to local state can be rolled backed on abort.</p>
+<p>However, we do not checkpoint state, and there is only one &quot;CA&quot;, i.e., the device. We are not that concerned about long term consistency either, since we reset the device every reboot; therefore, some plugins may not delay external actions, improving responsiveness.</p>
+<p>We have also simplified framework methods and config files. For instance, the file <code>iot.json</code> describes both the framework, i.e., <code>framework.json</code>, and  the device, i.e., <code>ca.json</code>, component hierarchies. Also, the naming of methods is more &quot;Arduino-friendly&quot;.</p>
+<h3>Hello World (see <code>examples/helloworld</code>)</h3><pre class="prettyprint source"><code>exports.methods = {
+    __iot_setup__: function(cb) {
+        this.state.counter = this.toCloud.get('counter') || 0;
+        cb(null);
+    },
+    __iot_loop__ : function(cb) {
+        var msg = this.fromCloud.get('msg') || 'Counter:';
+        this.$.log && this.$.log.debug(msg + this.state.counter);
+        this.state.counter = this.state.counter + 1;
+        this.toCloud.set('counter', this.state.counter);
+        cb(null);
+    }
+};</code></pre><p>Defines two methods called by the IoT framework:</p>
+<ul>
+<li><code>__iot_setup__</code>: initializes the state of the device everytime it resets.</li>
+<li><code>__iot_loop__</code>: similar to a <code>__ca_pulse__</code> CA method, it executes periodically. See <a href="module-caf_iot_plug_iot_handler.html">module:caf_iot/plug_iot_handler</a> for details.</li>
+</ul>
+<p>Device data is described with:</p>
+<ul>
+<li><code>this.state</code>: similar to a CA's <code>this.state</code> but not checkpointed.</li>
+<li><code>this.scratch</code>: similar to a CA's <code>this.scratch</code>.</li>
+<li><code>this.toCloud</code>: A <code>SharedMap</code> (see <a href="external-caf_sharing.html">external:caf_sharing</a>) written by the device and read by its CA. When the device resets, it also downloads the latest contents of this map that reached the cloud.</li>
+<li><code>this.fromCloud</code>: A <code>SharedMap</code> written by the CA and read by the device. This is the main mechanism to configure the device or trigger actions.</li>
+</ul>
+<p>In the previous example <code>this.toCloud</code> has two purposes:</p>
+<ul>
+<li>checkpoint the last value of <code>counter</code>, so that it is remembered after a reset.</li>
+<li>communicate this value to the CA, making it visible to external clients (see <code>examples/helloworld/client.js</code>).</li>
+</ul>
+<p>The purpose of <code>this.fromCloud</code> is to allow a client to indirectly modify the behavior of the device by communicating with its CA.</p>
+<p>The CA impersonates the device, enabling seamless interaction when the device is offline, or behind a firewall.</p>
+<h3>Hello Cron (see <code>examples/hellocron</code>)</h3><p>Similar to CA plugins, device plugins are exposed to application code with proxies in <code>this.$</code>.</p>
+<p>An interesting plugin is <code>cron</code> (see <a href="module-caf_iot_proxy_iot_cron.html">module:caf_iot/proxy_iot_cron</a>), which allows calls to arbitrary methods at regular intervals.</p>
+<pre class="prettyprint source"><code>exports.methods = {
+    __iot_setup__: function(cb) {
+        this.state.counter = this.toCloud.get('counter') || 0;
+        this.$.cron.addCron('helloCron', 'greetings', ['Hello:'], 2000);
+        this.$.cron.addCron('byeCron', 'greetings', ['Bye:'], 3000);
+        cb(null);
+    },
+    greetings: function(greet, cb) {
+        var now = (new Date()).getTime();
+        this.$.log && this.$.log.debug(greet + now);
+        cb(null);
+    },
+    ...
+};</code></pre><h4>How are errors and exceptions handled?</h4><p>The default behavior is rather crude, just log and do a full reset.</p>
+<p>It is recommended to override that behavior by adding a method <code>__iot_error__</code>.</p>
+<p>This method could avoid the reset by <strong>not</strong> propagating the error in the callback, see <a href="module-caf_iot_plug_iot_handler.html#__iot_error__">module:caf_iot/plug_iot_handler#__iot_error__</a>  and <code>examples/hellocron/iot/iot_methods.js</code>.</p>
+<h3>Hello Bundles (see <code>examples/hellobundle</code>)</h3><p>The CA can invoke device methods by using timed bundles of commands.</p>
+<p>CAF.js synchronizes device clocks with the cloud, coordinating <strong>soft</strong> real-time actions across the globe with UTC time. Given a few seconds to propagate commands,  millions of devices could blink within a hundred milliseconds of each other.</p>
+<p>Why bundles and not just separate commands?</p>
+<p>Safety. Think of controlling a drone. One command to dive as fast as it can. Second command to gracefully recover. Lost network connection between them. Oops...</p>
+<p>If we bundle commands, both are cached in the drone before anything happens. If execution is based on UTC time, not on arrival time, we can pipeline bundles, ensuring smooth movement. And the CA can keep generating these bundles based on a higher goal. See <a href="module-caf_iot_plug_iot_bundles.html">module:caf_iot/plug_iot_bundles</a> for details.</p>
+<p>Extra time is added to bundles for network propagation but, when a bundle arrives to the device late, it gets ignored. The CA can detect that by monitoring responses in <code>this.state.acks</code>; this is an array of max size <code>this.state.maxAcks</code>, and elements of type:</p>
+<pre class="prettyprint source"><code>{response: boolean, index: number}</code></pre><p>where:</p>
+<ul>
+<li><code>response</code>: <code>False</code> if the bundle was late, <code>True</code> otherwise.</li>
+<li><code>index</code>: An identifier for the bundle. It matches the one previously returned by <a href="module-caf_iot_ca_proxy_iot.html#sendBundle">module:caf_iot/ca/proxy_iot#sendBundle</a>.</li>
+</ul>
+<p>Let's look at an example.</p>
+<p>The device code defines three simple commands for our &quot;drone&quot;: <code>up</code>, <code>down</code>, or take a recovery action if we lose connectivity.</p>
+<pre class="prettyprint source"><code>exports.methods = {
+...
+    down: function(speed, cb) {
+        var now = (new Date()).getTime();
+        this.$.log && this.$.log.debug('Down:' +  now + ' speed: ' + speed);
+        cb(null);
+    },
+    up: function(speed, cb) {
+        var now = (new Date()).getTime();
+        this.$.log && this.$.log.debug('Up:  ' +  now + ' speed: ' + speed);
+        cb(null);
+    },
+    recover: function(msg, cb) {
+        var now = (new Date()).getTime();
+        this.$.log && this.$.log.debug('RECOVERING:' +  now + ' msg: ' + msg);
+        cb(null);
+    },
+};</code></pre><p>The CA code is a bit more interesting:</p>
+<pre class="prettyprint source"><code>var MARGIN=100;
+exports.methods = {
+    __ca_init__: function(cb) {
+        this.state.maxAcks = 1;
+        cb(null);
+    },
+    __ca_pulse__: function(cb) {
+        if ((this.state.acks && (this.state.acks.length > 0) &&
+             (!this.state.acks[0].result))) {
+            this.$.log && this.$.log.debug('Last bundle was late');
+        }
+        var bundle = this.$.iot.newBundle(MARGIN);
+        bundle.down(0, [1]).up(300, [1]).recover(5000, ['go home']);
+        this.$.iot.sendBundle(bundle);
+        // `notify` improves responsiveness.
+        this.$.session.notify(['new bundle'], 'iot');
+        cb(null);
+    },
+  ...
+};</code></pre><p>If you are wondering how <code>bundle</code> gets methods <code>down</code>, <code>up</code>, and <code>recover</code>, the framework instrospects the device code, and generates them at run time. <em>I love JavaScript</em>.</p>
+<p><code>__ca_pulse__</code> gets called every <code>interval</code> msec. If <code>interval</code> is less than <code>5000</code>, we have two cases:</p>
+<ul>
+<li><p>Normal case: the next bundle starts before the recovery action of the previous bundle. Only one bundle can be active, and the device skips recovery.</p>
+</li>
+<li><p>Network partition for more than five seconds: no new bundles, and the device triggers recovery.</p>
+</li>
+</ul>
+<p>Why <code>notify</code> after <code>sendBundle</code>? To save energy and bandwidth the device typically syncs with the cloud every few seconds, and we are providing a margin of only 100 msec to execute the bundle. If the device is currently connected, <code>notify</code> uses the websocket to force the device to sync.</p>
+<h3>Hello Cloud (see <code>examples/hellocloud</code>)</h3><p>The device can also call CA methods.</p>
+<p>The <code>cloud</code> plugin provides a standard client <code>Session</code> (see <a href="external-caf_cli.html">external:caf_cli</a>). It can also receive session notifications (see <a href="external-caf_session.html">external:caf_session</a>), and process them as conventional method calls.</p>
+<p>Notifications improve responsiveness, because otherwise the device waits until the next <code>__iot_loop__</code> to synchronize with the cloud.</p>
+<p>For example:</p>
+<pre class="prettyprint source"><code>exports.methods = {
+    __iot_setup__: function(cb) {
+        var self = this;
+        this.$.cloud.registerHandler(function(msg) {
+            var args = self.$.cloud.getMethodArgs(msg);
+            self.$.queue.process('greetings', args);
+        });
+        cb(null);
+    },
+    greetings: function(msg, cb) {
+        var self = this;
+        var now = (new Date()).getTime();
+        this.$.log && this.$.log.debug(msg + now);
+        this.$.cloud.cli.getCounter(function(err, value) {
+            if (err) {
+                cb(err);
+            } else {
+                self.$.log && self.$.log.debug('Got ' + value);
+                cb(null);
+            }
+        });
+    },
+    ...
+};</code></pre><p>Every time the CA notifies the device, a method call for <code>greetings</code> gets queued,  and eventually, that method will call back the CA, reading its counter. The default session identifier for a device is <code>iot</code>, but it can be changed with the property <code>session</code> (see <a href="module-caf_iot_plug_iot_cloud.html">module:caf_iot/plug_iot_cloud</a>).</p>
+<h3>Much more...</h3><p>We have a few RPi plugins in <code>caf/extra</code> that do real IoT stuff. Controlling <code>gpio</code> pins, managing external RTC/power boards, distance sensors...</p>
+<p>The long term strategy is <strong>not</strong> to duplicate the great work of other JavaScript IoT libraries supporting zillions of sensors/actuators/devices. Instead, wrap these libraries with local plugins, and focus on cloud/client integration. This is consistent with our web client strategy, i.e., integrating with other libraries such as React/Redux.</p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_iot_bundles.html">caf_iot/bundles</a></li><li><a href="module-caf_iot_ca_ca_iot_methods.html">caf_iot/ca/ca_iot_methods</a></li><li><a href="module-caf_iot_ca_plug_ca_iot.html">caf_iot/ca/plug_ca_iot</a></li><li><a href="module-caf_iot_ca_plug_iot.html">caf_iot/ca/plug_iot</a></li><li><a href="module-caf_iot_ca_proxy_iot.html">caf_iot/ca/proxy_iot</a></li><li><a href="module-caf_iot_constants_iot.html">caf_iot/constants_iot</a></li><li><a href="module-caf_iot_cron_iot_ripper.html">caf_iot/cron_iot_ripper</a></li><li><a href="module-caf_iot_gen_plug_iot.html">caf_iot/gen_plug_iot</a></li><li><a href="module-caf_iot_iot_main.html">caf_iot/iot_main</a></li><li><a href="module-caf_iot_main.html">caf_iot/main</a></li><li><a href="module-caf_iot_platform_iot_main.html">caf_iot/platform_iot_main</a></li><li><a href="module-caf_iot_plug_iot_bundles.html">caf_iot/plug_iot_bundles</a></li><li><a href="module-caf_iot_plug_iot_cloud.html">caf_iot/plug_iot_cloud</a></li><li><a href="module-caf_iot_plug_iot_cron.html">caf_iot/plug_iot_cron</a></li><li><a href="module-caf_iot_plug_iot_handler.html">caf_iot/plug_iot_handler</a></li><li><a href="module-caf_iot_plug_iot_log.html">caf_iot/plug_iot_log</a></li><li><a href="module-caf_iot_plug_iot_queue.html">caf_iot/plug_iot_queue</a></li><li><a href="module-caf_iot_proxy_iot_bundles.html">caf_iot/proxy_iot_bundles</a></li><li><a href="module-caf_iot_proxy_iot_cloud.html">caf_iot/proxy_iot_cloud</a></li><li><a href="module-caf_iot_proxy_iot_cron.html">caf_iot/proxy_iot_cron</a></li><li><a href="module-caf_iot_proxy_iot_handler.html">caf_iot/proxy_iot_handler</a></li><li><a href="module-caf_iot_proxy_iot_queue.html">caf_iot/proxy_iot_queue</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="external-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="external-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Dec 11 2016 00:43:34 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: plug_iot_handler.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: plug_iot_handler.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*!
+Copyright 2013 Hewlett-Packard Development Company, L.P.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+'use strict';
+
+/**
+ * A handler for wrapping application code.
+ *
+ * Properties:
+ *
+ *      {methodsFileName: string, interval: number}
+ *
+ * where:
+ * * `methodsFileName`: the name of a file containing the application logic. It
+ * defaults to `./iot_methods.js`.
+ * * `interval`: time in msec between invocations of the main loop, i.e.,
+ * `__iot_loop__`.
+ *
+ * @module caf_iot/plug_iot_handler
+ * @augments module:caf_iot/gen_plug_iot
+ */
+var assert = require('assert');
+var caf_comp = require('caf_components');
+var async = caf_comp.async;
+var myUtils = caf_comp.myUtils;
+var genPlugIoT = require('./gen_plug_iot');
+var json_rpc = require('caf_transport').json_rpc;
+var caf_sharing = require('caf_sharing');
+var SharedMap = caf_sharing.SharedMap;
+var ReliableChannel = caf_sharing.ReliableChannel;
+
+var constants_iot = require('./constants_iot');
+var FROM_CLOUD_CHANNEL_NAME = constants_iot.FROM_CLOUD_CHANNEL_NAME;
+var FROM_CLOUD_REPLY_CHANNEL_NAME = constants_iot.FROM_CLOUD_REPLY_CHANNEL_NAME;
+
+var PULSE_CRON_NAME = 'pulseCron';
+
+exports.newInstance = function($, spec, cb) {
+    try {
+        var that = genPlugIoT.constructor($, spec);
+
+        var toCloudMap = new SharedMap($._.$.log, false, 1);
+        var fromCloudMap = new SharedMap($._.$.log, false, 1);
+
+        var lastSyncErr = null;
+        var lastSyncFC = null;
+        var forceFullCycle = false;
+
+        var noSync = false;
+
+        var updateMapRefs = function() {
+
+            /**
+             * `SharedMap` to upload information to the CA.
+             *
+             * @type {caf.refMap}
+             *
+             * @memberof! module:caf_iot/plug_iot_handler#
+             * @alias toCloud
+             */
+            that.toCloud = toCloudMap.ref();
+
+            /**
+             * `SharedMap` to download information from the CA.
+             *
+             * It is read-only.
+             *
+             * @type {caf.refMap}
+             *
+             * @memberof! module:caf_iot/plug_iot_handler#
+             * @alias fromCloud
+             */
+            that.fromCloud = fromCloudMap.ref(true); //read only
+        };
+
+        assert.equal(typeof(spec.env.methodsFileName), 'string',
+                     "'spec.env.methodsFileName' is not a string");
+
+        assert.equal(typeof(spec.env.interval), 'number',
+                     "'spec.env.interval' is not a number");
+
+        /**
+         * State of this device handler.
+         *
+         * It roll backs changes on abort, and contains JSON-serializable data
+         * only.
+         *
+         * @type {Object}
+         *
+         * @memberof! module:caf_iot/plug_iot_handler#
+         * @alias state
+         */
+        that.state = {};
+
+
+        // Backup state to provide transactional behavior for the handler.
+        var stateBackup = '';
+
+        /**
+         * Scratch state of this device handler.
+         *
+         * It never rollbacks and contains anything.
+         *
+         * @type {Object}
+         *
+         * @memberof! module:caf_iot/plug_iot_handler#
+         * @alias scratch
+         */
+        that.scratch = {};
+        $._.$.log &amp;&amp; $._.$.log.debug('New handler object');
+
+        /**
+         * Returns the name of this device.
+         *
+         * Matches the name of its CA in the cloud.
+         *
+         * @return {string} The name of this device.
+         *
+         * @memberof! module:caf_iot/plug_iot_handler#
+         * @alias __ca_getName__
+         */
+        that.__ca_getName__ = function() {
+            return $._.__ca_getName__();
+        };
+
+        /**
+         * Returns the application name.
+         *
+         * @return {string} The application name.
+         *
+         * @memberof! module:caf_iot/plug_iot_handler#
+         * @alias __ca_getAppName__
+         */
+        that.__ca_getAppName__ = function() {
+            return $._.__ca_getAppName__();
+        };
+
+
+        // make proxies visible to application code
+        Object.keys($._.$).forEach(function(compName) {
+            var comp = $._.$[compName];
+            if (comp.$ &amp;&amp; comp.$.proxy &amp;&amp; comp.$.proxy.__ca_isProxy__) {
+                that.$[compName] = comp.$.proxy;
+            }
+        });
+
+        // capture before user code overrides them.
+        var super__ca_abort__ = myUtils.superior(that, '__ca_abort__');
+        var super__ca_begin__ = myUtils.superior(that, '__ca_begin__');
+        var super__ca_prepare__ = myUtils.superior(that, '__ca_prepare__');
+        var super__ca_commit__ = myUtils.superior(that, '__ca_commit__');
+
+        var methods = $._.$.loader
+            .__ca_loadResource__(spec.env.methodsFileName).methods;
+
+        var onlyFun = myUtils.onlyFun(methods);
+
+        // Application methods to override
+        /**
+         * Application setup method called every time the framework resets.
+         *
+         * This method is typically customized by the application.
+         *
+         * @param {caf.cb} cb0 A callback to continue after setup.
+         *
+         * @memberof! module:caf_iot/plug_iot_handler#
+         * @alias __iot_setup__
+         */
+        that.__iot_setup__ = function(cb0) {
+            cb0(null);
+        };
+
+        /**
+         * Application main method called periodically by the framework.
+         *
+         * This method is typically customized by the application.
+         *
+         * @param {caf.cb} cb0 A callback to continue after setup.
+         *
+         * @memberof! module:caf_iot/plug_iot_handler#
+         * @alias __iot_loop__
+         */
+        that.__iot_loop__ = function(cb0) {
+            cb0(null);
+        };
+
+
+        /**
+         * Optional error handler provided by the application.
+         *
+         * This method is `null` unless provided by the application.
+         *
+         * Strategy to handle errors:
+         *
+         *   1. Call this handler with the error
+         *
+         *       1.1 If handler propagates error in callback, shutdown top
+         *  level. If shutdown fails exit process.
+         *
+         *       1.2 If handler does **not** propagate the error in callback,
+         *  just abort transaction. If abort fails follow as in 1.1
+         *
+         *   2. If this handler is `null`, follow as in 1.1
+
+         *
+         * @param {Error} error An error raised by the last processed command.
+         * @param {caf.cb} cb0 A callback that will propagate the error if it
+         * wants a shutdown, or, if the error is not propagated, just abort.
+         *
+         * @memberof! module:caf_iot/plug_iot_handler#
+         * @alias __iot_error__
+         * @function
+         */
+        that.__iot_error__ = null;
+
+        // override methods
+        myUtils.mixin(that, onlyFun);
+
+        var initMaps = function(cb1) {
+            try {
+                $._.$.cloud.cli.__iot_resume__(function(err, maps) {
+                    if (err) {
+                        cb1(err);
+                    } else {
+                        toCloudMap.reset();
+                        toCloudMap.applyChanges(maps.toCloud);
+                        fromCloudMap.reset();
+                        fromCloudMap.applyChanges(maps.fromCloud);
+                        updateMapRefs();
+                        cb1(null);
+                    }
+                });
+            } catch (err) {
+                cb1(err);
+            }
+        };
+
+        var initNotifHandler = function(cb1) {
+            try {
+                $._.$.cloud.registerHandler(function(msg) {
+                    $._.$.log &amp;&amp; $._.$.log.debug('Got notification ' +
+                                                 JSON.stringify(msg));
+                    var args = json_rpc.getMethodArgs(msg);
+                    if (Array.isArray(args) &amp;&amp; (args.length > 0) &amp;&amp;
+                        args[0] &amp;&amp; (typeof args[0] === 'object') &amp;&amp;
+                        (typeof args[0].fromCloud === 'object')) {
+                        lastSyncFC = args[0].fromCloud;
+                    }
+                    // The default is to trigger a full cycle
+                    $._.$.queue &amp;&amp; $._.$.queue.process('__ca_fullCycle__', []);
+                });
+                cb1(null);
+            } catch (err) {
+                cb1(err);
+            }
+        };
+
+        var super__ca_init__ = myUtils.superior(that, '__ca_init__');
+        that.__ca_init__= function(cb0) {
+            async.series([
+                super__ca_init__,
+                initMaps,
+                initNotifHandler,
+                function(cb1) {
+                    // Ensure that initialization is serialized
+                    $._.$.queue.process('__iot_setup__', [], null, cb1);
+                },
+                function(cb1) {
+                    // Do not wait for the cron
+                    $._.$.queue.process('__ca_pulse__', [], null, cb1);
+                }
+            ], function(err, data) {
+                if (err) {
+                    cb0(err);
+                } else {
+                    $._.$.cron.__iot_addCron__(PULSE_CRON_NAME, '__ca_pulse__',
+                                               [], spec.env.interval);
+                    cb0(err, data);
+                }
+            });
+        };
+
+
+        /*
+         * Internal function.
+         *
+         * Schedules bundles of commands.
+         *
+         * @memberof! module:caf_iot/plug_iot_handler#
+         * @alias __iot_executeCommands__
+         */
+        that.__iot_executeCommands__ = function() {
+            var received = ReliableChannel.receive(that.toCloud,
+                                                   that.fromCloud,
+                                                   FROM_CLOUD_CHANNEL_NAME);
+            var responses = [];
+            received.messages.forEach(function(bundle, i) {
+                try {
+                    bundle = JSON.parse(bundle);
+                    var isOK = $._.$.bundles.__iot_addBundle__(bundle);
+                    responses.push({result: isOK, index: received.index + i});
+                } catch (ex) {
+                    $._.$.log &amp;&amp; $._.$.log.error('Ignoring unparseable bundle' +
+                                                 bundle);
+                    responses.push({result: false, index: received.index + i});
+                }
+            });
+            if (responses.length > 0) {
+                ReliableChannel.send(that.toCloud,
+                                      FROM_CLOUD_REPLY_CHANNEL_NAME, responses);
+            }
+        };
+
+        /**
+         * Internal function.
+         *
+         * Main loop periodically called by the framework.
+         *
+         * @param {caf.cb} cb0 A callback to continue after pulse.
+         *
+         * @memberof! module:caf_iot/plug_iot_handler#
+         * @alias __ca_pulse__
+         */
+        that.__ca_pulse__= function(cb0) {
+            that.__iot_executeCommands__();
+            // bind `this` to `that`
+            var __iot_loop__ = myUtils.superior(that, '__iot_loop__');
+            __iot_loop__(cb0);
+        };
+
+        /**
+         * Internal function.
+         *
+         * Triggers two pulses, the second one after cloud sync finishes.
+         *
+         * Sync is always at the end of a pulse, and  `fullCycle` minimizes
+         * latency because it can process a cloud request without waiting for
+         * the cron process.
+         *
+         * @param {caf.cb} cb0 A callback to continue after the first pulse.
+         *
+         * @memberof! module:caf_iot/plug_iot_handler#
+         * @alias __ca_fullCycle__
+         */
+        that.__ca_fullCycle__= function(cb0) {
+            forceFullCycle = true;
+            that.__ca_pulse__(cb0);
+        };
+
+        // Transactional methods.
+        that.__ca_begin__= function(msg, cb0) {
+            if (lastSyncErr) {
+                var err = lastSyncErr;
+                lastSyncErr = null;
+                lastSyncFC = null;
+                cb0(err);
+            } else {
+                if (lastSyncFC) {
+                    fromCloudMap.reset();
+                    fromCloudMap.applyChanges(lastSyncFC);
+                    lastSyncFC = null;
+                }
+                updateMapRefs();
+                stateBackup = JSON.stringify(that.state);
+                noSync = msg &amp;&amp; msg.options &amp;&amp; msg.options.noSync;
+                super__ca_begin__(msg, cb0);
+            }
+        };
+
+        that.__ca_abort__= function(cb0) {
+            if (stateBackup) {
+                that.state = JSON.parse(stateBackup);
+            }
+            super__ca_abort__(cb0);
+        };
+
+        that.__ca_prepare__ = function(cb0) {
+            ReliableChannel.gc(that.toCloud, that.fromCloud);
+            that.toCloud.prepare();
+            super__ca_prepare__(cb0);
+        };
+
+        var syncMaps = function(changes) {
+            try {
+                $._.$.cloud.cli.__iot_sync__(changes, function(err, newFC) {
+                    // delay processing until the next message.
+                    if (err) {
+                        lastSyncErr = err;
+                        lastSyncFC = null;
+                    } else {
+                        lastSyncErr = null;
+                        lastSyncFC = newFC;
+                        if (forceFullCycle) {
+                            forceFullCycle = false;
+                            //Do not wait for the cron
+                            $._.$.queue &amp;&amp;
+                                $._.$.queue.process('__ca_pulse__', []);
+                        }
+                    }
+                });
+            } catch (err) {
+                lastSyncErr = err;
+                lastSyncFC = null;
+            }
+        };
+
+        that.__ca_commit__ = function(cb0) {
+            super__ca_commit__(function(err) {
+                if (err) {
+                    cb0(err);
+                } else {
+                    /* We don't want to block the main loop, so we do
+                     * a tail call outside the transaction.*/
+                    if (noSync) {
+                        $._.$.log &amp;&amp;
+                            $._.$.log.trace('Skipping sync,' +
+                                            " ignoring 'toCloud' changes");
+                        noSync = false;
+                    } else {
+                        toCloudMap.commit(that.toCloud);
+                        syncMaps(that.toCloud.getChanges());
+                    }
+                    cb0(null);
+                }
+            });
+        };
+
+        cb(null, that);
+    } catch (err) {
+        cb(err);
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_iot_bundles.html">caf_iot/bundles</a></li><li><a href="module-caf_iot_ca_ca_iot_methods.html">caf_iot/ca/ca_iot_methods</a></li><li><a href="module-caf_iot_ca_plug_ca_iot.html">caf_iot/ca/plug_ca_iot</a></li><li><a href="module-caf_iot_ca_plug_iot.html">caf_iot/ca/plug_iot</a></li><li><a href="module-caf_iot_ca_proxy_iot.html">caf_iot/ca/proxy_iot</a></li><li><a href="module-caf_iot_constants_iot.html">caf_iot/constants_iot</a></li><li><a href="module-caf_iot_cron_iot_ripper.html">caf_iot/cron_iot_ripper</a></li><li><a href="module-caf_iot_gen_plug_iot.html">caf_iot/gen_plug_iot</a></li><li><a href="module-caf_iot_iot_main.html">caf_iot/iot_main</a></li><li><a href="module-caf_iot_main.html">caf_iot/main</a></li><li><a href="module-caf_iot_platform_iot_main.html">caf_iot/platform_iot_main</a></li><li><a href="module-caf_iot_plug_iot_bundles.html">caf_iot/plug_iot_bundles</a></li><li><a href="module-caf_iot_plug_iot_cloud.html">caf_iot/plug_iot_cloud</a></li><li><a href="module-caf_iot_plug_iot_cron.html">caf_iot/plug_iot_cron</a></li><li><a href="module-caf_iot_plug_iot_handler.html">caf_iot/plug_iot_handler</a></li><li><a href="module-caf_iot_plug_iot_log.html">caf_iot/plug_iot_log</a></li><li><a href="module-caf_iot_plug_iot_queue.html">caf_iot/plug_iot_queue</a></li><li><a href="module-caf_iot_proxy_iot_bundles.html">caf_iot/proxy_iot_bundles</a></li><li><a href="module-caf_iot_proxy_iot_cloud.html">caf_iot/proxy_iot_cloud</a></li><li><a href="module-caf_iot_proxy_iot_cron.html">caf_iot/proxy_iot_cron</a></li><li><a href="module-caf_iot_proxy_iot_handler.html">caf_iot/proxy_iot_handler</a></li><li><a href="module-caf_iot_proxy_iot_queue.html">caf_iot/proxy_iot_queue</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="external-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="external-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Dec 11 2016 00:43:34 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

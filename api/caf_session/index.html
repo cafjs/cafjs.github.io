@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3>caf_session 0.2.12</h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>CAF.js (Cloud Assistant Framework)</h1><p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.</p>
+<p>See http://www.cafjs.com</p>
+<h2>CAF Lib Session</h2><p><a href="http://ci.cafjs.com/cafjs/caf_session"><img src="http://ci.cafjs.com/api/badges/cafjs/caf_session/status.svg" alt="Build Status"></a></p>
+<p>This repository contains a CAF lib to handle notifications using persistent sessions.</p>
+<h3>Better Cookies</h3><p>What's wrong with cookies for session management?</p>
+<ul>
+<li>Chosen by the server not the client.</li>
+<li>Cannot have sensible, human-friendly, values.</li>
+<li>Do not move between devices.</li>
+<li>Browsers mess with them, making it difficult to replicate behavior outside the browser.</li>
+</ul>
+<p>This library associates multiple notification queues to each CA (see <a href="external-caf_ca.html">external:caf_ca</a>), and identifies them with simple names chosen by the client. Queue names are scoped by the CA name, and they can be easy to remember and still unique. This makes it easy to switch devices within a session.</p>
+<p>Moreover, we don't assume an HTTP-based transport or a browser, and now your dumb gadgets can have sessions too.</p>
+<p>But this raises a new issue, how to manage these notification queues? If a CA keeps queueing notifications that nobody reads, does it just run out of memory?</p>
+<p>The best approach is very application dependent. In some cases we just need the last notification. In others we bound the size of the queue, and silently drop the old ones. Or we throw an error to throttle the CA. And what about duplicated notifications?</p>
+<p>Our solution exposes the contents of output queues to application code, so that it can make the right choices.</p>
+<h3>Persistent Sessions</h3><p>If clients are stateless, or we keep changing devices all the time, can we guarantee that certain actions are only done once?</p>
+<p>After all, you didn't want two toasters, did you?</p>
+<p>The influential work by Bernstein&amp;Hsu&amp;Mann'90 shows how to use a reliable queue to guarantee exactly-once delivery with a stateless client. A CA has an input queue, and its state is managed transactionally (see  <a href="external-caf_ca.html">external:caf_ca</a>). Input and output queues are not checkpointed, but losing them is equivalent to dropping  messages in transit, and we do not assume a reliable transport. Can we use a CA to implement exactly-once delivery for a stateless client?</p>
+<p>Yes, if the client application is written in a certain way:</p>
+<ul>
+<li><p>First, it needs to explicitly start and end a persistent session. If a session is started again without being properly closed, we assume the client crashed.</p>
+</li>
+<li><p>Second, it has to protect against concurrent sessions by using nonces.</p>
+</li>
+<li><p>Third, enough client state has to be piggybacked to requests, so that the client can know what was the last committed action before the crash. We use a <code>memento</code> for that (see <a href="module-caf_session_proxy_session.html">module:caf_session/proxy_session</a>).</p>
+</li>
+<li><p>Fourth, in case of a timeout or error it has to crash and start again the session. When the session restarts it will receive the last <code>memento</code>, and use it to avoid duplicated requests.</p>
+</li>
+</ul>
+<p>The key is that our client library (see <a href="external-caf_cli.html">external:caf_cli</a>) and the CA serialize all the requests within one session instance. Across sessions, nonces guarantee that only one session instance is active, and requests in other concurrent sessions will fail.</p>
+<h3>Hello World (see <code>examples/helloworld</code>)</h3><p>The following example shows how to limit queues, and periodically notify
+two clients, each using a different logical session:</p>
+<pre class="prettyprint source"><code>exports.methods = {
+    __ca_init__: function(cb) {
+        this.state.counter = 0;
+        this.$.session.limitQueue(10, 'client1');
+        this.$.session.limitQueue(10, 'client2');
+        cb(null);
+    },
+    __ca_pulse__: function(cb) {
+        this.state.counter = this.state.counter + 1;
+        if (this.state.counter % 2 === 0) {
+            this.$.session.notify([this.state.counter], 'client1');
+        }
+        if (this.state.counter % 3 === 0) {
+            this.$.session.notify([this.state.counter], 'client2');
+        }
+        cb(null);
+    }
+}</code></pre><p>To check the status of all the queues:</p>
+<pre class="prettyprint source"><code>exports.methods = {
+...
+    sessionInfo: function(cb) {
+        var self = this;
+        var sessionInfo = {current: this.$.session.getSessionId()};
+        this.$.session.getAllSessionIds().forEach(function(x) {
+            sessionInfo[x] = self.$.session.outq(x);
+        });
+        cb(null, sessionInfo);
+    }
+}</code></pre><p>If we want to notify all logical sessions, without knowing them a priori:</p>
+<pre class="prettyprint source"><code>exports.methods = {
+...
+    notifyAll: function(msg, cb) {
+        var self = this;
+        this.$.session.getAllSessionIds().forEach(function(x) {
+            self.$.session.notify([msg], x);
+        });
+        this.sessionInfo(cb);
+    }
+}</code></pre><p>The client uses the handler <code>onmessage</code> to receive notifications. See <code>client1.js</code> for an example.</p>
+<h3>Hello Persistent (see <code>examples/hellopersistent</code>)</h3><p>This example shows how to guarantee that bought items are not duplicated:</p>
+<pre class="prettyprint source"><code>exports.methods = {
+    __ca_init__: function(cb) {
+        this.state.counters = {};
+        cb(null);
+    },
+    begin: function(cb) {
+        cb(null,  this.$.session.begin());
+    },
+    buy: function(nonce, itemIndex, item, cb) {
+        if (this.$.session.remember(nonce, itemIndex)) {
+            var counter = this.state.counters[item] || 0;
+            this.state.counters[item] = counter + 1;
+            this.getCounters(cb);
+        } else {
+            var err = new Error('Ignoring buy operation, bad nonce');
+            err.item = item;
+            cb(err);
+        }
+    },
+    end: function(nonce, cb) {
+        cb(null, this.$.session.end(nonce));
+    },
+    getCounters: function(cb) {
+        cb(null, this.state.counters);
+    }
+}</code></pre><p>The client is in <code>examples/hellopersistent/client.js</code>.</p>
+<p>The <code>memento</code> in this case is just an index in a list of items that we want to buy. Every time we buy an item, we increment its counter. The update of the <code>memento</code> and the counter is within a transaction scoped by the <code>buy</code> method.</p>
+<p>If the client crashes, it will call <code>begin</code> again, and the CA will notice that the session was not ended properly, returning the <code>memento</code>. Then, the client can use that index to safely restart the buying spree where it was left off.</p>
+<p>A nonce returned by <code>begin</code> is later used in all the method calls within a session instance, detecting races if other clients are still active.</p>
+<h2>API</h2><p>See <a href="module-caf_session_proxy_session.html">module:caf_session/proxy_session</a></p>
+<h2>Configuration</h2><h3>framework.json</h3><p>None</p>
+<h3>ca.json</h3><p>See <a href="module-caf_session_plug_ca_session.html">module:caf_session/plug_ca_session</a></p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_session_backchannel.html">caf_session/backchannel</a></li><li><a href="module-caf_session_main.html">caf_session/main</a></li><li><a href="module-caf_session_plug_ca_session.html">caf_session/plug_ca_session</a></li><li><a href="module-caf_session_proxy_session.html">caf_session/proxy_session</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Dec 11 2016 00:44:18 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

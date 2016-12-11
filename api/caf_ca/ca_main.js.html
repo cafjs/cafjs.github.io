@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: ca_main.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: ca_main.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*!
+Copyright 2013 Hewlett-Packard Development Company, L.P.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+'use strict';
+/**
+ * A container component that assembles and manages one Cloud Assistant.
+ *
+ * @module caf_ca/ca_main
+ * @augments module:caf_ca/gen_ca
+ */
+
+var assert = require('assert');
+var caf_comp = require('caf_components');
+var async = caf_comp.async;
+var genCA = require('./gen_ca');
+var json_rpc = require('caf_transport').json_rpc;
+var myUtils = caf_comp.myUtils;
+
+exports.newInstance = function($, spec, cb) {
+    try {
+        // passing the result of a security check.
+        var blockCreate = spec.env.blockCreate;
+        delete spec.env.blockCreate;
+        blockCreate &amp;&amp; $._.$.log &amp;&amp; $._.$.log.warn('Blocking CA create ' +
+                                                    spec.name);
+        // ensure that partial failures shutdown the CA
+        var doNotRestart = false;
+
+        var that = genCA.constructor($, spec);
+        that.$.ca = that;
+        var getLeaseTimout = function () {
+            // Give priority to the platform definition, leaseTimeout in
+            // 'ca.json' is just for testing.
+            if ($._.$.lease) {
+                return $._.$.lease.getLeaseTimeout();
+            } else {
+                return spec.env.leaseTimeout;
+            }
+        };
+        var leaseTimeout = getLeaseTimout(); // in seconds
+        assert.equal(typeof leaseTimeout, 'number',
+                     "'spec.env.leaseTimeout' is not a number");
+        var stateCP = null;
+        async.series(
+            [
+                function(cb0) {
+                    try {
+                        // Ensure we have a lease.
+                        if (leaseTimeout > 0) {
+                            $._.$.cp.grabLease(that.__ca_getName__(),
+                                               leaseTimeout, cb0);
+                        } else {
+                            $._.$.log &amp;&amp;
+                                $._.$.log.warn('Not grabbing a lease');
+                            cb0(null);
+                        }
+                    } catch (ex) {
+                        cb0(ex);
+                    }
+                },
+                function(cb0) {
+                    // force initialization of lazy components.
+                    that.__ca_checkup__(null, cb0);
+                },
+                function(cb0) {
+                    var cb1 = function(err, val) {
+                        if (!err) {
+                            stateCP = val;
+                        }
+                        cb0(err, val);
+                    };
+                    try {
+                        $._.$.cp.getState(that.__ca_getName__(), cb1);
+                    } catch (ex) {
+                        cb1(ex);
+                    }
+                },
+                function(cb0) {
+                    if (typeof stateCP === 'string') {
+                        try {
+                            var cpObj = JSON.parse(stateCP);
+                            that.__ca_resume__(cpObj, cb0);
+                        } catch (err) {
+                            cb0(err);
+                        }
+                    } else {
+                        if (blockCreate) {
+                            var error = new Error('Only owners can create CAs');
+                            error.code = json_rpc.ERROR_CODES.notAuthorized;
+                            error.notAuthorized = true;
+                            error.target = spec.name;
+                            $._.$.log &amp;&amp;
+                                $._.$.log.warn('Blocking create CA ' +
+                                               myUtils.errToPrettyStr(error));
+                            cb0(error);
+                        } else {
+                            that.__ca_init__(cb0);
+                        }
+                    }
+                },
+                function(cb0) {
+                    // this is where the real resume/init happens
+                    var cb1 = function(err, result) {
+                        if (err) {
+                            cb0(err);
+                        } else {
+                            var retErr = null;
+                            /*
+                             * Errors during init or resume are mapped to
+                             *  system or app errors that abort initialization.
+                             *
+                             * This is not enough, it leaves the CA in an
+                             * uninitialized state, and errors get ignored.
+                             *
+                             * Instead we need to shutdown the CA, and propagate
+                             * errors in the callback.
+                             */
+                            if (json_rpc.isSystemError(result) ||
+                                (json_rpc.getAppReplyError(result))) {
+                                retErr = result;
+                            }
+                            async.series([
+                                function(cb2) {
+                                    if (retErr) {
+                                        that.__ca_shutdown__(null, cb2);
+                                    } else {
+                                        cb2(null);
+                                    }
+                                }
+                            ], function(errIgnore) {
+                                // ignore shutdown failure
+                                if (errIgnore) {
+                                    retErr.shutdownError = errIgnore;
+                                }
+                                cb0(retErr, result);
+                            });
+                        }
+                    };
+                    var msg = json_rpc.systemRequest(that.__ca_getName__(),
+                                                     '__ca_first_message__');
+                    that.__ca_process__(msg, cb1);
+                }
+            ],
+            function(err) {
+                if (err) {
+                    $._.$.log &amp;&amp; $._.$.log.error('Cannot create CA' +
+                                                 myUtils.errToPrettyStr(err));
+                    cb(err);
+                } else {
+                    // should not recover without a full shutdown
+                    doNotRestart = true;
+                    cb(err, that);
+                }
+            });
+
+
+        var super__ca_checkup__ = myUtils.superior(that, '__ca_checkup__');
+        that.__ca_checkup__ = function(data, cb) {
+            if (doNotRestart) {
+                data = myUtils.mixin({doNotRestart: true}, data || {});
+            }
+            super__ca_checkup__(data, cb);
+        };
+
+    } catch (err) {
+        cb(err);
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_ca_ca_main.html">caf_ca/ca_main</a></li><li><a href="module-caf_ca_gen_ca.html">caf_ca/gen_ca</a></li><li><a href="module-caf_ca_gen_handler.html">caf_ca/gen_handler</a></li><li><a href="module-caf_ca_main.html">caf_ca/main</a></li><li><a href="module-caf_ca_plug_ca_handler.html">caf_ca/plug_ca_handler</a></li><li><a href="module-caf_ca_plug_ca_inqueue.html">caf_ca/plug_ca_inqueue</a></li><li><a href="module-caf_ca_proxy_handler.html">caf_ca/proxy_handler</a></li><li><a href="module-caf_ca_proxy_inqueue.html">caf_ca/proxy_inqueue</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components.html">caf_components</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="external-caf_pubsub.html">caf_pubsub</a></li><li><a href="external-caf_security.html">caf_security</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Dec 11 2016 00:42:58 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

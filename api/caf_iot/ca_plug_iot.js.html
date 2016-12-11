@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: ca/plug_iot.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: ca/plug_iot.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*!
+Copyright 2013 Hewlett-Packard Development Company, L.P.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+'use strict';
+/**
+ * Plugin for IoT apps cloud support.
+ *
+ * This plugin runs in the cloud.
+ *
+ * Properties:
+ *
+ *        {iotMethodsFileName: string, appDir: string|null,
+ *         iotDeviceManagerAppURL: string}
+ *
+ * where:
+ *
+ *  * `iotMethodsFileName`: name of the iot methods file. With a default setup
+ * is `../iot/lib/iot_methods.js`.
+ *  *  `appDir`: directory for `iotMethodsFileName`. With a `null` value it
+ * defaults to the directory that contains the app `ca_methods.js` file, i.e.,
+ * `&lt;app_dir>/lib`.
+ *  * `iotDeviceManagerAppURL`: URL of the service managing the device. Default
+ * setup is `https://root-gadget.cafjs.com`.
+ *
+ * @module caf_iot/ca/plug_iot
+ * @augments external:caf_components/gen_plug
+ */
+var assert = require('assert');
+var caf_comp = require('caf_components');
+var myUtils = caf_comp.myUtils;
+var genPlug = caf_comp.gen_plug;
+var path = require('path');
+var ca_iot_methods = require('./ca_iot_methods').methods;
+var caf_cli = require('caf_cli');
+
+/* Disable the execution of the iot framework.*/
+var disableExec = false;
+
+exports.isFrameworkExecDisabled = function() { return disableExec;};
+
+exports.newInstance = function($, spec, cb) {
+    try {
+        var that = genPlug.constructor($, spec);
+
+        var tokenCache = {};
+
+        $._.$.log &amp;&amp; $._.$.log.debug('New IoT plug');
+
+
+        assert.equal(typeof spec.env.iotMethodsFileName, 'string',
+                     "'spec.env.iotMethodsFileName' is not a string");
+
+        var appDir = spec.env.appDir || $._.$.loader.__ca_firstModulePath__();
+        assert.equal(typeof appDir, 'string',
+                     "'spec.env.appDir' is not a string");
+        var iotMethodsFile = path.resolve(appDir, spec.env.iotMethodsFileName);
+        disableExec = true;
+        /*
+         * The iot methods file typically also starts the IoT framework
+         * by calling `caf_iot.init()`. We just want to introspect the methods
+         * that the device can execute, not start the (device) framework.
+         *
+         * `init()` becomes a noop if  disableExec = true
+         *
+         */
+        var iotMethods = require(iotMethodsFile).methods;
+        disableExec = false;
+
+        assert.equal(typeof spec.env.iotDeviceManagerAppURL, 'string',
+                     "'spec.env.iotDeviceManagerAppURL' is not a string");
+
+        // Regexp based on angular injector.js
+        //  Copyright (c) 2010-2014 Google, Inc. MIT License
+        var REG_ARGS = /^function\s*[^\(]*\(\s*([^\)]*)\)/m;
+        var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+
+        var iotMethodsMeta = {};
+        Object.keys(iotMethods)
+            .filter(function(m) {
+                return ((m.indexOf('__iot_') !== 0) &amp;&amp;
+                        (typeof iotMethods[m] === 'function'));
+            })
+            .forEach(function(m) {
+                var method = iotMethods[m].toString()
+                        .replace(STRIP_COMMENTS, '');
+                var args = method.match(REG_ARGS);
+                var meta = args[1].split(',')
+                        .map(function(x) { return x.trim();});
+                // Get rid of the callback argument
+                iotMethodsMeta[m] = meta.slice(0, meta.length -1);
+            });
+
+
+        /*
+         * Returns the name and arguments of the methods invoked in the device.
+         *
+         * We use that information to create proxies that generate bundles of
+         *  commands.
+         *
+         * @return {Object&lt;string, Array.&lt;string>>} An object with device
+         *  method names as keys, and an array with argument names as values.
+         */
+        that.iotMethodsMeta = function() {
+            return myUtils.deepClone(iotMethodsMeta);
+        };
+
+        /*
+         * Registers the given token with a CA that manages the device.
+         *
+         * Later on, the device can download the token from this CA, starting
+         * the interaction with this application.
+         *
+         * Note this is a best-effort, idempotent method.
+         *
+         *
+         * @param {string} tokenStr A serialized token to access a CA.
+         * @param {string} deviceName A device that is being granted access.
+         */
+        that.registerToken = function(tokenStr, deviceName) {
+            if (tokenCache[tokenStr] !== deviceName) {
+                var cli = new caf_cli
+                        .Session(spec.env.iotDeviceManagerAppURL,
+                                 deviceName, {
+                                     from: 'NOBODY-UNKNOWN',
+                                     disableBackchannel: true,
+                                     session: 'default',
+                                     log: function(msg) {
+                                         $._.$.log &amp;&amp; $._.$.log.debug(msg);
+                                     }
+                                 });
+
+                cli.onclose = function(err) {
+                    if (err) {
+                        $._.$.log &amp;&amp;
+                            $._.$.log.debug('Cannot register token: ' +
+                                            myUtils.errToPrettyStr(err));
+                    }
+                };
+
+                cli.onopen = function() {
+                    cli.addToken(tokenStr, function(err) {
+                        if (err) {
+                            $._.$.log &amp;&amp;
+                                $._.$.log.debug('Error registering token: ' +
+                                                myUtils.errToPrettyStr(err));
+                        } else {
+                            // no more retries
+                            tokenCache[tokenStr] = deviceName;
+                            $._.$.log &amp;&amp;
+                                $._.$.log.debug('Token registered for device ' +
+                                                deviceName);
+                        }
+                        cli.close();
+                    });
+                };
+            }
+        };
+
+        /*
+         * Returns methods that should be mixed in with the CA.
+         *
+         * @return {Object&lt;string, function>} A map with CA methods.
+         *
+         */
+        that.extraCAMethods = function() {
+            return ca_iot_methods;
+        };
+
+        cb(null, that);
+    } catch (err) {
+        cb(err);
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_iot_bundles.html">caf_iot/bundles</a></li><li><a href="module-caf_iot_ca_ca_iot_methods.html">caf_iot/ca/ca_iot_methods</a></li><li><a href="module-caf_iot_ca_plug_ca_iot.html">caf_iot/ca/plug_ca_iot</a></li><li><a href="module-caf_iot_ca_plug_iot.html">caf_iot/ca/plug_iot</a></li><li><a href="module-caf_iot_ca_proxy_iot.html">caf_iot/ca/proxy_iot</a></li><li><a href="module-caf_iot_constants_iot.html">caf_iot/constants_iot</a></li><li><a href="module-caf_iot_cron_iot_ripper.html">caf_iot/cron_iot_ripper</a></li><li><a href="module-caf_iot_gen_plug_iot.html">caf_iot/gen_plug_iot</a></li><li><a href="module-caf_iot_iot_main.html">caf_iot/iot_main</a></li><li><a href="module-caf_iot_main.html">caf_iot/main</a></li><li><a href="module-caf_iot_platform_iot_main.html">caf_iot/platform_iot_main</a></li><li><a href="module-caf_iot_plug_iot_bundles.html">caf_iot/plug_iot_bundles</a></li><li><a href="module-caf_iot_plug_iot_cloud.html">caf_iot/plug_iot_cloud</a></li><li><a href="module-caf_iot_plug_iot_cron.html">caf_iot/plug_iot_cron</a></li><li><a href="module-caf_iot_plug_iot_handler.html">caf_iot/plug_iot_handler</a></li><li><a href="module-caf_iot_plug_iot_log.html">caf_iot/plug_iot_log</a></li><li><a href="module-caf_iot_plug_iot_queue.html">caf_iot/plug_iot_queue</a></li><li><a href="module-caf_iot_proxy_iot_bundles.html">caf_iot/proxy_iot_bundles</a></li><li><a href="module-caf_iot_proxy_iot_cloud.html">caf_iot/proxy_iot_cloud</a></li><li><a href="module-caf_iot_proxy_iot_cron.html">caf_iot/proxy_iot_cron</a></li><li><a href="module-caf_iot_proxy_iot_handler.html">caf_iot/proxy_iot_handler</a></li><li><a href="module-caf_iot_proxy_iot_queue.html">caf_iot/proxy_iot_queue</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="external-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="external-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Dec 11 2016 00:43:34 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

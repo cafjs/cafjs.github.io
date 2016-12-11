@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pipeline_main.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pipeline_main.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*!
+Copyright 2014 Hewlett-Packard Development Company, L.P.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+'use strict';
+
+/**
+ * Main processing pipeline for CA messages.
+ *
+ * Contains an array of stateless pipes using an extended
+ * `connect` middleware that supports websockets:
+ *
+ * Internally we have two 'connect' pipelines: one for websockets and the other
+ * one for http requests. Pipe configuration will select one (or both) of
+ *  these pipelines.
+ *
+ * Each pipe also provides a `connectSetup(app)` method that will register a
+ *  standard 'connect' function interface, i.e.,  `function(req, res, next)`.
+ *
+ * Typically 'connect' uses stream interfaces on req/res to read the input
+ *  and respond. Instead, websockets overlay a message interface by
+ * adding the input message to `req.body`. We also guarantee that the response
+ * is sent in a single `ws.send` call.
+ *
+ * This allow us to easily switch to a plain http interface (no websockets) by
+ * adding the connect `bodyParser` middleware, which creates `req.body`.
+ *
+ * Properties:
+ *
+ *        {specialMethods: Array.&lt;string>}
+ *
+ * where:
+ *
+ * * `specialMethods`: special routes associated with a custom function, e.g.,
+ * `ping` or `stats`.
+ *
+ * @module caf_platform/pipeline_main
+ * @augments external:caf_components/gen_container
+ */
+
+var assert = require('assert');
+var connect = require('connect');
+var WebSocketServer = require('ws').Server;
+var json_rpc = require('caf_transport').json_rpc;
+var caf_comp = require('caf_components');
+var gen_container = caf_comp.gen_container;
+var myUtils = caf_comp.myUtils;
+
+exports.newInstance = function($, spec, cb) {
+    try {
+
+        var wsFinalHandler = function(req, res) {
+            return function(err) {
+                err = err || new Error('wsFinalHandler error');
+                err.msg = req.body;
+                var code = json_rpc.ERROR_CODES.methodNotFound;
+                var error = json_rpc.newSysError(req.body, code,
+                                                 'Method not found', err);
+                var response = JSON.stringify(json_rpc.reply(error));
+                $._.$.log &amp;&amp; $._.$.log.trace(response);
+                res.send(response);
+            };
+        };
+
+        var that = gen_container.constructor($, spec);
+        var port = ($._.$.paas &amp;&amp; $._.$.paas.getAppInternalPort()) ||
+                spec.env.port;
+        assert.equal(typeof port, 'number', "'port' not a number");
+        var specialMethods = spec.env.specialMethods;
+        assert.ok(Array.isArray(specialMethods),
+                  "'spec.env.specialMethods' is not an array");
+        var specialMethodsObj = {};
+        specialMethods.forEach(function(x) { specialMethodsObj[x] = true;});
+
+        var app = connect();
+        var appWS = connect();
+        var pipesSpec = that.__ca_getChildrenSpec__();
+        var server = null;
+        var wss = null;
+
+        var extractURL = function(msgObj) {
+            return (specialMethodsObj[msgObj.method] ? '/' + msgObj.method :
+                    '/ca');
+        };
+
+        var super__ca_shutdown__ = myUtils.superior(that, '__ca_shutdown__');
+        that.__ca_shutdown__ = function(data, cb0) {
+            super__ca_shutdown__(data, function(err, res) {
+                if (err) {
+                    cb0(err, res);
+                } else {
+                    if (wss) {
+                        wss.close();
+                    }
+                    if (server) {
+                        var s = server;
+                        server = null;
+                        s.close(cb0);
+                    } else {
+                        cb0(err, res);
+                    }
+                }
+            });
+        };
+
+        var initF = function (err) {
+            try {
+                if (err) {
+                    cb(err);
+                } else {
+                    pipesSpec.forEach(function(pipeSpec) {
+                        var pipe = that.$[pipeSpec.name];
+                        if (pipe.__ca_isWebSocketPipe__()) {
+                            pipe.__ca_connectSetup__(appWS);
+                        }
+                        if (pipe.__ca_isHttpPipe__()) {
+                            pipe.__ca_connectSetup__(app);
+                        }
+                    });
+                    $._.$.log &amp;&amp; $._.$.log.debug('Listen on port ' + port);
+                    server = app.listen(port);
+                    server.on('error', function(err) {
+                        $._.$.log &amp;&amp; $._.$.log.warn(err);
+                        that.__ca_shutdown__(null, function(err1) {
+                            if (err1) {
+                                $._.$.log &amp;&amp; $._.$.log.warn(err1);
+                            }
+                        });
+                    });
+                    wss = new WebSocketServer({server: server});
+                    wss.on('connection', function(ws) {
+                        ws.on('message', function(msg) {
+                            try {
+                                var msgObj = JSON.parse(msg);
+                                var req = {
+                                    url: extractURL(msgObj),
+                                    body: msgObj
+                                };
+                                var wsFH = wsFinalHandler(req, ws);
+                                appWS(req, ws, wsFH);
+                            } catch (err) {
+                                var sysErr;
+                                sysErr = json_rpc
+                                    .newSysError(msg, json_rpc.ERROR_CODES
+                                                 .invalidParams,
+                                                 'Invalid params', err);
+                                var reply = json_rpc.reply(sysErr);
+                                ws.send(JSON.stringify(reply));
+                            }
+                        });
+                        ws.on('close', function() {
+                            var err = 'Closing WS session';
+                            $._.$.log &amp;&amp; $._.$.log.trace(err);
+                        });
+                        ws.on('error', function(err) {
+                            $._.$.log &amp;&amp; $._.$.log.warn(err);
+                            that.__ca_shutdown__(null, function() {});
+                        });
+                    });
+                    cb(null, that);
+                }
+            } catch (err) {
+                cb(err);
+            }
+        };
+
+        // Initializate children first.
+        that.__ca_checkup__(null, initF);
+    } catch (err) {
+        cb(err);
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_platform_cron_lease.html">caf_platform/cron_lease</a></li><li><a href="module-caf_platform_cron_nodes.html">caf_platform/cron_nodes</a></li><li><a href="module-caf_platform_cron_pulser.html">caf_platform/cron_pulser</a></li><li><a href="module-caf_platform_cron_ripper.html">caf_platform/cron_ripper</a></li><li><a href="module-caf_platform_cron_security.html">caf_platform/cron_security</a></li><li><a href="module-caf_platform_gen_pipe.html">caf_platform/gen_pipe</a></li><li><a href="module-caf_platform_main.html">caf_platform/main</a></li><li><a href="module-caf_platform_pipe_bodyParser.html">caf_platform/pipe_bodyParser</a></li><li><a href="module-caf_platform_pipe_cache.html">caf_platform/pipe_cache</a></li><li><a href="module-caf_platform_pipe_compress.html">caf_platform/pipe_compress</a></li><li><a href="module-caf_platform_pipe_dispatcher.html">caf_platform/pipe_dispatcher</a></li><li><a href="module-caf_platform_pipe_ping.html">caf_platform/pipe_ping</a></li><li><a href="module-caf_platform_pipe_redirect.html">caf_platform/pipe_redirect</a></li><li><a href="module-caf_platform_pipe_security.html">caf_platform/pipe_security</a></li><li><a href="module-caf_platform_pipe_static.html">caf_platform/pipe_static</a></li><li><a href="module-caf_platform_pipe_stats.html">caf_platform/pipe_stats</a></li><li><a href="module-caf_platform_pipeline_main.html">caf_platform/pipeline_main</a></li><li><a href="module-caf_platform_platform_main.html">caf_platform/platform_main</a></li><li><a href="module-caf_platform_plug_lease.html">caf_platform/plug_lease</a></li><li><a href="module-caf_platform_plug_nodes.html">caf_platform/plug_nodes</a></li><li><a href="module-caf_platform_plug_paas.html">caf_platform/plug_paas</a></li><li><a href="module-caf_platform_plug_registry.html">caf_platform/plug_registry</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="external-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="external-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Dec 11 2016 00:43:43 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

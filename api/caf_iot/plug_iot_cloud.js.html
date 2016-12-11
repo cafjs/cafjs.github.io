@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: plug_iot_cloud.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: plug_iot_cloud.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*!
+Copyright 2013 Hewlett-Packard Development Company, L.P.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+'use strict';
+/**
+ * Connects this device with its corresponding CA.
+ *
+ * Properties:
+ *
+ *      {tokenFile: string, appProtocol: string, appPublisher: string,
+ *       appLocalName: string, appSuffix: string, session: string}
+ *
+ * where:
+ *
+ * * `tokenFile`: the name of a file containing an authentication token.
+ * * `appProtocol`: protocol to contact the CA, e.g., `https`.
+ * * `appPublisher`: the publisher of this app.
+ * * `appLocalName`: the local name of the app.
+ * * `appSuffix`: the URL suffix, e.g., `cafjs.com`.
+ * * `session`: The persistent session identifier.
+ *
+ * @module caf_iot/plug_iot_cloud
+ * @augments module:caf_iot/gen_plug_iot
+ *
+ */
+var assert = require('assert');
+var path = require('path');
+var caf_cli = require('caf_cli');
+var fs = require('fs');
+var caf_comp = require('caf_components');
+var myUtils = caf_comp.myUtils;
+var genPlugIoT = require('./gen_plug_iot');
+var json_rpc = require('caf_transport').json_rpc;
+
+exports.newInstance = function($, spec, cb) {
+    try {
+        var that = genPlugIoT.constructor($, spec);
+
+        $._.$.log &amp;&amp; $._.$.log.debug('New cloud plug');
+
+        var tokenDir = spec.env.tokenDir || $.loader.__ca_firstModulePath__();
+
+        var loadToken = function(fileName) {
+            return fs.readFileSync(path.resolve(tokenDir, fileName),
+                                   {encoding: 'utf8'}).trim();
+        };
+
+        assert.equal(typeof spec.env.tokenFile, 'string',
+                     "'spec.env.tokenFile' not a string");
+        var token = loadToken(spec.env.tokenFile);
+
+        assert.equal(typeof spec.env.appProtocol, 'string',
+                     "'spec.env.appProtocol' not a string");
+
+        assert.equal(typeof spec.env.appPublisher, 'string',
+                     "'spec.env.appPublisher' not a string");
+
+        assert.equal(typeof spec.env.appLocalName, 'string',
+                     "'spec.env.appLocalName' not a string");
+
+        assert.equal(typeof spec.env.appSuffix, 'string',
+                     "'spec.env.appSuffix' not a string");
+
+        assert.equal(typeof spec.env.session, 'string',
+                     "'spec.env.session' not a string");
+
+        var appName = json_rpc.joinName(spec.env.appPublisher,
+                                        spec.env.appLocalName);
+
+        var appFullName = appName + '.' + spec.env.appSuffix;
+
+        var caURL = spec.env.appProtocol + '://' + appFullName;
+
+        var myId = $._.__ca_getName__();
+
+        var cli = new caf_cli.Session(caURL, myId, {
+            from: myId,
+            token: token,
+            session: spec.env.session,
+            log: function(msg) {
+                $._.$.log &amp;&amp; $._.$.log.debug(msg);
+            }
+        });
+
+        that.cli = cli;
+
+        cli.onclose = function(err) {
+            if (err) {
+                $._.$.log &amp;&amp; $._.$.log.debug('Error connecting to cloud:' +
+                                             myUtils.errToPrettyStr(err));
+            }
+            if (!that.__ca_isShutdown__) {
+                that.__ca_shutdown__(null, function(err) {
+                    if (err) {
+                        $._.$.log &amp;&amp;
+                            $._.$.log.debug('Got error in cloud shutdown:' +
+                                            myUtils.errToPrettyStr(err));
+                    }
+                });
+            }
+        };
+
+        cli.onerror = function(err) {
+            if (err) {
+                $._.$.log &amp;&amp; $._.$.log.debug('Got error connecting to cloud:' +
+                                             myUtils.errToPrettyStr(err));
+            }
+            // shutdown in 'onclose' afterwards
+        };
+
+        cli.onopen = function() {
+            cb(null, that);
+        };
+
+        /**
+         * Gets original method arguments from message.
+         *
+         * @param {caf.msg} msg A message
+         * @return {Array.&lt;caf.json>} An array with method arguments.
+         * @throws {Error} when invalid message.
+         *
+         * @memberof! module:caf_iot/plug_iot_cloud#
+         * @alias getMethodArgs
+         */
+        that.getMethodArgs = function(msg) {
+            return caf_cli.getMethodArgs(msg);
+        };
+
+        /**
+         * Registers a handler to process messages.
+         *
+         * This is equivalent to `that.cli.onmessage = handler`
+         *
+         * @param {function(caf.msg)|null} handler A function of type
+         * `function(caf.msg)` to process notifications. `null` deregisters
+         * previous handlers.
+         *
+         * @memberof! module:caf_iot/plug_iot_cloud#
+         * @alias registerHandler
+         */
+        that.registerHandler = function(handler) {
+            cli.onmessage = function(msg) {
+                handler &amp;&amp; handler(msg);
+            };
+        };
+
+        var super__ca_shutdown__ = myUtils.superior(that, '__ca_shutdown__');
+        that.__ca_shutdown__ = function(data, cb0) {
+            super__ca_shutdown__(data, function(err, data) {
+                cli.close();
+                cb0(err, data);
+            });
+        };
+
+    } catch (err) {
+        cb(err);
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_iot_bundles.html">caf_iot/bundles</a></li><li><a href="module-caf_iot_ca_ca_iot_methods.html">caf_iot/ca/ca_iot_methods</a></li><li><a href="module-caf_iot_ca_plug_ca_iot.html">caf_iot/ca/plug_ca_iot</a></li><li><a href="module-caf_iot_ca_plug_iot.html">caf_iot/ca/plug_iot</a></li><li><a href="module-caf_iot_ca_proxy_iot.html">caf_iot/ca/proxy_iot</a></li><li><a href="module-caf_iot_constants_iot.html">caf_iot/constants_iot</a></li><li><a href="module-caf_iot_cron_iot_ripper.html">caf_iot/cron_iot_ripper</a></li><li><a href="module-caf_iot_gen_plug_iot.html">caf_iot/gen_plug_iot</a></li><li><a href="module-caf_iot_iot_main.html">caf_iot/iot_main</a></li><li><a href="module-caf_iot_main.html">caf_iot/main</a></li><li><a href="module-caf_iot_platform_iot_main.html">caf_iot/platform_iot_main</a></li><li><a href="module-caf_iot_plug_iot_bundles.html">caf_iot/plug_iot_bundles</a></li><li><a href="module-caf_iot_plug_iot_cloud.html">caf_iot/plug_iot_cloud</a></li><li><a href="module-caf_iot_plug_iot_cron.html">caf_iot/plug_iot_cron</a></li><li><a href="module-caf_iot_plug_iot_handler.html">caf_iot/plug_iot_handler</a></li><li><a href="module-caf_iot_plug_iot_log.html">caf_iot/plug_iot_log</a></li><li><a href="module-caf_iot_plug_iot_queue.html">caf_iot/plug_iot_queue</a></li><li><a href="module-caf_iot_proxy_iot_bundles.html">caf_iot/proxy_iot_bundles</a></li><li><a href="module-caf_iot_proxy_iot_cloud.html">caf_iot/proxy_iot_cloud</a></li><li><a href="module-caf_iot_proxy_iot_cron.html">caf_iot/proxy_iot_cron</a></li><li><a href="module-caf_iot_proxy_iot_handler.html">caf_iot/proxy_iot_handler</a></li><li><a href="module-caf_iot_proxy_iot_queue.html">caf_iot/proxy_iot_queue</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="external-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="external-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Dec 11 2016 00:43:34 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

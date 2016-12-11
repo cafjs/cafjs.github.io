@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: iot_main.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: iot_main.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*!
+Copyright 2013 Hewlett-Packard Development Company, L.P.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+'use strict';
+/**
+ * A container component that assembles and manages one IoT device.
+ *
+ * The state of a IoT device and its plugins is managed transactionally using a
+ *  2PC (Two-Phase Commit) protocol.
+ *
+ * See {@link external:caf_components/gen_transactional} for details.
+ *
+ * @module caf_iot/iot_main
+ * @augments external:caf_components/gen_transactional
+ */
+var assert = require('assert');
+var caf_comp = require('caf_components');
+var myUtils = caf_comp.myUtils;
+var genTransactional = caf_comp.gen_transactional;
+var async = caf_comp.async;
+
+exports.newInstance = function($, spec, cb) {
+    try {
+        var that = genTransactional.constructor($, spec);
+
+        assert.equal(typeof spec.env.myId, 'string',
+                     "'spec.env.myId' not a string");
+
+        // become the root component of the children context
+        that.$._ = that;
+        that.$.loader = $._.$.loader;
+
+        // eslint-disable-next-line
+        console.log('New IoT main');
+
+        /**
+         * Run-time type information.
+         *
+         * @type {boolean}
+         *
+         * @memberof! module:caf_iot/iot_main#
+         * @alias __ca_isIoTMain__
+         */
+        that.__ca_isIoTMain__ = true;
+
+        /**
+         * Returns this application name, e.g., `root-helloworld`
+         *
+         * @return {string} A  name for this app.
+         *
+         * @memberof! module:caf_iot/iot_main#
+         * @alias __ca_getAppName__
+         */
+        that.__ca_getAppName__ = function() {
+            return $._.__ca_getAppName__();
+        };
+
+        /**
+         * Returns the CA name, e.g., `foo-device1`.
+         *
+         * @return {string} The CA name.
+         *
+         * @memberof! module:caf_iot/iot_main#
+         * @alias __ca_getName__
+         */
+        that.__ca_getName__ = function() {
+            return spec.env.myId;
+        };
+
+        var super__ca_checkup__ = myUtils.superior(that, '__ca_checkup__');
+        var queue = async.queue(super__ca_checkup__, 1); // serialize
+        that.__ca_checkup__ = function(data, cb0) {
+            queue.push(data, cb0);
+        };
+
+        var super__ca_shutdown__ = myUtils.superior(that, '__ca_shutdown__');
+        that.__ca_shutdown__ = function(data, cb) {
+            // eslint-disable-next-line
+            console.log('IOT: shutdown');
+            super__ca_shutdown__(data, cb);
+        };
+
+        async.series([
+            function(cb0) {
+                // force initialization of lazy components.
+                that.__ca_checkup__(null, cb0);
+            },
+            that.__ca_init__,
+            function(cb0) {
+                that.$.queue.process('__ca_pulse__', [], null, cb0);
+            }
+        ], function(err) {
+            if (err) {
+                cb(err);
+            } else {
+                cb(err, that);
+            }
+        });
+    } catch (err) {
+        cb(err);
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_iot_bundles.html">caf_iot/bundles</a></li><li><a href="module-caf_iot_ca_ca_iot_methods.html">caf_iot/ca/ca_iot_methods</a></li><li><a href="module-caf_iot_ca_plug_ca_iot.html">caf_iot/ca/plug_ca_iot</a></li><li><a href="module-caf_iot_ca_plug_iot.html">caf_iot/ca/plug_iot</a></li><li><a href="module-caf_iot_ca_proxy_iot.html">caf_iot/ca/proxy_iot</a></li><li><a href="module-caf_iot_constants_iot.html">caf_iot/constants_iot</a></li><li><a href="module-caf_iot_cron_iot_ripper.html">caf_iot/cron_iot_ripper</a></li><li><a href="module-caf_iot_gen_plug_iot.html">caf_iot/gen_plug_iot</a></li><li><a href="module-caf_iot_iot_main.html">caf_iot/iot_main</a></li><li><a href="module-caf_iot_main.html">caf_iot/main</a></li><li><a href="module-caf_iot_platform_iot_main.html">caf_iot/platform_iot_main</a></li><li><a href="module-caf_iot_plug_iot_bundles.html">caf_iot/plug_iot_bundles</a></li><li><a href="module-caf_iot_plug_iot_cloud.html">caf_iot/plug_iot_cloud</a></li><li><a href="module-caf_iot_plug_iot_cron.html">caf_iot/plug_iot_cron</a></li><li><a href="module-caf_iot_plug_iot_handler.html">caf_iot/plug_iot_handler</a></li><li><a href="module-caf_iot_plug_iot_log.html">caf_iot/plug_iot_log</a></li><li><a href="module-caf_iot_plug_iot_queue.html">caf_iot/plug_iot_queue</a></li><li><a href="module-caf_iot_proxy_iot_bundles.html">caf_iot/proxy_iot_bundles</a></li><li><a href="module-caf_iot_proxy_iot_cloud.html">caf_iot/proxy_iot_cloud</a></li><li><a href="module-caf_iot_proxy_iot_cron.html">caf_iot/proxy_iot_cron</a></li><li><a href="module-caf_iot_proxy_iot_handler.html">caf_iot/proxy_iot_handler</a></li><li><a href="module-caf_iot_proxy_iot_queue.html">caf_iot/proxy_iot_queue</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="external-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="external-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Dec 11 2016 00:43:34 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

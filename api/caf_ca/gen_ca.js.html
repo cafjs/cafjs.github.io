@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: gen_ca.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: gen_ca.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*!
+Copyright 2013 Hewlett-Packard Development Company, L.P.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+'use strict';
+/**
+ * Generic Cloud Assistant.
+ *
+ *
+ * @module caf_ca/gen_ca
+ * @augments external:caf_components/gen_transactional
+ */
+var caf_comp = require('caf_components');
+var genTransactional = caf_comp.gen_transactional;
+var async = caf_comp.async;
+var json_rpc = require('caf_transport').json_rpc;
+
+exports.constructor = function($, spec) {
+
+    var that = genTransactional.constructor($, spec);
+
+    /**
+     * Run-time type information.
+     *
+     * @type {boolean}
+     *
+     * @memberof! module:caf_ca/gen_ca#
+     * @alias __ca_isCA__
+     */
+    that.__ca_isCA__ = true;
+
+
+    /**
+     * Returns the name of this CA.
+     *
+     * @return {string} The name of this CA.
+     *
+     * @memberof! module:caf_ca/gen_ca#
+     * @alias __ca_getName__
+     */
+    that.__ca_getName__ = function() {
+        return spec.name;
+    };
+
+    /**
+     * Returns the application name.
+     *
+     * @return {string} The application name.
+     *
+     * @memberof! module:caf_ca/gen_ca#
+     * @alias __ca_getAppName__
+     */
+    that.__ca_getAppName__ = function() {
+        return $._.__ca_getAppName__();
+    };
+
+
+    /**
+     * Queues a message to be processed by this CA.
+     *
+     * @param {Object} msg A message to be processed.
+     * @param {caf.cb} cb A callback function to propagate a response to the
+     *  caller.
+     *
+     * @memberof! module:caf_ca/gen_ca#
+     * @alias __ca_process__
+     */
+    that.__ca_process__ = function(msg, cb) {
+        if ((that.__ca_isShutdown__) || (!that.$.inq)) {
+            var err = json_rpc.newSysError(msg,
+                                           json_rpc.ERROR_CODES.shutdownCA,
+                                           'CA cannot process message');
+            cb(null, json_rpc.reply(err));
+        } else {
+            that.$.inq.process(msg, cb);
+        }
+    };
+
+    /**
+     * Checks for progress processing messages.
+     *
+     * Using this method CAF detects hanged CAs and shuts them down.
+     *
+     * @see cron_ripper
+     *
+     * @return {boolean} True if message queue is empty or at least one
+     * message was processed since the last call to `__ca_progress__`.
+     *
+     *
+     * @memberof! module:caf_ca/gen_ca#
+     * @alias __ca_progress__
+     */
+    that.__ca_progress__ = function() {
+        return that.$.inq.progress();
+    };
+
+
+    /**
+     * Queues a pulse message for this CA, enabling autonomous
+     * computation.
+     *
+     * @param {caf.cb} cb A callback function to continue after
+     * the pulse message.
+     *
+     * @see cron_pulser
+     *
+     * @memberof! module:caf_ca/gen_ca#
+     * @alias __ca_pulse__
+     */
+    that.__ca_pulse__ = function(cb) {
+        var msg = json_rpc.systemRequest(that.__ca_getName__(),
+                                         '__ca_pulse__');
+        that.__ca_process__(msg, cb);
+    };
+
+
+    /**
+     * Polls for pending notification messages.
+     *
+     * @param {Object} request A notification request message.
+     * @param {caf.cb} cb A callback called when there is a new
+     * notification message (or timeout).
+     *
+     * @memberof! module:caf_ca/gen_ca#
+     * @alias __ca_pull__
+     */
+    that.__ca_pull__ = function(request, cb) {
+        if (that.$.session) {
+            that.$.session.pull(request, cb);
+        } else {
+            var err = new Error('Internal Error: pull with no session');
+            err.request = request;
+            cb(err);
+        }
+    };
+
+
+    /* Two different ways of stopping a CA: shutdown and destroy.
+     *
+     * Shutdown ignores the current running state of the CA and does not
+     * checkpoint or call any methods. It is what you need when the CA is
+     * hanged or want it to migrate.
+     *
+     * No new checkpoints, processed messages or pulled session messages
+     * should occur  after shutdown. Shutdown CAs eventually get
+     * removed from the lookup service and GC.
+     *
+     * Destroy is a shutdown that also deletes any permanent state associated
+     * with the CA. Restarting a CA with the same id just means a fresh new CA.
+     *
+     */
+
+    /**
+     * Destroys this CA permanently by deleting its checkpointed state.
+     *
+     * Destroyed CAs cannot be resumed and input/output queues are
+     *  immediately discarded.
+     *
+     * @param {Object=} data An optional hint on how to perform the shutdown.
+     * @param {caf.cb} cb A callback function to continue after clean-up.
+     *
+     * @memberof! module:caf_ca/gen_ca#
+     * @alias __ca_destroy__
+     */
+    that.__ca_destroy__ = function(data, cb) {
+        async.series (
+            [
+                function(cb0) {
+                    that.__ca_shutdown__(data, cb0);
+                },
+                function(cb0) {
+                    try {
+                        $._.$.cp.deleteState(that.__ca_getName__(), cb0);
+                    } catch (ex) {
+                        $._.$.log &amp;&amp;
+                            $._.$.log.warn('Checkpointing service missing');
+                        cb0(ex);
+                    }
+                }
+            ],
+            function(error, data) {
+                if (error) {
+                    $._.$.log &amp;&amp; $._.$.log.error('Cannot delete state');
+                }
+                cb(error, data);
+            });
+    };
+
+    return that;
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_ca_ca_main.html">caf_ca/ca_main</a></li><li><a href="module-caf_ca_gen_ca.html">caf_ca/gen_ca</a></li><li><a href="module-caf_ca_gen_handler.html">caf_ca/gen_handler</a></li><li><a href="module-caf_ca_main.html">caf_ca/main</a></li><li><a href="module-caf_ca_plug_ca_handler.html">caf_ca/plug_ca_handler</a></li><li><a href="module-caf_ca_plug_ca_inqueue.html">caf_ca/plug_ca_inqueue</a></li><li><a href="module-caf_ca_proxy_handler.html">caf_ca/proxy_handler</a></li><li><a href="module-caf_ca_proxy_inqueue.html">caf_ca/proxy_inqueue</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components.html">caf_components</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="external-caf_pubsub.html">caf_pubsub</a></li><li><a href="external-caf_security.html">caf_security</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Dec 11 2016 00:42:58 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

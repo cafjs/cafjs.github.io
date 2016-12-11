@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3>caf_ca 0.2.32</h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>CAF.js (Cloud Assistant Framework)</h1><p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.</p>
+<p>See http://www.cafjs.com</p>
+<h2>CAF CA</h2><p><a href="http://ci.cafjs.com/cafjs/caf_ca"><img src="http://ci.cafjs.com/api/badges/cafjs/caf_ca/status.svg" alt="Build Status"></a></p>
+<p>This library provides components to create a CA.</p>
+<p>A CA is an Actor, in the spirit of an Erlang/OTP <code>gen_server</code>, with a queue that serializes message processing, a location-independent name, some private state, and the ability to change behavior or interact with other CAs.</p>
+<p>A CA processes a message in a transaction. External interactions are mediated by transactional plugins, and delayed until the message commits. Any non-commited changes to its internal state can be rolled back if errors are detected. State changes and pending interactions always checkpoint with a remote service before commiting. See <a href="external-caf_components_gen_transactional.html">external:caf_components/gen_transactional</a> for details.</p>
+<p>This makes it safe to kill, <strong>at any time</strong>, a node.js process hosting thousands of  CAs. The expectations of the external world are always consistent with the recovered CAs.</p>
+<p>In fact, our favorite load-balancing strategy is just to kill hot processes, and randomly spread recovered CAs to other instances.</p>
+<h3>Hello World (see <code>examples/helloworld</code>)</h3><p>A CA method invocation is implemented by queueing and processing a message. CAs are defined by two sets of methods:</p>
+<ul>
+<li><em>internal:</em> always prefixed by <code>__ca_</code> and called by the framework.</li>
+<li><em>external:</em> called by the client library.</li>
+</ul>
+<pre class="prettyprint source"><code>exports.methods = {
+    __ca_init__: function(cb) {
+        this.state.counter = 0;
+        cb(null);
+    },
+    increment: function(cb) {
+        this.state.counter = this.state.counter + 1;
+        cb(null, this.state.counter);
+    }
+};</code></pre><p>The <em>internal</em> method <code>__ca_init__</code> is called by the framework just once, initializing the state of the CA.</p>
+<p>The object property <code>this.state</code> should contain a JSON-serializable value, and is managed transactionally as described above.</p>
+<p>In contrast, <code>this.scratch</code> can contain anything, but it is not checkpointed or rolled back.</p>
+<p>A CA is a sealed object, and application code should not try to add any properties outside <code>this.state</code> or <code>this.scratch</code>.</p>
+<p>The <em>external</em> method <code>increment</code> is called by the client library, see <code>client.js</code> in the <code>examples</code> directory and <a href="external-caf_cli.html">external:caf_cli</a>.</p>
+<p>CA methods <strong>always</strong> return errors or results in a standard <code>node.js</code> callback, i.e., <code>cb</code>. This callback is a tail call that informs the framework that we are done processing this message, and we are ready for the next one.</p>
+<p>As we will show next, callbacks are needed to enforce message serialization when methods contain asynchronous calls.</p>
+<p>Moreover, the combination of a queue for message serialization, state isolation, and tail call callbacks, eliminates a common asynchronous API design flaw: <em>Releasing Zalgo</em> <a href="http://blog.izs.me/post/59142742143/designing-apis-for-asynchrony">http://blog.izs.me/post/59142742143/designing-apis-for-asynchrony</a>.</p>
+<p>In CAF an external caller cannot tell if the callback was called immediately, or at some point in the future.</p>
+<h3>Crashy Counter (see <code>examples/crashy</code>)</h3><p>Let's look at a more interesting CA.</p>
+<pre class="prettyprint source"><code>exports.methods = {
+     ...
+    increment: function(crash, cb) {
+        var self = this;
+        var oldValue = this.state.counter;
+        this.state.counter = this.state.counter + 1;
+        setTimeout(function() {
+            if (crash === 'Oops') {
+                cb(new Error('Oops')); // Case 1
+            } else if (crash === 'Really Oops') {
+                throw new Error('Really Oops'); // Case 2
+            } else {
+                assert(self.state.counter === (oldValue + 1)); // Assertion 1
+                cb(null, self.state.counter); // Case 3
+            }
+        }, 1000);
+    }
+}</code></pre><p><em>Assertion 1</em> is always true, even if <code>increment</code> is called by many concurrent clients. The CA serializes the requests, and will patiently wait for the timeout  before processing the next one.</p>
+<p>The client can receive three different type of responses:</p>
+<ul>
+<li><p><em>Case 1</em> An application error propagated by the client's callback. Changes to <code>this.state.counter</code> are rolled back.</p>
+</li>
+<li><p><em>Case 2</em> An uncaught error, assumed to be an application bug, that closes the client session with an error. The error is handled by the framework (we use a fresh node.js <em>domain</em> per request), and changes to <code>this.state.counter</code> are rolled back. Fix it!</p>
+</li>
+<li><p><em>Case 3</em> A new counter value returned in the client's callback.</p>
+</li>
+</ul>
+<h3>Autonomous Behavior (see <code>examples/autonomous</code>)</h3><pre class="prettyprint source"><code>exports.methods = {
+    ...
+    __ca_resume__: function(cp, cb) {
+        this.$.log.debug('Resuming with counter:' + cp.state.counter);
+        cb(null);
+    },
+    __ca_pulse__: function(cb) {
+        this.state.counter = this.state.counter + 1;
+        cb(null);
+    }
+    ...
+}</code></pre><p>The <em>internal</em> method <code>__ca_resume__</code> is called every time we reload the CA state from a checkpoint <code>cp</code>. It allows customization after migration or failure recovery.</p>
+<p>Even if nobody calls the external methods, declaring a method <code>__ca_pulse__</code> guarantees that the framework will periodically invoke it, enabling autonomous behavior.</p>
+<h4>Plugins</h4><p>A CA extends its capabilities with a plugin architecture. CAF.js uses a component model <a href="external-caf_components.html">external:caf_components</a> to describe plugins with a configuration file <code>ca.json</code>. See <code>lib/ca.json</code> for an example.</p>
+<p>A plugin is exposed to application code with a proxy (see <a href="external-caf_components_gen_proxy.html">external:caf_components/gen_proxy</a>). These proxies become properties of the object <code>this.$</code>.</p>
+<p>For example, the following CA uses two proxies: <code>log</code>, a logger plugin, and <code>session</code>, a plugin providing persistent sessions (see <a href="external-caf_session.html">external:caf_session</a>).</p>
+<pre class="prettyprint source"><code>exports.methods = {
+    ...
+    __ca_pulse__: function(cb) {
+        this.state.counter = this.state.counter + 1;
+        if (this.state.counter % 5 === 0) {
+            this.$.log.debug('counter %5 === 0 with ' + this.state.counter);
+            this.$.session.notify([this.state.counter]);
+        }
+        cb(null);
+    }
+    ...
+}</code></pre><h3>Versioning (see <code>examples/versioning</code>)</h3><p>When the CA implementation changes, the checkpointed CA state may be incompatible with the new code.</p>
+<p>We use <code>semver</code> conventions, and the configuration property <code>stateVersion</code>, to track versions of <code>this.state</code>.</p>
+<p>The value of <code>stateVersion</code> is stored in the checkpoint as property <code>this.state.__ca_version__</code>. When a CA resumes, it compares <code>this.state.__ca_version__</code> from the checkpoint with the desired value of <code>stateVersion</code>.</p>
+<p>By default, if <code>stateVersion</code> satisfies semver expression <code>^this.state.__ca_version__</code> the state transparently upgrades. Otherwise, loading fails.</p>
+<p>To override this failure, the CA needs to provide an implementation of <code>__ca_upgrade__</code>, a method called before processing any messages. This method knows how to upgrade <code>this.state</code> safely.</p>
+<p>For example, changing <code>this.state.counter</code> to <code>this.state.myCounter</code>:</p>
+<pre class="prettyprint source"><code>exports.methods = {
+    ...
+    __ca_upgrade__: function(newVersion, cb) {
+        var oldVersion = this.state.__ca_version__;
+        if (semver.valid(oldVersion) && semver.valid(newVersion) &&
+            semver.satisfies(newVersion, '^' + oldVersion)) {
+            this.$.log.debug('update: minor version:automatic update of state');
+        } else {
+            // do some magic to this.state
+            this.$.log.debug('update: major version mismatch ' + newVersion );
+            this.state.myCounter = this.state.counter;
+            delete this.state.counter;
+        }
+        this.state.__ca_version__ = newVersion;
+        cb(null);
+    },
+    increment: function(cb) {
+        this.state.myCounter = this.state.myCounter + 1;
+        cb(null, this.state.myCounter);
+    }
+    ...
+}</code></pre><h3>Much More...</h3><ul>
+<li><p>Sharing Actors <a href="external-caf_sharing.html">external:caf_sharing</a></p>
+</li>
+<li><p>Security <a href="external-caf_security.html">external:caf_security</a></p>
+</li>
+<li><p>Persistent Sessions <a href="external-caf_session.html">external:caf_session</a></p>
+</li>
+<li><p>Pub/Sub <a href="external-caf_pubsub.html">external:caf_pubsub</a></p>
+</li>
+</ul></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_ca_ca_main.html">caf_ca/ca_main</a></li><li><a href="module-caf_ca_gen_ca.html">caf_ca/gen_ca</a></li><li><a href="module-caf_ca_gen_handler.html">caf_ca/gen_handler</a></li><li><a href="module-caf_ca_main.html">caf_ca/main</a></li><li><a href="module-caf_ca_plug_ca_handler.html">caf_ca/plug_ca_handler</a></li><li><a href="module-caf_ca_plug_ca_inqueue.html">caf_ca/plug_ca_inqueue</a></li><li><a href="module-caf_ca_proxy_handler.html">caf_ca/proxy_handler</a></li><li><a href="module-caf_ca_proxy_inqueue.html">caf_ca/proxy_inqueue</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components.html">caf_components</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="external-caf_pubsub.html">caf_pubsub</a></li><li><a href="external-caf_security.html">caf_security</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Dec 11 2016 00:42:58 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

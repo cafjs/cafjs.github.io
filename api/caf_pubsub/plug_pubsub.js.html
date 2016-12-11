@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: plug_pubsub.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: plug_pubsub.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*!
+Copyright 2013 Hewlett-Packard Development Company, L.P.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+'use strict';
+/**
+ * Creates connections to an external publish/subscribe service,
+ * multiplexing them for all the CAs in this process.
+ *
+ *  Properties:
+ *
+ *          {subscribeService: string, publishService: string}
+ *
+ *   where `subscribeService` and `publishService` are the names of the services
+ * that we use to interact with the publish/subscribe backend. For example,
+ * `cp` and `cp2` if we are using `Redis`. Note that `Redis` needs two different
+ * connections to support concurrent publish and subscribe.
+ *
+ * @module caf_pubsub/plug_pubsub
+ * @augments external:caf_components/gen_plug
+ */
+var caf_comp = require('caf_components');
+var async = caf_comp.async;
+var myUtils = caf_comp.myUtils;
+var genPlug = caf_comp.gen_plug;
+var assert = require('assert');
+
+exports.newInstance = function($, spec, cb) {
+    try {
+        var that = genPlug.constructor($, spec);
+        $._.$.log &amp;&amp; $._.$.log.debug('New PubSub plug');
+
+        // {topic:string -> Array.&lt;function(string, string)>
+        var allTopics = {};
+
+        assert.equal(typeof spec.env.subscribeService, 'string',
+                      "'spec.env.subscribeService' is not a string");
+        var sub = spec.env.subscribeService;
+
+        assert.equal(typeof spec.env.publishService, 'string',
+                      "'spec.env.publishService' is not a string");
+        var pub = spec.env.publishService;
+
+        var shutdownIfErrF = function(err) {
+            if (err) {
+                var logMsg = 'Cannot unsubscribe, shutting down due to ' +
+                        myUtils.errToPrettyStr(err);
+                $._.$.log &amp;&amp; $._.$.log.debug(logMsg);
+
+                that.__ca_shutdown__(null, function(error) {
+                    if (error) {
+                        var logMsg = 'Cannot shutdown cleanly ' +
+                                myUtils.errToPrettyStr(error);
+                        $._.$.log &amp;&amp; $._.$.log.error(logMsg);
+                    }
+                });
+            }
+        };
+
+        var handleMsgF = function(topic, msg) {
+            if (that.__ca_isShutdown__) {
+                $._.$[sub] &amp;&amp; $._.$[sub].clearPubSub(handleMsgF);
+            } else {
+                var all = allTopics[topic];
+                if (all) {
+                    var newAll = [];
+                    async.each(all, function(fun, cb1) {
+                        var cb2 = myUtils.callJustOnce(null, function(err) {
+                            if (err) {
+                                // unsubscribe fun
+                                err.topic = topic;
+                                err.msg = msg;
+                                var logMsg = 'Unsubscribing CA ' + fun.caName +
+                                        ' due to exception ' +
+                                        myUtils.errToPrettyStr(err);
+                                $._.$.log &amp;&amp; $._.$.log.debug(logMsg);
+                            } else {
+                                newAll.push(fun);
+                            }
+                            cb1(null);
+                        });
+                        fun(topic, msg, cb2);
+                    }, function() {
+                        //error in callback is always null
+                        if (newAll.length > 0) {
+                            allTopics[topic] = newAll;
+                        } else {
+                            delete allTopics[topic];
+                            var logMsg = 'Unsubscribing ' + topic +
+                                    ' : No more clients!';
+                            $._.$.log &amp;&amp; $._.$.log.debug(logMsg);
+                            if ($._.$[sub]) {
+                                $._.$[sub].unsubscribePubSub(topic,
+                                                             shutdownIfErrF);
+                            } else {
+                                shutdownIfErrF(new Error('No pub transport'));
+                            }
+                        }
+                    });
+                }
+            }
+        };
+
+
+        /*
+         * Subscribes a CA to receive messages of a particular topic.
+         *
+         * @param {string} topic Channel to subscribe.
+         * @param {function(string, string, cb)} deliverF Function to notify
+         *  the CA of a new message in the channel. It returns an error in
+         * callback  when it  is no longer valid to facilitate garbage
+         * collection.
+         * @param {caf.cb} cb0 A callback to return subscription errors.
+         */
+        that.subscribe = function(topic, deliverF, cb0) {
+            $._.$.log &amp;&amp; $._.$.log.trace('SUBSCRIBED to topic ' + topic +
+                                        ' ca ' + deliverF.caName);
+            var present = function(array, x) {
+                return array.some(function(y) { return (x === y); });
+            };
+            var allF = allTopics[topic];
+            if (Array.isArray(allF) &amp;&amp; (allF.length > 0)) {
+                if (!present(allF, deliverF)) {
+                    allF.push(deliverF);
+                }
+                cb0(null);
+            } else {
+                allF = [deliverF];
+                allTopics[topic] = allF;
+                if ($._.$[sub]) {
+                    $._.$[sub].subscribePubSub(topic, handleMsgF, cb0);
+                } else {
+                    cb0(new Error('Cannot subscribe: no connection'));
+                }
+            }
+        };
+
+        /*
+         *  Unsubscribes a CA from a set of topics.
+         *
+         * @param {Array.&lt;string>} topicArray Channels to unsubscribe.
+         * @param {function(string, string, cb)} deliverF Function to notify
+         *  the CA of a new message in the channel. It returns an error in
+         * callback  when it  is no longer valid to facilitate garbage
+         * collection.
+         * @param {caf.cb} cb0 A callback to return subscription errors.
+          */
+        that.unsubscribe = function(topicArray, deliverF, cb0) {
+            var unsubscribeImpl = function(topic, cb1) {
+                var cleanupF = function(array, x) {
+                    return array.filter(function(y) { return (x !== y); });
+                };
+                var allF = allTopics[topic];
+                if (Array.isArray(allF) &amp;&amp; (allF.length > 0)) {
+                    allF = cleanupF(allF, deliverF);
+                    if (allF.length === 0) {
+                        delete allTopics[topic];
+                        if ($._.$[sub]) {
+                            $._.$[sub].unsubscribePubSub(topic, cb1);
+                        } else {
+                            var logMsg = 'Cannot unsubscribe: no connection';
+                            $._.$.log &amp;&amp; $._.$.log.debug(logMsg);
+                            // No connection means implicitly unsubscribed
+                            cb1(null);
+                        }
+                    } else {
+                        allTopics[topic] = allF;
+                        cb1(null);
+                    }
+                } else {
+                    delete allTopics[topic];
+                    cb1(null);
+                }
+            };
+
+            $._.$.log &amp;&amp; $._.$.log.trace('UNSUBSCRIBED to topics ' +
+                                         JSON.stringify(topicArray) +
+                                         ' ca ' + deliverF.caName);
+            async.eachSeries(topicArray, function(topic, cb1) {
+                unsubscribeImpl(topic, cb1);
+            }, cb0);
+        };
+
+
+        /*
+         * Publishes a message for a particular topic.
+         *
+         * @param {string} topic Channels to publish.
+         * @param {string} message A message to publish.
+         * @param {caf.cb} cb0 A callback to return publish errors.
+         */
+        that.publish = function(topic, message, cb0) {
+            $._.$.log &amp;&amp; $._.$.log.trace('PUBLISHED to topic ' + topic +
+                                         ' message:' + message);
+            $._.$[pub].publishPubSub(topic, message, cb0);
+        };
+
+        var super__ca_shutdown__ = myUtils.superior(that, '__ca_shutdown__');
+        that.__ca_shutdown__ = function(data, cb0) {
+            super__ca_shutdown__(data, function(err) {
+                if (err) {
+                    cb0(err);
+                } else {
+                    $._.$[sub] &amp;&amp; $._.$[sub].clearPubSub(handleMsgF);
+                    cb0(null);
+                }
+            });
+        };
+
+        cb(null, that);
+    } catch (err) {
+        cb(err);
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_pubsub_main.html">caf_pubsub/main</a></li><li><a href="module-caf_pubsub_plug_ca_pubsub.html">caf_pubsub/plug_ca_pubsub</a></li><li><a href="module-caf_pubsub_plug_pubsub.html">caf_pubsub/plug_pubsub</a></li><li><a href="module-caf_pubsub_proxy_pubsub.html">caf_pubsub/proxy_pubsub</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Dec 11 2016 00:43:55 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: proxy_sharing.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: proxy_sharing.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*!
+Copyright 2013 Hewlett-Packard Development Company, L.P.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+'use strict';
+
+/**
+ * A proxy to access Shared Maps from application code.
+ *
+ *
+ * @module caf_sharing/proxy_sharing
+ * @augments external:caf_components/gen_proxy
+ *
+ */
+var caf_comp = require('caf_components');
+var genProxy = caf_comp.gen_proxy;
+
+exports.newInstance = function($, spec, cb) {
+
+    var that = genProxy.constructor($, spec);
+
+    /**
+     * Creates, or reloads if already created, a writable Shared Map.
+     *
+     * The map will be active before this CA processes another message.
+     *
+     * @param {string} alias A short name that identifies this map in the
+     * `this.$.sharing.$` context.
+     * @param {string} name A relative name for this map that will be scoped by
+     *  this CA's name.
+     * @param {caf_map.options=} options Placeholder for future map
+     * customization.
+     *
+     * @memberof! module:caf_sharing/proxy_sharing#
+     * @alias addWritableMap
+     */
+    that.addWritableMap = function(alias, name, options) {
+        $._.addMap(true, alias, $._.toFullName(name), options || {});
+    };
+
+
+    /**
+     * Creates a read-only mirror of a Shared Map or an Aggregate Map.
+     *
+     * The Shared Map will be active before this CA processes another message.
+     *
+     * The consistency model is monotonic read consistency: local replicas
+     * could be stale, but once we see a Shared Map version, we will never see
+     * previous ones.
+     *
+     * Type of caf_map.options is `{isAggregate: boolean}`
+     *
+     * @param {string} alias A short name that identifies this map in the
+     * `this.$.sharing.$` context.
+     * @param {string} name A fully qualified name for the source of this
+     * Shared Map, i.e., scoped
+     *  with the owner's CA name, like `caOwner-caLocalName-mapLocalName`.
+     *
+     * @param {caf_map.options=} options If `options.isAggregate` is `true`
+     *  create an `AggregateMap`.
+     *
+     * @memberof! module:caf_sharing/proxy_sharing#
+     * @alias addReadOnlyMap
+     */
+    that.addReadOnlyMap = function(alias, name, options) {
+        $._.addMap(false, alias, name, options || {});
+    };
+
+    /**
+     *  Deletes a local reference to a Shared Map.
+     *
+     * The contents of the map are not destroyed from persistent storage.
+     *
+     * @param {string} alias The local alias for this map.
+     *
+     * @memberof! module:caf_sharing/proxy_sharing#
+     * @alias deleteMap
+     *
+     */
+    that.deleteMap = function(alias) {
+        $._.deleteMap(alias);
+    };
+
+    /**
+     * Returns an incremental update or a full dump of the Shared Map.
+     *
+     * The type of `caf.mapUpdate` is `{version: number, remove : Array&lt;string>,
+     *                                  add : Array&lt;string|Object>}`
+     * where `add` just flattens key/value pairs in a single array.
+     *
+     * Multiple incremental updates can be provided in an array of
+     * `caf.mapUpdate` objects.
+     *
+     * An up to date local replica will have an empty array as update.
+     *
+     * @param {string} alias The local alias for this map.
+     * @param {number=} version The current version of the local Shared Map, or
+     * `undefined` if a full dump is needed.
+     * @return {caf.mapUpdate | Array.&lt;caf.mapUpdate>} A full dump of the map
+     * or a list with incremental updates (empty if up to date).
+     *
+     * @memberof! module:caf_sharing/proxy_sharing#
+     * @alias pullUpdate
+     */
+    that.pullUpdate = function(alias, version) {
+        var result = (typeof version === 'number' ?
+                      that.$[alias].updatesSlice(version) : null);
+        if (result === null) {
+            result = that.$[alias].dump();
+        }
+        return result;
+    };
+
+    /**
+     * Applies a change set to a writable map, needed to replicate external
+     * Shared Maps.
+     *
+     * @param {string} alias The local alias for this map.
+     * @param {caf.mapUpdate} changes A set of changes to apply.
+     * @param {caf.log=} logger An optional logger, i.e., `this.$.log`, to
+     * warn of ignored updates.
+     *
+     * @throws Error when the change set version is not compatible.
+     *
+     * @memberof! module:caf_sharing/proxy_sharing#
+     * @alias applyDelta
+     */
+    that.applyDelta = function(alias, changes, logger) {
+        var ref = that.$[alias];
+        if (changes.version > ref.getVersion()) {
+            var err = new Error('Incompatible version: missed update');
+            err.originalVersion = ref.getVersion();
+            err.version = changes.version;
+            throw err;
+        } else if (changes.version &lt; ref.getVersion()) {
+            logger &amp;&amp; logger.debug('Ignoring old update ' +
+                                   JSON.stringify(changes));
+        } else {
+            changes.remove.forEach(function(x) {ref.delete(x);});
+            var key = null;
+            changes.add.forEach(function(x, i) {
+                if (i%2 === 0) {
+                    key = x;
+                } else {
+                    ref.set(key, x);
+                }
+            });
+        }
+    };
+
+    /**
+     * Gets the full name of a local writable Shared Map.
+     *
+     * Maps are named after the CA that owns them, i.e., a complete name is
+     * `caOwner-caLocalName-mapLocalName`.
+     *
+     * @param {string} name A relative name for a Shared Map.
+     * @return {string} A complete name for the Shared Map.
+     *
+     * @memberof! module:caf_sharing/proxy_sharing#
+     * @alias fullName
+     *
+     */
+    that.fullName = function(name) {
+        return $._.toFullName(name);
+    };
+
+
+    /**
+     * A context containing proxies to all the visible Shared Maps for this CA.
+     *
+     * Application code refers to these maps using aliases:
+     *
+     *      this.$.sharing.$.myMap
+     *
+     * and this is typically shortened as follows:
+     *
+     *      var $$ = this.$.sharing.$
+     *      $$.myMap.set('x', $$.myMap.get('y') + 1)
+     *
+     *
+     * @memberof! module:caf_sharing/proxy_sharing#
+     * @alias $
+     */
+    that.$ = $._.getRefMaps();
+
+    Object.freeze(that);
+    cb(null, that);
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li><li><a href="module-caf_sharing_main.html">caf_sharing/main</a></li><li><a href="module-caf_sharing_plug_ca_sharing.html">caf_sharing/plug_ca_sharing</a></li><li><a href="module-caf_sharing_plug_sharing.html">caf_sharing/plug_sharing</a></li><li><a href="module-caf_sharing_proxy_sharing.html">caf_sharing/proxy_sharing</a></li><li><a href="module-caf_sharing_ReliableChannel.html">caf_sharing/ReliableChannel</a></li><li><a href="module-caf_sharing_SharedMap.html">caf_sharing/SharedMap</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_redis.html">caf_redis</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Dec 11 2016 00:44:27 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

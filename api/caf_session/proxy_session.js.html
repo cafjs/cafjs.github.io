@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: proxy_session.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: proxy_session.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*!
+Copyright 2013 Hewlett-Packard Development Company, L.P.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+'use strict';
+/**
+ *  Proxy to access session information and output message queues.
+ *
+ *
+ * @module caf_session/proxy_session
+ * @augments external:caf_components/gen_proxy
+ *
+ */
+var caf_comp = require('caf_components');
+var genProxy = caf_comp.gen_proxy;
+
+exports.newInstance = function($, spec, cb) {
+
+    var that = genProxy.constructor($, spec);
+
+    /**
+     * Gets a read-only snapshot of the output notification queue.
+     *
+     * If no session name is provided we use the current session.
+     *
+     * By convention we reserve `default` as the name of an
+     * unnamed logical session.
+     *
+     * The type of an entry in the notification queue, `caf.notif` is:
+     *
+     *        Array.&lt;caf.json>
+     *
+     * @param {string=} optSessionId An optional logical session name
+     * identifying the output queue. Defaults to the current session.
+     * @return {Array.&lt;caf.notif>} A frozen array with a snapshot
+     * of the output queue.
+     *
+     * @memberof! module:caf_session/proxy_session#
+     * @alias outq
+     */
+    that.outq = function(optSessionId) {
+        var session = $._.getSession(optSessionId);
+        var msgs = session &amp;&amp; session.messages &amp;&amp;
+            Object.freeze(session.messages.slice(0));
+        return (msgs ? msgs : Object.freeze([]));
+    };
+
+    /**
+     * Gets the name of the current logical session.
+     *
+     * @return {string} The name of the current logical session.
+     *
+     * @memberof! module:caf_session/proxy_session#
+     * @alias getSessionId
+     */
+    that.getSessionId = function() {
+        return $._.getSessionId();
+    };
+
+    /**
+     * Gets the names of all the logical sessions of this CA.
+     *
+     * @return {Array.&lt;string>} The names of all the logical sessions.
+     *
+     * @memberof! module:caf_session/proxy_session#
+     * @alias getAllSessionIds
+     */
+    that.getAllSessionIds = function() {
+        return $._.getAllSessionIds();
+    };
+
+    /**
+     * Bounds the length of the output queue by discarding old messages.
+     *
+     * If no session name is provided we use the current session.
+     *
+     * By convention we reserve `default` as the name of the unnamed
+     * logical session.
+     *
+     * @param {number} maxMsgs Maximum number of messages in queue.
+     * @param {string=} optSessionId An optional logical session name
+     * identifying the output queue.
+     *
+     * @memberof! module:caf_session/proxy_session#
+     * @alias limitQueue
+     */
+    that.limitQueue = function(maxMsgs, optSessionId) {
+        $._.limitQueue(maxMsgs, optSessionId);
+    };
+
+
+    /**
+     * Queues a notification message.
+     *
+     * If no session name is provided we use the current session.
+     *
+     * The type of a notification, `caf.notif` is:
+     *
+     *        Array.&lt;caf.json>
+     *
+     * @param {caf.notif} argsArray An array with the arguments
+     * in the notification.
+     * @param {string=} optSessionId An optional logical session name
+     * identifying the output queue.
+     *
+     * @memberof! module:caf_session/proxy_session#
+     * @alias notify
+     *
+     */
+    that.notify = function(argsArray, optSessionId) {
+        $._.notify(argsArray, optSessionId);
+    };
+
+    /**
+     *  Starts a persistent session associated with the current logical
+     * session.
+     *
+     *  `begin()` creates a fresh nonce to tie together all the interactions
+     * within a persistent session. This solves the issue of delayed
+     * messages in the network from previous persistent sessions
+     * interfering with the current session.
+     *
+     * `begin()` returns the last memento if the previous session was
+     * not properly ended, and this allows a stateless client to
+     *  provide `exactly-once` delivery guarantees for requests in the presence
+     * of failures.
+     *
+     * The type of `caf.sessionBegin` is
+     *
+     *      {nonce: string, memento: caf.json=}
+     *
+     * @return {caf.sessionBegin} A unique instance
+     * identifier for this persistent session, and an optional memento if the
+     * previous session was not properly ended.
+     *
+     * @memberof! module:caf_session/proxy_session#
+     * @alias begin
+     *
+     */
+    that.begin = function() {
+        return $._.begin();
+    };
+
+    /**
+     * Ends a persistent session associated with the current logical
+     * session.
+     *
+     * It deletes the memento associated with this logical session.
+     *
+     * @param {string} nonce An identifier for this persistent session.
+     * @return {boolean} True if the session has ended.
+     * False if a different persistent session is in progress, and the nonce
+     * did not match.
+     *
+     * @memberof! module:caf_session/proxy_session#
+     * @alias end
+     *
+     */
+    that.end = function(nonce) {
+        return $._.end(nonce);
+    };
+
+    /**
+     * Replaces a memento associated with this logical session.
+     *
+     * Mementos can maintain client state across failures. This is
+     * important for clients that want to switch devices, or cannot
+     * rely on reliable local storage.
+     *
+     * `remember()` is transactional with the processing of the
+     * message, and when it fails by returning
+     * `false`, your code should return an application error so that CAF
+     * aborts the transaction.
+     *
+     * Well-behaved clients should handle errors (or timeouts) by
+     * starting a new persistent session. When they call `begin()` they
+     * will learn the last successful action (and/or its own state)
+     * before the failure.
+     *
+     * @param {string} nonce  Identifier for this persistent session.
+     * @param {caf.json} memento Client state to be checkpointed.
+     * @return {boolean} True if the memento changed. False if the
+     * nonce did not match, and this CA must abort the processing
+     * of the message by returning an application error.
+     *
+     * @memberof! module:caf_session/proxy_session#
+     * @alias remember
+     *
+     */
+    that.remember = function(nonce, memento) {
+        return $._.remember(nonce, memento);
+    };
+
+    Object.freeze(that);
+    cb(null, that);
+
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_session_backchannel.html">caf_session/backchannel</a></li><li><a href="module-caf_session_main.html">caf_session/main</a></li><li><a href="module-caf_session_plug_ca_session.html">caf_session/plug_ca_session</a></li><li><a href="module-caf_session_proxy_session.html">caf_session/proxy_session</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Dec 11 2016 00:44:18 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
