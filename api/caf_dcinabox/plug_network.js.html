@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: plug_network.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: plug_network.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*!
+Copyright 2013 Hewlett-Packard Development Company, L.P.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+"use strict";
+/**
+ * Manages Docker networks.
+ *
+ * Properties:
+ *
+ *      { netName: string, alreadyCreated: boolean}
+ *
+ * where `netName` is the name of the internal network and if `alreadyCreated`
+ * is `true` we do not attempt to create it again.
+ *
+ * @module caf_dcinabox/plug_network
+ * @augments external:caf_components/gen_plug
+ */
+
+var assert = require('assert');
+var caf_core =  require('caf_core');
+var caf_comp = caf_core.caf_components;
+var myUtils = caf_comp.myUtils;
+var genPlug = caf_comp.gen_plug;
+
+exports.newInstance = function($, spec, cb) {
+    try {
+        var that = genPlug.constructor($, spec);
+        var network = null;
+
+        $._.$.log &amp;&amp; $._.$.log.debug('New network plug');
+
+        assert.equal(typeof spec.env.netName, 'string',
+                     "'spec.env.netName' not a string");
+
+        assert.equal(typeof spec.env.alreadyCreated, 'boolean',
+                     "'spec.env.alreadyCreated' not a boolean");
+
+        if (spec.env.alreadyCreated) {
+            $._.$.docker.cli.listNetworks(function(err, all) {
+                if (err) {
+                    cb(err);
+                } else {
+                    var id = null;
+                    all.forEach(function(x) {
+                        if (x.Name ===  spec.env.netName) {
+                            id = x.Id;
+                        }
+                    });
+                    if (id) {
+                        network = $._.$.docker.cli.getNetwork(id);
+                        cb(null, that);
+                    } else {
+                        var error = new Error('Network does not exist');
+                        error.netName = spec.env.netName;
+                        cb(error);
+                    }
+                }
+            });
+        } else {
+            $._.$.docker.cli.createNetwork({
+                "name" : spec.env.netName,
+                "driver":"bridge",
+                "CheckDuplicate" : true
+            }, function(err, net) {
+                if (err) {
+                    cb(err);
+                } else {
+                    network = net;
+                    cb(null, that);
+                }
+            });
+        }
+
+        that.getName = function() {
+            return spec.env.netName;
+        };
+
+        that.getID = function() {
+            return (network ? network.id : null);
+        };
+
+        that.connect = function(containerId, cb0) {
+            if (network) {
+                network.connect({'container' : containerId}, cb0);
+            } else {
+                cb0(new Error('no network'));
+            }
+        };
+
+        var super__ca_shutdown__ = myUtils.superior(that, '__ca_shutdown__');
+        that.__ca_shutdown__ = function(data, cb0) {
+            super__ca_shutdown__(data, function(err, res) {
+                if (err) {
+                    cb0(err);
+                } else {
+                    if (network &amp;&amp; (!spec.env.alreadyCreated)) {
+                        network.remove(function(err) {
+                            network = null;
+                            cb0(err);
+                        });
+                    } else {
+                        network = null;
+                        cb0(null);
+                    }
+                }
+            });
+        };
+
+    } catch (err) {
+        cb(err);
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_dcinabox_main.html">caf_dcinabox/main</a></li><li><a href="module-caf_dcinabox_plug_container.html">caf_dcinabox/plug_container</a></li><li><a href="module-caf_dcinabox_plug_device.html">caf_dcinabox/plug_device</a></li><li><a href="module-caf_dcinabox_plug_docker.html">caf_dcinabox/plug_docker</a></li><li><a href="module-caf_dcinabox_plug_network.html">caf_dcinabox/plug_network</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf.html">caf</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Dec 19 2016 01:51:50 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

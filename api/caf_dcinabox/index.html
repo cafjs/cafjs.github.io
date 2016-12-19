@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3>caf_dcinabox 0.2.20</h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>CAF (Cloud Assistant Framework)</h1><p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and IoT devices.</p>
+<p>See http://www.cafjs.com</p>
+<h2>CAF Command Line Tools</h2><p>To setup see <a href="external-caf.html">external:caf</a> (https://cafjs.github.io/api/caf/index.html).</p>
+<p>The wrapper tool <code>cafjs</code> has subcommands of the form:</p>
+<pre class="prettyprint source"><code>cafjs &lt;command> &lt;commandOptions> arg1 arg2...</code></pre><p>The <code>commandOptions</code> always start with <code>--</code>, and are passed unchanged to the underlying tools. They are mostly for power users.</p>
+<p>The other arguments, e.g., <code>arg1</code>, <code>arg2</code>, are always ordered, and if one of them is optional, and missing, the ones after it cannot be present. To fix this, there are always equivalent <code>commandOptions</code> for any positional argument. If both are specified, the <code>commandOptions</code> choice has priority.</p>
+<h4><code>cafjs run  &lt;run_options&gt; &lt;appLocalName&gt; [appWorkingDir] [host/app Vol]</code></h4><p>Starts a simulated cloud to run your app. Uses separate Docker containers for a HAProxy-based http router, a Redis backend, and supporting apps for authentication, managing CAs, and registering devices.</p>
+<p>There are two scenarios:</p>
+<ul>
+<li>In <em>quick prototyping mode</em>, we build the app outside the container (<code>cafjs build</code>) using linked local dependencies, and we just need a wrapper container that directly mounts our home directory.</li>
+<li>In <em>validation mode</em>, we created a self-contained container using <code>cafjs mkImage</code> and, before uploading it to the cloud service, we want to test it locally.</li>
+</ul>
+<p>How to implement these two cases?</p>
+<ul>
+<li><em>Quick prototyping mode</em> always uses the same generic image (see <code>generic/Dockerfile</code>) that does not build the project. The app working directory is in a host volume, and a consistent volume mapping ensures that symbolic links to modules still work.</li>
+<li><em>Validation mode</em> creates a new image (see any of the example apps <code>Dockerfile</code>) that, as part of its build process, copies local dependencies inside the container, and builds the application.</li>
+</ul>
+<p>The way to indicate to <code>cafjs run</code> that we are in <em>validation mode</em> is to specify the container image with <code>--appImage</code>. In that case, we change the default options for working directory, or host volume mounts.</p>
+<p>The <code>run_options</code> to <code>cafjs run</code> are:</p>
+<ul>
+<li><code>--appImage &lt;string&gt;</code> Container image with your app (<em>validation mode</em> only).</li>
+<li><code>--appLocalName &lt;string&gt;</code> A local name for your app. The owner is always <code>root</code>.</li>
+<li><code>--appWorkingDir &lt;string&gt;</code> The working directory for your app inside the container (<em>quick prototyping mode</em> only).</li>
+<li><code>--hostVolume &lt;string&gt;</code> The host directory made visible inside the container (<em>quick prototyping mode</em> only).</li>
+<li><code>--appVolume &lt;string&gt;</code>The internal container directory where the <code>hostVolume</code> is mounted (<em>quick prototyping mode</em> only).</li>
+</ul>
+<p>In <em>quick prototyping mode</em> the positional option <code>appWorkingDir</code> defaults to <code>$PWD</code>, and the <code>host/appVolume</code> defaults to <code>$HOME</code>.</p>
+<p>Why this defaults? In a typical node.js installation using <code>nvm</code>, linked or global modules are under <code>$HOME/.nvm</code>, and as long as your app is also within your <code>$HOME</code> directory, running it cannot get any easier:</p>
+<pre class="prettyprint source"><code>cd $HOME/caf/apps/caf_helloworld; cafjs build; cafjs run helloworld</code></pre><p>What about <em>validation mode</em>? We just need the image name and the local application name:</p>
+<pre class="prettyprint source"><code>cafjs run --appImage registry.cafjs.com:32000/root-helloworld helloworld</code></pre><h4><code>cafjs build</code></h4><p>Wrapper to <code>npm</code> to build an application in the current directory using local dependencies. It links dependent modules with prefix <code>caf_</code>, and installs the rest.</p>
+<p>It is only needed in <em>quick prototyping mode</em>, the <em>validation mode</em> builds the app internally.</p>
+<h4><code>cafjs reset</code></h4><p>Brute force clean up of both containers and networks.</p>
+<p>A reset for a running application is also triggered after two <code>Control-C</code> keystrokes.</p>
+<h4><code>cafjs mkImage &lt;src&gt; &lt;imageName&gt;</code></h4><p>Builds a Docker image with the app. The arguments are the app directory and the image name. For example, in directory <code>caf/apps/caf_helloworld</code>:</p>
+<pre class="prettyprint source"><code>cafjs mkImage . registry.cafjs.com:32000/root-helloworld</code></pre><p>It copies local dependencies with the <code>caf_</code> prefix, and to ensure that no dev dependencies are used anywhere, first run again:</p>
+<pre class="prettyprint source"><code>./tools/setupLinks.sh</code></pre><h4><code>cafjs device &lt;device_options&gt; &lt;deviceId&gt;</code></h4><p>Simulates a device that access a CA. It uses <code>qemu-arm-static</code> to execute ARM instructions on your laptop or VM. This allows to test or build Docker images for the Raspberry Pi anywhere, even if they need node.js modules with native extensions. No more cross-compilation nightmares...</p>
+<p>The requirement on the Linux host is that <code>binfmt</code> should be enabled. In Ubuntu just install the package <code>binfmt-support</code>. Our base container images already include <code>qemu-arm-static</code>, there is no need to install it in the host.</p>
+<p>The execution speed is not that bad, mostly because <code>qemu-arm-static</code> only emulates the application, and not the OS (i.e., the I/O). A core of my high-end laptop is roughly the same as a RPi 2 core.</p>
+<p>Many applications in the RPi are not CPU intensive, and it is possible to pack a hundred simulated devices in a large VM, simplifiying stress testing, or debugging, in a Cloud-only environment.</p>
+<p>What about RPi I/O, like GPIO pins? For example, the <code>caf_rpi_gpio</code> package uses files and <code>inotify</code> to mock GPIO pins.</p>
+<p>A device typically has two containers running:</p>
+<ul>
+<li>A privileged, management container that switches/updates apps, provides tokens for single sign-on, or builds images locally. Its CA is an instance of the <code>root-gadget</code> application. See package <code>extra/caf_gadget_daemon</code> for details.</li>
+<li>An application container that could be privileged, or not, depending on the application needs. We use different base container images for each case, and the manager container starts them with different security profiles.</li>
+</ul>
+<p>The <code>device_options</code> to <code>cafjs device</code> are:</p>
+<ul>
+<li><code>--deviceId &lt;string&gt;</code>: a name for this device of the form <code>&lt;owner&gt;-&lt;caLocalName&gt;</code>, for example, <code>foo-device1</code>. The user <code>foo</code> is always present with password <code>pleasechange</code>.</li>
+<li><code>--password &lt;string&gt;</code>: a password to obtain authentication tokens. This argument is optional because the default password is valid for user <code>foo</code>.</li>
+<li><code>--rootDir &lt;string&gt;</code>: the host configuration root directory. It defaults to <code>/tmp</code>. To allow multiple devices, we create subdirectories with the device name, e.g., <code>/tmp/foo-device1/config</code>.</li>
+<li><code>--appSuffix &lt;string&gt;</code>: the URL suffix for the Cloud services. It defaults to <code>vcap.me</code>. If it is set, we also switch the protocol to <code>https</code>, e.g., <code>https://root-accounts.cafjs.com</code>. This allows to simulate devices directly connected to the real Cloud.</li>
+</ul>
+<h4><code>cafjs mkIoTImage &lt;appLocalName&gt; [privileged:boolean]</code></h4><p>Devices build their own images based on a <code>npm</code>, shrink-wrapped,  package bundle, downloaded from the cloud. By locally swapping the base image, we can support very different devices in a transparent way.</p>
+<p>For example:</p>
+<pre class="prettyprint source"><code>wget https://root-helloiot.cafjs.com/iot.tgz; tar xvf iot.tgz</code></pre><p>The <code>ETag</code> of that HTTP response is a cryptographic hash of the contents of that bundle, and we use it to tag the Docker images. For example, if the <code>ETag</code> field is <code>1ab3-dDwruH2Ccnkes2ObeJPGeQ</code> the image will be called:</p>
+<pre class="prettyprint source"><code>localhost.localdomain:5000/root-helloiot:1ab3-dDwruH2Ccnkes2ObeJPGeQ</code></pre><p>The manager container periodically queries the Cloud for the current <code>ETag</code> value, and if it changes, it rebuilds the image and restarts the container app.</p>
+<p>The catch is that, if we are simulating a device for development, module dependencies may be only locally available, and the manager container will not be able to find them.</p>
+<p>To solve this problem, we create the image with the expected name beforehand, using <code>cafjs mkIoTImage</code>, and then the manager container will not try to build it again.</p>
+<p>In order to execute this command we need the app running (see <code>cafjs run</code> above). <code>cafjs mkIoTImage</code> pretends to be a manager container, downloads the bundle and the <code>ETag</code>, and builds the container with local dependencies. For example, if the previous app is not privileged:</p>
+<pre class="prettyprint source"><code>cafjs mkIoTImage helloiot false</code></pre><p><code>mkIotImage</code> is slower than <code>mkImage</code> because it has to emulate ARM instructions with qemu, as we mentioned above. It takes about 100 sec to build <code>caf_helloiot</code> in my laptop.</p>
+<h4><code>cafjs help [command]</code></h4><p>Prints a help summary, or details of any of the above commands.</p>
+<h3>Putting it all together: Workflows with a simulated device</h3><h4>Let's start in <em>quick prototyping mode</em></h4><p>First, we build and run an IoT CAF application:</p>
+<pre class="prettyprint source"><code>cd $HOME/caf/apps/caf_helloiot; cafjs build; cafjs run helloiot</code></pre><p>Login with user <code>foo</code>, password <code>pleasechange</code>, and URL <code>http://root-launcher.vcap.me</code>.</p>
+<p>With the browser create a CA instance for application with owner<code>root</code>, local name <code>helloiot</code>, and CA name the device name, e.g., <code>device1</code>.</p>
+<p>Create a gadget  CA instance to manage the device <code>device1</code>. The application owner is <code>root</code>, local name <code>gadget</code>, and CA name <code>device1</code>. Configure in that app the target application as <code>root-helloiot</code> (don't click the privileged option). If <code>App Token Ready?</code> is <code>NO</code>, just go back to the <code>helloiot</code> app for <code>device1</code> to transparently register the token with the manager.</p>
+<p>Then, we need to make sure that the IoT image for the device is pre-built with the local dependencies:</p>
+<pre class="prettyprint source"><code>cafjs mkIoTImage helloiot false</code></pre><p>And now we are ready to start the device:</p>
+<pre class="prettyprint source"><code>cafjs device foo-device1</code></pre><p>It should not try to build again the image, and after about 30 seconds the main loop should be reporting information from the CA.</p>
+<p>In the browser, choosing the <code>helloiot</code> app again, we can configure a pin <code>11</code> as input, and a pin <code>12</code> as <code>Output</code>, and change the pin <code>12</code> value. The simulated device main loop should print the new values. We can also interact with the mocked gpio pins using files:</p>
+<pre class="prettyprint source"><code>docker exec -ti root-helloiot-foo-device1 /bin/ash
+cat /tmp/gpio/out/gpio12
+echo 1 > /tmp/gpio/in/gpio11</code></pre><p>and the browser should now show the new input for pin <code>11</code>.</p>
+<h4>And now in <em>validation mode</em></h4><p>Build the container image, and run the app:</p>
+<pre class="prettyprint source"><code>cd $HOME/caf/apps/caf_helloiot
+cafjs mkImage . registry.cafjs.com:32000/root-helloiot
+cafjs run --appImage registry.cafjs.com:32000/root-helloiot helloiot</code></pre><p>Then, before publishing the app in the cloud service, it is wise to ensure that all the local dependencies of the IoT device app have been published, e.g., <code>npm publish</code> or to <code>github</code>, and devices can build their own images.</p>
+<p>The simplest way to do this is to skip the <code>mkIoTImage</code> step, and just run the simulated device:</p>
+<pre class="prettyprint source"><code>cafjs device foo-device1</code></pre><p>If the device image is missing (use <code>docker rmi</code> to delete it, if needed), the management container will try to build it using only external dependencies. It takes about 2 minutes in my laptop.</p>
+<p>The rest of the setup is similar to the previous case. In fact, since the <code>Redis</code> container persists changes in a host volume, all your CAs should still be there.</p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_dcinabox_main.html">caf_dcinabox/main</a></li><li><a href="module-caf_dcinabox_plug_container.html">caf_dcinabox/plug_container</a></li><li><a href="module-caf_dcinabox_plug_device.html">caf_dcinabox/plug_device</a></li><li><a href="module-caf_dcinabox_plug_docker.html">caf_dcinabox/plug_docker</a></li><li><a href="module-caf_dcinabox_plug_network.html">caf_dcinabox/plug_network</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf.html">caf</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Dec 19 2016 01:51:50 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

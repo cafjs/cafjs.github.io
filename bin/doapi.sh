@@ -63,7 +63,7 @@ npm link `bin/findDevDepsCAF.js`
 npm install
 npm run docs
 mkdir -p ${API_DIR}/caf_dcinabox
-cp -r docs/api/*/*/* ${API_DIR}/caf_dcinabox
+cp -r docs/*/*/* ${API_DIR}/caf_dcinabox
 pushd ${API_DIR}/caf_dcinabox
 rm -fr fonts
 ln -s ../fonts ./fonts
