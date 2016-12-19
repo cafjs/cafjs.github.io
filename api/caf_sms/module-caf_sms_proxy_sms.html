@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Module: caf_sms/proxy_sms</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Module: caf_sms/proxy_sms</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Proxy to use a SMS messaging service like nexmo.</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_sms.js.html">proxy_sms.js</a>, <a href="proxy_sms.js.html#line18">line 18</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><a href="external-caf_components_gen_proxy.html">external:caf_components/gen_proxy</a></li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="send"><span class="type-signature"></span>send<span class="signature">(to, body)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Sends a message. The return message id can be used to match
+requests/responses.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>to</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Receiver number.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>body</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A message to send.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_sms.js.html">proxy_sms.js</a>, <a href="proxy_sms.js.html#line88">line 88</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="setConfig"><span class="type-signature"></span>setConfig<span class="signature">(config)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Sets the Nexmo configuration properties to use its APIs.</p>
+<p>The type <code>caf.smsConfig</code> is:</p>
+<pre class="prettyprint source"><code>  {api_key:string, api_secret:string, from:number}</code></pre>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">caf.smsConfig</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The Nexmo configuration properties.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_sms.js.html">proxy_sms.js</a>, <a href="proxy_sms.js.html#line71">line 71</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="setHandleReplyMethod"><span class="type-signature"></span>setHandleReplyMethod<span class="signature">(methodName)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Sets the name of the method in this CA that will process reply messages.</p>
+<p>To ignore replies, just set it to <code>null</code>.</p>
+<p>The type of the method should be <code>function(messageId, body, cb)</code></p>
+<p>where:</p>
+<ul>
+<li><code>messageId</code>: is an unique identifier to match the request.</li>
+<li><code>body</code> is the JSON-parsed response.</li>
+<li><code>cb</code> is just the usual callback to notify completion.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>methodName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name of this CA's method that
+ process reply messages.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_sms.js.html">proxy_sms.js</a>, <a href="proxy_sms.js.html#line54">line 54</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_sms_main.html">caf_sms/main</a></li><li><a href="module-caf_sms_plug_ca_sms.html">caf_sms/plug_ca_sms</a></li><li><a href="module-caf_sms_plug_sms.html">caf_sms/plug_sms</a></li><li><a href="module-caf_sms_proxy_sms.html">caf_sms/proxy_sms</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Dec 19 2016 01:39:00 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
