@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3>caf_deploy 0.2.15</h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>CAF (Cloud Assistant Framework)</h1><p>Co-design permanent, active, stateful, reliable cloud proxies with your web app.</p>
+<p>See http://www.cafjs.com</p>
+<h2>CAF Extra Deploy</h2><!-- [![Build Status](http://ci.cafjs.com/api/badges/cafjs/caf_deploy/status.svg)](http://ci.cafjs.com/cafjs/caf_deploy) -->
+<p>This repository contains a CAF  lib to deploy applications in Mesos/Marathon.</p>
+<h2>API</h2><p>See <a href="module-caf_deploy_proxy_deploy.html">module:caf_deploy/proxy_deploy</a></p>
+<p>See the <code>caf_turtles</code> application for an example.</p>
+<h2>Configuration Example</h2><p>See <a href="module-caf_deploy_plug_deploy.html">module:caf_deploy/plug_deploy</a></p>
+<h3>framework.json</h3><pre class="prettyprint source"><code>{
+    &quot;module&quot;: &quot;caf_deploy#plug&quot;,
+    &quot;name&quot;: &quot;deploy&quot;,
+    &quot;description&quot;: &quot;Shared plug to deploy apps in Mesos/Marathon\n Properties: \n&quot;,
+    &quot;env&quot;: {
+        &quot;listAllRedisPorts&quot; : &quot;process.env.LIST_ALL_REDIS_PORTS||false&quot;,
+        &quot;refreshInterval&quot; : &quot;process.env.REFRESH_INTERVAL||1000&quot;,
+        &quot;protocol&quot; : &quot;process.env.MARATHON_PROTOCOL||http&quot;,
+        &quot;hostname&quot; : &quot;process.env.HOST||localhost&quot;,
+        &quot;port&quot; : &quot;&quot;process.env.MARATHON_PORT||8080&quot;,
+        &quot;username&quot; : &quot;process.env.MARATHON_USERNAME||root&quot;,
+        &quot;password&quot; : &quot;process.env.MARATHON_KEY_PASSWORD||pleasechange&quot;,
+        &quot;redis&quot; : {
+            &quot;templateFile&quot; : &quot;process.env.REDIS_TEMPLATE_FILE||marathon.redis.mus&quot;,
+            &quot;prefixID&quot;: &quot;process.env.REDIS_PREFIX_ID||redis&quot;,
+            &quot;rangePortStart&quot; : &quot;process.env.REDIS_RANGE_PORT_START||6380&quot;,
+            &quot;rangePortEnd&quot; : &quot;process.env.REDIS_RANGE_PORT_END||6480&quot;,
+            &quot;image&quot; : &quot;process.env.REDIS_IMAGE||redis:2.8&quot;,
+            &quot;cpus&quot; : &quot;process.env.REDIS_CPUS||0.1&quot;,
+            &quot;memory&quot; : &quot;process.env.REDIS_MEMORY||64.0&quot;
+        },
+        &quot;app&quot; : {
+            &quot;templateFile&quot; : &quot;process.env.APP_TEMPLATE_FILE||marathon.app.mus&quot;,
+            &quot;args&quot;: &quot;process.env.APP_ARGS||[]&quot;,
+            &quot;cpus&quot; : &quot;process.env.APP_CPUS||0.1&quot;,
+            &quot;memory&quot; : &quot;process.env.APP_MEMORY||64.0&quot;,
+            &quot;instances&quot;: &quot;process.env.APP_INSTANCES||1&quot;,
+            &quot;services&quot; :[&quot;redis&quot;]
+        }
+    }
+}</code></pre><h3>ca.json</h3><pre class="prettyprint source"><code>    {
+        &quot;module&quot;: &quot;caf_deploy#plug_ca&quot;,
+        &quot;name&quot;: &quot;deploy&quot;,
+        &quot;description&quot;: &quot;Manages deployments for this CA.&quot;,
+        &quot;env&quot; : {
+            &quot;maxRetries&quot; : &quot;$._.env.maxRetries&quot;,
+            &quot;retryDelay&quot; : &quot;$._.env.retryDelay&quot;
+        },
+        &quot;components&quot; : [
+            {
+                &quot;module&quot;: &quot;caf_deploy#proxy&quot;,
+                &quot;name&quot;: &quot;proxy&quot;,
+                &quot;description&quot;: &quot;Provides deployment API.&quot;,
+                &quot;env&quot; : {
+
+                }
+            }
+        ]
+    }</code></pre></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_deploy_main.html">caf_deploy/main</a></li><li><a href="module-caf_deploy_plug_ca_deploy.html">caf_deploy/plug_ca_deploy</a></li><li><a href="module-caf_deploy_plug_deploy.html">caf_deploy/plug_deploy</a></li><li><a href="module-caf_deploy_plug_deploy_util.html">caf_deploy/plug_deploy_util</a></li><li><a href="module-caf_deploy_proxy_deploy.html">caf_deploy/proxy_deploy</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Dec 20 2016 01:59:45 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

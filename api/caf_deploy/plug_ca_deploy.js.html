@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: plug_ca_deploy.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: plug_ca_deploy.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*!
+Copyright 2013 Hewlett-Packard Development Company, L.P.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+'use strict';
+
+/**
+ * Manages deployed apps by this CA.
+ *
+ * The name of this component in a ca.json description should be 'deploy'.
+ *
+ * @module caf_deploy/plug_ca_deploy
+ * @augments external:caf_components/gen_plug_ca
+ *
+ */
+var assert = require('assert');
+var caf_core = require('caf_core');
+var caf_comp = caf_core.caf_components;
+var genPlugCA = caf_comp.gen_plug_ca;
+var json_rpc = caf_core.caf_transport.json_rpc;
+var deploy_util = require('./plug_deploy_util');
+
+exports.newInstance = function($, spec, cb) {
+    try {
+
+        var that = genPlugCA.constructor($, spec);
+
+        var caOwner = json_rpc.splitName($.ca.__ca_getName__())[0];
+
+       // transactional ops
+        var target = {
+            createAppImpl: function(appOptions, cb0) {
+                $._.$.deploy.__ca_createApp__(appOptions, cb0);
+            },
+            deleteAppImpl: function(appOptions, cb0) {
+                $._.$.deploy.__ca_deleteApp__(appOptions, cb0);
+            },
+            restartAppImpl: function(appOptions, cb0) {
+                $._.$.deploy.__ca_restartApp__(appOptions, cb0);
+            },
+            updateAppImpl: function(appOptions, cb0) {
+                $._.$.deploy.__ca_updateApp__(appOptions, cb0);
+            }
+        };
+
+        that.__ca_setLogActionsTarget__(target);
+
+        that.createApp = function(appLocalName, image, options) {
+            var id = json_rpc.joinName(caOwner, appLocalName);
+            var appOptions = {
+                id: id,
+                image: image,
+                appPublisher: caOwner,
+                appLocalName: appLocalName
+            };
+            if (typeof options.memory === 'number') {
+                appOptions.memory = options.memory;
+            }
+            appOptions.instances = (options.instances ? options.instances : 1);
+            if (options &amp;&amp; Array.isArray(options.args)) {
+                appOptions.args = JSON.stringify(options.args);
+            }
+            that.__ca_lazyApply__('createAppImpl', [appOptions]);
+            return id;
+        };
+
+        that.deleteApp = function(id) {
+            that.__ca_lazyApply__('deleteAppImpl', [{id: id}]);
+        };
+
+        that.restartApp = function(id) {
+            that.__ca_lazyApply__('restartAppImpl', [{id: id}]);
+        };
+
+        that.flexApp = function(id, instances) {
+            var split = json_rpc.splitName(id);
+            assert(split[0] === caOwner);
+            var deployed = $._.$.deploy.__ca_statApp__(id);
+            var deployUtil = deploy_util.newUtil();
+            var redisPort = deployUtil.extractRedisPort(deployed);
+            var image = deployed.container.docker.image;
+            assert(image);
+            var appOptions = {
+                id: id,
+                instances: instances,
+                image: image,
+                appPublisher: caOwner,
+                appLocalName: split[1],
+                args: deployed.args,
+                redisPort: redisPort
+            };
+            that.__ca_lazyApply__('updateAppImpl', [appOptions]);
+        };
+
+        that.getAllRedisPorts = function() {
+            return $._.$.deploy.__ca_getAllRedisPorts__();
+        };
+
+        that.statApps = function(ids) {
+            return ids.map(function(x) {
+                return $._.$.deploy.__ca_statApp__(x);
+            });
+        };
+
+        cb(null, that);
+    } catch (err) {
+        cb(err);
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_deploy_main.html">caf_deploy/main</a></li><li><a href="module-caf_deploy_plug_ca_deploy.html">caf_deploy/plug_ca_deploy</a></li><li><a href="module-caf_deploy_plug_deploy.html">caf_deploy/plug_deploy</a></li><li><a href="module-caf_deploy_plug_deploy_util.html">caf_deploy/plug_deploy_util</a></li><li><a href="module-caf_deploy_proxy_deploy.html">caf_deploy/proxy_deploy</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Dec 20 2016 01:59:45 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

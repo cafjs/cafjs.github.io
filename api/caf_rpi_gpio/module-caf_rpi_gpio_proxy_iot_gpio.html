@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Module: caf_rpi_gpio/proxy_iot_gpio</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Module: caf_rpi_gpio/proxy_iot_gpio</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>A proxy to read/write GPIO ports in a Raspberry PI.</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_iot_gpio.js.html">proxy_iot_gpio.js</a>, <a href="proxy_iot_gpio.js.html#line19">line 19</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><a href="external-caf_components_gen_proxy.html">external:caf_components/gen_proxy</a></li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="getPinConfig"><span class="type-signature"></span>getPinConfig<span class="signature">()</span><span class="type-signature"> &rarr; {caf.pinConfig}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Gets the configuration of active GPIO pins.</p>
+<p>The type <code>caf.pinConfig</code> is:</p>
+<pre class="prettyprint source"><code>{ pinNumber : {
+      input: boolean,
+      initialState: {high: boolean}=,
+      internalResistor: {pullUp: boolean}=,
+      watcher: caf.watcherConfig=
+   }
+}</code></pre><p>where pin numbers use physical layout by default, and <code>initialState</code> only
+applies if <code>input</code> is false.</p>
+<p>Missing pins have a default configuration of (input, no resistor).</p>
+<p><code>caf.watcherConfig</code> described in <code>setWatcher</code></p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_iot_gpio.js.html">proxy_iot_gpio.js</a>, <a href="proxy_iot_gpio.js.html#line61">line 61</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="module-caf_rpi_gpio_proxy_iot_gpio.html#setWatcher">module:caf_rpi_gpio/proxy_iot_gpio#setWatcher</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The configuration of active pins.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">caf.pinConfig</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="readAll"><span class="type-signature"></span>readAll<span class="signature">()</span><span class="type-signature"> &rarr; {Object.&lt;pin, boolean>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Reads the value of all the pins configured as inputs.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_iot_gpio.js.html">proxy_iot_gpio.js</a>, <a href="proxy_iot_gpio.js.html#line110">line 110</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Values of input pins. <code>True</code> is
+<code>HIGH</code>, <code>false</code> is <code>LOW</code>, and pin numbers use physical layout by default.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object.&lt;pin, boolean></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="setPinConfig"><span class="type-signature"></span>setPinConfig<span class="signature">(config)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Sets a new pin configuration.</p>
+<p>Pins that were already set in the desired input/output mode are not
+reset, i.e., <code>initialState</code>  or <code>internalResistor</code> fields are ignored.</p>
+<p>If reset is needed, call <code>setPinConfig</code> twice:</p>
+<ul>
+<li>First call with the pins to reset deleted, which are then given a
+default configuration (input, no resistor)</li>
+<li>Second call with the desired config.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">caf.pinConfig</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A new pin configuration.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_iot_gpio.js.html">proxy_iot_gpio.js</a>, <a href="proxy_iot_gpio.js.html#line82">line 82</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="setWatcher"><span class="type-signature"></span>setWatcher<span class="signature">(pin, watcherConfig)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Sets a watcher that will invoke a method when a particular pin
+changes state.</p>
+<p>It replaces a previous watcher for that pin (if different setup).</p>
+<p> The type <code>caf.watcherConfig</code> is:</p>
+<pre class="prettyprint source"><code> { triggerLow: boolean, triggerHigh: boolean, methodName: string,
+   debounceMsec: number=}</code></pre><p>where:</p>
+<ul>
+<li><p><code>triggerLow</code>: True if transitions to LOW state
+should activate the watcher.</p>
+</li>
+<li><p><code>triggerHigh</code>: True if transitions to HIGH state
+should activate the watcher.</p>
+</li>
+<li><p><code>methodName</code>: The name of the method used for
+notifications. It should have a signature of the form
+<code>function(pin:number, newValue: boolean, cb:caf.cb)</code> and call <code>cb</code>
+after finish processing.</p>
+</li>
+<li><p><code>debounceMsec</code>: Time interval after a notification in
+which any other notification for that pin gets ignored.</p>
+</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>pin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A pin number to be watched (physical layout by
+default).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>watcherConfig</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">caf.watcherConfig</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Configuration for the new
+watcher.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_iot_gpio.js.html">proxy_iot_gpio.js</a>, <a href="proxy_iot_gpio.js.html#line151">line 151</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        <p>Error if pin not exported.</p>
+    
+    </div>
+
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="unsetWatcher"><span class="type-signature"></span>unsetWatcher<span class="signature">(pin)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Unsets a watcher that will invoke a method when a particular pin
+changes state.</p>
+<p>It does nothing if there was no watcher, or pin was not exported.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>pin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A pin number to be unwatched (physical
+layout by default).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_iot_gpio.js.html">proxy_iot_gpio.js</a>, <a href="proxy_iot_gpio.js.html#line167">line 167</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="writeMany"><span class="type-signature"></span>writeMany<span class="signature">(newValues)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Writes values for the given pins configured as outputs.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>newValues</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;pin, boolean></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>New values for output
+pins.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_iot_gpio.js.html">proxy_iot_gpio.js</a>, <a href="proxy_iot_gpio.js.html#line97">line 97</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+    <div class="param-desc">
+    
+        <p>Error If pin not in <code>OUTPUT</code> mode or not configured.</p>
+    
+    </div>
+
+
+    
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_rpi_gpio_main.html">caf_rpi_gpio/main</a></li><li><a href="module-caf_rpi_gpio_mock_gpio.html">caf_rpi_gpio/mock_gpio</a></li><li><a href="module-caf_rpi_gpio_plug_iot_gpio.html">caf_rpi_gpio/plug_iot_gpio</a></li><li><a href="module-caf_rpi_gpio_proxy_iot_gpio.html">caf_rpi_gpio/proxy_iot_gpio</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_iot_gen_plug_iot.html">caf_iot/gen_plug_iot</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Dec 20 2016 01:59:08 GMT-0800 (PST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

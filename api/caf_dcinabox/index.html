@@ -26,7 +26,7 @@
     
 
 
-    <h3>caf_dcinabox 0.2.20</h3>
+    <h3>caf_dcinabox 0.2.21</h3>
 
 
 
@@ -85,7 +85,7 @@
 <p>What about RPi I/O, like GPIO pins? For example, the <code>caf_rpi_gpio</code> package uses files and <code>inotify</code> to mock GPIO pins.</p>
 <p>A device typically has two containers running:</p>
 <ul>
-<li>A privileged, management container that switches/updates apps, provides tokens for single sign-on, or builds images locally. Its CA is an instance of the <code>root-gadget</code> application. See package <code>extra/caf_gadget_daemon</code> for details.</li>
+<li>A privileged, manager container that switches/updates apps, provides tokens for single sign-on, or builds images locally. Its CA is an instance of the <code>root-gadget</code> application. See package <code>extra/caf_gadget_daemon</code> for details.</li>
 <li>An application container that could be privileged, or not, depending on the application needs. We use different base container images for each case, and the manager container starts them with different security profiles.</li>
 </ul>
 <p>The <code>device_options</code> to <code>cafjs device</code> are:</p>
@@ -95,13 +95,13 @@
 <li><code>--rootDir &lt;string&gt;</code>: the host configuration root directory. It defaults to <code>/tmp</code>. To allow multiple devices, we create subdirectories with the device name, e.g., <code>/tmp/foo-device1/config</code>.</li>
 <li><code>--appSuffix &lt;string&gt;</code>: the URL suffix for the Cloud services. It defaults to <code>vcap.me</code>. If it is set, we also switch the protocol to <code>https</code>, e.g., <code>https://root-accounts.cafjs.com</code>. This allows to simulate devices directly connected to the real Cloud.</li>
 </ul>
-<h4><code>cafjs mkIoTImage &lt;appLocalName&gt; [privileged:boolean]</code></h4><p>Devices build their own images based on a <code>npm</code>, shrink-wrapped,  package bundle, downloaded from the cloud. By locally swapping the base image, we can support very different devices in a transparent way.</p>
+<h4><code>cafjs mkIoTImage &lt;appLocalName&gt; [privileged:boolean]</code></h4><p>Devices build their own images locally, after downloading from the cloud a shrink-wrapped, <code>npm</code> package. The device chooses the Docker base image, and this allows supporting very different devices in a transparent way.</p>
 <p>For example:</p>
 <pre class="prettyprint source"><code>wget https://root-helloiot.cafjs.com/iot.tgz; tar xvf iot.tgz</code></pre><p>The <code>ETag</code> of that HTTP response is a cryptographic hash of the contents of that bundle, and we use it to tag the Docker images. For example, if the <code>ETag</code> field is <code>1ab3-dDwruH2Ccnkes2ObeJPGeQ</code> the image will be called:</p>
-<pre class="prettyprint source"><code>localhost.localdomain:5000/root-helloiot:1ab3-dDwruH2Ccnkes2ObeJPGeQ</code></pre><p>The manager container periodically queries the Cloud for the current <code>ETag</code> value, and if it changes, it rebuilds the image and restarts the container app.</p>
-<p>The catch is that, if we are simulating a device for development, module dependencies may be only locally available, and the manager container will not be able to find them.</p>
-<p>To solve this problem, we create the image with the expected name beforehand, using <code>cafjs mkIoTImage</code>, and then the manager container will not try to build it again.</p>
-<p>In order to execute this command we need the app running (see <code>cafjs run</code> above). <code>cafjs mkIoTImage</code> pretends to be a manager container, downloads the bundle and the <code>ETag</code>, and builds the container with local dependencies. For example, if the previous app is not privileged:</p>
+<pre class="prettyprint source"><code>localhost.localdomain:5000/root-helloiot:1ab3-dDwruH2Ccnkes2ObeJPGeQ</code></pre><p>The manager container periodically queries the Cloud for the current <code>ETag</code> value and, when it changes, it rebuilds the image and restarts the container app.</p>
+<p>The catch is that, if we are simulating a device in development mode, some module dependencies are likely to be local-only, and the manager container will not be able to find them.</p>
+<p>To solve this problem, we create the image with the expected name beforehand, using <code>cafjs mkIoTImage</code>. Then, the manager container will not try to build it again.</p>
+<p>In order to execute this command we need the app running (see <code>cafjs run</code> above). <code>cafjs mkIoTImage</code> pretends to be a manager container, downloads the bundle and the <code>ETag</code>, and builds the container with local dependencies. For example, if the previous app is not privileged, the command is:</p>
 <pre class="prettyprint source"><code>cafjs mkIoTImage helloiot false</code></pre><p><code>mkIotImage</code> is slower than <code>mkImage</code> because it has to emulate ARM instructions with qemu, as we mentioned above. It takes about 100 sec to build <code>caf_helloiot</code> in my laptop.</p>
 <h4><code>cafjs help [command]</code></h4><p>Prints a help summary, or details of any of the above commands.</p>
 <h3>Putting it all together: Workflows with a simulated device</h3><h4>Let's start in <em>quick prototyping mode</em></h4><p>First, we build and run an IoT CAF application:</p>
@@ -138,7 +138,7 @@ cafjs run --appImage registry.cafjs.com:32000/root-helloiot helloiot</code></pre
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Dec 19 2016 02:15:07 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Dec 20 2016 02:00:04 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

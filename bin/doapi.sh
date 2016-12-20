@@ -26,7 +26,7 @@ popd #main
 
 #extra dir
 pushd ../../../extra
-ALL_EXTRA_FILES="caf_forward/ caf_sms/"
+ALL_EXTRA_FILES="caf_forward/ caf_sms/ caf_rpi/ caf_rpi_gpio/ caf_react/ caf_deploy/"
 for mod in ${ALL_EXTRA_FILES}; do
     pushd ${mod}
     npm link `../../tools/caf_dcinabox/bin/findDepsCAF.js`
