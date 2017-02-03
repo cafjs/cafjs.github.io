@@ -164,6 +164,338 @@ pending requests.</p></div>
 
     
 
+    <h4 class="name" id="checkBits"><span class="type-signature"></span>checkBits<span class="signature">(bitfieldName, bits, cb)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Check bits in a bitfield. If any is not set it returns false.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>bitfieldName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name of the bitfield.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>bits</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The index of bits to be checked.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">caf.cb</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A callback to return true if all set or null
+otherwise (or an error).</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line684">line 684</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="clearBits"><span class="type-signature"></span>clearBits<span class="signature">(bitfieldName, cb)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Clear all bits in a bitfield.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>bitfieldName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name of the bitfield.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">caf.cb</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A callback to notify an error.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line668">line 668</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
     <h4 class="name" id="createMap"><span class="type-signature"></span>createMap<span class="signature">(mapName, cb)</span><span class="type-signature"></span></h4>
 
     
@@ -287,7 +619,7 @@ pending requests.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line615">line 615</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line698">line 698</a>
     </li></ul></dd>
     
 
@@ -441,7 +773,7 @@ pending requests.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line631">line 631</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line714">line 714</a>
     </li></ul></dd>
     
 
@@ -596,7 +928,7 @@ or its succesful completion if the argument is a falsy.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line433">line 433</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line471">line 471</a>
     </li></ul></dd>
     
 
@@ -750,7 +1082,7 @@ or its succesful completion if the argument is a falsy.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line554">line 554</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line592">line 592</a>
     </li></ul></dd>
     
 
@@ -908,7 +1240,7 @@ CA.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line452">line 452</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line490">line 490</a>
     </li></ul></dd>
     
 
@@ -1089,7 +1421,7 @@ CA.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line477">line 477</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line515">line 515</a>
     </li></ul></dd>
     
 
@@ -1293,7 +1625,7 @@ an error if we cannot renew lease or the new external nodeId.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line900">line 900</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line983">line 983</a>
     </li></ul></dd>
     
 
@@ -1454,7 +1786,7 @@ callback with an error or an object with external nodeIds to
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line934">line 934</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line1017">line 1017</a>
     </li></ul></dd>
     
 
@@ -1631,7 +1963,7 @@ callback with an error or an object with external nodeIds to
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line848">line 848</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line931">line 931</a>
     </li></ul></dd>
     
 
@@ -1788,7 +2120,7 @@ add:Array<Object> (i.e., flattened key value pairs)}</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line649">line 649</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line732">line 732</a>
     </li></ul></dd>
     
 
@@ -1967,7 +2299,7 @@ Ids that we failed to renew.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line509">line 509</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line547">line 547</a>
     </li></ul></dd>
     
 
@@ -2146,7 +2478,184 @@ an error if we cannot renew lease.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line866">line 866</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line949">line 949</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="setBits"><span class="type-signature"></span>setBits<span class="signature">(bitfieldName, bits, cb)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Sets bits in a bitfield.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>bitfieldName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name of the bitfield.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>bits</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The index of bits to be set.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">caf.cb</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A callback to notify an error.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line654">line 654</a>
     </li></ul></dd>
     
 
@@ -2323,7 +2832,7 @@ an error if we cannot renew lease.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line735">line 735</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line818">line 818</a>
     </li></ul></dd>
     
 
@@ -2501,7 +3010,7 @@ messages. First argument is the topic, second the message.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line813">line 813</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line896">line 896</a>
     </li></ul></dd>
     
 
@@ -2655,7 +3164,7 @@ messages. First argument is the topic, second the message.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line767">line 767</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line850">line 850</a>
     </li></ul></dd>
     
 
@@ -2809,7 +3318,7 @@ messages. First argument is the topic, second the message.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line833">line 833</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line916">line 916</a>
     </li></ul></dd>
     
 
@@ -3009,7 +3518,7 @@ messages. First argument is the topic, second the message.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line576">line 576</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line614">line 614</a>
     </li></ul></dd>
     
 
@@ -3192,7 +3701,7 @@ the number of subscribed clients.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line673">line 673</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line756">line 756</a>
     </li></ul></dd>
     
 
@@ -3370,7 +3879,7 @@ or succesful completion if falsy argument.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line418">line 418</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line456">line 456</a>
     </li></ul></dd>
     
 
@@ -3418,7 +3927,7 @@ or succesful completion if falsy argument.</p></td>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Tue Dec 27 2016 22:32:31 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Feb 02 2017 23:59:21 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>
