@@ -41,7 +41,8 @@
             <div class="description"><p>Security plug for authentication.</p>
 <p>Properties:</p>
 <pre class="prettyprint source"><code>  {keysDir: string=, trustedPubKeyFile: string, privateKeyFile: string=,
-   publicKeyFile: string=, accountsURL: string, allowNobodyUser: boolean}</code></pre><p>where:</p>
+   publicKeyFile: string=, accountsURL: string, allowNobodyUser: boolean,
+   quotaURL: string=, quotaCA: string=}</code></pre><p>where:</p>
 <ul>
 <li><code>keysDir:</code> directory for all key material.</li>
 <li><code>trustedPubKeyFile</code>: trusted public key that verifies tokens. Uses
@@ -51,6 +52,8 @@ tokens. Typically we use a remote service instead.</li>
 <li><code>accountsURL</code>: URL of the accounts service.</li>
 <li><code>allowNobodyUser</code>: whether to allow the <code>json_rpc.DEFAULT_FROM</code> client to
 authenticate without credentials.</li>
+<li><code>quotaURL</code>: the URL of the quota service, or missing if service off.</li>
+<li><code>quotaCA</code>: the CA entrypoint for the service, or missing if service off.</li>
 </ul></div>
         
 
@@ -313,7 +316,7 @@ description of the new token(s).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line328">line 328</a>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line339">line 339</a>
     </li></ul></dd>
     
 
@@ -498,7 +501,7 @@ description of the new token(s).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line193">line 193</a>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line205">line 205</a>
     </li></ul></dd>
     
 
@@ -654,7 +657,7 @@ description of the new token(s).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line247">line 247</a>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line259">line 259</a>
     </li></ul></dd>
     
 
@@ -809,7 +812,182 @@ description of the new token(s).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line122">line 122</a>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line134">line 134</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="__ca_quotaNewCA__"><span class="type-signature"></span>__ca_quotaNewCA__<span class="signature">(tokenStr, cb0<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Registers a new CA with the <em>Quota</em> service.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tokenStr</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An encoded token. This token was originally
+used to create the CA.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb0</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">caf.cb</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An optional callback to return an error.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line363">line 363</a>
     </li></ul></dd>
     
 
@@ -940,7 +1118,7 @@ description of the new token(s).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line178">line 178</a>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line190">line 190</a>
     </li></ul></dd>
     
 
@@ -1014,7 +1192,7 @@ token invalid.</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Thu Feb 02 2017 23:59:28 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Mar 19 2017 21:55:15 GMT-0700 (PDT)
 </footer>
 
 <script> prettyPrint(); </script>

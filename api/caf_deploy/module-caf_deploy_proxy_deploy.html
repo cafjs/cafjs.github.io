@@ -298,7 +298,7 @@ app. Memory is in megabytes.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line51">line 51</a>
+        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line76">line 76</a>
     </li></ul></dd>
     
 
@@ -351,7 +351,7 @@ app. Memory is in megabytes.</p></td>
 
     
 
-    <h4 class="name" id="deleteApp"><span class="type-signature"></span>deleteApp<span class="signature">(id)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="deleteApp"><span class="type-signature"></span>deleteApp<span class="signature">(id)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
     
 
@@ -359,138 +359,6 @@ app. Memory is in megabytes.</p></td>
 
 <div class="description">
     <p>Deletes deployed app.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>An instance identifier.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line64">line 64</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="flexApp"><span class="type-signature"></span>flexApp<span class="signature">(id)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Changes the number of instances for this app.</p>
-<p>A zero value suspends the app without losing its state.</p>
 </div>
 
 
@@ -606,6 +474,28 @@ app. Memory is in megabytes.</p></td>
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A request identifier.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -614,7 +504,161 @@ app. Memory is in megabytes.</p></td>
 
     
 
-    <h4 class="name" id="getAllRedisPorts"><span class="type-signature"></span>getAllRedisPorts<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="flexApp"><span class="type-signature"></span>flexApp<span class="signature">(id)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Changes the number of instances for this app.</p>
+<p>A zero value suspends the app without losing its state.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An instance identifier.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line122">line 122</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A request identifier.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getAllRedisPorts"><span class="type-signature"></span>getAllRedisPorts<span class="signature">()</span><span class="type-signature"> &rarr; {Object.&lt;string, number>}</span></h4>
 
     
 
@@ -669,7 +713,7 @@ app. Memory is in megabytes.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line126">line 126</a>
+        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line158">line 158</a>
     </li></ul></dd>
     
 
@@ -696,10 +740,23 @@ app. Memory is in megabytes.</p></td>
 
         
 <div class="param-desc">
-    <p>{{appName: port} Map of ports used by Redis instances.</p>
+    <p>Map of appName/ports used by Redis
+instances.</p>
 </div>
 
 
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object.&lt;string, number></span>
+
+
+    </dd>
+</dl>
 
     
 
@@ -710,7 +767,7 @@ app. Memory is in megabytes.</p></td>
 
     
 
-    <h4 class="name" id="restartApp"><span class="type-signature"></span>restartApp<span class="signature">(id)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="restartApp"><span class="type-signature"></span>restartApp<span class="signature">(id)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
     
 
@@ -810,7 +867,173 @@ app. Memory is in megabytes.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line77">line 77</a>
+        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line106">line 106</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A request identifier.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="setHandleReplyMethod"><span class="type-signature"></span>setHandleReplyMethod<span class="signature">(methodName)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Sets the name of the method in this CA that will process reply messages.</p>
+<p>To ignore replies, just set it to <code>null</code>.</p>
+<p>The type of the method should be <code>function(requestId, error, data, cb)</code></p>
+<p>where:</p>
+<ul>
+<li><code>requestId</code>: is an unique identifier to match the request.</li>
+<li><code>error</code>: a deployment error.</li>
+<li><code>data</code>: a deployment response.</li>
+<li><code>cb</code>: the standard callback to notify completion.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>methodName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The name of this CA's method that
+ process reply messages.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line54">line 54</a>
     </li></ul></dd>
     
 
@@ -942,7 +1165,7 @@ app. Memory is in megabytes.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line108">line 108</a>
+        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line139">line 139</a>
     </li></ul></dd>
     
 
@@ -1013,7 +1236,7 @@ the array means missing app.</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Fri Feb 03 2017 00:02:20 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Mar 19 2017 21:57:04 GMT-0700 (PDT)
 </footer>
 
 <script> prettyPrint(); </script>
