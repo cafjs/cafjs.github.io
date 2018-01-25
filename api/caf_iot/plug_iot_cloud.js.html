@@ -79,11 +79,22 @@ exports.newInstance = function($, spec, cb) {
 
         $._.$.log &amp;&amp; $._.$.log.debug('New cloud plug');
 
-        var tokenDir = spec.env.tokenDir || $.loader.__ca_firstModulePath__();
-
         var loadToken = function(fileName) {
-            return fs.readFileSync(path.resolve(tokenDir, fileName),
-                                   {encoding: 'utf8'}).trim();
+            try {
+                if (typeof fs.readFileSync === 'function') {
+                    var tokenDir = spec.env.tokenDir ||
+                            $.loader.__ca_firstModulePath__();
+                    return fs.readFileSync(path.resolve(tokenDir, fileName),
+                                           {encoding: 'utf8'}).trim();
+                } else {
+                    // browserify, token in the url
+                    return caf_cli.extractTokenFromURL(window.location.href);
+                }
+            } catch (ex) {
+                $._.$.log &amp;&amp; $._.$.log.warn(' NO TOKEN ' +
+                                            myUtils.errToPrettyStr(ex));
+                return null;
+            }
         };
 
         assert.equal(typeof spec.env.tokenFile, 'string',
@@ -114,44 +125,52 @@ exports.newInstance = function($, spec, cb) {
 
         var myId = $._.__ca_getName__();
 
-        var cli = new caf_cli.Session(caURL, myId, {
-            from: myId,
-            token: token,
-            session: spec.env.session,
-            log: function(msg) {
-                $._.$.log &amp;&amp; $._.$.log.debug(msg);
-            }
-        });
+        if (token !== null) {
+            var cli = new caf_cli.Session(caURL, myId, {
+                from: myId,
+                token: token,
+                session: spec.env.session,
+                log: function(msg) {
+                    $._.$.log &amp;&amp; $._.$.log.debug(msg);
+                }
+            });
 
-        that.cli = cli;
+            that.cli = cli;
 
-        cli.onclose = function(err) {
-            if (err) {
-                $._.$.log &amp;&amp; $._.$.log.debug('Error connecting to cloud:' +
-                                             myUtils.errToPrettyStr(err));
-            }
-            if (!that.__ca_isShutdown__) {
-                that.__ca_shutdown__(null, function(err) {
-                    if (err) {
-                        $._.$.log &amp;&amp;
-                            $._.$.log.debug('Got error in cloud shutdown:' +
-                                            myUtils.errToPrettyStr(err));
-                    }
-                });
-            }
-        };
+            cli.onclose = function(err) {
+                if (err) {
+                    $._.$.log &amp;&amp; $._.$.log.debug('Error connecting to cloud:' +
+                                                 myUtils.errToPrettyStr(err));
+                }
+                if (!that.__ca_isShutdown__) {
+                    that.__ca_shutdown__(null, function(err) {
+                        if (err) {
+                            $._.$.log &amp;&amp;
+                                $._.$.log.debug('Got error in cloud shutdown:' +
+                                                myUtils.errToPrettyStr(err));
+                        }
+                    });
+                }
+            };
 
-        cli.onerror = function(err) {
-            if (err) {
-                $._.$.log &amp;&amp; $._.$.log.debug('Got error connecting to cloud:' +
-                                             myUtils.errToPrettyStr(err));
-            }
-            // shutdown in 'onclose' afterwards
-        };
+            cli.onerror = function(err) {
+                if (err) {
+                    $._.$.log &amp;&amp; $._.$.log.debug('Error connecting to cloud:' +
+                                                 myUtils.errToPrettyStr(err));
+                }
+                // shutdown in 'onclose' afterwards
+            };
 
-        cli.onopen = function() {
+            cli.onopen = function() {
+                cb(null, that);
+            };
+
+        } else {
+            // no Token, do not create a session
+            that.cli = null;
+            $._.$.log &amp;&amp; $._.$.log.warn('Disabling cloud client');
             cb(null, that);
-        };
+        }
 
         /**
          * Gets original method arguments from message.
@@ -180,15 +199,20 @@ exports.newInstance = function($, spec, cb) {
          * @alias registerHandler
          */
         that.registerHandler = function(handler) {
-            cli.onmessage = function(msg) {
-                handler &amp;&amp; handler(msg);
-            };
+            if (that.cli) {
+                that.cli.onmessage = function(msg) {
+                    handler &amp;&amp; handler(msg);
+                };
+            } else {
+                $._.$.log &amp;&amp; $._.$.log.warn('Ignoring registerHandler:' +
+                                            'Missing cloud client');
+            }
         };
 
         var super__ca_shutdown__ = myUtils.superior(that, '__ca_shutdown__');
         that.__ca_shutdown__ = function(data, cb0) {
             super__ca_shutdown__(data, function(err, data) {
-                cli.close();
+                that.cli &amp;&amp; that.cli.close();
                 cb0(err, data);
             });
         };
@@ -213,7 +237,7 @@ exports.newInstance = function($, spec, cb) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Mar 19 2017 21:54:37 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jan 24 2018 21:20:21 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

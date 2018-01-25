@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: mock_gpio.js</title>
+    <title>JSDoc: Source: mock_gpio-shim.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: mock_gpio.js</h1>
+    <h1 class="page-title">Source: mock_gpio-shim.js</h1>
 
     
 
@@ -44,10 +44,6 @@ limitations under the License.
 
 'use strict';
 var assert = require('assert');
-var mkdirp = require('mkdirp');
-var rimraf = require('rimraf');
-var path = require('path');
-var fs = require('fs');
 
 /*
  * Constants.
@@ -60,50 +56,35 @@ exports.PWM = 0x2;
 exports.PULL_OFF = 0x0;
 var PULL_DOWN = exports.PULL_DOWN = 0x1;
 var PULL_UP = exports.PULL_UP = 0x2;
-var POLL_LOW = exports.POLL_LOW = 0x1;	/* Falling edge detect */
-var POLL_HIGH = exports.POLL_HIGH = 0x2;	/* Rising edge detect */
-var POLL_BOTH = exports.POLL_BOTH = 0x3;	/* POLL_LOW | POLL_HIGH */
+exports.POLL_LOW = 0x1;	/* Falling edge detect */
+exports.POLL_HIGH = 0x2;	/* Rising edge detect */
+exports.POLL_BOTH = 0x3;	/* POLL_LOW | POLL_HIGH */
 
 
-var TMP_GPIO_DIR = '/tmp/gpio';
-
-var rootDir = TMP_GPIO_DIR;
 var pins = {};
 
+var pinsConfig = {};
+
 /**
- * Mocks GPIO pins of a Raspberry PI.
+ * Mocks GPIO pins of a Raspberry PI in the browser.
  *
- * It uses two directories:
  *
- *     /tmp/gpio/in    //pins that are exported as inputs
- *     /tmp/gpio/out   //pins written by the app
- *
- * and a JSON file with the current config:
- *
- *     /tmp/gpio/meta.json
- *
- * Files use names `gpio&lt;pin#>`, i.e., `gpio3`, and contain `1` or `0`.
- *
- *   An external app can just write files in `/tmp/gpio/in`  to trigger poll
- * actions.
- *
- * @module caf_rpi_gpio/mock_gpio
+ * @module caf_rpi_gpio/mock_gpio-shim
  *
  */
 
-var dumpMeta = function() {
-    fs.writeFileSync(path.resolve(rootDir, 'meta.json'),
-                     JSON.stringify(pins, null, 2));
+var dumpAll = function() {
+    /* eslint-disable */
+    console.log('----- PINS START -----');
+    console.log(JSON.stringify(pins));
+    console.log(JSON.stringify(pinsConfig));
+    console.log('----- PINS END -----');
+    /* eslint-enable */
 };
 
-exports.init = function(options) {
-    if (options) {
-        rootDir = (options.mockRootDir ? options.mockRootDir : rootDir);
-    }
-    rimraf.sync(rootDir);
-    mkdirp.sync(path.resolve(rootDir, 'in'));
-    mkdirp.sync(path.resolve(rootDir, 'out'));
-    dumpMeta();
+exports.init = function() {
+    pins = {};
+    pinsConfig = {};
 };
 
 
@@ -121,74 +102,40 @@ exports.open = function(pin, dir, options) {
         if (options === PULL_DOWN) {
             pinConfig.internalResistor = { pullUp: false};
         }
-        fs.writeFileSync(path.resolve(rootDir, 'in', 'gpio'+pin), '0');
+        pins[pin] = HIGH;
     } else {
         pinConfig = {
             input: false
         };
-        var value = '0';
         if (options === HIGH) {
             pinConfig.initialState = { high: true};
-            value = '1';
         }
         if (options === LOW) {
             pinConfig.initialState = { high: false};
-            value = '0';
         }
-        fs.writeFileSync(path.resolve(rootDir, 'out', 'gpio'+pin), value);
     }
-    pins[pin] = pinConfig;
-    dumpMeta();
+    pinsConfig[pin] = pinConfig;
+    dumpAll();
 };
 
-exports.poll = function(pin, callback, trigger) {
-    trigger = trigger || POLL_BOTH;
-    if (callback === null) {
-        pins[pin] &amp;&amp; delete pins[pin].watcher;
-        fs.unwatchFile(path.resolve(rootDir, 'in', 'gpio'+pin));
-    } else {
-        var lastValue = null;
-        var f = function(curr, prev) {
-            if (curr.mtime !== prev.mtime) {
-                var current = read(pin);
-                if (lastValue !== current) {
-                    if ((current === HIGH) &amp;&amp; ((trigger === POLL_HIGH) ||
-                                                (trigger === POLL_BOTH))) {
-                        callback(pin);
-                    }
-                    if ((current === LOW) &amp;&amp; ((trigger === POLL_LOW) ||
-                                               (trigger === POLL_BOTH))) {
-                        callback(pin);
-                    }
-                    lastValue = current;
-                }
-            }
-        };
-        fs.watchFile(path.resolve(rootDir, 'in', 'gpio'+pin), {
-            persistent: false,
-            interval: 100
-        }, f);
-        pins[pin].watcher = {trigger: trigger};
-    }
-    dumpMeta();
+exports.poll = function() {
+    dumpAll();
 };
 
-var read = exports.read = function(pin) {
-    return parseInt(fs.readFileSync(path.resolve(rootDir, 'in', 'gpio'+pin)));
+exports.read = function(pin) {
+    return pins[pin];
 };
 
 exports.write = function(pin, value) {
     assert((value === HIGH) || (value === LOW));
-    var valStr = (value === HIGH ? '1' : '0');
-    fs.writeFileSync(path.resolve(rootDir, 'out', 'gpio'+pin), valStr);
+    pins[pin] = value;
+    dumpAll();
 };
 
 var close = exports.close = function(pin) {
-    fs.unwatchFile(path.resolve(rootDir, 'in', 'gpio'+pin));
-    rimraf.sync(path.resolve(rootDir, 'in', 'gpio'+pin));
-    rimraf.sync(path.resolve(rootDir, 'out', 'gpio'+pin));
     delete pins[pin];
-    dumpMeta();
+    delete pinsConfig[pin];
+    dumpAll();
 };
 
 exports.closeAll = function() {

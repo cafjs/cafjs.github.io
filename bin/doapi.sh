@@ -10,10 +10,7 @@ ALL_FILES=`ls -d */`
 echo $ALL_FILES
 for mod in ${ALL_FILES}; do
     pushd ${mod}
-    npm link `../../tools/caf_dcinabox/bin/findDepsCAF.js`
-    npm link `../../tools/caf_dcinabox/bin/findDevDepsCAF.js`
-    npm install
-    npm run docs
+    yarn run docs
     mkdir -p ${API_DIR}/${mod}
     cp -r docs/*/*/* ${API_DIR}/${mod}
     pushd ${API_DIR}/${mod}
@@ -29,10 +26,7 @@ pushd ../../../extra
 ALL_EXTRA_FILES="caf_forward/ caf_sms/ caf_rpi/ caf_rpi_gpio/ caf_react/ caf_deploy/ caf_bloom/"
 for mod in ${ALL_EXTRA_FILES}; do
     pushd ${mod}
-    npm link `../../tools/caf_dcinabox/bin/findDepsCAF.js`
-    npm link `../../tools/caf_dcinabox/bin/findDevDepsCAF.js`
-    npm install
-    npm run docs
+    yarn run docs
     mkdir -p ${API_DIR}/${mod}
     cp -r docs/*/*/* ${API_DIR}/${mod}
     pushd ${API_DIR}/${mod}
@@ -46,8 +40,7 @@ popd #extra
 
 #top dir
 pushd ../../../
-npm install
-npm run docs
+yarn run docs
 mkdir -p ${API_DIR}/caf
 cp -r docs/api/*/*/* ${API_DIR}/caf
 pushd ${API_DIR}/caf
@@ -58,10 +51,7 @@ popd #top
 
 #tools dir
 pushd ../../../tools/caf_dcinabox
-npm link `bin/findDepsCAF.js`
-npm link `bin/findDevDepsCAF.js`
-npm install
-npm run docs
+yarn run docs
 mkdir -p ${API_DIR}/caf_dcinabox
 cp -r docs/*/*/* ${API_DIR}/caf_dcinabox
 pushd ${API_DIR}/caf_dcinabox
