@@ -26,7 +26,7 @@
     
 
 
-    <h3>caf_iot 0.3.0</h3>
+    <h3>caf_iot 0.3.1</h3>
 
 
 
@@ -52,16 +52,16 @@
 <p>However, we do not checkpoint state, and there is only one &quot;CA&quot;, i.e., the device. We are not that concerned about long term consistency either, since we reset the device every reboot; therefore, some plugins may not delay external actions, improving responsiveness.</p>
 <p>We have also simplified framework methods and config files. For instance, the file <code>iot.json</code> describes both the framework, i.e., <code>framework.json</code>, and  the device, i.e., <code>ca.json</code>, component hierarchies. Also, the naming of methods is more &quot;Arduino-friendly&quot;.</p>
 <h3>Hello World (see <code>examples/helloworld</code>)</h3><pre class="prettyprint source"><code>exports.methods = {
-    __iot_setup__: function(cb) {
+    async __iot_setup__() {
         this.state.counter = this.toCloud.get('counter') || 0;
-        cb(null);
+        return [];
     },
-    __iot_loop__ : function(cb) {
+    async __iot_loop__() {
         var msg = this.fromCloud.get('msg') || 'Counter:';
         this.$.log && this.$.log.debug(msg + this.state.counter);
         this.state.counter = this.state.counter + 1;
         this.toCloud.set('counter', this.state.counter);
-        cb(null);
+        return [];
     }
 };</code></pre><p>Defines two methods called by the IoT framework:</p>
 <ul>
@@ -85,16 +85,16 @@
 <h3>Hello Cron (see <code>examples/hellocron</code>)</h3><p>Similar to CA plugins, device plugins are exposed to application code with proxies in <code>this.$</code>.</p>
 <p>An interesting plugin is <code>cron</code> (see <a href="module-caf_iot_proxy_iot_cron.html">module:caf_iot/proxy_iot_cron</a>), which allows calls to arbitrary methods at regular intervals.</p>
 <pre class="prettyprint source"><code>exports.methods = {
-    __iot_setup__: function(cb) {
+    async __iot_setup__() {
         this.state.counter = this.toCloud.get('counter') || 0;
         this.$.cron.addCron('helloCron', 'greetings', ['Hello:'], 2000);
         this.$.cron.addCron('byeCron', 'greetings', ['Bye:'], 3000);
-        cb(null);
+        return [];
     },
-    greetings: function(greet, cb) {
+    async greetings(greet) {
         var now = (new Date()).getTime();
         this.$.log && this.$.log.debug(greet + now);
-        cb(null);
+        return [];
     },
     ...
 };</code></pre><h4>How are errors and exceptions handled?</h4><p>The default behavior is rather crude, just log and do a full reset.</p>
@@ -115,29 +115,29 @@
 <p>The device code defines three simple commands for our &quot;drone&quot;: <code>up</code>, <code>down</code>, or take a recovery action if we lose connectivity.</p>
 <pre class="prettyprint source"><code>exports.methods = {
 ...
-    down: function(speed, cb) {
+    async down(speed) {
         var now = (new Date()).getTime();
         this.$.log && this.$.log.debug('Down:' +  now + ' speed: ' + speed);
-        cb(null);
+        return [];
     },
-    up: function(speed, cb) {
+    async up(speed) {
         var now = (new Date()).getTime();
         this.$.log && this.$.log.debug('Up:  ' +  now + ' speed: ' + speed);
-        cb(null);
+        return [];
     },
-    recover: function(msg, cb) {
+    async recover(msg) {
         var now = (new Date()).getTime();
         this.$.log && this.$.log.debug('RECOVERING:' +  now + ' msg: ' + msg);
-        cb(null);
+        return [];
     },
 };</code></pre><p>The CA code is a bit more interesting:</p>
 <pre class="prettyprint source"><code>var MARGIN=100;
 exports.methods = {
-    __ca_init__: function(cb) {
+    async __ca_init__() {
         this.state.maxAcks = 1;
-        cb(null);
+        return [];
     },
-    __ca_pulse__: function(cb) {
+    async __ca_pulse__() {
         if ((this.state.acks && (this.state.acks.length > 0) &&
              (!this.state.acks[0].result))) {
             this.$.log && this.$.log.debug('Last bundle was late');
@@ -147,7 +147,7 @@ exports.methods = {
         this.$.iot.sendBundle(bundle);
         // `notify` improves responsiveness.
         this.$.session.notify(['new bundle'], 'iot');
-        cb(null);
+        return [];
     },
   ...
 };</code></pre><p>If you are wondering how <code>bundle</code> gets methods <code>down</code>, <code>up</code>, and <code>recover</code>, the framework instrospects the device code, and generates them at run time. <em>I love JavaScript</em>.</p>
@@ -164,26 +164,24 @@ exports.methods = {
 <p>Notifications improve responsiveness, because otherwise the device waits until the next <code>__iot_loop__</code> to synchronize with the cloud.</p>
 <p>For example:</p>
 <pre class="prettyprint source"><code>exports.methods = {
-    __iot_setup__: function(cb) {
+    async __iot_setup__() {
         var self = this;
         this.$.cloud.registerHandler(function(msg) {
             var args = self.$.cloud.getMethodArgs(msg);
             self.$.queue.process('greetings', args);
         });
-        cb(null);
+        return [];
     },
-    greetings: function(msg, cb) {
-        var self = this;
+    async greetings(msg) {
         var now = (new Date()).getTime();
         this.$.log && this.$.log.debug(msg + now);
-        this.$.cloud.cli.getCounter(function(err, value) {
-            if (err) {
-                cb(err);
-            } else {
-                self.$.log && self.$.log.debug('Got ' + value);
-                cb(null);
-            }
-        });
+        try {
+            var value = await this.$.cloud.cli.getCounter().getPromise();
+            this.$.log && this.$.log.debug('Got ' + value);
+            return [];
+        } catch (err) {
+            return [err];
+        }
     },
     ...
 };</code></pre><p>Every time the CA notifies the device, a method call for <code>greetings</code> gets queued,  and eventually, that method will call back the CA, reading its counter. The default session identifier for a device is <code>iot</code>, but it can be changed with the property <code>session</code> (see <a href="module-caf_iot_plug_iot_cloud.html">module:caf_iot/plug_iot_cloud</a>).</p>
@@ -205,7 +203,7 @@ exports.methods = {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jan 24 2018 21:20:21 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Feb 03 2018 00:52:31 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

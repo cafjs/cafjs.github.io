@@ -59,31 +59,16 @@
 <p>But this raises a new issue, how to manage these notification queues? If a CA keeps queueing notifications that nobody reads, does it just run out of memory?</p>
 <p>The best approach is very application dependent. In some cases we just need the last notification. In others we bound the size of the queue, and silently drop the old ones. Or we throw an error to throttle the CA. And what about duplicated notifications?</p>
 <p>Our solution exposes the contents of output queues to application code, so that it can make the right choices.</p>
-<h3>Persistent Sessions</h3><p>If clients are stateless, or we keep changing devices all the time, can we guarantee that certain actions are only done once?</p>
-<p>After all, you didn't want two toasters, did you?</p>
-<p>The influential work by Bernstein&amp;Hsu&amp;Mann'90 shows how to use a reliable queue to guarantee exactly-once delivery with a stateless client. A CA has an input queue, and its state is managed transactionally (see  <a href="external-caf_ca.html">external:caf_ca</a>). Input and output queues are not checkpointed, but losing them is equivalent to dropping  messages in transit, and we do not assume a reliable transport. Can we use a CA to implement exactly-once delivery for a stateless client?</p>
-<p>Yes, if the client application is written in a certain way:</p>
-<ul>
-<li><p>First, it needs to explicitly start and end a persistent session. If a session is started again without being properly closed, we assume the client crashed.</p>
-</li>
-<li><p>Second, it has to protect against concurrent sessions by using nonces.</p>
-</li>
-<li><p>Third, enough client state has to be piggybacked to requests, so that the client can know what was the last committed action before the crash. We use a <code>memento</code> for that (see <a href="module-caf_session_proxy_session.html">module:caf_session/proxy_session</a>).</p>
-</li>
-<li><p>Fourth, in case of a timeout or error it has to crash and start again the session. When the session restarts it will receive the last <code>memento</code>, and use it to avoid duplicated requests.</p>
-</li>
-</ul>
-<p>The key is that our client library (see <a href="external-caf_cli.html">external:caf_cli</a>) and the CA serialize all the requests within one session instance. Across sessions, nonces guarantee that only one session instance is active, and requests in other concurrent sessions will fail.</p>
 <h3>Hello World (see <code>examples/helloworld</code>)</h3><p>The following example shows how to limit queues, and periodically notify
 two clients, each using a different logical session:</p>
 <pre class="prettyprint source"><code>exports.methods = {
-    __ca_init__: function(cb) {
+    async __ca_init__() {
         this.state.counter = 0;
         this.$.session.limitQueue(10, 'client1');
         this.$.session.limitQueue(10, 'client2');
-        cb(null);
+        return [];
     },
-    __ca_pulse__: function(cb) {
+    async __ca_pulse__() {
         this.state.counter = this.state.counter + 1;
         if (this.state.counter % 2 === 0) {
             this.$.session.notify([this.state.counter], 'client1');
@@ -91,55 +76,71 @@ two clients, each using a different logical session:</p>
         if (this.state.counter % 3 === 0) {
             this.$.session.notify([this.state.counter], 'client2');
         }
-        cb(null);
+        return [];
     }
 }</code></pre><p>To check the status of all the queues:</p>
 <pre class="prettyprint source"><code>exports.methods = {
 ...
-    sessionInfo: function(cb) {
+    async sessionInfo() {
         var self = this;
         var sessionInfo = {current: this.$.session.getSessionId()};
         this.$.session.getAllSessionIds().forEach(function(x) {
             sessionInfo[x] = self.$.session.outq(x);
         });
-        cb(null, sessionInfo);
+        return [null, sessionInfo];
     }
 }</code></pre><p>If we want to notify all logical sessions, without knowing them a priori:</p>
 <pre class="prettyprint source"><code>exports.methods = {
 ...
-    notifyAll: function(msg, cb) {
+    async notifyAll(msg) {
         var self = this;
         this.$.session.getAllSessionIds().forEach(function(x) {
             self.$.session.notify([msg], x);
         });
-        this.sessionInfo(cb);
+        return this.sessionInfo();
     }
 }</code></pre><p>The client uses the handler <code>onmessage</code> to receive notifications. See <code>client1.js</code> for an example.</p>
+<h3>Persistent Sessions</h3><p>If clients are stateless, or we keep changing devices all the time, can we guarantee that certain actions are only done once?</p>
+<p>After all, you didn't want two toasters, did you?</p>
+<p>The influential work by Bernstein&amp;Hsu&amp;Mann'90 shows how to use a reliable queue to guarantee exactly-once delivery with a stateless client. A CA has an input queue, and its state is managed transactionally (see  <a href="external-caf_ca.html">external:caf_ca</a>). Input and output queues are not checkpointed, but losing them is equivalent to dropping  messages in transit, and we do not assume a reliable transport.</p>
+<p>Can we use a CA to implement exactly-once delivery for a stateless client?</p>
+<p>Yes, if the client application is written in a certain way:</p>
+<ul>
+<li><p>First, it needs to explicitly start and end a persistent session. If a session is started again without being properly closed, we assume the client crashed.</p>
+</li>
+<li><p>Second, it has to serialize concurrent sessions by using nonces.</p>
+</li>
+<li><p>Third, enough client state has to be piggybacked to requests, so that the client can know what was the last committed action before the crash. We use a <code>memento</code> for that (see <a href="module-caf_session_proxy_session.html">module:caf_session/proxy_session</a>).</p>
+</li>
+<li><p>Fourth, in case of a timeout or error it has to crash and start again the session. When the session restarts it will receive the last <code>memento</code>, and use it to avoid duplicated requests.</p>
+</li>
+</ul>
+<p>The key is that our client library (see <a href="external-caf_cli.html">external:caf_cli</a>) and the CA serialize all the requests within one session instance. Across sessions, nonces guarantee that only one session instance is active, and requests in other concurrent sessions will fail.</p>
 <h3>Hello Persistent (see <code>examples/hellopersistent</code>)</h3><p>This example shows how to guarantee that bought items are not duplicated:</p>
 <pre class="prettyprint source"><code>exports.methods = {
-    __ca_init__: function(cb) {
+    async __ca_init__() {
         this.state.counters = {};
-        cb(null);
+        return [];
     },
-    begin: function(cb) {
-        cb(null,  this.$.session.begin());
+    async begin() {
+        return [null, this.$.session.begin()];
     },
-    buy: function(nonce, itemIndex, item, cb) {
+    async buy(nonce, itemIndex, item) {
         if (this.$.session.remember(nonce, itemIndex)) {
             var counter = this.state.counters[item] || 0;
             this.state.counters[item] = counter + 1;
-            this.getCounters(cb);
+            return this.getCounters();
         } else {
             var err = new Error('Ignoring buy operation, bad nonce');
             err.item = item;
-            cb(err);
+            return [err];
         }
     },
-    end: function(nonce, cb) {
-        cb(null, this.$.session.end(nonce));
+    async end(nonce) {
+        return [null, this.$.session.end(nonce)];
     },
-    getCounters: function(cb) {
-        cb(null, this.state.counters);
+    async getCounters() {
+        return [null, this.state.counters];
     }
 }</code></pre><p>The client is in <code>examples/hellopersistent/client.js</code>.</p>
 <p>The <code>memento</code> in this case is just an index in a list of items that we want to buy. Every time we buy an item, we increment its counter. The update of the <code>memento</code> and the counter is within a transaction scoped by the <code>buy</code> method.</p>
@@ -164,7 +165,7 @@ two clients, each using a different logical session:</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jan 24 2018 21:20:25 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Feb 03 2018 00:52:36 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

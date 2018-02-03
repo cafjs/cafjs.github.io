@@ -287,7 +287,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line301">line 301</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line298">line 298</a>
     </li></ul></dd>
     
 
@@ -469,7 +469,7 @@ defined methods, false if we allow changing existing  ones.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line154">line 154</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line152">line 152</a>
     </li></ul></dd>
     
 
@@ -666,7 +666,7 @@ deep clone.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line91">line 91</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line89">line 89</a>
     </li></ul></dd>
     
 
@@ -862,7 +862,7 @@ structure.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line324">line 324</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line321">line 321</a>
     </li></ul></dd>
     
 
@@ -1020,7 +1020,7 @@ console.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line226">line 226</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line224">line 224</a>
     </li></ul></dd>
     
 
@@ -1177,7 +1177,7 @@ console.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line203">line 203</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line201">line 201</a>
     </li></ul></dd>
     
 
@@ -1334,7 +1334,7 @@ console.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line262">line 262</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line260">line 260</a>
     </li></ul></dd>
     
 
@@ -1696,7 +1696,7 @@ defined methods, false if we allow changing existing  ones.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line65">line 65</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line63">line 63</a>
     </li></ul></dd>
     
 
@@ -1853,7 +1853,7 @@ defined methods, false if we allow changing existing  ones.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line280">line 280</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line278">line 278</a>
     </li></ul></dd>
     
 
@@ -1898,6 +1898,220 @@ defined methods, false if we allow changing existing  ones.</p></td>
 </dl>
 
     
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="promiseToCallback"><span class="type-signature"></span>promiseToCallback<span class="signature">(promise, cb, wrapException, wrapAppError)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Maps a promise to a callback.</p>
+<p>Assumes that the promise resolves to a <code>[error, value]</code> array, compatible
+with an standard node.js callback.</p>
+<p>It does nothing if the promise is missing.</p>
+<p>If it has a non-null value but is not a promise object, or resolves to a
+non-array object, or an array with length greater than 2,
+it will propagate an error in the callback.</p>
+<p>An optional <code>wrapException</code> function can modify that error, e.g.,  to
+distinguish them from standard application errors propagated in the array.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>promise</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Promise</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A promise to be mapped into a callback</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">caf.cb</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A callback to propagate the resolved promise values.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>wrapException</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An optional function to wrap
+non-propagated errors.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>wrapAppError</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An optional function to wrap
+application errors propagated in the first element of the returned array.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line359">line 359</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2082,7 +2296,7 @@ defined methods, false if we allow changing existing  ones.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line172">line 172</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line170">line 170</a>
     </li></ul></dd>
     
 
@@ -2247,7 +2461,7 @@ to override.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line133">line 133</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line131">line 131</a>
     </li></ul></dd>
     
 
@@ -2356,7 +2570,7 @@ parent class.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line247">line 247</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line245">line 245</a>
     </li></ul></dd>
     
 
@@ -2407,6 +2621,249 @@ parent class.</p>
 
 
         
+            
+
+    
+
+    
+    <h4 class="name" id="wrapAsyncFunction"><span class="type-signature"></span>wrapAsyncFunction<span class="signature">(f<span class="signature-attributes">opt</span>, target<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {function}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Wraps an asynchronous function.</p>
+<p> The goal is to make it behave the same whether it uses a callback or
+returns a promise, e.g, uses the async/await pattern.</p>
+<p> Assumes that the promise resolves to a <code>[error, value]</code> array, compatible
+with an standard node.js callback.</p>
+<p> If the function throws, and the exception was captured in the promise, we
+just rethrow the exception, so that it behaves like a callback based async
+function.</p>
+<p>It does nothing if the function is missing. It throws if called without a
+callback or something that is not a function.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>f</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An asynchronous function to be wrapped.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An optional target object when the function is one
+of its methods. It defaults to <code>f</code>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line418">line 418</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>if <code>f</code> is provided but is not a function, or we call the
+wrapped function without a callback.</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">Error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A wrapped function that behaves the same whether <code>f</code> is
+callback or promise based.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">function</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
     
 
     
@@ -2428,7 +2885,7 @@ parent class.</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Jan 24 2018 21:20:20 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Feb 03 2018 00:52:30 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>
