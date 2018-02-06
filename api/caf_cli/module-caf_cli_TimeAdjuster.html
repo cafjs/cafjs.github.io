@@ -200,7 +200,7 @@ requests, the time error after applying the offset is &lt;100ms in most cases.</
             <td class="type">
             
                 
-<span class="param-type">caf.msg</span>
+<span class="param-type"><a href="global.html#msgType">msgType</a></span>
 
 
             
@@ -251,7 +251,7 @@ requests, the time error after applying the offset is &lt;100ms in most cases.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="TimeAdjuster.js.html">TimeAdjuster.js</a>, <a href="TimeAdjuster.js.html#line134">line 134</a>
+        <a href="TimeAdjuster.js.html">TimeAdjuster.js</a>, <a href="TimeAdjuster.js.html#line125">line 125</a>
     </li></ul></dd>
     
 
@@ -340,7 +340,7 @@ requests, the time error after applying the offset is &lt;100ms in most cases.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="TimeAdjuster.js.html">TimeAdjuster.js</a>, <a href="TimeAdjuster.js.html#line164">line 164</a>
+        <a href="TimeAdjuster.js.html">TimeAdjuster.js</a>, <a href="TimeAdjuster.js.html#line155">line 155</a>
     </li></ul></dd>
     
 
@@ -446,7 +446,7 @@ requests, the time error after applying the offset is &lt;100ms in most cases.</
             <td class="type">
             
                 
-<span class="param-type">caf.msg</span>
+<span class="param-type"><a href="global.html#msgType">msgType</a></span>
 
 
             
@@ -497,7 +497,7 @@ requests, the time error after applying the offset is &lt;100ms in most cases.</
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="TimeAdjuster.js.html">TimeAdjuster.js</a>, <a href="TimeAdjuster.js.html#line115">line 115</a>
+        <a href="TimeAdjuster.js.html">TimeAdjuster.js</a>, <a href="TimeAdjuster.js.html#line106">line 106</a>
     </li></ul></dd>
     
 
@@ -540,15 +540,7 @@ requests, the time error after applying the offset is &lt;100ms in most cases.</
 
 <div class="description">
     <p>Constructor.</p>
-<p>The type <code>caf.timeOptions</code> is:</p>
-<pre class="prettyprint source"><code>{timeSmooth:number=, timeMaxRTT: number=, timeMaxWindow: number=}</code></pre><p>where:</p>
-<ul>
-<li><code>timeSmooth</code>: low pass filter coefficient. Defaults to <code>1.0</code>, i.e., no
-filtering.</li>
-<li><code>timeMaxRTT</code>: maximum round trip time in msec before we ignore it.</li>
-<li><code>timeMaxWindow</code>: size of the historical window. We always select the
-quickest roundtrip in the window.</li>
-</ul>
+<p>See <code>types.js</code> for a description of type <code>timeAdjusterOptionsType</code>.</p>
 </div>
 
 
@@ -590,7 +582,7 @@ quickest roundtrip in the window.</li>
             <td class="type">
             
                 
-<span class="param-type">caf.timeOptions</span>
+<span class="param-type"><a href="global.html#timeAdjusterOptionsType">timeAdjusterOptionsType</a></span>
 
 
             
@@ -641,7 +633,7 @@ quickest roundtrip in the window.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="TimeAdjuster.js.html">TimeAdjuster.js</a>, <a href="TimeAdjuster.js.html#line100">line 100</a>
+        <a href="TimeAdjuster.js.html">TimeAdjuster.js</a>, <a href="TimeAdjuster.js.html#line91">line 91</a>
     </li></ul></dd>
     
 
@@ -685,13 +677,13 @@ quickest roundtrip in the window.</li>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_ca_main.html">caf_ca/main</a></li><li><a href="module-caf_cli_cryptoSession.html">caf_cli/cryptoSession</a></li><li><a href="module-caf_cli_Queue.html">caf_cli/Queue</a></li><li><a href="module-caf_cli_Session.html">caf_cli/Session</a></li><li><a href="module-caf_cli_TimeAdjuster.html">caf_cli/TimeAdjuster</a></li><li><a href="module-caf_cli_TokenFactory.html">caf_cli/TokenFactory</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_ca_main.html">caf_ca/main</a></li><li><a href="module-caf_cli_cryptoSession.html">caf_cli/cryptoSession</a></li><li><a href="module-caf_cli_Queue.html">caf_cli/Queue</a></li><li><a href="module-caf_cli_Session.html">caf_cli/Session</a></li><li><a href="module-caf_cli_TimeAdjuster.html">caf_cli/TimeAdjuster</a></li><li><a href="module-caf_cli_TokenFactory.html">caf_cli/TokenFactory</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Feb 03 2018 00:52:29 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 06 2018 00:39:46 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

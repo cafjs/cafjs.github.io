@@ -49,6 +49,7 @@ limitations under the License.
  * @module caf_security/proxy_security
  * @augments external:caf_components/gen_proxy
  */
+// @ts-ignore: augments not attached to a class
 var caf_comp = require('caf_components');
 var genProxy = caf_comp.gen_proxy;
 var rules = require('./rules');
@@ -96,7 +97,7 @@ exports.newInstance = function($, spec, cb) {
      *  @param {string=} caOwner Owner of the calling CA.
      *  @param {string=} caLocalName Local name of the calling CA/
      *
-     *  @return {caf.rule} An authorization  rule.
+     *  @return {ruleType} An authorization  rule.
      *
      * @memberof! module:caf_security/proxy_security#
      * @alias newSimpleRule
@@ -119,7 +120,7 @@ exports.newInstance = function($, spec, cb) {
      *  @param {string} aggregateMapAlias The alias that we used to
      * instantiate the AggregateMap.
      *
-     *  @return {caf.rule} An authorization  rule.
+     *  @return {ruleType} An authorization  rule.
      *
      * @memberof! module:caf_security/proxy_security#
      * @alias newAggregateRule
@@ -169,12 +170,13 @@ exports.newInstance = function($, spec, cb) {
     /**
      * Adds a rule that allows a principal to invoke certain methods.
      *
-     * The type of `caf.ruleType` is `"caf.simpleRule" | "caf.aggregateRule"`
+     * The type can be `simpleRuleType` or  `aggregateRuleType`
      *
-     * The type of `caf.rule` when the rule type is `"caf.simpleRule"`:
+     * The type of `ruleType` when the rule type is `simpleRuleType`:
      *
-     *      { type: caf.ruleType, ac: {caOwner: string=, caLocalName: string=},
-     *        methods: Array.&lt;string> | string}
+     *     { type: 'caf.simpleRule', ac: {caOwner: string=,
+     *                                    caLocalName: string=},
+     *       methods: (Array.&lt;string> | string)=}
      *
      * a missing field means a wildcard, `"!SELF"` represents the owner of
      * this CA, and `"!CA_LOCAL"` matches the local name of this CA.
@@ -197,17 +199,17 @@ exports.newInstance = function($, spec, cb) {
      * grants permission to CA `bar`, of the same owner, to  invoke method
      * `foo`.
      *
-     * The type  of `caf.rule` when the rule type is `"caf.aggregateRule"`:
+     * The type  of `ruleType` when the rule type is `aggregateRuleType`:
      *
      *      {type: 'caf.aggregateRule', alias : string,
-     *       methods: Array.&lt;string> | string}
+     *       methods: (Array.&lt;string> | string)=}
      *
      *  where `alias` is the `AggregateMap` alias in the `sharing` plugin
      * context. See {@link external:caf_sharing}.
      *
      * For example, if `alias` is `foo`, the map is `this.$.sharing.$.foo`.
      *
-     * @param {caf.rule} newRule A new authorization rule.
+     * @param {ruleType} newRule A new authorization rule.
      *
      * @return {string} A rule identifier.
      *
@@ -224,7 +226,7 @@ exports.newInstance = function($, spec, cb) {
      *
      * It returns a deep frozen copy of the current rules.
      *
-     * @return {Object.&lt;string, caf.rule>} A map using rule ids as keys and
+     * @return {Object.&lt;string, ruleType>} A map using rule ids as keys and
      *  rule contents as values.
      *
      * @memberof! module:caf_security/proxy_security#
@@ -238,7 +240,7 @@ exports.newInstance = function($, spec, cb) {
     /**
      * Computes a content-based identifier for a rule.
      *
-     * @param {caf.rule} rule A rule.
+     * @param {ruleType} rule A rule.
      *
      * @return {string} A unique identifier based on the contents of that rule.
      *
@@ -270,14 +272,14 @@ exports.newInstance = function($, spec, cb) {
     /**
      * Checks that a serialized token is trusted by this app.
      *
-     * The type of `caf.token` is
+     * The type of `tokenType` is
      *
      *       {appPublisher: string=, appLocalName:string=, caOwner: string=,
      *        caLocalName: string=, expiresAfter: string=}
      *
      * @param {string} tokenStr A serialized token to validate.
      *
-     * @return {caf.token|null} A parsed and validated token, or `null` if token
+     * @return {tokenType|null} A parsed and validated token, or `null` if token
      *  invalid.
      *
      * @memberof! module:caf_security/proxy_security#
@@ -291,7 +293,7 @@ exports.newInstance = function($, spec, cb) {
     /**
      * Weakens an authentication token generating one (or many) token(s).
      *
-     * type of `caf.tokenDesc` is
+     * type of `tokenDescriptionType` is
      *
      *      {appPublisher: (string|null)=, appLocalName: (string|null)=,
      *       caOwner: (string|null)=, caLocalName: (string|null)=,
@@ -301,10 +303,10 @@ exports.newInstance = function($, spec, cb) {
      *
      * An `undefined` value means remove the constraint.
      *
-     * @param {caf.token} megaToken A token that we want to restrict.
-     * @param {Array.&lt;caf.tokenDesc> |caf.tokenDesc } tokenDesc A description
-     *  of the new token(s).
-     * @param {caf.cb} cb0 A callback to return the new token(s) or an error.
+     * @param {tokenType} megaToken A token that we want to restrict.
+     * @param {Array.&lt;tokenDescriptionType> |tokenDescriptionType } tokenDesc A
+     * description  of the new token(s).
+     * @param {cbType} cb0 A callback to return the new token(s) or an error.
      *
      *
      * @memberof! module:caf_security/proxy_security#
@@ -327,13 +329,13 @@ exports.newInstance = function($, spec, cb) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_security_aggregates.html">caf_security/aggregates</a></li><li><a href="module-caf_security_main.html">caf_security/main</a></li><li><a href="module-caf_security_plug_ca_security.html">caf_security/plug_ca_security</a></li><li><a href="module-caf_security_plug_security.html">caf_security/plug_security</a></li><li><a href="module-caf_security_proxy_security.html">caf_security/proxy_security</a></li><li><a href="module-caf_security_rules.html">caf_security/rules</a></li><li><a href="module-caf_security_tokens.html">caf_security/tokens</a></li><li><a href="module-caf_security_utils.html">caf_security/utils</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li><li><a href="external-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_security_aggregates.html">caf_security/aggregates</a></li><li><a href="module-caf_security_main.html">caf_security/main</a></li><li><a href="module-caf_security_plug_ca_security.html">caf_security/plug_ca_security</a></li><li><a href="module-caf_security_plug_security.html">caf_security/plug_security</a></li><li><a href="module-caf_security_proxy_security.html">caf_security/proxy_security</a></li><li><a href="module-caf_security_rules.html">caf_security/rules</a></li><li><a href="module-caf_security_tokens.html">caf_security/tokens</a></li><li><a href="module-caf_security_utils.html">caf_security/utils</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li><li><a href="external-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Feb 03 2018 00:52:35 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 06 2018 00:39:52 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

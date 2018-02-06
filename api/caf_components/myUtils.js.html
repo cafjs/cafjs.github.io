@@ -185,12 +185,12 @@ exports.cloneAndMixin = function(dest, source, keepOld) {
  * Retries an asynchronous function several times until it succeeds. It delays a
  *  retry by a fixed amount of time.
  *
- * @param {function(caf.cb)} f An asynchronous function of type
- * `function(caf.cb)` to be evaluated. It returns error/result using a callback
+ * @param {function(cbType)} f An asynchronous function of type
+ * `function(cbType)` to be evaluated. It returns error/result using a callback
  *  with node.js conventions.
- * @param {integer} nTimes  Max number of attempts.
- * @param {integer} delay Time between retries in miliseconds.
- * @param {caf.cb} cb Standard callback function for error/result propagation.
+ * @param {number} nTimes  Max number of attempts.
+ * @param {number} delay Time between retries in miliseconds.
+ * @param {cbType} cb Standard callback function for error/result propagation.
  *
  * @memberof! module:caf_components/myUtils
  * @alias retryWithDelay
@@ -317,8 +317,8 @@ exports.onlyFun = function(obj) {
  * Ensures that `cb` is only called once. If not, and optional `errF` callback
  *  is called.
  *
- * @param {caf.cb=} errF An optional callback for any extra calls to `cb`.
- * @param {caf.cb} cb A callback that should only be called once.
+ * @param {cbType=} errF An optional callback for any extra calls to `cb`.
+ * @param {cbType} cb A callback that should only be called once.
  *
  * @memberof! module:caf_components/myUtils
  * @alias callJustOnce
@@ -375,7 +375,7 @@ var promiseToCallback =
  *
  *
  * @param {Promise} promise A promise to be mapped into a callback
- * @param {caf.cb} cb A callback to propagate the resolved promise values.
+ * @param {cbType} cb A callback to propagate the resolved promise values.
  * @param {function(Error): Error=} wrapException An optional function to wrap
  * non-propagated errors.
  * @param {function(Error): Error=} wrapAppError An optional function to wrap
@@ -391,7 +391,7 @@ exports.promiseToCallback = function(promise, cb, wrapException, wrapAppError) {
         if (Promise.resolve(promise) !== promise) {
             var err = new Error('Returning an object that is not a promise.' +
                                 ' Is your function async?');
-            err.obj = promise;
+            err['obj'] = promise;
             cb(wrapException(err));
         } else {
             promise.then(function(value) {
@@ -400,12 +400,12 @@ exports.promiseToCallback = function(promise, cb, wrapException, wrapAppError) {
                         cb(wrapAppError(value[0]), value[1]);
                     } else {
                         err = new Error('Promise array length > 2');
-                        err.obj = value;
+                        err['obj'] = value;
                         cb(wrapException(err));
                     }
                 } else {
                     err = new Error('Promise value not an array');
-                    err.obj = value;
+                    err['obj'] = value;
                     cb(wrapException(err));
                 }
             }).catch(function(e) {
@@ -476,13 +476,13 @@ exports.wrapAsyncFunction = function(f, target) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_components_containerUtils.html">caf_components/containerUtils</a></li><li><a href="module-caf_components_gen_component.html">caf_components/gen_component</a></li><li><a href="module-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="module-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="module-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a></li><li><a href="module-caf_components_gen_loader.html">caf_components/gen_loader</a></li><li><a href="module-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="module-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="module-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="module-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="module-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="module-caf_components_main.html">caf_components/main</a></li><li><a href="module-caf_components_myUtils.html">caf_components/myUtils</a></li><li><a href="module-caf_components_naming.html">caf_components/naming</a></li><li><a href="module-caf_components_plug_ca_log.html">caf_components/plug_ca_log</a></li><li><a href="module-caf_components_plug_log.html">caf_components/plug_log</a></li><li><a href="module-caf_components_proxy_log.html">caf_components/proxy_log</a></li><li><a href="module-caf_components_supervisor.html">caf_components/supervisor</a></li><li><a href="module-caf_components_templateUtils.html">caf_components/templateUtils</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_components_containerUtils.html">caf_components/containerUtils</a></li><li><a href="module-caf_components_gen_component.html">caf_components/gen_component</a></li><li><a href="module-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="module-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="module-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a></li><li><a href="module-caf_components_gen_loader.html">caf_components/gen_loader</a></li><li><a href="module-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="module-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="module-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="module-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="module-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="module-caf_components_main.html">caf_components/main</a></li><li><a href="module-caf_components_myUtils.html">caf_components/myUtils</a></li><li><a href="module-caf_components_naming.html">caf_components/naming</a></li><li><a href="module-caf_components_plug_ca_log.html">caf_components/plug_ca_log</a></li><li><a href="module-caf_components_plug_log.html">caf_components/plug_log</a></li><li><a href="module-caf_components_proxy_log.html">caf_components/proxy_log</a></li><li><a href="module-caf_components_supervisor.html">caf_components/supervisor</a></li><li><a href="module-caf_components_templateUtils.html">caf_components/templateUtils</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Feb 03 2018 00:52:30 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 06 2018 00:39:47 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

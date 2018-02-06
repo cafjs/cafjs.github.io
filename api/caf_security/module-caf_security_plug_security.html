@@ -169,7 +169,7 @@ authenticate without credentials.</li>
     
 
     
-    <h4 class="name" id="__ca_attenuateToken__"><span class="type-signature"></span>__ca_attenuateToken__<span class="signature">(megaTokenStr, tokenDesc, cb0)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="__ca_attenuateToken__"><span class="type-signature"></span>__ca_attenuateToken__<span class="signature">(megaTokenStr, constraints, cb0)</span><span class="type-signature"></span></h4>
     
 
     
@@ -237,16 +237,13 @@ authenticate without credentials.</li>
 
         <tr>
             
-                <td class="name"><code>tokenDesc</code></td>
+                <td class="name"><code>constraints</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;caf.tokenDesc></span>
-|
-
-<span class="param-type">caf.tokenDesc</span>
+<span class="param-type"><a href="global.html#tkDescArray">tkDescArray</a></span>
 
 
             
@@ -256,8 +253,7 @@ authenticate without credentials.</li>
 
             
 
-            <td class="description last"><p>A
-description of the new token(s).</p></td>
+            <td class="description last"><p>A description of the new token(s).</p></td>
         </tr>
 
     
@@ -270,7 +266,7 @@ description of the new token(s).</p></td>
             <td class="type">
             
                 
-<span class="param-type">caf.cb</span>
+<span class="param-type"><a href="global.html#cbType">cbType</a></span>
 
 
             
@@ -322,7 +318,7 @@ description of the new token(s).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line339">line 339</a>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line340">line 340</a>
     </li></ul></dd>
     
 
@@ -459,7 +455,7 @@ description of the new token(s).</p></td>
             <td class="type">
             
                 
-<span class="param-type">caf.cb</span>
+<span class="param-type"><a href="global.html#cbType">cbType</a></span>
 
 
             
@@ -511,7 +507,7 @@ description of the new token(s).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line205">line 205</a>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line206">line 206</a>
     </li></ul></dd>
     
 
@@ -671,7 +667,7 @@ description of the new token(s).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line259">line 259</a>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line260">line 260</a>
     </li></ul></dd>
     
 
@@ -728,7 +724,7 @@ description of the new token(s).</p></td>
     
 
     
-    <h4 class="name" id="__ca_pulse__"><span class="type-signature"></span>__ca_pulse__<span class="signature">(cb)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="__ca_pulse__"><span class="type-signature"></span>__ca_pulse__<span class="signature">(cb0)</span><span class="type-signature"></span></h4>
     
 
     
@@ -773,13 +769,13 @@ description of the new token(s).</p></td>
 
         <tr>
             
-                <td class="name"><code>cb</code></td>
+                <td class="name"><code>cb0</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">caf.cb</span>
+<span class="param-type"><a href="global.html#cbType">cbType</a></span>
 
 
             
@@ -830,7 +826,7 @@ description of the new token(s).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line134">line 134</a>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line135">line 135</a>
     </li></ul></dd>
     
 
@@ -948,7 +944,7 @@ used to create the CA.</p></td>
             <td class="type">
             
                 
-<span class="param-type">caf.cb</span>
+<span class="param-type"><a href="global.html#cbType">cbType</a></span>
 
 
             
@@ -1009,7 +1005,7 @@ used to create the CA.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line363">line 363</a>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line364">line 364</a>
     </li></ul></dd>
     
 
@@ -1043,7 +1039,7 @@ used to create the CA.</p></td>
     
 
     
-    <h4 class="name" id="__ca_verifyToken__"><span class="type-signature"></span>__ca_verifyToken__<span class="signature">(tokenStr)</span><span class="type-signature"> &rarr; {caf.token|null}</span></h4>
+    <h4 class="name" id="__ca_verifyToken__"><span class="type-signature"></span>__ca_verifyToken__<span class="signature">(tokenStr)</span><span class="type-signature"> &rarr; {tokenType|null}</span></h4>
     
 
     
@@ -1144,7 +1140,7 @@ used to create the CA.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line190">line 190</a>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line191">line 191</a>
     </li></ul></dd>
     
 
@@ -1183,7 +1179,7 @@ token invalid.</p>
     </dt>
     <dd>
         
-<span class="param-type">caf.token</span>
+<span class="param-type">tokenType</span>
 |
 
 <span class="param-type">null</span>
@@ -1214,13 +1210,13 @@ token invalid.</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_security_aggregates.html">caf_security/aggregates</a></li><li><a href="module-caf_security_main.html">caf_security/main</a></li><li><a href="module-caf_security_plug_ca_security.html">caf_security/plug_ca_security</a></li><li><a href="module-caf_security_plug_security.html">caf_security/plug_security</a></li><li><a href="module-caf_security_proxy_security.html">caf_security/proxy_security</a></li><li><a href="module-caf_security_rules.html">caf_security/rules</a></li><li><a href="module-caf_security_tokens.html">caf_security/tokens</a></li><li><a href="module-caf_security_utils.html">caf_security/utils</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li><li><a href="external-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_security_aggregates.html">caf_security/aggregates</a></li><li><a href="module-caf_security_main.html">caf_security/main</a></li><li><a href="module-caf_security_plug_ca_security.html">caf_security/plug_ca_security</a></li><li><a href="module-caf_security_plug_security.html">caf_security/plug_security</a></li><li><a href="module-caf_security_proxy_security.html">caf_security/proxy_security</a></li><li><a href="module-caf_security_rules.html">caf_security/rules</a></li><li><a href="module-caf_security_tokens.html">caf_security/tokens</a></li><li><a href="module-caf_security_utils.html">caf_security/utils</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li><li><a href="external-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Feb 03 2018 00:52:35 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 06 2018 00:39:52 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

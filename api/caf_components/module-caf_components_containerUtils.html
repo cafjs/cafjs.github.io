@@ -473,7 +473,7 @@ propagating an error in the callback.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="containerUtils.js.html">containerUtils.js</a>, <a href="containerUtils.js.html#line95">line 95</a>
+        <a href="containerUtils.js.html">containerUtils.js</a>, <a href="containerUtils.js.html#line94">line 94</a>
     </li></ul></dd>
     
 
@@ -501,7 +501,7 @@ propagating an error in the callback.</p></td>
         
 <div class="param-desc">
     <p>A function of type
-<code>function(caf.specType, caf.cb)</code> that will check and restart a child
+<code>function(specType, cbType)</code> that will check and restart a child
  component.</p>
 </div>
 
@@ -645,7 +645,7 @@ info.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="containerUtils.js.html">containerUtils.js</a>, <a href="containerUtils.js.html#line63">line 63</a>
+        <a href="containerUtils.js.html">containerUtils.js</a>, <a href="containerUtils.js.html#line62">line 62</a>
     </li></ul></dd>
     
 
@@ -673,7 +673,7 @@ info.</p></td>
         
 <div class="param-desc">
     <p>A function of type
-<code>function(string, caf.cb)</code> that will check
+<code>function(string, cbType)</code> that will check
 a child component status. If the child is missing or shutdown it will
 return an error using the callback.</p>
 </div>
@@ -853,7 +853,7 @@ otherwise no retry.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="containerUtils.js.html">containerUtils.js</a>, <a href="containerUtils.js.html#line177">line 177</a>
+        <a href="containerUtils.js.html">containerUtils.js</a>, <a href="containerUtils.js.html#line176">line 176</a>
     </li></ul></dd>
     
 
@@ -881,7 +881,7 @@ otherwise no retry.</p></td>
         
 <div class="param-desc">
     <p>A function of type
-<code>function(caf.specType, caf.cb)</code> that will create
+<code>function(specType, cbType)</code> that will create
 a child component from a description, and return it in the callback.</p>
 </div>
 
@@ -983,8 +983,8 @@ also be shutdown.</p>
 
             
 
-            <td class="description last"><p>A function of type <code>function(data, cb)</code>
-that should respect a shutdown invariant.</p></td>
+            <td class="description last"><p>A function of type
+<code>function(any, cbType)</code> that should respect a shutdown invariant.</p></td>
         </tr>
 
     
@@ -1030,7 +1030,7 @@ that should respect a shutdown invariant.</p></td>
             <td class="type">
             
                 
-<span class="param-type">caf.cb</span>
+<span class="param-type"><a href="global.html#cbType">cbType</a></span>
 
 
             
@@ -1089,7 +1089,7 @@ that should respect a shutdown invariant.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="containerUtils.js.html">containerUtils.js</a>, <a href="containerUtils.js.html#line276">line 276</a>
+        <a href="containerUtils.js.html">containerUtils.js</a>, <a href="containerUtils.js.html#line275">line 275</a>
     </li></ul></dd>
     
 
@@ -1208,10 +1208,10 @@ a collection of children.</p>
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;(caf.specType|string)></span>
+<span class="param-type">Array.&lt;(<a href="global.html#specType">specType</a>|string)></span>
 |
 
-<span class="param-type">Object.&lt;string, caf.specType></span>
+<span class="param-type">Object.&lt;string, <a href="global.html#specType">specType</a>></span>
 
 
             
@@ -1339,7 +1339,7 @@ no retry.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="containerUtils.js.html">containerUtils.js</a>, <a href="containerUtils.js.html#line234">line 234</a>
+        <a href="containerUtils.js.html">containerUtils.js</a>, <a href="containerUtils.js.html#line233">line 233</a>
     </li></ul></dd>
     
 
@@ -1366,7 +1366,7 @@ no retry.</p></td>
 
         
 <div class="param-desc">
-    <p>A function of type <code>function(caf.cb)</code> that
+    <p>A function of type <code>function(cbType)</code> that
  will asyncronously execute the method on the collection, and finally
 invokes the callback with the results or an error.</p>
 </div>
@@ -1545,7 +1545,7 @@ info.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="containerUtils.js.html">containerUtils.js</a>, <a href="containerUtils.js.html#line140">line 140</a>
+        <a href="containerUtils.js.html">containerUtils.js</a>, <a href="containerUtils.js.html#line139">line 139</a>
     </li></ul></dd>
     
 
@@ -1573,7 +1573,7 @@ info.</p></td>
         
 <div class="param-desc">
     <p>A function of type
-<code>function(string, caf.cb)</code> to shutdown a child component.</p>
+<code>function(string, cbType)</code> to shutdown a child component.</p>
 </div>
 
 
@@ -1612,13 +1612,13 @@ info.</p></td>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_components_containerUtils.html">caf_components/containerUtils</a></li><li><a href="module-caf_components_gen_component.html">caf_components/gen_component</a></li><li><a href="module-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="module-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="module-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a></li><li><a href="module-caf_components_gen_loader.html">caf_components/gen_loader</a></li><li><a href="module-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="module-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="module-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="module-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="module-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="module-caf_components_main.html">caf_components/main</a></li><li><a href="module-caf_components_myUtils.html">caf_components/myUtils</a></li><li><a href="module-caf_components_naming.html">caf_components/naming</a></li><li><a href="module-caf_components_plug_ca_log.html">caf_components/plug_ca_log</a></li><li><a href="module-caf_components_plug_log.html">caf_components/plug_log</a></li><li><a href="module-caf_components_proxy_log.html">caf_components/proxy_log</a></li><li><a href="module-caf_components_supervisor.html">caf_components/supervisor</a></li><li><a href="module-caf_components_templateUtils.html">caf_components/templateUtils</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_components_containerUtils.html">caf_components/containerUtils</a></li><li><a href="module-caf_components_gen_component.html">caf_components/gen_component</a></li><li><a href="module-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="module-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="module-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a></li><li><a href="module-caf_components_gen_loader.html">caf_components/gen_loader</a></li><li><a href="module-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="module-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="module-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="module-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="module-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="module-caf_components_main.html">caf_components/main</a></li><li><a href="module-caf_components_myUtils.html">caf_components/myUtils</a></li><li><a href="module-caf_components_naming.html">caf_components/naming</a></li><li><a href="module-caf_components_plug_ca_log.html">caf_components/plug_ca_log</a></li><li><a href="module-caf_components_plug_log.html">caf_components/plug_log</a></li><li><a href="module-caf_components_proxy_log.html">caf_components/proxy_log</a></li><li><a href="module-caf_components_supervisor.html">caf_components/supervisor</a></li><li><a href="module-caf_components_templateUtils.html">caf_components/templateUtils</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Feb 03 2018 00:52:30 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 06 2018 00:39:47 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

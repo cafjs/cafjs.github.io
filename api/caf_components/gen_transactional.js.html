@@ -87,9 +87,21 @@
  * @module caf_components/gen_transactional
  * @augments module:caf_components/gen_container
  */
+// @ts-ignore: augments not attached to a class
 var genContainer = require('./gen_container');
 var async = require('async');
 
+/**
+ * Helper constructor method for a transactional component.
+ *
+ * Description of types in file `types.js`.
+ *
+ * @param {ctxType} $ A context containing references to other components.
+ * @param {specType} spec Configuration data for this component.
+ * @return {Object} A new generic component.
+ *
+ * @throws {Error} If inputs are invalid.
+ */
 exports.constructor = function($, spec) {
 
     var that = genContainer.constructor($, spec);
@@ -202,7 +214,7 @@ exports.constructor = function($, spec) {
      * Operations are assumed to be idempotent.
      *
      * @param {string} method A method name to execute.
-     * @param {Array.&lt;Any>}  args An array of method arguments.
+     * @param {Array.&lt;any>}  args An array of method arguments.
      *
      *
      * @memberof! module:caf_components/gen_transactional#
@@ -218,7 +230,7 @@ exports.constructor = function($, spec) {
      *
      * This method is called only once, when the plug is created.
      *
-     * @param {caf.cb} cb A callback to continue after initialization.
+     * @param {cbType} cb A callback to continue after initialization.
      *
      * @memberof! module:caf_components/gen_transactional#
      * @alias __ca_init__
@@ -241,7 +253,7 @@ exports.constructor = function($, spec) {
      * recovering  from a failure or restarting after migration.
      *
      * @param {Object} cp The last checkpoint of the state of this plug.
-     * @param {caf.cb} cb A callback to continue after resuming.
+     * @param {cbType} cb A callback to continue after resuming.
      *
      * @memberof! module:caf_components/gen_transactional#
      * @alias __ca_resume__
@@ -272,7 +284,7 @@ exports.constructor = function($, spec) {
      * to facilitate configuration.
      *
      * @param {Object} msg The message to be processed.
-     * @param {caf.cb} cb A callback to continue the transaction.
+     * @param {cbType} cb A callback to continue the transaction.
      *
      * @memberof! module:caf_components/gen_transactional#
      * @alias __ca_begin__
@@ -302,7 +314,7 @@ exports.constructor = function($, spec) {
      * To abort the transaction we return an error in the (node.js) callback.
      * This will abort all the transactional plugs associated with the CA.
      *
-     * @param {caf.cb} cb A callback to continue or abort the transaction.
+     * @param {cbType} cb A callback to continue or abort the transaction.
      *
      * @memberof! module:caf_components/gen_transactional#
      * @alias __ca_prepare__
@@ -335,7 +347,7 @@ exports.constructor = function($, spec) {
      * {@link module:caf_components/gen_transactional#__ca_resume__} for
      * the recovery strategy.
      *
-     * @param {caf.cb} cb A callback to continue after commiting.
+     * @param {cbType} cb A callback to continue after commiting.
      *
      * @memberof! module:caf_components/gen_transactional#
      * @alias __ca_commit__
@@ -369,7 +381,7 @@ exports.constructor = function($, spec) {
      * An implementation of this method should undo state changes and
      * ignore deferred operations.
      *
-     * @param {caf.cb} cb A callback to continue after aborting.
+     * @param {cbType} cb A callback to continue after aborting.
      *
      * @memberof! module:caf_components/gen_transactional#
      * @alias __ca_abort__
@@ -395,13 +407,13 @@ exports.constructor = function($, spec) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_components_containerUtils.html">caf_components/containerUtils</a></li><li><a href="module-caf_components_gen_component.html">caf_components/gen_component</a></li><li><a href="module-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="module-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="module-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a></li><li><a href="module-caf_components_gen_loader.html">caf_components/gen_loader</a></li><li><a href="module-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="module-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="module-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="module-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="module-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="module-caf_components_main.html">caf_components/main</a></li><li><a href="module-caf_components_myUtils.html">caf_components/myUtils</a></li><li><a href="module-caf_components_naming.html">caf_components/naming</a></li><li><a href="module-caf_components_plug_ca_log.html">caf_components/plug_ca_log</a></li><li><a href="module-caf_components_plug_log.html">caf_components/plug_log</a></li><li><a href="module-caf_components_proxy_log.html">caf_components/proxy_log</a></li><li><a href="module-caf_components_supervisor.html">caf_components/supervisor</a></li><li><a href="module-caf_components_templateUtils.html">caf_components/templateUtils</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_components_containerUtils.html">caf_components/containerUtils</a></li><li><a href="module-caf_components_gen_component.html">caf_components/gen_component</a></li><li><a href="module-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="module-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="module-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a></li><li><a href="module-caf_components_gen_loader.html">caf_components/gen_loader</a></li><li><a href="module-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="module-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="module-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="module-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="module-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="module-caf_components_main.html">caf_components/main</a></li><li><a href="module-caf_components_myUtils.html">caf_components/myUtils</a></li><li><a href="module-caf_components_naming.html">caf_components/naming</a></li><li><a href="module-caf_components_plug_ca_log.html">caf_components/plug_ca_log</a></li><li><a href="module-caf_components_plug_log.html">caf_components/plug_log</a></li><li><a href="module-caf_components_proxy_log.html">caf_components/proxy_log</a></li><li><a href="module-caf_components_supervisor.html">caf_components/supervisor</a></li><li><a href="module-caf_components_templateUtils.html">caf_components/templateUtils</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Feb 03 2018 00:52:30 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 06 2018 00:39:47 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

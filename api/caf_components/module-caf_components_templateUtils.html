@@ -39,9 +39,9 @@
     
         
             <div class="description"><p>Functions to process template descriptions.</p>
-<p>A parsed description has a type <code>caf.specType</code>:</p>
+<p>A parsed description has a type <code>specType</code>:</p>
 <pre class="prettyprint source"><code> { name: string, module: string | null, description=: string,
-   env: Object, components=: Array.&lt;caf.specType>}</code></pre><p>Merging template <code>B</code> into <code>A</code> starts at the top and uses the following
+   env: Object, components=: Array.&lt;specType>}</code></pre><p>Merging template <code>B</code> into <code>A</code> starts at the top and uses the following
  rules:</p>
 <ol>
 <li><p>If we are merging the top component and <code>A.name !== B.name</code>, throw
@@ -169,7 +169,7 @@ element in the array. In both cases, remember the new <code>X</code> position.</
     
 
     
-    <h4 class="name" id="merge"><span class="type-signature"></span>merge<span class="signature">(template, delta<span class="signature-attributes">opt</span>, overrideName)</span><span class="type-signature"> &rarr; {caf.specType}</span></h4>
+    <h4 class="name" id="merge"><span class="type-signature"></span>merge<span class="signature">(template, delta<span class="signature-attributes">opt</span>, overrideName)</span><span class="type-signature"> &rarr; {<a href="global.html#specType">specType</a>}</span></h4>
     
 
     
@@ -224,7 +224,7 @@ description with the merged results.</p>
             <td class="type">
             
                 
-<span class="param-type">caf.specType</span>
+<span class="param-type"><a href="global.html#specType">specType</a></span>
 
 
             
@@ -255,7 +255,7 @@ description with the merged results.</p>
             <td class="type">
             
                 
-<span class="param-type">caf.specType</span>
+<span class="param-type"><a href="global.html#specDeltaType">specDeltaType</a></span>
 
 
             
@@ -349,7 +349,7 @@ top level component, false if names in <code>template</code> and <code>delta</co
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line202">line 202</a>
+        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line204">line 204</a>
     </li></ul></dd>
     
 
@@ -417,13 +417,1064 @@ different names for the top component.</p>
     </dt>
     <dd>
         
-<span class="param-type">caf.specType</span>
+<span class="param-type"><a href="global.html#specType">specType</a></span>
 
 
     </dd>
 </dl>
 
     
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~mergeComponents"><span class="type-signature">(inner) </span>mergeComponents<span class="signature">(template, delta)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="global.html#specType">specType</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Merge two component arrays of matching components.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>template</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="global.html#specType">specType</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>delta</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="global.html#specDeltaType">specDeltaType</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line63">line 63</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>result</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;<a href="global.html#specType">specType</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~mergeEnv"><span class="type-signature">(inner) </span>mergeEnv<span class="signature">(template, delta)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Merge two environments of matching components.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>template</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>delta</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line135">line 135</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>result</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~mergeObj"><span class="type-signature">(inner) </span>mergeObj<span class="signature">(template, delta, overrideName)</span><span class="type-signature"> &rarr; {<a href="global.html#specType">specType</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Merge two descriptions with the same name.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>template</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#specType">specType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>delta</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#specDeltaType">specDeltaType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>overrideName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line156">line 156</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>result</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#specType">specType</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~parseString"><span class="type-signature">(inner) </span>parseString<span class="signature">(x)</span><span class="type-signature"> &rarr; {number|boolean|string|null|object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Parses an string into an object or number or boolean or null...
+If we fail we just leave it as it was.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>String to parse</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line265">line 265</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A parsed object.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+|
+
+<span class="param-type">boolean</span>
+|
+
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
+|
+
+<span class="param-type">object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~patchEnv"><span class="type-signature">(inner) </span>patchEnv<span class="signature">(desc, f)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Patches every environment in a description.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>desc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#specType">specType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A description to patch.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>f</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A function to patch an environment.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line215">line 215</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~patchOneEnv"><span class="type-signature">(inner) </span>patchOneEnv<span class="signature">(prefix, f)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Returns a function that filters relevant values in an environment and
+applies a transform to them.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>prefix</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A matching prefix for selected values.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>f</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A function that transforms matching
+ values.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line237">line 237</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -492,7 +1543,7 @@ requirement of quoting all strings. For example:</p>
             <td class="type">
             
                 
-<span class="param-type">caf.specType</span>
+<span class="param-type"><a href="global.html#specType">specType</a></span>
 
 
             
@@ -543,7 +1594,7 @@ requirement of quoting all strings. For example:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line291">line 291</a>
+        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line292">line 292</a>
     </li></ul></dd>
     
 
@@ -629,7 +1680,7 @@ requirement of quoting all strings. For example:</p>
             <td class="type">
             
                 
-<span class="param-type">caf.specType</span>
+<span class="param-type"><a href="global.html#specType">specType</a></span>
 
 
             
@@ -680,7 +1731,7 @@ requirement of quoting all strings. For example:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line321">line 321</a>
+        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line322">line 322</a>
     </li></ul></dd>
     
 
@@ -724,13 +1775,13 @@ requirement of quoting all strings. For example:</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_components_containerUtils.html">caf_components/containerUtils</a></li><li><a href="module-caf_components_gen_component.html">caf_components/gen_component</a></li><li><a href="module-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="module-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="module-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a></li><li><a href="module-caf_components_gen_loader.html">caf_components/gen_loader</a></li><li><a href="module-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="module-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="module-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="module-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="module-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="module-caf_components_main.html">caf_components/main</a></li><li><a href="module-caf_components_myUtils.html">caf_components/myUtils</a></li><li><a href="module-caf_components_naming.html">caf_components/naming</a></li><li><a href="module-caf_components_plug_ca_log.html">caf_components/plug_ca_log</a></li><li><a href="module-caf_components_plug_log.html">caf_components/plug_log</a></li><li><a href="module-caf_components_proxy_log.html">caf_components/proxy_log</a></li><li><a href="module-caf_components_supervisor.html">caf_components/supervisor</a></li><li><a href="module-caf_components_templateUtils.html">caf_components/templateUtils</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_components_containerUtils.html">caf_components/containerUtils</a></li><li><a href="module-caf_components_gen_component.html">caf_components/gen_component</a></li><li><a href="module-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="module-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="module-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a></li><li><a href="module-caf_components_gen_loader.html">caf_components/gen_loader</a></li><li><a href="module-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="module-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="module-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="module-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="module-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="module-caf_components_main.html">caf_components/main</a></li><li><a href="module-caf_components_myUtils.html">caf_components/myUtils</a></li><li><a href="module-caf_components_naming.html">caf_components/naming</a></li><li><a href="module-caf_components_plug_ca_log.html">caf_components/plug_ca_log</a></li><li><a href="module-caf_components_plug_log.html">caf_components/plug_log</a></li><li><a href="module-caf_components_proxy_log.html">caf_components/proxy_log</a></li><li><a href="module-caf_components_supervisor.html">caf_components/supervisor</a></li><li><a href="module-caf_components_templateUtils.html">caf_components/templateUtils</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Feb 03 2018 00:52:30 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 06 2018 00:39:47 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

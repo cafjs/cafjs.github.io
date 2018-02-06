@@ -43,6 +43,7 @@ limitations under the License.
 */
 'use strict';
 
+
 /**
  * Main package module.
  *
@@ -51,15 +52,14 @@ limitations under the License.
  */
 var gen_loader = require('./gen_loader');
 
-
 /**
  * Creates and initializes a hierarchy of asynchronous components.
  *
  *
- * @param {null | caf.ctxType}  $ A context for the top level
+ * @param {null | ctxType}  $ A context for the top level
  * component. If `null` a new one is created. Otherwise, it should be a properly
  * initialized context, i.e., with top level objects `$._` and `$._.$`.
- * @param {caf.specType=} spec Extra configuration data that will be merged
+ * @param {specDeltaType=} spec Extra configuration data that will be merged
  *  with the resource description. For example, to override the default name
  *  of the top component use `{name: "foo"}`.
  * @param {string} resourceName The name of a component description file.
@@ -69,7 +69,7 @@ var gen_loader = require('./gen_loader');
  *  modifying the current loader configuration.
  * @param {Object&lt;string, Object>=} staticArtifacts An optional collection of
  *  already loaded modules and files.
- * @param {caf.cb} cb A callback to return context `$` with the new top
+ * @param {cbType} cb A callback to return context `$` with the new top
  *  level component or an error.
  *
  * @memberof! module:caf_components/main
@@ -151,7 +151,6 @@ exports.gen_plug_ca = require('./gen_plug_ca');
 exports.gen_cron = require('./gen_cron');
 exports.gen_proxy = require('./gen_proxy');
 exports.gen_transactional = require('./gen_transactional');
-exports.gen_container = require('./gen_container');
 exports.gen_dynamic_container = require('./gen_dynamic_container');
 exports.gen_loader = require('./gen_loader');
 exports.gen_supervisor= require('./gen_supervisor');
@@ -181,13 +180,13 @@ exports.async = require('async');
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_components_containerUtils.html">caf_components/containerUtils</a></li><li><a href="module-caf_components_gen_component.html">caf_components/gen_component</a></li><li><a href="module-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="module-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="module-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a></li><li><a href="module-caf_components_gen_loader.html">caf_components/gen_loader</a></li><li><a href="module-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="module-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="module-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="module-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="module-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="module-caf_components_main.html">caf_components/main</a></li><li><a href="module-caf_components_myUtils.html">caf_components/myUtils</a></li><li><a href="module-caf_components_naming.html">caf_components/naming</a></li><li><a href="module-caf_components_plug_ca_log.html">caf_components/plug_ca_log</a></li><li><a href="module-caf_components_plug_log.html">caf_components/plug_log</a></li><li><a href="module-caf_components_proxy_log.html">caf_components/proxy_log</a></li><li><a href="module-caf_components_supervisor.html">caf_components/supervisor</a></li><li><a href="module-caf_components_templateUtils.html">caf_components/templateUtils</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_components_containerUtils.html">caf_components/containerUtils</a></li><li><a href="module-caf_components_gen_component.html">caf_components/gen_component</a></li><li><a href="module-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="module-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="module-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a></li><li><a href="module-caf_components_gen_loader.html">caf_components/gen_loader</a></li><li><a href="module-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="module-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="module-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="module-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="module-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="module-caf_components_main.html">caf_components/main</a></li><li><a href="module-caf_components_myUtils.html">caf_components/myUtils</a></li><li><a href="module-caf_components_naming.html">caf_components/naming</a></li><li><a href="module-caf_components_plug_ca_log.html">caf_components/plug_ca_log</a></li><li><a href="module-caf_components_plug_log.html">caf_components/plug_log</a></li><li><a href="module-caf_components_proxy_log.html">caf_components/proxy_log</a></li><li><a href="module-caf_components_supervisor.html">caf_components/supervisor</a></li><li><a href="module-caf_components_templateUtils.html">caf_components/templateUtils</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Feb 03 2018 00:52:30 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 06 2018 00:39:47 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

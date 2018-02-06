@@ -42,7 +42,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 'use strict';
-
 /**
  * Generic container component that encapsulates the life-cycle of
  * other components.
@@ -82,6 +81,7 @@ limitations under the License.
  * @module caf_components/gen_container
  * @augments module:caf_components/gen_component
  */
+// @ts-ignore: augments not attached to a class
 var assert = require('assert');
 var genComponent = require('./gen_component');
 var async = require('async');
@@ -89,6 +89,17 @@ var myUtils = require('./myUtils');
 var containerUtils = require('./containerUtils');
 var naming = require('./naming');
 
+/**
+ * Helper constructor method for a container component.
+ *
+ * Description of types in file `types.js`.
+ *
+ * @param {ctxType} $ A context containing references to other components.
+ * @param {specType} spec Configuration data for this component.
+ * @return {Object} A new generic component.
+ *
+ * @throws {Error} If inputs are invalid.
+ */
 exports.constructor = function($, spec) {
 
     var that = genComponent.constructor($, spec);
@@ -119,7 +130,7 @@ exports.constructor = function($, spec) {
      * Provide an existing children context in `$.$`, otherwise a new one is
      * created.
      *
-     * @type {caf.ctxType}
+     * @type {ctxType}
      * @memberof! module:caf_components/gen_container#
      * @alias $
      */
@@ -135,7 +146,7 @@ exports.constructor = function($, spec) {
     /*
      * A description of the expected children.
      *
-     * @type {Array.&lt;caf.specType>}
+     * @type {Array.&lt;specType>}
      *
      */
     var childrenSpec = myUtils.clone(spec.components || []);
@@ -148,7 +159,7 @@ exports.constructor = function($, spec) {
             if (result[x.name]) {
                 var msg ='Ignoring duplicate:' + x.name + ' in spec';
                 var err = new Error(msg);
-                err.spec = spec;
+                err['spec'] = spec;
                 $._.$.log &amp;&amp; $._.$.log.error(myUtils.errToPrettyStr(err));
                 throw err;
             } else {
@@ -165,7 +176,7 @@ exports.constructor = function($, spec) {
     /**
      * Gets a description of the expected children.
      *
-     * @return {Array.&lt;caf.specType>} A description of the expected children.
+     * @return {Array.&lt;specType>} A description of the expected children.
      *
      * @memberof! module:caf_components/gen_container#
      * @alias __ca_getChildrenSpec__
@@ -221,7 +232,7 @@ exports.constructor = function($, spec) {
      * @param {Object} data A hint on how to perform the checkup. If
      * `data.doNotRestart` is true, we do not attempt recovery, propagating
      * an error in the callback instead.
-     * @param {caf.cb} cb A callback to propagate a checkup error/success.
+     * @param {cbType} cb A callback to propagate a checkup error/success.
      */
     var checkupChildren = function(data, cb) {
         async.series([
@@ -306,13 +317,13 @@ exports.constructor = function($, spec) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_components_containerUtils.html">caf_components/containerUtils</a></li><li><a href="module-caf_components_gen_component.html">caf_components/gen_component</a></li><li><a href="module-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="module-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="module-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a></li><li><a href="module-caf_components_gen_loader.html">caf_components/gen_loader</a></li><li><a href="module-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="module-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="module-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="module-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="module-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="module-caf_components_main.html">caf_components/main</a></li><li><a href="module-caf_components_myUtils.html">caf_components/myUtils</a></li><li><a href="module-caf_components_naming.html">caf_components/naming</a></li><li><a href="module-caf_components_plug_ca_log.html">caf_components/plug_ca_log</a></li><li><a href="module-caf_components_plug_log.html">caf_components/plug_log</a></li><li><a href="module-caf_components_proxy_log.html">caf_components/proxy_log</a></li><li><a href="module-caf_components_supervisor.html">caf_components/supervisor</a></li><li><a href="module-caf_components_templateUtils.html">caf_components/templateUtils</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_components_containerUtils.html">caf_components/containerUtils</a></li><li><a href="module-caf_components_gen_component.html">caf_components/gen_component</a></li><li><a href="module-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="module-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="module-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a></li><li><a href="module-caf_components_gen_loader.html">caf_components/gen_loader</a></li><li><a href="module-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="module-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="module-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="module-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="module-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="module-caf_components_main.html">caf_components/main</a></li><li><a href="module-caf_components_myUtils.html">caf_components/myUtils</a></li><li><a href="module-caf_components_naming.html">caf_components/naming</a></li><li><a href="module-caf_components_plug_ca_log.html">caf_components/plug_ca_log</a></li><li><a href="module-caf_components_plug_log.html">caf_components/plug_log</a></li><li><a href="module-caf_components_proxy_log.html">caf_components/proxy_log</a></li><li><a href="module-caf_components_supervisor.html">caf_components/supervisor</a></li><li><a href="module-caf_components_templateUtils.html">caf_components/templateUtils</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Feb 03 2018 00:52:30 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 06 2018 00:39:47 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

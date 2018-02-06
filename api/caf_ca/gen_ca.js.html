@@ -49,6 +49,8 @@ limitations under the License.
  * @module caf_ca/gen_ca
  * @augments external:caf_components/gen_transactional
  */
+// @ts-ignore: augments not attached to a class
+
 var caf_comp = require('caf_components');
 var genTransactional = caf_comp.gen_transactional;
 var async = caf_comp.async;
@@ -86,7 +88,7 @@ exports.constructor = function($, spec) {
      * Sets the value of a flag that indicates
      * this CA was recently created.
      *
-     * @param {boolean} A new value.
+     * @param {boolean} value A new value.
      * @return {boolean} The old value.
      *
      * @memberof! module:caf_ca/gen_ca#
@@ -127,7 +129,7 @@ exports.constructor = function($, spec) {
      * Queues a message to be processed by this CA.
      *
      * @param {Object} msg A message to be processed.
-     * @param {caf.cb} cb A callback function to propagate a response to the
+     * @param {cbType} cb A callback function to propagate a response to the
      *  caller.
      *
      * @memberof! module:caf_ca/gen_ca#
@@ -167,7 +169,7 @@ exports.constructor = function($, spec) {
      * Queues a pulse message for this CA, enabling autonomous
      * computation.
      *
-     * @param {caf.cb} cb A callback function to continue after
+     * @param {cbType} cb A callback function to continue after
      * the pulse message.
      *
      * @see cron_pulser
@@ -186,7 +188,7 @@ exports.constructor = function($, spec) {
      * Polls for pending notification messages.
      *
      * @param {Object} request A notification request message.
-     * @param {caf.cb} cb A callback called when there is a new
+     * @param {cbType} cb A callback called when there is a new
      * notification message (or timeout).
      *
      * @memberof! module:caf_ca/gen_ca#
@@ -197,7 +199,7 @@ exports.constructor = function($, spec) {
             that.$.session.pull(request, cb);
         } else {
             var err = new Error('Internal Error: pull with no session');
-            err.request = request;
+            err['request'] = request;
             cb(err);
         }
     };
@@ -225,7 +227,7 @@ exports.constructor = function($, spec) {
      *  immediately discarded.
      *
      * @param {Object=} data An optional hint on how to perform the shutdown.
-     * @param {caf.cb} cb A callback function to continue after clean-up.
+     * @param {cbType} cb A callback function to continue after clean-up.
      *
      * @memberof! module:caf_ca/gen_ca#
      * @alias __ca_destroy__
@@ -266,13 +268,13 @@ exports.constructor = function($, spec) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_ca_ca_main.html">caf_ca/ca_main</a></li><li><a href="module-caf_ca_gen_ca.html">caf_ca/gen_ca</a></li><li><a href="module-caf_ca_gen_handler.html">caf_ca/gen_handler</a></li><li><a href="module-caf_ca_main.html">caf_ca/main</a></li><li><a href="module-caf_ca_plug_ca_handler.html">caf_ca/plug_ca_handler</a></li><li><a href="module-caf_ca_plug_ca_inqueue.html">caf_ca/plug_ca_inqueue</a></li><li><a href="module-caf_ca_proxy_handler.html">caf_ca/proxy_handler</a></li><li><a href="module-caf_ca_proxy_inqueue.html">caf_ca/proxy_inqueue</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components.html">caf_components</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="external-caf_pubsub.html">caf_pubsub</a></li><li><a href="external-caf_security.html">caf_security</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_ca_ca_main.html">caf_ca/ca_main</a></li><li><a href="module-caf_ca_gen_ca.html">caf_ca/gen_ca</a></li><li><a href="module-caf_ca_gen_handler.html">caf_ca/gen_handler</a></li><li><a href="module-caf_ca_main.html">caf_ca/main</a></li><li><a href="module-caf_ca_plug_ca_handler.html">caf_ca/plug_ca_handler</a></li><li><a href="module-caf_ca_plug_ca_inqueue.html">caf_ca/plug_ca_inqueue</a></li><li><a href="module-caf_ca_proxy_handler.html">caf_ca/proxy_handler</a></li><li><a href="module-caf_ca_proxy_inqueue.html">caf_ca/proxy_inqueue</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components.html">caf_components</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="external-caf_pubsub.html">caf_pubsub</a></li><li><a href="external-caf_security.html">caf_security</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Feb 03 2018 00:52:28 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 06 2018 00:39:45 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

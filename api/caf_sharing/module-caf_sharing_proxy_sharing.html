@@ -195,7 +195,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line197">line 197</a>
+        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line198">line 198</a>
     </li></ul></dd>
     
 
@@ -345,7 +345,7 @@ Shared Map, i.e., scoped
             <td class="type">
             
                 
-<span class="param-type">caf_map.options</span>
+<span class="param-type"><a href="global.html#mapOptionsType">mapOptionsType</a></span>
 
 
             
@@ -407,7 +407,7 @@ Shared Map, i.e., scoped
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line77">line 77</a>
+        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line78">line 78</a>
     </li></ul></dd>
     
 
@@ -558,7 +558,7 @@ Shared Map, i.e., scoped
             <td class="type">
             
                 
-<span class="param-type">caf_map.options</span>
+<span class="param-type"><a href="global.html#mapOptionsType">mapOptionsType</a></span>
 
 
             
@@ -620,7 +620,7 @@ customization.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line49">line 49</a>
+        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line50">line 50</a>
     </li></ul></dd>
     
 
@@ -738,7 +738,7 @@ Shared Maps.</p>
             <td class="type">
             
                 
-<span class="param-type">caf.mapUpdate</span>
+<span class="param-type"><a href="global.html#mapUpdateType">mapUpdateType</a></span>
 
 
             
@@ -769,7 +769,7 @@ Shared Maps.</p>
             <td class="type">
             
                 
-<span class="param-type">caf.log</span>
+<span class="param-type">Object</span>
 
 
             
@@ -789,8 +789,8 @@ Shared Maps.</p>
 
             
 
-            <td class="description last"><p>An optional logger, i.e., <code>this.$.log</code>, to
-warn of ignored updates.</p></td>
+            <td class="description last"><p>An optional logger,
+i.e., <code>this.$.log</code>, to warn of ignored updates.</p></td>
         </tr>
 
     
@@ -831,7 +831,7 @@ warn of ignored updates.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line140">line 140</a>
+        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line141">line 141</a>
     </li></ul></dd>
     
 
@@ -979,7 +979,7 @@ warn of ignored updates.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line92">line 92</a>
+        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line93">line 93</a>
     </li></ul></dd>
     
 
@@ -1116,7 +1116,7 @@ warn of ignored updates.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line176">line 176</a>
+        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line177">line 177</a>
     </li></ul></dd>
     
 
@@ -1172,7 +1172,7 @@ warn of ignored updates.</p></td>
     
 
     
-    <h4 class="name" id="pullUpdate"><span class="type-signature"></span>pullUpdate<span class="signature">(alias, version<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {caf.mapUpdate|Array.&lt;caf.mapUpdate>}</span></h4>
+    <h4 class="name" id="pullUpdate"><span class="type-signature"></span>pullUpdate<span class="signature">(alias, version<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="global.html#mapUpdateType">mapUpdateType</a>|Array.&lt;<a href="global.html#mapUpdateType">mapUpdateType</a>>}</span></h4>
     
 
     
@@ -1181,11 +1181,11 @@ warn of ignored updates.</p></td>
 
 <div class="description">
     <p>Returns an incremental update or a full dump of the Shared Map.</p>
-<p>The type of <code>caf.mapUpdate</code> is <code>{version: number, remove : Array&lt;string&gt;,
+<p>The type of <code>mapUpdateType</code> is <code>{version: number, remove : Array&lt;string&gt;,
                                  add : Array&lt;string|Object&gt;}</code>
 where <code>add</code> just flattens key/value pairs in a single array.</p>
 <p>Multiple incremental updates can be provided in an array of
-<code>caf.mapUpdate</code> objects.</p>
+<code>mapUpdateType</code> objects.</p>
 <p>An up to date local replica will have an empty array as update.</p>
 </div>
 
@@ -1323,7 +1323,7 @@ where <code>add</code> just flattens key/value pairs in a single array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line117">line 117</a>
+        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line118">line 118</a>
     </li></ul></dd>
     
 
@@ -1362,10 +1362,10 @@ or a list with incremental updates (empty if up to date).</p>
     </dt>
     <dd>
         
-<span class="param-type">caf.mapUpdate</span>
+<span class="param-type"><a href="global.html#mapUpdateType">mapUpdateType</a></span>
 |
 
-<span class="param-type">Array.&lt;caf.mapUpdate></span>
+<span class="param-type">Array.&lt;<a href="global.html#mapUpdateType">mapUpdateType</a>></span>
 
 
     </dd>
@@ -1393,13 +1393,13 @@ or a list with incremental updates (empty if up to date).</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li><li><a href="module-caf_sharing_main.html">caf_sharing/main</a></li><li><a href="module-caf_sharing_plug_ca_sharing.html">caf_sharing/plug_ca_sharing</a></li><li><a href="module-caf_sharing_plug_sharing.html">caf_sharing/plug_sharing</a></li><li><a href="module-caf_sharing_proxy_sharing.html">caf_sharing/proxy_sharing</a></li><li><a href="module-caf_sharing_ReliableChannel.html">caf_sharing/ReliableChannel</a></li><li><a href="module-caf_sharing_SharedMap.html">caf_sharing/SharedMap</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_redis.html">caf_redis</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li><li><a href="module-caf_sharing_main.html">caf_sharing/main</a></li><li><a href="module-caf_sharing_plug_ca_sharing.html">caf_sharing/plug_ca_sharing</a></li><li><a href="module-caf_sharing_plug_sharing.html">caf_sharing/plug_sharing</a></li><li><a href="module-caf_sharing_proxy_sharing.html">caf_sharing/proxy_sharing</a></li><li><a href="module-caf_sharing_ReliableChannel.html">caf_sharing/ReliableChannel</a></li><li><a href="module-caf_sharing_SharedMap.html">caf_sharing/SharedMap</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_redis.html">caf_redis</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Feb 03 2018 00:52:37 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 06 2018 00:39:54 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

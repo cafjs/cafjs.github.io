@@ -52,6 +52,7 @@ limitations under the License.
  * @augments external:caf_components/gen_proxy
  *
  */
+// @ts-ignore: augments not attached to a class
 var caf_comp = require('caf_components');
 var genProxy = caf_comp.gen_proxy;
 
@@ -68,7 +69,7 @@ exports.newInstance = function($, spec, cb) {
      * `this.$.sharing.$` context.
      * @param {string} name A relative name for this map that will be scoped by
      *  this CA's name.
-     * @param {caf_map.options=} options Placeholder for future map
+     * @param {mapOptionsType=} options Placeholder for future map
      * customization.
      *
      * @memberof! module:caf_sharing/proxy_sharing#
@@ -96,7 +97,7 @@ exports.newInstance = function($, spec, cb) {
      * Shared Map, i.e., scoped
      *  with the owner's CA name, like `caOwner-caLocalName-mapLocalName`.
      *
-     * @param {caf_map.options=} options If `options.isAggregate` is `true`
+     * @param {mapOptionsType=} options If `options.isAggregate` is `true`
      *  create an `AggregateMap`.
      *
      * @memberof! module:caf_sharing/proxy_sharing#
@@ -124,19 +125,19 @@ exports.newInstance = function($, spec, cb) {
     /**
      * Returns an incremental update or a full dump of the Shared Map.
      *
-     * The type of `caf.mapUpdate` is `{version: number, remove : Array&lt;string>,
+     * The type of `mapUpdateType` is `{version: number, remove : Array&lt;string>,
      *                                  add : Array&lt;string|Object>}`
      * where `add` just flattens key/value pairs in a single array.
      *
      * Multiple incremental updates can be provided in an array of
-     * `caf.mapUpdate` objects.
+     * `mapUpdateType` objects.
      *
      * An up to date local replica will have an empty array as update.
      *
      * @param {string} alias The local alias for this map.
      * @param {number=} version The current version of the local Shared Map, or
      * `undefined` if a full dump is needed.
-     * @return {caf.mapUpdate | Array.&lt;caf.mapUpdate>} A full dump of the map
+     * @return {mapUpdateType | Array.&lt;mapUpdateType>} A full dump of the map
      * or a list with incremental updates (empty if up to date).
      *
      * @memberof! module:caf_sharing/proxy_sharing#
@@ -156,9 +157,9 @@ exports.newInstance = function($, spec, cb) {
      * Shared Maps.
      *
      * @param {string} alias The local alias for this map.
-     * @param {caf.mapUpdate} changes A set of changes to apply.
-     * @param {caf.log=} logger An optional logger, i.e., `this.$.log`, to
-     * warn of ignored updates.
+     * @param {mapUpdateType} changes A set of changes to apply.
+     * @param {{debug:function(string)}=} logger An optional logger,
+     * i.e., `this.$.log`, to warn of ignored updates.
      *
      * @throws Error when the change set version is not compatible.
      *
@@ -169,8 +170,8 @@ exports.newInstance = function($, spec, cb) {
         var ref = that.$[alias];
         if (changes.version > ref.getVersion()) {
             var err = new Error('Incompatible version: missed update');
-            err.originalVersion = ref.getVersion();
-            err.version = changes.version;
+            err['originalVersion'] = ref.getVersion();
+            err['version'] = changes.version;
             throw err;
         } else if (changes.version &lt; ref.getVersion()) {
             logger &amp;&amp; logger.debug('Ignoring old update ' +
@@ -237,13 +238,13 @@ exports.newInstance = function($, spec, cb) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li><li><a href="module-caf_sharing_main.html">caf_sharing/main</a></li><li><a href="module-caf_sharing_plug_ca_sharing.html">caf_sharing/plug_ca_sharing</a></li><li><a href="module-caf_sharing_plug_sharing.html">caf_sharing/plug_sharing</a></li><li><a href="module-caf_sharing_proxy_sharing.html">caf_sharing/proxy_sharing</a></li><li><a href="module-caf_sharing_ReliableChannel.html">caf_sharing/ReliableChannel</a></li><li><a href="module-caf_sharing_SharedMap.html">caf_sharing/SharedMap</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_redis.html">caf_redis</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li><li><a href="module-caf_sharing_main.html">caf_sharing/main</a></li><li><a href="module-caf_sharing_plug_ca_sharing.html">caf_sharing/plug_ca_sharing</a></li><li><a href="module-caf_sharing_plug_sharing.html">caf_sharing/plug_sharing</a></li><li><a href="module-caf_sharing_proxy_sharing.html">caf_sharing/proxy_sharing</a></li><li><a href="module-caf_sharing_ReliableChannel.html">caf_sharing/ReliableChannel</a></li><li><a href="module-caf_sharing_SharedMap.html">caf_sharing/SharedMap</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_redis.html">caf_redis</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Feb 03 2018 00:52:37 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 06 2018 00:39:54 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

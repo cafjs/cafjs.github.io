@@ -179,7 +179,7 @@ using the meet operator for access checks:</p>
     
 
     
-    <h4 class="name" id="decode"><span class="type-signature"></span>decode<span class="signature">(tokenStr)</span><span class="type-signature"> &rarr; {caf.token}</span></h4>
+    <h4 class="name" id="decode"><span class="type-signature"></span>decode<span class="signature">(tokenStr)</span><span class="type-signature"> &rarr; {tokenType}</span></h4>
     
 
     
@@ -319,7 +319,7 @@ a public key for validation.</p>
     </dt>
     <dd>
         
-<span class="param-type">caf.token</span>
+<span class="param-type">tokenType</span>
 
 
     </dd>
@@ -388,7 +388,7 @@ a public key for validation.</p>
             <td class="type">
             
                 
-<span class="param-type">caf.token</span>
+<span class="param-type">tokenType</span>
 
 
             
@@ -411,7 +411,7 @@ a public key for validation.</p>
             <td class="type">
             
                 
-<span class="param-type">caf.token</span>
+<span class="param-type">tokenType</span>
 
 
             
@@ -547,7 +547,7 @@ a public key for validation.</p>
     
 
     
-    <h4 class="name" id="meet"><span class="type-signature"></span>meet<span class="signature">(t1, t2)</span><span class="type-signature"> &rarr; {caf.token|null}</span></h4>
+    <h4 class="name" id="meet"><span class="type-signature"></span>meet<span class="signature">(t1, t2)</span><span class="type-signature"> &rarr; {tokenType|null}</span></h4>
     
 
     
@@ -603,7 +603,7 @@ constraint, and if any resulting constraint is empty it returns <code>null</code
             <td class="type">
             
                 
-<span class="param-type">caf.token</span>
+<span class="param-type">tokenType</span>
 
 
             
@@ -626,7 +626,7 @@ constraint, and if any resulting constraint is empty it returns <code>null</code
             <td class="type">
             
                 
-<span class="param-type">caf.token</span>
+<span class="param-type">tokenType</span>
 
 
             
@@ -716,7 +716,7 @@ constraint, and if any resulting constraint is empty it returns <code>null</code
     </dt>
     <dd>
         
-<span class="param-type">caf.token</span>
+<span class="param-type">tokenType</span>
 |
 
 <span class="param-type">null</span>
@@ -737,7 +737,7 @@ constraint, and if any resulting constraint is empty it returns <code>null</code
     
 
     
-    <h4 class="name" id="newPayload"><span class="type-signature"></span>newPayload<span class="signature">(appPublisher<span class="signature-attributes">opt</span>, appLocalName<span class="signature-attributes">opt</span>, caOwner<span class="signature-attributes">opt</span>, caLocalName<span class="signature-attributes">opt</span>, durationInSec<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {caf.token}</span></h4>
+    <h4 class="name" id="newPayload"><span class="type-signature"></span>newPayload<span class="signature">(appPublisher<span class="signature-attributes">opt</span>, appLocalName<span class="signature-attributes">opt</span>, caOwner<span class="signature-attributes">opt</span>, caLocalName<span class="signature-attributes">opt</span>, durationInSec<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {tokenType}</span></h4>
     
 
     
@@ -746,9 +746,9 @@ constraint, and if any resulting constraint is empty it returns <code>null</code
 
 <div class="description">
     <p>Constructor for a new token or acl element payload.</p>
-<p>The type of caf.token is</p>
+<p>The type of tokenType is</p>
 <pre class="prettyprint source"><code> {appPublisher: string=, appLocalName:string=,
-  caOwner: string=, caLocalName: string=, expiresAfter: string=}</code></pre>
+  caOwner: string=, caLocalName: string=, expiresAfter: number=}</code></pre>
 </div>
 
 
@@ -1052,7 +1052,7 @@ constraint, and if any resulting constraint is empty it returns <code>null</code
     </dt>
     <dd>
         
-<span class="param-type">caf.token</span>
+<span class="param-type">tokenType</span>
 
 
     </dd>
@@ -1122,10 +1122,10 @@ recommended alternative.</p>
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;caf.token></span>
+<span class="param-type">Array.&lt;tokenType></span>
 |
 
-<span class="param-type">caf.token</span>
+<span class="param-type">tokenType</span>
 
 
             
@@ -1149,7 +1149,7 @@ recommended alternative.</p>
             <td class="type">
             
                 
-<span class="param-type">caf.token</span>
+<span class="param-type">tokenType</span>
 
 
             
@@ -1306,7 +1306,7 @@ recommended alternative.</p>
             <td class="type">
             
                 
-<span class="param-type">caf.token</span>
+<span class="param-type">tokenType</span>
 
 
             
@@ -1516,7 +1516,7 @@ recommended alternative.</p>
             <td class="type">
             
                 
-<span class="param-type">caf.token</span>
+<span class="param-type">tokenType</span>
 
 
             
@@ -1539,7 +1539,7 @@ recommended alternative.</p>
             <td class="type">
             
                 
-<span class="param-type">caf.token</span>
+<span class="param-type">tokenType</span>
 
 
             
@@ -2024,13 +2024,13 @@ recommended alternative.</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_security_aggregates.html">caf_security/aggregates</a></li><li><a href="module-caf_security_main.html">caf_security/main</a></li><li><a href="module-caf_security_plug_ca_security.html">caf_security/plug_ca_security</a></li><li><a href="module-caf_security_plug_security.html">caf_security/plug_security</a></li><li><a href="module-caf_security_proxy_security.html">caf_security/proxy_security</a></li><li><a href="module-caf_security_rules.html">caf_security/rules</a></li><li><a href="module-caf_security_tokens.html">caf_security/tokens</a></li><li><a href="module-caf_security_utils.html">caf_security/utils</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li><li><a href="external-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_security_aggregates.html">caf_security/aggregates</a></li><li><a href="module-caf_security_main.html">caf_security/main</a></li><li><a href="module-caf_security_plug_ca_security.html">caf_security/plug_ca_security</a></li><li><a href="module-caf_security_plug_security.html">caf_security/plug_security</a></li><li><a href="module-caf_security_proxy_security.html">caf_security/proxy_security</a></li><li><a href="module-caf_security_rules.html">caf_security/rules</a></li><li><a href="module-caf_security_tokens.html">caf_security/tokens</a></li><li><a href="module-caf_security_utils.html">caf_security/utils</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li><li><a href="external-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Feb 03 2018 00:52:35 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 06 2018 00:39:52 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>

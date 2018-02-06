@@ -49,15 +49,15 @@ closes, propagating the error in the <code>onclose</code> handler (the <code>one
 <p>If a client wants parallel requests, it needs to create multiple sessions
 with its CA. Parallel requests may improve performance with high network
 latency, but requests are always executed serially by the CA.</p>
-<p>The type <code>caf.sessionOptions</code> defines the configuration properties for a
+<p>The type <code>sessionOptionsType</code> defines the configuration properties for a
 session:</p>
 <pre class="prettyprint source"><code>{token: string, ca: string, from: string, session: string,
  appPublisher: string, appLocalName: string, disableBackchannel: boolean,
  maxRetries: number, retryTimeoutMsec: number, timeoutMsec: number,
  cacheKey: string,
  log: function(string),
- newToken: function(caf.msg, caf.cb),
- newURL: function(caf.msg, caf.cb),
+ newToken: function(caf.msg, cbType),
+ newURL: function(caf.msg, cbType),
  timeAdjuster: TimeAdjuster()} + TokenFactory.options</code></pre><p> All options except <code>ca</code> and <code>from</code> (and <code>token</code> with security active)
  have sensible defaults. Options can be properties in a URL fragment.</p>
 <p> Where:</p>
@@ -189,7 +189,7 @@ assuming an irrecoverable error, and closing the session.</li>
     
 
     
-    <h4 class="name" id="extractSpecFromURL"><span class="type-signature"></span>extractSpecFromURL<span class="signature">(urlStr)</span><span class="type-signature"> &rarr; {caf.specURL}</span></h4>
+    <h4 class="name" id="extractSpecFromURL"><span class="type-signature"></span>extractSpecFromURL<span class="signature">(urlStr)</span><span class="type-signature"> &rarr; {<a href="global.html#specURLType">specURLType</a>}</span></h4>
     
 
     
@@ -198,9 +198,6 @@ assuming an irrecoverable error, and closing the session.</li>
 
 <div class="description">
     <p>Helper function to extract a spec in a URL fragment.</p>
-<p>type of <code>caf.specURL</code>is</p>
-<p>   { appProtocol : string, appPublisher: string, appLocalName: string,
-      appSuffix: string, myId: string}</p>
 </div>
 
 
@@ -331,7 +328,7 @@ assuming an irrecoverable error, and closing the session.</li>
     </dt>
     <dd>
         
-<span class="param-type">caf.specURL</span>
+<span class="param-type"><a href="global.html#specURLType">specURLType</a></span>
 
 
     </dd>
@@ -509,7 +506,7 @@ assuming an irrecoverable error, and closing the session.</li>
     
 
     
-    <h4 class="name" id="getMethodArgs"><span class="type-signature"></span>getMethodArgs<span class="signature">(msg)</span><span class="type-signature"> &rarr; {Array.&lt;caf.json>}</span></h4>
+    <h4 class="name" id="getMethodArgs"><span class="type-signature"></span>getMethodArgs<span class="signature">(msg)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="global.html#jsonType">jsonType</a>>}</span></h4>
     
 
     
@@ -559,7 +556,7 @@ assuming an irrecoverable error, and closing the session.</li>
             <td class="type">
             
                 
-<span class="param-type">caf.msg</span>
+<span class="param-type"><a href="global.html#msgType">msgType</a></span>
 
 
             
@@ -610,7 +607,7 @@ assuming an irrecoverable error, and closing the session.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line765">line 765</a>
+        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line780">line 780</a>
     </li></ul></dd>
     
 
@@ -677,7 +674,7 @@ assuming an irrecoverable error, and closing the session.</li>
     </dt>
     <dd>
         
-<span class="param-type">Array.&lt;caf.json></span>
+<span class="param-type">Array.&lt;<a href="global.html#jsonType">jsonType</a>></span>
 
 
     </dd>
@@ -1678,7 +1675,8 @@ assuming an irrecoverable error, and closing the session.</li>
 
 
 <div class="description">
-    <p>Adds a fragment to a URL with some metadata and, if needed, rewrite hostname.</p>
+    <p>Adds a fragment to a URL with some metadata and, if needed, rewrites the
+hostname.</p>
 <p>The type of <code>caf.cliProps</code> is:</p>
 <pre class="prettyprint source"><code>  {caOwner: string, caLocalName: string, appPublisher: string,
    appLocalName: string, token: string, cacheKey: string}</code></pre>
@@ -1746,7 +1744,7 @@ assuming an irrecoverable error, and closing the session.</li>
             <td class="type">
             
                 
-<span class="param-type">caf.cliProps</span>
+<span class="param-type"><a href="global.html#cliPropsType">cliPropsType</a></span>
 
 
             
@@ -1797,7 +1795,7 @@ assuming an irrecoverable error, and closing the session.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line785">line 785</a>
+        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line801">line 801</a>
     </li></ul></dd>
     
 
@@ -1853,7 +1851,7 @@ assuming an irrecoverable error, and closing the session.</li>
     
 
     
-    <h4 class="name" id="Session"><span class="type-signature"></span>Session<span class="signature">(url, caId<span class="signature-attributes">opt</span>, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="module-caf_cli_Session.html">Session</a>}</span></h4>
+    <h4 class="name" id="Session"><span class="type-signature"></span>Session<span class="signature">(url, caId<span class="signature-attributes">opt</span>, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
 
     
@@ -1973,7 +1971,7 @@ arguments <code>caId</code> and <code>options</code>.</p></td>
             <td class="type">
             
                 
-<span class="param-type">caf.sessionOptions</span>
+<span class="param-type"><a href="global.html#sessionOptionsType">sessionOptionsType</a></span>
 
 
             
@@ -2072,7 +2070,7 @@ arguments <code>caId</code> and <code>options</code>.</p></td>
     </dt>
     <dd>
         
-<span class="param-type"><a href="module-caf_cli_Session.html">Session</a></span>
+<span class="param-type">Object</span>
 
 
     </dd>
@@ -2100,13 +2098,13 @@ arguments <code>caId</code> and <code>options</code>.</p></td>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_ca_main.html">caf_ca/main</a></li><li><a href="module-caf_cli_cryptoSession.html">caf_cli/cryptoSession</a></li><li><a href="module-caf_cli_Queue.html">caf_cli/Queue</a></li><li><a href="module-caf_cli_Session.html">caf_cli/Session</a></li><li><a href="module-caf_cli_TimeAdjuster.html">caf_cli/TimeAdjuster</a></li><li><a href="module-caf_cli_TokenFactory.html">caf_cli/TokenFactory</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_ca_main.html">caf_ca/main</a></li><li><a href="module-caf_cli_cryptoSession.html">caf_cli/cryptoSession</a></li><li><a href="module-caf_cli_Queue.html">caf_cli/Queue</a></li><li><a href="module-caf_cli_Session.html">caf_cli/Session</a></li><li><a href="module-caf_cli_TimeAdjuster.html">caf_cli/TimeAdjuster</a></li><li><a href="module-caf_cli_TokenFactory.html">caf_cli/TokenFactory</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Feb 03 2018 00:52:29 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 06 2018 00:39:46 GMT-0800 (PST)
 </footer>
 
 <script> prettyPrint(); </script>
