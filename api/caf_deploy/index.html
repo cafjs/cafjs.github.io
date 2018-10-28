@@ -26,7 +26,7 @@
     
 
 
-    <h3>caf_deploy 0.3.0</h3>
+    <h3>caf_deploy 0.3.1</h3>
 
 
 
@@ -44,17 +44,19 @@
 
     <section>
         <article><h1>CAF (Cloud Assistant Framework)</h1><p>Co-design permanent, active, stateful, reliable cloud proxies with your web app.</p>
-<p>See http://www.cafjs.com</p>
+<p>See http://<a href="http://www.cafjs.com">www.cafjs.com</a></p>
 <h2>CAF Extra Deploy</h2><!-- [![Build Status](http://ci.cafjs.com/api/badges/cafjs/caf_deploy/status.svg)](http://ci.cafjs.com/cafjs/caf_deploy) -->
-<p>This repository contains a CAF  lib to deploy applications in Mesos/Marathon.</p>
+<p>This repository contains a CAF  lib to deploy applications in Mesos/Marathon or Kubernetes.</p>
 <h2>API</h2><p>See <a href="module-caf_deploy_proxy_deploy.html">module:caf_deploy/proxy_deploy</a></p>
 <p>See the <code>caf_turtles</code> application for an example.</p>
 <h2>Configuration Example</h2><p>See <a href="module-caf_deploy_plug_deploy.html">module:caf_deploy/plug_deploy</a></p>
-<h3>framework.json</h3><pre class="prettyprint source"><code>{
+<h3>framework.json</h3><p>Default for marathon deployment:</p>
+<pre class="prettyprint source"><code>{
     &quot;module&quot;: &quot;caf_deploy#plug&quot;,
     &quot;name&quot;: &quot;deploy&quot;,
     &quot;description&quot;: &quot;Shared plug to deploy apps in Mesos/Marathon\n Properties: \n&quot;,
     &quot;env&quot;: {
+        &quot;targetPaaS&quot;: &quot;process.env.TARGET_PAAS||marathon&quot;,
         &quot;listAllRedisPorts&quot; : &quot;process.env.LIST_ALL_REDIS_PORTS||false&quot;,
         &quot;refreshInterval&quot; : &quot;process.env.REFRESH_INTERVAL||1000&quot;,
         &quot;protocol&quot; : &quot;process.env.MARATHON_PROTOCOL||http&quot;,
@@ -67,16 +69,49 @@
             &quot;prefixID&quot;: &quot;process.env.REDIS_PREFIX_ID||redis&quot;,
             &quot;rangePortStart&quot; : &quot;process.env.REDIS_RANGE_PORT_START||6380&quot;,
             &quot;rangePortEnd&quot; : &quot;process.env.REDIS_RANGE_PORT_END||6480&quot;,
-            &quot;image&quot; : &quot;process.env.REDIS_IMAGE||redis:2.8&quot;,
-            &quot;cpus&quot; : &quot;process.env.REDIS_CPUS||0.1&quot;,
-            &quot;memory&quot; : &quot;process.env.REDIS_MEMORY||64.0&quot;
+            &quot;image&quot; : &quot;process.env.REDIS_IMAGE||redis:3&quot;,
+            &quot;cpus&quot; : &quot;process.env.REDIS_CPUS||0.02&quot;,
+            &quot;memory&quot; : &quot;process.env.REDIS_MEMORY||64.0&quot;,
+            &quot;memoryLimit&quot; : &quot;process.env.REDIS_MEMORY_LIMIT||128.0&quot;,
         },
         &quot;app&quot; : {
             &quot;templateFile&quot; : &quot;process.env.APP_TEMPLATE_FILE||marathon.app.mus&quot;,
             &quot;args&quot;: &quot;process.env.APP_ARGS||[]&quot;,
-            &quot;cpus&quot; : &quot;process.env.APP_CPUS||0.1&quot;,
-            &quot;memory&quot; : &quot;process.env.APP_MEMORY||64.0&quot;,
+            &quot;cpus&quot; : &quot;process.env.APP_CPUS||0.02&quot;,
+            &quot;memory&quot; : &quot;process.env.APP_MEMORY||96.0&quot;,
+            &quot;memoryLimit&quot; : &quot;process.env.APP_MEMORY_LIMIT||128.0&quot;,
             &quot;instances&quot;: &quot;process.env.APP_INSTANCES||1&quot;,
+            &quot;services&quot; :[&quot;redis&quot;]
+        }
+    }
+}</code></pre><p>Default for Kubernetes deployment:</p>
+<pre class="prettyprint source"><code>{
+    &quot;module&quot;: &quot;caf_deploy#plug&quot;,
+    &quot;name&quot;: &quot;deploy&quot;,
+    &quot;description&quot;: &quot;Shared plug to deploy apps in Kubernetes\n Properties: \n&quot;,
+    &quot;env&quot;: {
+        &quot;targetPaaS&quot;: &quot;process.env.TARGET_PAAS||kubernetes&quot;,
+        &quot;refreshInterval&quot; : &quot;process.env.REFRESH_INTERVAL||1000&quot;,
+        &quot;useK8SConfig&quot; : &quot;process.env.USE_K8S_CONFIG||false&quot;,
+        &quot;redis&quot; : {
+            &quot;k8SNamespace&quot; : &quot;process.env.REDIS_K8S_NAMESPACE||default&quot;,
+            &quot;templateFile&quot; : &quot;process.env.REDIS_TEMPLATE_FILE||kubernetes.redis.mus&quot;,
+            &quot;image&quot; : &quot;process.env.REDIS_IMAGE||redis:3&quot;,
+            &quot;cpus&quot; : &quot;process.env.REDIS_CPUS||0.02&quot;,
+            &quot;memory&quot; : &quot;process.env.REDIS_MEMORY||64.0&quot;,
+            &quot;memoryLimit&quot; : &quot;process.env.REDIS_MEMORY_LIMIT||128.0&quot;
+        },
+        &quot;app&quot; : {
+            &quot;k8SNamespace&quot; : &quot;process.env.APP_K8S_NAMESPACE||default&quot;,
+            &quot;templateFile&quot; : &quot;process.env.APP_TEMPLATE_FILE||kubernetes.app.mus&quot;,
+            &quot;cpus&quot; : &quot;process.env.APP_CPUS||0.02&quot;,
+            &quot;args&quot;: &quot;process.env.APP_ARGS||[]&quot;,
+            &quot;memory&quot; : &quot;process.env.APP_MEMORY||96.0&quot;,
+            &quot;memoryLimit&quot; : &quot;process.env.APP_MEMORY_LIMIT||128.0&quot;,
+            &quot;instances&quot;: &quot;process.env.APP_INSTANCES||1&quot;,
+            &quot;isDeployer&quot;: &quot;process.env.APP_IS_DEPLOYER||false&quot;,
+            &quot;isAccounts&quot;: &quot;process.env.APP_IS_ACCOUNTS||false&quot;,
+            &quot;appSuffix&quot; : &quot;$._.env.appSuffix&quot;,
             &quot;services&quot; :[&quot;redis&quot;]
         }
     }
@@ -109,13 +144,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_deploy_main.html">caf_deploy/main</a></li><li><a href="module-caf_deploy_plug_ca_deploy.html">caf_deploy/plug_ca_deploy</a></li><li><a href="module-caf_deploy_plug_deploy.html">caf_deploy/plug_deploy</a></li><li><a href="module-caf_deploy_plug_deploy_util.html">caf_deploy/plug_deploy_util</a></li><li><a href="module-caf_deploy_proxy_deploy.html">caf_deploy/proxy_deploy</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_deploy_main.html">caf_deploy/main</a></li><li><a href="module-caf_deploy_plug_ca_deploy.html">caf_deploy/plug_ca_deploy</a></li><li><a href="module-caf_deploy_plug_deploy.html">caf_deploy/plug_deploy</a></li><li><a href="module-caf_deploy_plug_deploy_kubernetes.html">caf_deploy/plug_deploy_kubernetes</a></li><li><a href="module-caf_deploy_plug_deploy_marathon.html">caf_deploy/plug_deploy_marathon</a></li><li><a href="module-caf_deploy_plug_deploy_util.html">caf_deploy/plug_deploy_util</a></li><li><a href="module-caf_deploy_plug_deploy_util_k8s.html">caf_deploy/plug_deploy_util_k8s</a></li><li><a href="module-caf_deploy_proxy_deploy.html">caf_deploy/proxy_deploy</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 06 2018 01:24:25 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Oct 28 2018 15:46:07 GMT-0700 (PDT)
 </footer>
 
 <script> prettyPrint(); </script>

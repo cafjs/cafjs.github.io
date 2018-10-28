@@ -26,7 +26,7 @@
     
 
 
-    <h3>caf_dcinabox 0.3.1</h3>
+    <h3>caf_dcinabox 0.3.3</h3>
 
 
 
@@ -44,12 +44,13 @@
 
     <section>
         <article><h1>CAF (Cloud Assistant Framework)</h1><p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and IoT devices.</p>
-<p>See http://www.cafjs.com</p>
+<p>See http://<a href="http://www.cafjs.com">www.cafjs.com</a></p>
 <h2>CAF Command Line Tools</h2><p>To setup see <a href="external-caf.html">external:caf</a> (https://cafjs.github.io/api/caf/index.html).</p>
 <p>The wrapper tool <code>cafjs</code> has subcommands of the form:</p>
 <pre class="prettyprint source"><code>cafjs &lt;command> &lt;commandOptions> arg1 arg2...</code></pre><p>The <code>commandOptions</code> always start with <code>--</code>, and are passed unchanged to the underlying tools. They are mostly for power users.</p>
 <p>The other arguments, e.g., <code>arg1</code>, <code>arg2</code>, are ordered. Positional arguments can always be replaced with equivalent <code>commandOptions</code>. However, when the same option is specified with conflicting values, the result is undefined.</p>
 <h4><code>cafjs run  &lt;run_options&gt; &lt;appLocalName&gt; [appWorkingDir] [host/app Vol]</code></h4><p>Starts a simulated cloud to run your app. Uses separate Docker containers for a HAProxy-based http router, a Redis backend, and supporting apps for authentication, managing CAs, or registering devices.</p>
+<p>The application can also be directly accessed using the http HOST <code>localhost</code>, i.e.,<code>http://localhost:&lt;externalPort&gt;</code>. Some browser features are only enabled with https or http with <code>localhost</code>, i.e., will not work with <code>*.vcap.me</code>. A valid token in the URL is required.</p>
 <p>Two common usecases of <code>cafjs run</code>:</p>
 <ul>
 <li><em>Quick prototyping mode</em>: when creating a fresh container image is too expensive. Instead, build the app outside the container (<code>cafjs build</code>), and mount the host directory in a generic container image.</li>
@@ -64,11 +65,12 @@
 <li><code>--appVolume &lt;string&gt;</code> The internal container directory where the <code>hostVolume</code> is mounted (<em>quick prototyping mode</em> only). Defaults to <code>$HOME</code>.</li>
 <li><code>--ipAddress &lt;string&gt;</code> The network interface for the service. Defaults to <code>localhost</code>.</li>
 <li><code>--port &lt;number&gt;</code> The port number for the service. Defaults to port 80.</li>
+<li><code>--debugApplication &lt;boolean&gt;</code> Start the node debugger listening on host port 9229 (app only).</li>
 </ul>
 <p>For example, in <em>Quick prototyping mode</em>:</p>
 <pre class="prettyprint source"><code>cd $HOME/caf/apps/caf_helloworld; cafjs build; cafjs run helloworld</code></pre><p>and in <em>Validation mode</em>:</p>
-<pre class="prettyprint source"><code>cafjs mkImage $HOME/caf/apps/caf_helloworld registry.cafjs.com:32000/root-helloworld
-cafjs run --appImage registry.cafjs.com:32000/root-helloworld helloworld</code></pre><h4><code>cafjs build</code></h4><p>Wrapper to <code>yarn</code> to build an application in the current directory using local dependencies. It assumes yarn workspaces, and a target task <code>build</code> in <code>package.json</code>.</p>
+<pre class="prettyprint source"><code>cafjs mkImage $HOME/caf/apps/caf_helloworld gcr.io/cafjs-k8/root-helloworld
+cafjs run --appImage gcr.io/cafjs-k8/root-helloworld helloworld</code></pre><h4><code>cafjs build</code></h4><p>Wrapper to <code>yarn</code> to build an application in the current directory using local dependencies. It assumes yarn workspaces, and a target task <code>build</code> in <code>package.json</code>.</p>
 <h4><code>cafjs reset</code></h4><p>Brute force clean up of both containers and networks.</p>
 <p>A reset for a running application is also triggered after two <code>Control-C</code> keystrokes. A single <code>Control-C</code> triggers a gentle, but slower, shutdown.</p>
 <h4><code>cafjs mkImage &lt;src&gt; &lt;imageName&gt;</code></h4><p>Creates a Docker image with the app. The arguments are the app directory and the image name.</p>
@@ -107,11 +109,11 @@ cat /tmp/gpio/out/gpio12
 echo 1 > /tmp/gpio/in/gpio11</code></pre><p>and the browser should now show the new input for pin <code>11</code>.</p>
 <h4>And now in <em>validation mode</em></h4><p>Build the container image, and run the app and device:</p>
 <pre class="prettyprint source"><code>cd $HOME/caf/apps/caf_helloiot
-cafjs mkImage . registry.cafjs.com:32000/root-helloiot
-cafjs run --appImage registry.cafjs.com:32000/root-helloiot helloiot
+cafjs mkImage . gcr.io/cafjs-k8/root-helloiot
+cafjs run --appImage gcr.io/cafjs-k8/root-helloiot helloiot
 cafjs device foo-device1</code></pre><p>The setup is similar to the previous case. In fact, since the <code>Redis</code> container persists changes in a host volume, all your CAs should still be there.</p>
 <h3>Local multi-host deployment</h3><p>Use an external network interface for the service. For example, if <code>192.168.1.15</code> is the address of <code>wlan0</code> in my laptop:</p>
-<pre class="prettyprint source"><code>cafjs run --appImage registry.cafjs.com:32000/root-helloiot --ipAddress 192.168.1.15 --port 8080 helloiot</code></pre><p>and, in a different computer connected to the same wireless LAN, type</p>
+<pre class="prettyprint source"><code>cafjs run --appImage gcr.io/cafjs-k8/root-helloiot --ipAddress 192.168.1.15 --port 8080 helloiot</code></pre><p>and, in a different computer connected to the same wireless LAN, type</p>
 <pre class="prettyprint source"><code>cafjs device --ipAddress 192.168.1.15 --port 8080 --password pleasechange foo-device1</code></pre><p>to simulate a device that is connected to the service in my laptop using the wireless LAN.</p>
 <p>Note that the URL for the service is:</p>
 <pre class="prettyprint source"><code>http://root-launcher.192.168.1.15.xip.io:8080</code></pre><p>the trick is that <code>xip.io</code> provides a DNS wildcard domain that maps <code>whatever.192.168.1.15.xip.io</code> to my IP address <code>192.168.1.15</code>.</p>
@@ -132,7 +134,7 @@ cafjs device foo-device1</code></pre><p>The setup is similar to the previous cas
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Feb 06 2018 01:24:27 GMT-0800 (PST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Oct 28 2018 15:46:09 GMT-0700 (PDT)
 </footer>
 
 <script> prettyPrint(); </script>
