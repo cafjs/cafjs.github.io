@@ -45,7 +45,7 @@ while still guaranteeing  ownership of leases during operations.</p>
 <p>Lua scripts are executed atomically by the server, and therefore, we can
 combine the check and the update in the same script.</p>
 <p>We also implement coalescing of state updates across different CAs in a
- single script, to amortize the setup cost of LUA with several
+single script, to amortize the setup cost of LUA with several
 updates.</p>
 <p>This improves dramatically Redis throughput, and also reduces
 client overhead.</p>
@@ -113,6 +113,8 @@ pending requests.</p></div>
 
     
 </dl>
+
+
 
 
 
@@ -345,6 +347,8 @@ otherwise (or an error).</p></td>
 
 
 
+
+
         
             
 
@@ -503,13 +507,15 @@ otherwise (or an error).</p></td>
 
 
 
+
+
         
             
 
     
 
     
-    <h4 class="name" id="createMap"><span class="type-signature"></span>createMap<span class="signature">(mapName, cb0)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="createMap"><span class="type-signature"></span>createMap<span class="signature">(mapName, initialValue, cb0)</span><span class="type-signature"></span></h4>
     
 
     
@@ -576,6 +582,34 @@ otherwise (or an error).</p></td>
 
         <tr>
             
+                <td class="name"><code>initialValue</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, <a href="global.html#jsonType">jsonType</a>></span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An optional
+initial value. This value is ignored if the map was already
+initialized.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>cb0</code></td>
             
 
@@ -633,7 +667,7 @@ otherwise (or an error).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line699">line 699</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line702">line 702</a>
     </li></ul></dd>
     
 
@@ -643,6 +677,8 @@ otherwise (or an error).</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -791,7 +827,7 @@ otherwise (or an error).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line715">line 715</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line725">line 725</a>
     </li></ul></dd>
     
 
@@ -801,6 +837,8 @@ otherwise (or an error).</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -978,6 +1016,8 @@ or its succesful completion if the argument is a falsy.</p></td>
 
 
 
+
+
         
             
 
@@ -1136,6 +1176,8 @@ or its succesful completion if the argument is a falsy.</p></td>
 
 
 
+
+
         
             
 
@@ -1228,7 +1270,7 @@ or its succesful completion if the argument is a falsy.</p></td>
 
             <td class="description last"><p>A callback to notify an error
 getting the state or (in a second argument) the serialized state
- of that
+of that
 CA.</p></td>
         </tr>
 
@@ -1298,6 +1340,8 @@ CA.</p></td>
 
 
 
+
+
         
             
 
@@ -1313,7 +1357,7 @@ CA.</p></td>
 
 <div class="description">
     <p>Grabs a lease that guarantees exclusive ownership of a CA by this
- node.</p>
+node.</p>
 </div>
 
 
@@ -1483,6 +1527,8 @@ Null error argument if we succeeded.</p></td>
 
 
 
+
+
         
             
 
@@ -1575,7 +1621,7 @@ public nodeId for this process.</p></td>
             
 
             <td class="description last"><p>A private unique identifier for the
- current node.js process.</p></td>
+current node.js process.</p></td>
         </tr>
 
     
@@ -1663,7 +1709,7 @@ an error if we cannot renew lease or the new external nodeId.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line985">line 985</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line995">line 995</a>
     </li></ul></dd>
     
 
@@ -1673,6 +1719,8 @@ an error if we cannot renew lease or the new external nodeId.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -1787,7 +1835,7 @@ all.</p></td>
 
             <td class="description last"><p>A
 callback with an error or an object with external nodeIds to
- private nodeIds (containing only the ones in use).</p></td>
+private nodeIds (containing only the ones in use).</p></td>
         </tr>
 
     
@@ -1828,7 +1876,7 @@ callback with an error or an object with external nodeIds to
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line1019">line 1019</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line1029">line 1029</a>
     </li></ul></dd>
     
 
@@ -1838,6 +1886,8 @@ callback with an error or an object with external nodeIds to
 
     
 </dl>
+
+
 
 
 
@@ -2009,7 +2059,7 @@ callback with an error or an object with external nodeIds to
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line933">line 933</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line943">line 943</a>
     </li></ul></dd>
     
 
@@ -2019,6 +2069,8 @@ callback with an error or an object with external nodeIds to
 
     
 </dl>
+
+
 
 
 
@@ -2170,7 +2222,7 @@ add:Array<Object> (i.e., flattened key value pairs)}</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line733">line 733</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line743">line 743</a>
     </li></ul></dd>
     
 
@@ -2180,6 +2232,8 @@ add:Array<Object> (i.e., flattened key value pairs)}</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -2381,6 +2435,8 @@ Ids that we failed to renew.</p></td>
 
 
 
+
+
         
             
 
@@ -2448,7 +2504,7 @@ Ids that we failed to renew.</p></td>
             
 
             <td class="description last"><p>A private unique identifier for the
- current node.js process.</p></td>
+current node.js process.</p></td>
         </tr>
 
     
@@ -2536,7 +2592,7 @@ an error if we cannot renew lease.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line951">line 951</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line961">line 961</a>
     </li></ul></dd>
     
 
@@ -2546,6 +2602,8 @@ an error if we cannot renew lease.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -2745,6 +2803,8 @@ an error if we cannot renew lease.</p></td>
 
 
 
+
+
         
             
 
@@ -2898,7 +2958,7 @@ an error if we cannot renew lease.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line820">line 820</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line830">line 830</a>
     </li></ul></dd>
     
 
@@ -2908,6 +2968,8 @@ an error if we cannot renew lease.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -3080,7 +3142,7 @@ messages. First argument is the topic, second the message.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line898">line 898</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line908">line 908</a>
     </li></ul></dd>
     
 
@@ -3090,6 +3152,8 @@ messages. First argument is the topic, second the message.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -3238,7 +3302,7 @@ messages. First argument is the topic, second the message.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line852">line 852</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line862">line 862</a>
     </li></ul></dd>
     
 
@@ -3248,6 +3312,8 @@ messages. First argument is the topic, second the message.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -3396,7 +3462,7 @@ messages. First argument is the topic, second the message.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line918">line 918</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line928">line 928</a>
     </li></ul></dd>
     
 
@@ -3406,6 +3472,8 @@ messages. First argument is the topic, second the message.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -3628,6 +3696,8 @@ messages. First argument is the topic, second the message.</p></td>
 
 
 
+
+
         
             
 
@@ -3645,7 +3715,9 @@ messages. First argument is the topic, second the message.</p></td>
     <p>Updates a Map.</p>
 <p>The type changesType is a normalized update (no duplicated keys) of
 the form:</p>
-<pre class="prettyprint source"><code>{version: number, remove : Array.&lt;string>, add : Array&lt;Object>}</code></pre><p>It publishes in a channel with id <code>mapName</code> the JSON-encoded
+<pre><code>{version: number, remove : Array.&lt;string&gt;, add : Array&lt;Object&gt;}
+</code></pre>
+<p>It publishes in a channel with id <code>mapName</code> the JSON-encoded
 <code>changes</code> contents.</p>
 </div>
 
@@ -3786,7 +3858,7 @@ the number of subscribed clients.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line758">line 758</a>
+        <a href="plug_checkpoint.js.html">plug_checkpoint.js</a>, <a href="plug_checkpoint.js.html#line768">line 768</a>
     </li></ul></dd>
     
 
@@ -3796,6 +3868,8 @@ the number of subscribed clients.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -3996,6 +4070,8 @@ or succesful completion if falsy argument.</p></td>
 
 
 
+
+
         
     
 
@@ -4018,7 +4094,7 @@ or succesful completion if falsy argument.</p></td>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 29 2018 21:39:34 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Dec 07 2019 23:28:30 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -26,7 +26,7 @@
     
 
 
-    <h3>caf_sharing 0.3.3</h3>
+    <h3>caf_sharing 0.3.5</h3>
 
 
 
@@ -43,9 +43,11 @@
 
 
     <section>
-        <article><h1>CAF (Cloud Assistant Framework)</h1><p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.</p>
-<p>See http://<a href="http://www.cafjs.com">www.cafjs.com</a></p>
-<h2>CAF Lib Sharing</h2><p><a href="https://travis-ci.org/cafjs/caf_sharing"><img src="https://travis-ci.org/cafjs/caf_sharing.svg?branch=master" alt="Build Status"></a></p>
+        <article><h1>CAF (Cloud Assistant Framework)</h1>
+<p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.</p>
+<p>See http://www.cafjs.com</p>
+<h2>CAF Lib Sharing</h2>
+<p><a href="https://travis-ci.org/cafjs/caf_sharing"><img src="https://travis-ci.org/cafjs/caf_sharing.svg?branch=master" alt="Build Status"></a></p>
 <p>This repository implements distributed, replicated data structures for <em>Sharing Actors</em>, a core abstraction for our CAs.</p>
 <p>In a traditional Actor model, Actor's state is private, and data sharing is implemented by exchanging messages. This simplifies concurrent programming by avoiding data races, deadlocks, and complex fault recovery.</p>
 <p>Unfortunately, when slow changing data has to be shared by many Actors, the most efficient solutions use shared memory, and that breaks the Actor model.</p>
@@ -53,15 +55,20 @@
 <p>In the general case we can't. The shared data structure is seen as internal state by many Actors. Changes by one of them could be visible by others in the middle of processing a message, breaking message serialization.</p>
 <p>But if we make certain assumptions we can!</p>
 <ol>
-<li><p><em>Single Writer</em>: one Actor <em>owns</em> the data structure, the others can only read it. Everybody sees the data structure as internal state.</p>
+<li>
+<p><em>Single Writer</em>: one Actor <em>owns</em> the data structure, the others can only read it. Everybody sees the data structure as internal state.</p>
 </li>
-<li><p><em>Readers Isolation</em>: a read-only view of the data structure can only change in between messages.</p>
+<li>
+<p><em>Readers Isolation</em>: a read-only view of the data structure can only change in between messages.</p>
 </li>
-<li><p><em>Fairness</em>: an Actor cannot indefinitely block other local Actors from seeing new updates.</p>
+<li>
+<p><em>Fairness</em>: an Actor cannot indefinitely block other local Actors from seeing new updates.</p>
 </li>
-<li><p><em>Writer Atomicity</em>: changes are flushed, as an atomic unit, when the processing of a message finishes. No partial leaks allowed.</p>
+<li>
+<p><em>Writer Atomicity</em>: changes are flushed, as an atomic unit, when the processing of a message finishes. No partial leaks allowed.</p>
 </li>
-<li><p><em>Consistency</em>: implements monotonic read consistency, i.e., replicas can be stale, but they never roll back to older versions.</p>
+<li>
+<p><em>Consistency</em>: implements monotonic read consistency, i.e., replicas can be stale, but they never roll back to older versions.</p>
 </li>
 </ol>
 <p>And these properties are not that difficult to guarantee in CAF.js.</p>
@@ -74,7 +81,8 @@
 <p><em>SharedMaps</em> can contain serialized methods that CAF.js uses to dynamically change the behavior of CAs or gadgets. For example, by adding getters and setters to the map we can hide schema changes, or provide new functionality to a device, or change the rules on how CAs react to certain events...</p>
 <p>And those changes respect  <em>Single Writer</em>, <em>Writer Atomicity</em>,  <em>Readers Isolation</em>, <em>Fairness</em>, and <em>Consistency</em>, enabling <strong>safe</strong> adaptive behavior.</p>
 <p>Let's look at some examples:</p>
-<h3>Hello World (see <code>examples/helloworld</code>)</h3><p>Each user has a privileged CA called <code>admin</code> that owns a <em>SharedMap</em>. All the CAs belonging to this user replicate this map. CAs could be running in different node.js processes, deployed across multiple servers or VMs.</p>
+<h3>Hello World (see <code>examples/helloworld</code>)</h3>
+<p>Each user has a privileged CA called <code>admin</code> that owns a <em>SharedMap</em>. All the CAs belonging to this user replicate this map. CAs could be running in different node.js processes, deployed across multiple servers or VMs.</p>
 <p>Helper functions to identify the privileged CA, and the name of the <em>SharedMap</em>:</p>
 <pre class="prettyprint source"><code>var ADMIN_CA = 'admin';
 var ADMIN_MAP = 'masterSharedMap';
@@ -85,7 +93,9 @@ var isAdmin = function(self) {
 var masterMap = function(self) {
     var name = self.__ca_getName__();
     return caf.joinName(caf.splitName(name)[0], ADMIN_CA, ADMIN_MAP);
-};</code></pre><p>and the CA methods that implement a counter as a <em>SharedMap</em> entry:</p>
+};
+</code></pre>
+<p>and the CA methods that implement a counter as a <em>SharedMap</em> entry:</p>
 <pre class="prettyprint source"><code>exports.methods = {
     async __ca_init__() {
         if (isAdmin(this)) {
@@ -108,7 +118,10 @@ var masterMap = function(self) {
         var $$ = this.$.sharing.$;
         return [null, $$.slave.get('counter')];
     }
-};</code></pre><h3>Hello Adaptive (see <code>examples/helloadaptive</code>)</h3><p>Let's add dynamic behavior to the previous example.</p>
+};
+</code></pre>
+<h3>Hello Adaptive (see <code>examples/helloadaptive</code>)</h3>
+<p>Let's add dynamic behavior to the previous example.</p>
 <p>The privileged CA installs in the <em>SharedMap</em> a serialized method that computes a random label. CAs generate new labels using <code>applyMethod</code>. Labels can be customized by the <code>base</code> map property and the <code>prefix</code> argument. If the method is missing, an error is thrown, and the client retries after a delay.</p>
 <pre class="prettyprint source"><code>exports.methods = {
     ...
@@ -131,7 +144,9 @@ var masterMap = function(self) {
             return [err];
         }
     }
-};</code></pre><p>Changes to <code>base</code> and <code>computeLabel</code> are committed in a single transaction, eliminating dangerous transients.</p>
+};
+</code></pre>
+<p>Changes to <code>base</code> and <code>computeLabel</code> are committed in a single transaction, eliminating dangerous transients.</p>
 <p>Also, if inside <code>getLabel</code> we call the method <code>computeLabel</code> multiple times, even with asynchronous control flow between calls, the  <em>Readers Isolation</em> property guarantees that the method does not change.</p></article>
     </section>
 
@@ -149,7 +164,7 @@ var masterMap = function(self) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 29 2018 21:39:36 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Dec 07 2019 23:28:32 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

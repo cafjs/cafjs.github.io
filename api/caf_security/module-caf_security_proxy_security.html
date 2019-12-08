@@ -115,6 +115,8 @@
 
 
 
+
+
         
     
     </div>
@@ -312,21 +314,31 @@
     <p>Adds a rule that allows a principal to invoke certain methods.</p>
 <p>The type can be <code>simpleRuleType</code> or  <code>aggregateRuleType</code></p>
 <p>The type of <code>ruleType</code> when the rule type is <code>simpleRuleType</code>:</p>
-<pre class="prettyprint source"><code>{ type: 'caf.simpleRule', ac: {caOwner: string=,
+<pre><code>{ type: 'caf.simpleRule', ac: {caOwner: string=,
                                caLocalName: string=},
-  methods: (Array.&lt;string> | string)=}</code></pre><p>a missing field means a wildcard, <code>&quot;!SELF&quot;</code> represents the owner of
+  methods: (Array.&lt;string&gt; | string)=}
+</code></pre>
+<p>a missing field means a wildcard, <code>&quot;!SELF&quot;</code> represents the owner of
 this CA, and <code>&quot;!CA_LOCAL&quot;</code> matches the local name of this CA.</p>
-<p> For example:</p>
-<pre class="prettyprint source"><code> {type: 'caf.simpleRule', ac: {caOwner: &quot;!SELF&quot;,
-                               caLocalName: &quot;!CA_LOCAL&quot;}}</code></pre><p> gives the owner, within an authenticated session, full access to this
+<p>For example:</p>
+<pre><code> {type: 'caf.simpleRule', ac: {caOwner: &quot;!SELF&quot;,
+                               caLocalName: &quot;!CA_LOCAL&quot;}}
+</code></pre>
+<p>gives the owner, within an authenticated session, full access to this
 CA. This is a sensible default.</p>
-<pre class="prettyprint source"><code> {type: 'caf.simpleRule', ac: {caOwner: '!SELF'}}</code></pre><p>gives any CA with the same owner full access to this CA.</p>
-<pre class="prettyprint source"><code> {type: 'caf.simpleRule', ac: {caOwner: '!SELF', caLocalName: 'bar'},
-  methods: 'foo'}</code></pre><p>grants permission to CA <code>bar</code>, of the same owner, to  invoke method
+<pre><code> {type: 'caf.simpleRule', ac: {caOwner: '!SELF'}}
+</code></pre>
+<p>gives any CA with the same owner full access to this CA.</p>
+<pre><code> {type: 'caf.simpleRule', ac: {caOwner: '!SELF', caLocalName: 'bar'},
+  methods: 'foo'}
+</code></pre>
+<p>grants permission to CA <code>bar</code>, of the same owner, to  invoke method
 <code>foo</code>.</p>
 <p>The type  of <code>ruleType</code> when the rule type is <code>aggregateRuleType</code>:</p>
-<pre class="prettyprint source"><code> {type: 'caf.aggregateRule', alias : string,
-  methods: (Array.&lt;string> | string)=}</code></pre><p> where <code>alias</code> is the <code>AggregateMap</code> alias in the <code>sharing</code> plugin
+<pre><code> {type: 'caf.aggregateRule', alias : string,
+  methods: (Array.&lt;string&gt; | string)=}
+</code></pre>
+<p>where <code>alias</code> is the <code>AggregateMap</code> alias in the <code>sharing</code> plugin
 context. See <a href="external-caf_sharing.html">external:caf_sharing</a>.</p>
 <p>For example, if <code>alias</code> is <code>foo</code>, the map is <code>this.$.sharing.$.foo</code>.</p>
 </div>
@@ -444,6 +456,8 @@ context. See <a href="external-caf_sharing.html">external:caf_sharing</a>.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -487,9 +501,11 @@ context. See <a href="external-caf_sharing.html">external:caf_sharing</a>.</p>
 <div class="description">
     <p>Weakens an authentication token generating one (or many) token(s).</p>
 <p>type of <code>tokenDescriptionType</code> is</p>
-<pre class="prettyprint source"><code> {appPublisher: (string|null)=, appLocalName: (string|null)=,
+<pre><code> {appPublisher: (string|null)=, appLocalName: (string|null)=,
   caOwner: (string|null)=, caLocalName: (string|null)=,
-  durationInSec: number=}</code></pre><p>A <code>null</code> value in the token description means force the current value.</p>
+  durationInSec: number=}
+</code></pre>
+<p>A <code>null</code> value in the token description means force the current value.</p>
 <p>An <code>undefined</code> value means remove the constraint.</p>
 </div>
 
@@ -661,6 +677,8 @@ description  of the new token(s).</p></td>
 
 
 
+
+
         
             
 
@@ -778,6 +796,8 @@ description  of the new token(s).</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -928,6 +948,8 @@ description  of the new token(s).</p></td>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -1025,6 +1047,8 @@ processing, i.e., <code>&lt;caOwner&gt;-&lt;caLocalName&gt;</code>.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1221,6 +1245,8 @@ application-level checks.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -1330,12 +1356,14 @@ application-level checks.</p>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
 <div class="param-desc">
     <p>A map using rule ids as keys and
- rule contents as values.</p>
+rule contents as values.</p>
 </div>
 
 
@@ -1533,6 +1561,8 @@ instantiate the AggregateMap.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -1792,6 +1822,8 @@ to all.</p></td>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -1954,6 +1986,8 @@ to all.</p></td>
 
 
 
+
+
         
             
 
@@ -1970,7 +2004,7 @@ to all.</p></td>
 <div class="description">
     <p>Checks that a serialized token is trusted by this app.</p>
 <p>The type of <code>tokenType</code> is</p>
-<pre class="prettyprint source"><code>  {appPublisher: string=, appLocalName:string=, caOwner: string=,
+<pre><code>  {appPublisher: string=, appLocalName:string=, caOwner: string=,
    caLocalName: string=, expiresAfter: string=}</code></pre>
 </div>
 
@@ -2087,12 +2121,14 @@ to all.</p></td>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
 <div class="param-desc">
     <p>A parsed and validated token, or <code>null</code> if token
- invalid.</p>
+invalid.</p>
 </div>
 
 
@@ -2140,7 +2176,7 @@ to all.</p></td>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 29 2018 21:39:35 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Dec 07 2019 23:28:31 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: caf_cli/TokenFactory</title>
+    <title>JSDoc: Module: caf_cli/CreateUser</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: caf_cli/TokenFactory</h1>
+    <h1 class="page-title">Module: caf_cli/CreateUser</h1>
 
     
 
@@ -38,9 +38,10 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Creates authentication tokens for a node.js client.</p>
-<p>See <code>tokenFactoryOptionsType</code> in file <code>types.js</code> for the security
-properties in <code>sessionOptionsType</code>.</p></div>
+            <div class="description"><p>Registers a new user using a node.js client.</p>
+<p>Registration is implicit when using the launcher app, and explicit
+registration is only needed in special cases, e.g., only headless
+operation.</p></div>
         
 
         
@@ -89,7 +90,7 @@ properties in <code>sessionOptionsType</code>.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="TokenFactory.js.html">TokenFactory.js</a>, <a href="TokenFactory.js.html#line17">line 17</a>
+        <a href="CreateUser.js.html">CreateUser.js</a>, <a href="CreateUser.js.html#line18">line 18</a>
     </li></ul></dd>
     
 
@@ -146,7 +147,7 @@ properties in <code>sessionOptionsType</code>.</p></div>
     
 
     
-    <h4 class="name" id="newToken"><span class="type-signature"></span>newToken<span class="signature">(msg, cb)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="newUser"><span class="type-signature"></span>newUser<span class="signature">(url, options, cb)</span><span class="type-signature"></span></h4>
     
 
     
@@ -154,7 +155,8 @@ properties in <code>sessionOptionsType</code>.</p></div>
 
 
 <div class="description">
-    <p>Negotiates a new authentication token.</p>
+    <p>Explicit registration of a new user.</p>
+<p>This is only needed for testing or headless operation.</p>
 </div>
 
 
@@ -190,13 +192,13 @@ properties in <code>sessionOptionsType</code>.</p></div>
 
         <tr>
             
-                <td class="name"><code>msg</code></td>
+                <td class="name"><code>url</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#msgType">msgType</a></span>
+<span class="param-type">string</span>
 
 
             
@@ -206,7 +208,30 @@ properties in <code>sessionOptionsType</code>.</p></div>
 
             
 
-            <td class="description last"><p>A <code>notAuthenticated</code> error message.</p></td>
+            <td class="description last"><p>The target url provided to the original session call.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#sessionOptionsType">sessionOptionsType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The properties of the original session.</p></td>
         </tr>
 
     
@@ -229,7 +254,8 @@ properties in <code>sessionOptionsType</code>.</p></div>
 
             
 
-            <td class="description last"><p>A callback to return the new token or an error.</p></td>
+            <td class="description last"><p>A standard callback to notify correct user registration or
+an error.</p></td>
         </tr>
 
     
@@ -270,144 +296,7 @@ properties in <code>sessionOptionsType</code>.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="TokenFactory.js.html">TokenFactory.js</a>, <a href="TokenFactory.js.html#line119">line 119</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="TokenFactory"><span class="type-signature"></span>TokenFactory<span class="signature">(options)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Constructor.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#sessionOptionsType">sessionOptionsType</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Extended properties.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="TokenFactory.js.html">TokenFactory.js</a>, <a href="TokenFactory.js.html#line52">line 52</a>
+        <a href="CreateUser.js.html">CreateUser.js</a>, <a href="CreateUser.js.html#line47">line 47</a>
     </li></ul></dd>
     
 

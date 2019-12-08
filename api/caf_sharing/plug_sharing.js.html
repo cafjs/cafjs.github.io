@@ -84,17 +84,17 @@ exports.newInstance = function($, spec, cb) {
         var route = spec.env.routeService;
 
         /* &lt;name> ->  &lt;SharedMap> */
-        var masters = {};
+        var primaries = {};
 
         /* &lt;name> -> {map : &lt;SharedMap>, count : &lt;number> , options: Object}*/
-        var slaves = {};
+        var replicas = {};
 
         /* &lt;name> -> {map : &lt;AggregateMap>, count : &lt;number>, options: Object}*/
         var aggregates = {};
 
-        that.master = function(name, options, cb0) {
+        that.primary = function(name, options, cb0) {
             try {
-                var result = masters[name];
+                var result = primaries[name];
                 if (result) {
                     cb0(null, result);
                 } else {
@@ -108,14 +108,16 @@ exports.newInstance = function($, spec, cb) {
                             try {
                                 var map = SharedMap();
                                 map.applyChanges(mapDump);
-                                masters[name] = map;
+                                primaries[name] = map;
                                 cb0(null, map);
                             } catch (error) {
                                 cb0(error);
                             }
                         }
                     };
-                    $._.$[persist].createMap(name, cb1);
+                    var initialValue = (options &amp;&amp; options.initialValue) ||
+                            null;
+                    $._.$[persist].createMap(name, initialValue, cb1);
                 }
             } catch (err) {
                 cb0(err);
@@ -162,8 +164,8 @@ exports.newInstance = function($, spec, cb) {
             }
         };
 
-        that.slaveOf = function(name, options, cb0) {
-            var result = slaves[name];
+        that.replicaOf = function(name, options, cb0) {
+            var result = replicas[name];
             if (result &amp;&amp; result.map) {
                 result.count = result.count + 1;
                 cb0(null, result.map);
@@ -171,7 +173,8 @@ exports.newInstance = function($, spec, cb) {
                 var cb1 = function(err, mapDump) {
                     if (err) {
                         $._.$.log &amp;&amp;
-                            $._.$.log.debug('Cannot create slave Map ' + name);
+                            $._.$.log.debug('Cannot create replica Map ' +
+                                            name);
                         cb0(err);
                     } else {
                         try {
@@ -181,7 +184,7 @@ exports.newInstance = function($, spec, cb) {
                                 if (error) {
                                     cb0(error);
                                 } else {
-                                    slaves[name] = {
+                                    replicas[name] = {
                                         map: map, count: 1, options: options
                                     };
                                     cb0(null, map);
@@ -208,21 +211,21 @@ exports.newInstance = function($, spec, cb) {
                 cb0(null, result.map);
             } else {
                 var agg = AggregateMap(name, function(mapName, cb1) {
-                    that.slaveOf(mapName, null, cb1);// do not pass options
+                    that.replicaOf(mapName, null, cb1);// do not pass options
                 }, options &amp;&amp; options.linkKey);
                 aggregates[name] = {map: agg, count: 1, options: options};
                 cb0(null, agg);
             }
         };
 
-        that.updateMaster = function(info, changes, cb0) {
+        that.updatePrimary = function(info, changes, cb0) {
             try {
-                var result = masters[info.name];
+                var result = primaries[info.name];
                 if (result &amp;&amp; info.isWritable) {
                     result.applyChanges(changes);
                     var cb1 = function(err, data) {
                         if (err) {
-                            that.unregisterMaster(info.name, result);
+                            that.unregisterPrimary(info.name, result);
                             cb0(err);
                         } else {
                             cb0(err, data);
@@ -240,12 +243,12 @@ exports.newInstance = function($, spec, cb) {
             }
         };
 
-        that.unregisterMaster = function(name, map) {
-            var result = masters[name];
+        that.unregisterPrimary = function(name, map) {
+            var result = primaries[name];
             if (result &amp;&amp; (result === map)) {
-                delete masters[name];
+                delete primaries[name];
             } else {
-                $._.$.log &amp;&amp; $._.$.log.debug('Ignoring unregister master Map ' +
+                $._.$.log &amp;&amp; $._.$.log.debug('Ignored unregister primary Map ' +
                                              name);
             }
         };
@@ -253,7 +256,7 @@ exports.newInstance = function($, spec, cb) {
         var derefCount = function(result, map, name, cleanF, nothingF) {
             if (result &amp;&amp; (result.map === map)) {
                 result.count = result.count - 1;
-                assert.ok(result.count >= 0, 'Negative slave count for ' +
+                assert.ok(result.count >= 0, 'Negative replica count for ' +
                           name);
                 if (result.count === 0) {
                     cleanF();
@@ -266,11 +269,11 @@ exports.newInstance = function($, spec, cb) {
             }
         };
 
-        that.unregisterSlave = function(name, map, cb0) {
-            var result = slaves[name];
+        that.unregisterReplica = function(name, map, cb0) {
+            var result = replicas[name];
             derefCount(result, map, name,
                        function() {
-                           delete slaves[name];
+                           delete replicas[name];
                            try {
                                $._.$[route].unsubscribeMap(name, cb0);
                            } catch (ex) {
@@ -286,7 +289,7 @@ exports.newInstance = function($, spec, cb) {
                            delete aggregates[name];
                            var depMaps = result.map.getMaps();
                            async.each(Object.keys(depMaps), function(x, cb1) {
-                               that.unregisterSlave(x, depMaps[x], cb1);
+                               that.unregisterReplica(x, depMaps[x], cb1);
                            }, cb0);
                        }, function() { cb0(null);});
         };
@@ -296,7 +299,7 @@ exports.newInstance = function($, spec, cb) {
             if (that.__ca_isShutdown__) {
                 cb0(null);
             } else {
-                async.each(Object.keys(slaves),
+                async.each(Object.keys(replicas),
                            function(name, cb1) {
                                try {
                                    $._.$[route].unsubscribeMap(name, cb1);
@@ -305,8 +308,8 @@ exports.newInstance = function($, spec, cb) {
                                }
                            },
                            function(err) {
-                               masters = {};
-                               slaves = {};
+                               primaries = {};
+                               replicas = {};
                                aggregates = {};
                                if (err) {
                                    cb0(err);
@@ -338,7 +341,7 @@ exports.newInstance = function($, spec, cb) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 29 2018 21:39:36 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Dec 07 2019 23:28:32 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

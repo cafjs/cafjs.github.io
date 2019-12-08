@@ -39,43 +39,54 @@
     
         
             <div class="description"><p>Tokens are the primary mechanism to implement single sign on for all
- the user apps.</p>
+the user apps.</p>
 <p>A token is used by the client to create a
 secure channel with its corresponding CA running in the cloud.</p>
 <p>We use the JSON Web Tokens (draft-ietf-oauth-json-web-token-32) format for
- our tokens.</p>
+our tokens.</p>
 <p>Not all apps are equally trusted, and we want to ensure that a rogue app
 cannot reuse tokens in a different context.</p>
 <p>We achieve that by weakening tokens with the following optional constraints:</p>
 <ul>
-<li><p><code>appPublisher</code>: publisher of the app hosting CAs.</p>
+<li>
+<p><code>appPublisher</code>: publisher of the app hosting CAs.</p>
 </li>
-<li><p><code>appLocalName</code>: name of the app in the <code>appPublisher</code> context.</p>
+<li>
+<p><code>appLocalName</code>: name of the app in the <code>appPublisher</code> context.</p>
 </li>
-<li><p><code>caOwner</code>: owner name of the CA.</p>
+<li>
+<p><code>caOwner</code>: owner name of the CA.</p>
 </li>
-<li><p><code>caLocalName</code>: name of the CA in the owner's context.</p>
+<li>
+<p><code>caLocalName</code>: name of the CA in the owner's context.</p>
 </li>
-<li><p><code>expiresAfter</code>: Expire time of token in milliseconds since midnight
+<li>
+<p><code>expiresAfter</code>: Expire time of token in milliseconds since midnight
 January 1,1970 UTC</p>
 </li>
 </ul>
 <p>Tokens form a meet semi-lattice, where a meet (<code>^</code>) operator defines a
- partial ordering of tokens, i.e.,:</p>
-<pre class="prettyprint source"><code>             A^B = A iff A &lt;= B</code></pre><p>and this makes it much simpler to weaken tokens.</p>
+partial ordering of tokens, i.e.,:</p>
+<pre><code>             A^B = A iff A &lt;= B
+</code></pre>
+<p>and this makes it much simpler to weaken tokens.</p>
 <p>In fact, in CAF if you have a valid token you can always request a weaker
 one regardless of who you are. Providing a service to manage user tokens
 becomes trivial.</p>
 <p>The meet (^) operator is just simply set intersection for each of the
- constraints:</p>
-<pre class="prettyprint source"><code>        a^a = a
+constraints:</p>
+<pre><code>        a^a = a
         a^* = a
         *^b = b
-        a^b = 'empty' when (a !== b and a !== * and b !== *)</code></pre><p>and in the case of <code>expiresAfter</code>, pick the shortest deadline.</p>
+        a^b = 'empty' when (a !== b and a !== * and b !== *)
+</code></pre>
+<p>and in the case of <code>expiresAfter</code>, pick the shortest deadline.</p>
 <p>ACLs (Access Control Lists) are also expressed with the same semi-lattice,
 using the meet operator for access checks:</p>
-<pre class="prettyprint source"><code>    ALLOW if  ACL[i] ^ Token != empty    for some ACL[i] in ACL</code></pre><p>where the result of ^ is 'empty' if any of the constraints has an
- 'empty' set.</p></div>
+<pre><code>    ALLOW if  ACL[i] ^ Token != empty    for some ACL[i] in ACL
+</code></pre>
+<p>where the result of ^ is 'empty' if any of the constraints has an
+'empty' set.</p></div>
         
 
         
@@ -124,7 +135,7 @@ using the meet operator for access checks:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line21">line 21</a>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line22">line 22</a>
     </li></ul></dd>
     
 
@@ -134,6 +145,8 @@ using the meet operator for access checks:</p>
 
     
 </dl>
+
+
 
 
 
@@ -281,7 +294,7 @@ a public key for validation.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line298">line 298</a>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line325">line 325</a>
     </li></ul></dd>
     
 
@@ -291,6 +304,8 @@ a public key for validation.</p>
 
     
 </dl>
+
+
 
 
 
@@ -462,7 +477,7 @@ a public key for validation.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line200">line 200</a>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line201">line 201</a>
     </li></ul></dd>
     
 
@@ -472,6 +487,8 @@ a public key for validation.</p>
 
     
 </dl>
+
+
 
 
 
@@ -557,11 +574,11 @@ a public key for validation.</p>
 <div class="description">
     <p>'Meet' (^)  operation of two tokens. Performs set intersection for each
 constraint, and if any resulting constraint is empty it returns <code>null</code>, the
- empty token.</p>
-<p> A missing constraint is assumed to be <code>*</code>, i.e., all the elements in the
- set.</p>
-<p> Intersection of <code>expiresAfter</code> uses time intervals.</p>
-<p> There is no validation of the tokens or signing of the result.</p>
+empty token.</p>
+<p>A missing constraint is assumed to be <code>*</code>, i.e., all the elements in the
+set.</p>
+<p>Intersection of <code>expiresAfter</code> uses time intervals.</p>
+<p>There is no validation of the tokens or signing of the result.</p>
 </div>
 
 
@@ -677,7 +694,7 @@ constraint, and if any resulting constraint is empty it returns <code>null</code
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line110">line 110</a>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line111">line 111</a>
     </li></ul></dd>
     
 
@@ -700,12 +717,14 @@ constraint, and if any resulting constraint is empty it returns <code>null</code
 
 
 
+
+
 <h5>Returns:</h5>
 
         
 <div class="param-desc">
     <p>Null if the resulting set is empty or an unsigned
- token payload with 't1^t2'.</p>
+token payload with 't1^t2'.</p>
 </div>
 
 
@@ -747,7 +766,7 @@ constraint, and if any resulting constraint is empty it returns <code>null</code
 <div class="description">
     <p>Constructor for a new token or acl element payload.</p>
 <p>The type of tokenType is</p>
-<pre class="prettyprint source"><code> {appPublisher: string=, appLocalName:string=,
+<pre><code> {appPublisher: string=, appLocalName:string=,
   caOwner: string=, caLocalName: string=, expiresAfter: number=}</code></pre>
 </div>
 
@@ -985,7 +1004,7 @@ constraint, and if any resulting constraint is empty it returns <code>null</code
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line350">line 350</a>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line377">line 377</a>
     </li></ul></dd>
     
 
@@ -995,6 +1014,8 @@ constraint, and if any resulting constraint is empty it returns <code>null</code
 
     
 </dl>
+
+
 
 
 
@@ -1136,7 +1157,7 @@ recommended alternative.</p>
             
 
             <td class="description last"><p>An ACL formed with one or an array
- of constraints using a token format.</p></td>
+of constraints using a token format.</p></td>
         </tr>
 
     
@@ -1200,7 +1221,7 @@ recommended alternative.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line319">line 319</a>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line346">line 346</a>
     </li></ul></dd>
     
 
@@ -1210,6 +1231,8 @@ recommended alternative.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1380,7 +1403,7 @@ recommended alternative.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line219">line 219</a>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line220">line 220</a>
     </li></ul></dd>
     
 
@@ -1390,6 +1413,8 @@ recommended alternative.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1613,7 +1638,7 @@ recommended alternative.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line168">line 168</a>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line169">line 169</a>
     </li></ul></dd>
     
 
@@ -1623,6 +1648,8 @@ recommended alternative.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1794,7 +1821,7 @@ recommended alternative.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line270">line 270</a>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line297">line 297</a>
     </li></ul></dd>
     
 
@@ -1804,6 +1831,8 @@ recommended alternative.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1857,6 +1886,166 @@ recommended alternative.</p>
     
 
     
+    <h4 class="name" id="validExtendedNobody"><span class="type-signature"></span>validExtendedNobody<span class="signature">(from)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Checks whether a username is an extended NOBODY user.</p>
+<p>This user can have many CAs as long as their names have only two characters.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>from</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A full name, e.g., <code>foo-bar</code>, to check.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line268">line 268</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>True if ok, false otherwise.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="validUsername"><span class="type-signature"></span>validUsername<span class="signature">(username)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
 
@@ -1865,7 +2054,8 @@ recommended alternative.</p>
 
 
 <div class="description">
-    <p>Checks whether a username contains only valid characters (ASCII + numbers)</p>
+    <p>Checks whether a username contains only valid characters (lower case letters
+and numbers, ASCII only), and it has at least two characters.</p>
 </div>
 
 
@@ -1958,7 +2148,7 @@ recommended alternative.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line250">line 250</a>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line252">line 252</a>
     </li></ul></dd>
     
 
@@ -1968,6 +2158,8 @@ recommended alternative.</p>
 
     
 </dl>
+
+
 
 
 
@@ -2030,7 +2222,7 @@ recommended alternative.</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 29 2018 21:39:35 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Dec 07 2019 23:28:31 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -45,22 +45,25 @@ requests until the previous ones have been processed.</p>
 typically by retrying, or refreshing a token, or redirecting....</p>
 <p>If successful, the client just experiences a delay. Otherwise, the session
 closes, propagating the error in the <code>onclose</code> handler (the <code>onerror</code>
- handler is for <em>internal use</em> only).</p>
+handler is for <em>internal use</em> only).</p>
 <p>If a client wants parallel requests, it needs to create multiple sessions
 with its CA. Parallel requests may improve performance with high network
 latency, but requests are always executed serially by the CA.</p>
 <p>The type <code>sessionOptionsType</code> defines the configuration properties for a
 session:</p>
-<pre class="prettyprint source"><code>{token: string, ca: string, from: string, session: string,
+<pre><code>{token: string, ca: string, from: string, session: string,
  appPublisher: string, appLocalName: string, disableBackchannel: boolean,
  maxRetries: number, retryTimeoutMsec: number, timeoutMsec: number,
- cacheKey: string,
+ cacheKey: string, initUser: boolean,
  log: function(string),
  newToken: function(caf.msg, cbType),
+ newUser: function(url: string, options: sessionOptionsType, cbType),
  newURL: function(caf.msg, cbType),
- timeAdjuster: TimeAdjuster()} + TokenFactory.options</code></pre><p> All options except <code>ca</code> and <code>from</code> (and <code>token</code> with security active)
- have sensible defaults. Options can be properties in a URL fragment.</p>
-<p> Where:</p>
+ timeAdjuster: TimeAdjuster()} + TokenFactory.options
+</code></pre>
+<p>All options except <code>ca</code> and <code>from</code> (and <code>token</code> with security active)
+have sensible defaults. Options can be properties in a URL fragment.</p>
+<p>Where:</p>
 <ul>
 <li><code>token</code>: Authentication token for the <code>from</code> principal.</li>
 <li><code>ca</code>: name of the target CA, of the form <code>&lt;caOwner&gt;-&lt;caLocalName&gt;</code>.</li>
@@ -79,13 +82,15 @@ progress, they reset every <code>timeoutMsec</code>.</li>
 <li><code>timeoutMsec</code>: Max time in miliseconds for a request before
 assuming an irrecoverable error, and closing the session.</li>
 <li><code>cacheKey</code>: custom key to cache server side rendering.</li>
+<li><code>initUser</code>: Whether the owner in <code>from</code> is a new user that
+has to be registered.</li>
 <li><code>log</code>: custom function to log messages.</li>
 <li><code>newToken</code>: custom function to negotiate an authentication token.</li>
 <li><code>newURL</code>: custom function to redirect the session.</li>
-<li><p><code>timeAdjuster</code>: custom object to synchronize clocks with the cloud.</p>
-<p>see <a href="module-caf_cli_TokenFactory.html">module:caf_cli/TokenFactory</a> for other options.</p>
-</li>
-</ul></div>
+<li><code>newUser</code>: custom function to initialize a new user.</li>
+<li><code>timeAdjuster</code>: custom object to synchronize clocks with the cloud.</li>
+</ul>
+<p>see <a href="module-caf_cli_TokenFactory.html">module:caf_cli/TokenFactory</a> for other options.</p></div>
         
 
         
@@ -162,6 +167,8 @@ assuming an irrecoverable error, and closing the session.</li>
 
 
 
+
+
         
     
     </div>
@@ -182,6 +189,165 @@ assuming an irrecoverable error, and closing the session.</li>
 
     
         <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="deleteTokenFromURL"><span class="type-signature"></span>deleteTokenFromURL<span class="signature">(urlStr)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Helper function to delete a token encoded in a URL fragment.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>urlStr</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A serialized URL</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line761">line 761</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A serialized URL without a token in its fragment.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
 
         
             
@@ -290,7 +456,7 @@ assuming an irrecoverable error, and closing the session.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line743">line 743</a>
+        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line783">line 783</a>
     </li></ul></dd>
     
 
@@ -300,6 +466,8 @@ assuming an irrecoverable error, and closing the session.</li>
 
     
 </dl>
+
+
 
 
 
@@ -447,7 +615,7 @@ assuming an irrecoverable error, and closing the session.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line719">line 719</a>
+        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line738">line 738</a>
     </li></ul></dd>
     
 
@@ -457,6 +625,8 @@ assuming an irrecoverable error, and closing the session.</li>
 
     
 </dl>
+
+
 
 
 
@@ -607,7 +777,7 @@ assuming an irrecoverable error, and closing the session.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line783">line 783</a>
+        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line823">line 823</a>
     </li></ul></dd>
     
 
@@ -617,6 +787,8 @@ assuming an irrecoverable error, and closing the session.</li>
 
     
 </dl>
+
+
 
 
 
@@ -793,7 +965,7 @@ assuming an irrecoverable error, and closing the session.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line669">line 669</a>
+        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line688">line 688</a>
     </li></ul></dd>
     
 
@@ -803,6 +975,8 @@ assuming an irrecoverable error, and closing the session.</li>
 
     
 </dl>
+
+
 
 
 
@@ -952,7 +1126,7 @@ the message with the original exception is in <code>err.msg</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line585">line 585</a>
+        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line604">line 604</a>
     </li></ul></dd>
     
 
@@ -962,6 +1136,8 @@ the message with the original exception is in <code>err.msg</code>.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -1038,7 +1214,7 @@ the message with the original exception is in <code>err.msg</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line622">line 622</a>
+        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line641">line 641</a>
     </li></ul></dd>
     
 
@@ -1048,6 +1224,8 @@ the message with the original exception is in <code>err.msg</code>.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -1146,7 +1324,7 @@ the message with the original exception is in <code>err.msg</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line635">line 635</a>
+        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line654">line 654</a>
     </li></ul></dd>
     
 
@@ -1156,6 +1334,8 @@ the message with the original exception is in <code>err.msg</code>.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -1211,9 +1391,9 @@ the message with the original exception is in <code>err.msg</code>.</p></td>
 
 <div class="description">
     <p>Returns the estimated time shift in msec between server and client
- clocks.</p>
+clocks.</p>
 <p>Add this value to the current time to match server time, e.g.:</p>
-<pre class="prettyprint source"><code> var now = new Date().getTime();
+<pre><code> var now = new Date().getTime();
  now = now + session.getEstimatedTimeOffset();</code></pre>
 </div>
 
@@ -1258,7 +1438,7 @@ the message with the original exception is in <code>err.msg</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line656">line 656</a>
+        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line675">line 675</a>
     </li></ul></dd>
     
 
@@ -1268,6 +1448,8 @@ the message with the original exception is in <code>err.msg</code>.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -1366,7 +1548,7 @@ the message with the original exception is in <code>err.msg</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line338">line 338</a>
+        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line345">line 345</a>
     </li></ul></dd>
     
 
@@ -1376,6 +1558,8 @@ the message with the original exception is in <code>err.msg</code>.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -1504,7 +1688,7 @@ the message with the original exception is in <code>err.msg</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line273">line 273</a>
+        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line280">line 280</a>
     </li></ul></dd>
     
 
@@ -1514,6 +1698,8 @@ the message with the original exception is in <code>err.msg</code>.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -1612,7 +1798,7 @@ the message with the original exception is in <code>err.msg</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line607">line 607</a>
+        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line626">line 626</a>
     </li></ul></dd>
     
 
@@ -1622,6 +1808,8 @@ the message with the original exception is in <code>err.msg</code>.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -1679,7 +1867,7 @@ the message with the original exception is in <code>err.msg</code>.</p></td>
     <p>Adds a fragment to a URL with some metadata and, if needed, rewrites the
 hostname.</p>
 <p>The type of <code>caf.cliProps</code> is:</p>
-<pre class="prettyprint source"><code>  {caOwner: string, caLocalName: string, appPublisher: string,
+<pre><code>  {caOwner: string, caLocalName: string, appPublisher: string,
    appLocalName: string, token: string, cacheKey: string}</code></pre>
 </div>
 
@@ -1796,7 +1984,7 @@ hostname.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line804">line 804</a>
+        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line844">line 844</a>
     </li></ul></dd>
     
 
@@ -1806,6 +1994,8 @@ hostname.</p>
 
     
 </dl>
+
+
 
 
 
@@ -2033,7 +2223,7 @@ arguments <code>caId</code> and <code>options</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line122">line 122</a>
+        <a href="Session.js.html">Session.js</a>, <a href="Session.js.html#line126">line 126</a>
     </li></ul></dd>
     
 
@@ -2043,6 +2233,8 @@ arguments <code>caId</code> and <code>options</code>.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -2099,13 +2291,13 @@ arguments <code>caId</code> and <code>options</code>.</p></td>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_ca_main.html">caf_ca/main</a></li><li><a href="module-caf_cli_cryptoSession.html">caf_cli/cryptoSession</a></li><li><a href="module-caf_cli_Queue.html">caf_cli/Queue</a></li><li><a href="module-caf_cli_Session.html">caf_cli/Session</a></li><li><a href="module-caf_cli_TimeAdjuster.html">caf_cli/TimeAdjuster</a></li><li><a href="module-caf_cli_TokenFactory.html">caf_cli/TokenFactory</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul><h3><a href="global.html">Global</a></h3>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_ca_main.html">caf_ca/main</a></li><li><a href="module-caf_cli_CreateUser.html">caf_cli/CreateUser</a></li><li><a href="module-caf_cli_cryptoSession.html">caf_cli/cryptoSession</a></li><li><a href="module-caf_cli_Queue.html">caf_cli/Queue</a></li><li><a href="module-caf_cli_Session.html">caf_cli/Session</a></li><li><a href="module-caf_cli_TimeAdjuster.html">caf_cli/TimeAdjuster</a></li><li><a href="module-caf_cli_TokenFactory.html">caf_cli/TokenFactory</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 29 2018 21:39:28 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Dec 07 2019 23:28:23 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

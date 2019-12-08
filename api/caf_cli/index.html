@@ -26,7 +26,7 @@
     
 
 
-    <h3>caf_cli 0.3.5</h3>
+    <h3>caf_cli 0.3.11</h3>
 
 
 
@@ -43,9 +43,11 @@
 
 
     <section>
-        <article><h1>CAF.js (Cloud Assistant Framework)</h1><p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.</p>
-<p>See http://<a href="http://www.cafjs.com">www.cafjs.com</a></p>
-<h2>CAF Client Lib for node.js</h2><p><a href="https://travis-ci.org/cafjs/caf_cli"><img src="https://travis-ci.org/cafjs/caf_cli.svg?branch=master" alt="Build Status"></a></p>
+        <article><h1>CAF.js (Cloud Assistant Framework)</h1>
+<p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.</p>
+<p>See http://www.cafjs.com</p>
+<h2>CAF Client Lib for node.js</h2>
+<p><a href="https://travis-ci.org/cafjs/caf_cli"><img src="https://travis-ci.org/cafjs/caf_cli.svg?branch=master" alt="Build Status"></a></p>
 <p>This repository contains a client CAF library for browser (using <code>browserify</code> and native websockets), cloud, scripting, and gadget (<code>node.js</code>).</p>
 <p>The base interface is very similar to a websocket, but CAF dynamically adds remote invocation methods with local argument checking.</p>
 <p>For example, with the CA:</p>
@@ -62,7 +64,9 @@
         this.state.counter = this.state.counter - 1;
         return [null, this.state.counter];
     }
-};</code></pre><p>and the client code:</p>
+};
+</code></pre>
+<p>and the client code:</p>
 <pre class="prettyprint source"><code>var URL = 'http://root-hello.vcap.me:3000/#from=foo-ca1&ca=foo-ca1';
 var s = new caf_cli.Session(URL);
 s.onopen = async function() {
@@ -82,18 +86,24 @@ s.onclose = function(err) {
         process.exit(1);
     }
     console.log('Done OK');
-};</code></pre><p>the methods <code>increment</code> and <code>decrement</code> magically appear in <code>s</code> after we open the session. <strong>I love javascript!</strong></p>
+};
+</code></pre>
+<p>the methods <code>increment</code> and <code>decrement</code> magically appear in <code>s</code> after we open the session. <strong>I love javascript!</strong></p>
 <p>Remote invocations are always serialized. The session locally buffers new requests until the previous ones have been processed. Session properties can be configured in the URL, or in a separate constructor argument. See <a href="module-caf_cli_Session.html">module:caf_cli/Session</a> for details.</p>
-<h3>Errors</h3><p>There are two types of errors:</p>
+<h3>Errors</h3>
+<p>There are two types of errors:</p>
 <ul>
-<li><p>Application error: propagated in the callback or exception in <code>await</code>, no attempt to recover it.</p>
+<li>
+<p>Application error: propagated in the callback or exception in <code>await</code>, no attempt to recover it.</p>
 </li>
-<li><p>System error: after all the attempts to recover fail, the error is propagated in the <code>onclose</code> handler. The session is no longer usable.</p>
+<li>
+<p>System error: after all the attempts to recover fail, the error is propagated in the <code>onclose</code> handler. The session is no longer usable.</p>
 </li>
 </ul>
 <p>Triggering the <code>onclose</code> with no argument means the session closed normally, i.e., using its <code>close()</code> method.</p>
 <p>Note that the <code>onerror</code> handler in the websocket interface is for <em>internal use</em> only. Just use <code>onclose</code>.</p>
-<h3>Multi-method</h3><p>In some cases we want to execute multiple methods in a single transaction (see <a href="external-caf_ca.html">external:caf_ca</a>). If one fails, we roll back all state changes and (delayed) external interactions.</p>
+<h3>Multi-method</h3>
+<p>In some cases we want to execute multiple methods in a single transaction (see <a href="external-caf_ca.html">external:caf_ca</a>). If one fails, we roll back all state changes and (delayed) external interactions.</p>
 <p>This is easy in CAF.js, because methods that do not provide a callback are assumed to be multi-method calls:</p>
 <pre class="prettyprint source"><code>...
 s.onopen = async function() {
@@ -105,15 +115,21 @@ s.onopen = async function() {
         s.close(err);
     }
 }
-...</code></pre><h3>Notifications</h3><p>In other cases, the CA will send notifications to one (or many) client(s). See
+...
+</code></pre>
+<h3>Notifications</h3>
+<p>In other cases, the CA will send notifications to one (or many) client(s). See
 <a href="external-caf_session.html">external:caf_session</a>. Notifications are processed in the <code>onmessage</code> handler:</p>
 <pre class="prettyprint source"><code>...
 s.onmessage = function(msg) {
     var notif = caf_cli.getMethodArgs(msg)[0];
     console.log('Got notification in client:' + notif);
 };
-...</code></pre><p>See <code>examples/helloworld</code> for full code examples.</p>
-<h3>Other</h3><p>Session objects also provide end-to-end encryption and time synchronization. See <a href="module-caf_cli_cryptoSession.html">module:caf_cli/cryptoSession</a> and <a href="module-caf_cli_TimeAdjuster.html">module:caf_cli/TimeAdjuster</a>.</p></article>
+...
+</code></pre>
+<p>See <code>examples/helloworld</code> for full code examples.</p>
+<h3>Other</h3>
+<p>Session objects also provide end-to-end encryption and time synchronization. See <a href="module-caf_cli_cryptoSession.html">module:caf_cli/cryptoSession</a> and <a href="module-caf_cli_TimeAdjuster.html">module:caf_cli/TimeAdjuster</a>.</p></article>
     </section>
 
 
@@ -124,13 +140,13 @@ s.onmessage = function(msg) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_ca_main.html">caf_ca/main</a></li><li><a href="module-caf_cli_cryptoSession.html">caf_cli/cryptoSession</a></li><li><a href="module-caf_cli_Queue.html">caf_cli/Queue</a></li><li><a href="module-caf_cli_Session.html">caf_cli/Session</a></li><li><a href="module-caf_cli_TimeAdjuster.html">caf_cli/TimeAdjuster</a></li><li><a href="module-caf_cli_TokenFactory.html">caf_cli/TokenFactory</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul><h3><a href="global.html">Global</a></h3>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_ca_main.html">caf_ca/main</a></li><li><a href="module-caf_cli_CreateUser.html">caf_cli/CreateUser</a></li><li><a href="module-caf_cli_cryptoSession.html">caf_cli/cryptoSession</a></li><li><a href="module-caf_cli_Queue.html">caf_cli/Queue</a></li><li><a href="module-caf_cli_Session.html">caf_cli/Session</a></li><li><a href="module-caf_cli_TimeAdjuster.html">caf_cli/TimeAdjuster</a></li><li><a href="module-caf_cli_TokenFactory.html">caf_cli/TokenFactory</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 29 2018 21:39:28 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Dec 07 2019 23:28:23 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -26,7 +26,7 @@
     
 
 
-    <h3>caf_components 0.3.9</h3>
+    <h3>caf_components 0.3.10</h3>
 
 
 
@@ -43,21 +43,26 @@
 
 
     <section>
-        <article><h1>CAF.js (Cloud Assistant Framework)</h1><p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.</p>
-<p>See http://<a href="http://www.cafjs.com">www.cafjs.com</a></p>
-<h2>CAF Components</h2><p><a href="https://travis-ci.org/cafjs/caf_components"><img src="https://travis-ci.org/cafjs/caf_components.svg?branch=master" alt="Build Status"></a></p>
+        <article><h1>CAF.js (Cloud Assistant Framework)</h1>
+<p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.</p>
+<p>See http://www.cafjs.com</p>
+<h2>CAF Components</h2>
+<p><a href="https://travis-ci.org/cafjs/caf_components"><img src="https://travis-ci.org/cafjs/caf_components.svg?branch=master" alt="Build Status"></a></p>
 <p>This library configures and manages a hierarchy of asynchronously created components. Asynchronous constructors are useful when components need configuration data from an external service, and we do not want to block the main loop.</p>
 <p>It has no dependencies with other CAF.js packages, and we hope that it will be useful to other frameworks. In CAF.js <strong>everything</strong> is built with components.</p>
 <p>This library was inspired by the SmartFrog (Java) framework https://en.wikipedia.org/wiki/SmartFrog and Erlang/OTP supervision trees.</p>
-<h3>Hello World</h3><p>We use JSON to describe components. For example, file <code>hello.json</code> contains:</p>
-<pre class="prettyprint source"><code>{
+<h3>Hello World</h3>
+<p>We use JSON to describe components. For example, file <code>hello.json</code> contains:</p>
+<pre><code>{
     &quot;module&quot;: &quot;./hello&quot;,
     &quot;name&quot; : &quot;foo&quot;,
     &quot;env&quot; : {
         &quot;msg&quot; : &quot;Hello World!&quot;
     }
-}</code></pre><p>where <code>env</code> is a set of properties to configure the component, <code>name</code> is a key to register the new component in a local context, and <code>module</code> an implementation for the component. In particular, the <code>hello.js</code> implementation file looks like this:</p>
-<pre class="prettyprint source"><code>exports.newInstance = function($, spec, cb) {
+}
+</code></pre>
+<p>where <code>env</code> is a set of properties to configure the component, <code>name</code> is a key to register the new component in a local context, and <code>module</code> an implementation for the component. In particular, the <code>hello.js</code> implementation file looks like this:</p>
+<pre><code>exports.newInstance = function($, spec, cb) {
     cb(null, {
         hello() {
             console.log(spec.name + ':' + spec.env.msg);
@@ -69,9 +74,11 @@
             cb0(null);
         }
     });
-};</code></pre><p>An implementation exports an asynchronous factory method called <code>newInstance</code>. This method takes a local context <code>$</code>, a parsed configuration description <code>spec</code>, and a callback <code>cb</code> that returns the new component or an error.</p>
+};
+</code></pre>
+<p>An implementation exports an asynchronous factory method called <code>newInstance</code>. This method takes a local context <code>$</code>, a parsed configuration description <code>spec</code>, and a callback <code>cb</code> that returns the new component or an error.</p>
 <p>In node 8 or later we can also use <code>async/await</code> to implement the asynchronous factory method:</p>
-<pre class="prettyprint source"><code>exports.newInstance = async function($, spec) {
+<pre><code>exports.newInstance = async function($, spec) {
     var that = {
         hello() {
             console.log(spec.name + ':' + spec.env.msg);
@@ -84,7 +91,9 @@
         }
     };
     return [null, that];
-};</code></pre><p>returning an array with an error/component pair.</p>
+};
+</code></pre>
+<p>returning an array with an error/component pair.</p>
 <p>The component needs to implement two methods:</p>
 <ul>
 <li><code>__ca_checkup__</code> returns a callback error if there is something wrong with the component.</li>
@@ -92,17 +101,19 @@
 </ul>
 <p>See <a href="module-caf_components_gen_component.html">module:caf_components/gen_component</a> for a discussion of checkup and shutdown.</p>
 <p>What we need now is a way to link the JSON description with the implementation:</p>
-<pre class="prettyprint source"><code>var main = require('caf_components');
+<pre><code>var main = require('caf_components');
 main.load(null, null, 'hello.json', [module], function(err, $) {
     if (err) {
         console.log(main.myUtils.errToPrettyStr(err));
     } else {
         $.foo.hello();
     }
-});</code></pre><p>The method <code>main.load</code> is loading and parsing the json description, and using that description to instantiate and register a component in the <code>$</code> context. Since the first argument, i.e., the initial local context, was <code>null</code>, it will create a fresh <code>$</code> context.</p>
+});
+</code></pre>
+<p>The method <code>main.load</code> is loading and parsing the json description, and using that description to instantiate and register a component in the <code>$</code> context. Since the first argument, i.e., the initial local context, was <code>null</code>, it will create a fresh <code>$</code> context.</p>
 <p>Why do we need to provide <code>module</code>? The method <code>main.load</code> will execute a command like <code>require('./hello').newInstance(...)</code>, and it needs to know the directory paths to look for <code>hello.json</code> and <code>hello.js</code>. In this case, we assume that they are all in the same directory, but we can pass an array of <code>module</code> objects to provide alternative locations. See <a href="module-caf_components_gen_loader.html">module:caf_components/gen_loader</a> for details.</p>
 <p>If we want to create another instance with a different configuration:</p>
-<pre class="prettyprint source"><code>var main = require('caf_components');
+<pre><code>var main = require('caf_components');
 main.load(null, {name: 'bar', env: {msg: 'Bye!'}}, 'hello.json', [module],
     function(err, $) {
         if (err) {
@@ -110,9 +121,12 @@ main.load(null, {name: 'bar', env: {msg: 'Bye!'}}, 'hello.json', [module],
         } else {
             $.bar.hello();
         }
-});</code></pre><p>and, before creating the component, <code>main.load</code> merges the configuration in the second argument with the contents of <code>hello.json</code>.</p>
-<h3>Hierarchy</h3><p>Let's add a hierarchy of components to <code>hello.json</code>:</p>
-<pre class="prettyprint source"><code>{
+});
+</code></pre>
+<p>and, before creating the component, <code>main.load</code> merges the configuration in the second argument with the contents of <code>hello.json</code>.</p>
+<h3>Hierarchy</h3>
+<p>Let's add a hierarchy of components to <code>hello.json</code>:</p>
+<pre><code>{
     &quot;module&quot;: &quot;caf_components#supervisor&quot;,
     &quot;name&quot; : &quot;top&quot;,
     &quot;env&quot; : {
@@ -138,10 +152,12 @@ main.load(null, {name: 'bar', env: {msg: 'Bye!'}}, 'hello.json', [module],
             }
         }
     ]
-}</code></pre><p>A package can provide factory methods for different component types. We add an access indirection by using the separator <code>#</code>. For example, <code>caf_components#supervisor</code> is loaded as <code>require(&quot;caf_components&quot;).supervisor.newInstance(..)</code>.</p>
+}
+</code></pre>
+<p>A package can provide factory methods for different component types. We add an access indirection by using the separator <code>#</code>. For example, <code>caf_components#supervisor</code> is loaded as <code>require(&quot;caf_components&quot;).supervisor.newInstance(..)</code>.</p>
 <p>Initialization of a hierarchy is always sequential, respecting array order, and ensuring that a parent component only registers after its children are properly initialized. During shutdown we do the opposite, unregistering the parent component asap, and reversing array order.</p>
 <p>This means that we can respect initialization dependencies by ordering components in the description. For example, <code>hello.js</code> can safely use the logging component at initialization time:</p>
-<pre class="prettyprint source"><code>exports.newInstance = function($, spec, cb) {
+<pre><code>exports.newInstance = function($, spec, cb) {
     $.log.debug('Initializing hello');
     cb(null, {
         hello: function() {
@@ -154,17 +170,22 @@ main.load(null, {name: 'bar', env: {msg: 'Bye!'}}, 'hello.json', [module],
             cb0(null);
         }
     });
-};</code></pre><p>What if we have more than two levels? Each parent component (see <a href="module-caf_components_gen_container.html">module:caf_components/gen_container</a> and <a href="module-caf_components_gen_dynamic_container.html">module:caf_components/gen_dynamic_container</a>) creates a fresh <code>$</code> context for its children, but it also registers a reference <code>_</code> in that context to the top component. This top reference helps them to navigate the hierarchy. For example, we can also refer to the logging component as <code>$._.$.log</code> since its parent is the top component.</p>
+};
+</code></pre>
+<p>What if we have more than two levels? Each parent component (see <a href="module-caf_components_gen_container.html">module:caf_components/gen_container</a> and <a href="module-caf_components_gen_dynamic_container.html">module:caf_components/gen_dynamic_container</a>) creates a fresh <code>$</code> context for its children, but it also registers a reference <code>_</code> in that context to the top component. This top reference helps them to navigate the hierarchy. For example, we can also refer to the logging component as <code>$._.$.log</code> since its parent is the top component.</p>
 <p>The calling program is modified slightly to use the top reference:</p>
-<pre class="prettyprint source"><code>var main = require('caf_components');
+<pre><code>var main = require('caf_components');
 main.load(null, null, 'hello.json', [module], function(err, $) {
     if (err) {
         console.log(main.myUtils.errToPrettyStr(err));
     } else {
         $._.$.foo.hello(); // or $.top.$.foo.hello()
     }
-});</code></pre><p>The top level supervisor (see <a href="module-caf_components_supervisor.html">module:caf_components/supervisor</a>) forces components with children to periodically check their health, and take local recovery actions when they fail. When local recovery actions do not work, the failure bubbles up until it reaches the root component. This component typically just logs an error message, and exits the process with an error code. At that point an external recovery mechanism should take over.</p>
-<h3>Component Description Transforms</h3><p>In a cloud deployment scenario the usage model of component descriptions is fairly predictable:</p>
+});
+</code></pre>
+<p>The top level supervisor (see <a href="module-caf_components_supervisor.html">module:caf_components/supervisor</a>) forces components with children to periodically check their health, and take local recovery actions when they fail. When local recovery actions do not work, the failure bubbles up until it reaches the root component. This component typically just logs an error message, and exits the process with an error code. At that point an external recovery mechanism should take over.</p>
+<h3>Component Description Transforms</h3>
+<p>In a cloud deployment scenario the usage model of component descriptions is fairly predictable:</p>
 <ol>
 <li>Start with a base template that defines a standard hierarchy of components for the service.</li>
 <li>Modify the template by adding, removing, or patching components.</li>
@@ -173,9 +194,10 @@ main.load(null, null, 'hello.json', [module], function(err, $) {
 <li>Fill in missing values by reading properties from the environment.</li>
 </ol>
 <p>We have already described how to provide instance arguments to <code>main.load</code>. Let's describe how to modify templates, propagate arguments with linking, and specify environment properties with defaults.</p>
-<h4>Templates</h4><p>If we want to use the previous <code>hello.json</code> description as a template, and swap
+<h4>Templates</h4>
+<p>If we want to use the previous <code>hello.json</code> description as a template, and swap
 component <code>foo</code> by a new component <code>bar</code>, we just create a file with name <code>&lt;fileNameBase&gt;++.json</code>, i.e., <code>hello++.json</code>:</p>
-<pre class="prettyprint source"><code>{
+<pre><code>{
     &quot;name&quot; : &quot;top&quot;,
      &quot;components&quot;: [
          {
@@ -190,15 +212,18 @@ component <code>foo</code> by a new component <code>bar</code>, we just create a
              }
          }
      ]
-}</code></pre><p>and this description merges with the original by following simple rules:</p>
+}
+</code></pre>
+<p>and this description merges with the original by following simple rules:</p>
 <ul>
 <li>Use <code>name</code> to identify matching components.</li>
 <li>Assign <code>null</code> to <code>module</code> to delete a component.</li>
 <li>Components like <code>bar</code> that do not match existing ones are inserted just after the last changed one, i.e., <code>foo</code>.</li>
 </ul>
 <p>See <a href="module-caf_components_templateUtils.html">module:caf_components/templateUtils</a> for details.</p>
-<h4>Linking</h4><p>We want to parameterize descriptions without knowing the configuration details of internal components. Arguments only modify the top level component, and we specify links to properties of this component with the <code>$._.env.</code> prefix. For example, in <code>hello++.json</code>:</p>
-<pre class="prettyprint source"><code>{
+<h4>Linking</h4>
+<p>We want to parameterize descriptions without knowing the configuration details of internal components. Arguments only modify the top level component, and we specify links to properties of this component with the <code>$._.env.</code> prefix. For example, in <code>hello++.json</code>:</p>
+<pre><code>{
     &quot;name&quot; : &quot;top&quot;,
     &quot;env&quot;: {
         &quot;myLogLevel&quot;: &quot;DEBUG&quot;
@@ -211,9 +236,14 @@ component <code>foo</code> by a new component <code>bar</code>, we just create a
              }
          }
      ]
-}</code></pre><p>and now we can change the logging level with:</p>
-<pre class="prettyprint source"><code>main.load(null, {env: {myLogLevel: 'WARN'}}, 'hello.json', ...</code></pre><h4>Properties</h4><p>We use the reserved <code>process.env.</code> prefix for values that come  from the environment. We can also provide default values using the string separator <code>||</code>, and any characters after it will be parsed as JSON. If parsing fails, we default to a simple string, avoiding the JSON requirement of quoting all strings. For example:</p>
-<pre class="prettyprint source"><code>{
+}
+</code></pre>
+<p>and now we can change the logging level with:</p>
+<pre><code>main.load(null, {env: {myLogLevel: 'WARN'}}, 'hello.json', ...
+</code></pre>
+<h4>Properties</h4>
+<p>We use the reserved <code>process.env.</code> prefix for values that come  from the environment. We can also provide default values using the string separator <code>||</code>, and any characters after it will be parsed as JSON. If parsing fails, we default to a simple string, avoiding the JSON requirement of quoting all strings. For example:</p>
+<pre><code>{
     &quot;name&quot; : &quot;top&quot;,
     &quot;env&quot;: {
         &quot;myLogLevel&quot;: &quot;process.env.MY_LOG_LEVEL||DEBUG&quot;,
@@ -227,7 +257,9 @@ component <code>foo</code> by a new component <code>bar</code>, we just create a
              }
          }
      ]
-}</code></pre><p>and now we can change the logging level by setting the environment variable <code>MY_LOG_LEVEL</code></p></article>
+}
+</code></pre>
+<p>and now we can change the logging level by setting the environment variable <code>MY_LOG_LEVEL</code></p></article>
     </section>
 
 
@@ -244,7 +276,7 @@ component <code>foo</code> by a new component <code>bar</code>, we just create a
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 29 2018 21:39:29 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Dec 07 2019 23:28:24 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

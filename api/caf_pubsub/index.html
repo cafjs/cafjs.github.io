@@ -43,15 +43,19 @@
 
 
     <section>
-        <article><h1>CAF.js (Cloud Assistant Framework)</h1><p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.</p>
-<p>See http://<a href="http://www.cafjs.com">www.cafjs.com</a></p>
-<h2>CAF Lib publish/subscribe</h2><p><a href="https://travis-ci.org/cafjs/caf_pubsub"><img src="https://travis-ci.org/cafjs/caf_pubsub.svg?branch=master" alt="Build Status"></a></p>
+        <article><h1>CAF.js (Cloud Assistant Framework)</h1>
+<p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.</p>
+<p>See http://www.cafjs.com</p>
+<h2>CAF Lib publish/subscribe</h2>
+<p><a href="https://travis-ci.org/cafjs/caf_pubsub"><img src="https://travis-ci.org/cafjs/caf_pubsub.svg?branch=master" alt="Build Status"></a></p>
 <p>This repository contains a CAF library that implements a publish/subscribe bus using, for example, a <code>Redis</code> backend.</p>
 <p>There are two types of channels:</p>
 <ul>
-<li><p>A <em>private channel</em> name is prefixed by the CA name, i.e., <code>&lt;ca_name&gt;-&lt;whatever&gt;</code>, and only that CA can publish messages.</p>
+<li>
+<p>A <em>private channel</em> name is prefixed by the CA name, i.e., <code>&lt;ca_name&gt;-&lt;whatever&gt;</code>, and only that CA can publish messages.</p>
 </li>
-<li><p>A <em>forum channel</em> has a name of the form <code>forum-&lt;whatever&gt;</code>, and anybody can publish to it. However, subscribers can filter publishers using method ACLs, since pubsub messages are always processed by invoking a CA method. This method is chosen by the subscriber.</p>
+<li>
+<p>A <em>forum channel</em> has a name of the form <code>forum-&lt;whatever&gt;</code>, and anybody can publish to it. However, subscribers can filter publishers using method ACLs, since pubsub messages are always processed by invoking a CA method. This method is chosen by the subscriber.</p>
 </li>
 </ul>
 <p>Currently, anybody can subscribe to a channel if they know its name, and we recommend to use hard to guess channel names to limit visibility.</p>
@@ -60,7 +64,8 @@
 <p>CAF.js discourages <code>point-to-point</code> communication between CAs. At the network infrastructure level, <code>point-to-point</code> becomes <code>all-to-all</code> very quickly, limiting the scalability of the system.</p>
 <p>Similar to MPI collective calls, applications should expose higher-level communication patterns. These patterns can scale better with specialized services, such as <code>SharedMap</code> or <code>pubsub</code>.</p>
 <p>However, if you really need <code>point-to-point</code>, you can always use a <em>private pubsub channel</em>, or write a new plugin...</p>
-<h3>Hello World (see <code>examples/helloworld</code>)</h3><p>The following example has a privileged CA, i.e., <code>admin</code>, that regularly publishes messages in a private channel. CAs with the same owner subscribe to this channel, and the handler function notifies clients using sessions (see <a href="external-caf_session.html">external:caf_session</a>).</p>
+<h3>Hello World (see <code>examples/helloworld</code>)</h3>
+<p>The following example has a privileged CA, i.e., <code>admin</code>, that regularly publishes messages in a private channel. CAs with the same owner subscribe to this channel, and the handler function notifies clients using sessions (see <a href="external-caf_session.html">external:caf_session</a>).</p>
 <pre class="prettyprint source"><code>exports.methods = {
     async __ca_init__() {
         this.state.counter = 0;
@@ -80,7 +85,9 @@
         this.$.session.notify([msg]);
         return [];
     }
-}</code></pre><p>A couple of helper functions for naming:</p>
+}
+</code></pre>
+<p>A couple of helper functions for naming:</p>
 <pre class="prettyprint source"><code>var ADMIN_CA = 'admin';
 var ADMIN_CHANNEL = 'myNews';
 var isAdmin = function(self) {
@@ -90,10 +97,16 @@ var isAdmin = function(self) {
 var masterChannel = function(self) {
     var name = self.__ca_getName__();
     return caf.joinName(caf.splitName(name)[0], ADMIN_CA, ADMIN_CHANNEL);
-};</code></pre><p>See the client code in <code>examples/helloworld/client1.js</code></p>
-<h2>API</h2><p>See <a href="module-caf_pubsub_proxy_pubsub.html">module:caf_pubsub/proxy_pubsub</a></p>
-<h2>Configuration</h2><h3>framework.json</h3><p>See <a href="module-caf_pubsub_plug_pubsub.html">module:caf_pubsub/plug_pubsub</a></p>
-<h3>ca.json</h3><p>See <a href="module-caf_pubsub_plug_ca_pubsub.html">module:caf_pubsub/plug_ca_pubsub</a></p></article>
+};
+</code></pre>
+<p>See the client code in <code>examples/helloworld/client1.js</code></p>
+<h2>API</h2>
+<p>See <a href="module-caf_pubsub_proxy_pubsub.html">module:caf_pubsub/proxy_pubsub</a></p>
+<h2>Configuration</h2>
+<h3>framework.json</h3>
+<p>See <a href="module-caf_pubsub_plug_pubsub.html">module:caf_pubsub/plug_pubsub</a></p>
+<h3>ca.json</h3>
+<p>See <a href="module-caf_pubsub_plug_ca_pubsub.html">module:caf_pubsub/plug_ca_pubsub</a></p></article>
     </section>
 
 
@@ -110,7 +123,7 @@ var masterChannel = function(self) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 29 2018 21:39:33 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Dec 07 2019 23:28:29 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

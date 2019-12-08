@@ -43,15 +43,18 @@
 
 
     <section>
-        <article><h1>CAF.js (Cloud Assistant Framework)</h1><p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.</p>
-<p>See http://<a href="http://www.cafjs.com">www.cafjs.com</a></p>
-<h2>CAF for IoT</h2><p><a href="https://travis-ci.org/cafjs/caf_iot"><img src="https://travis-ci.org/cafjs/caf_iot.svg?branch=master" alt="Build Status"></a></p>
+        <article><h1>CAF.js (Cloud Assistant Framework)</h1>
+<p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.</p>
+<p>See http://www.cafjs.com</p>
+<h2>CAF for IoT</h2>
+<p><a href="https://travis-ci.org/cafjs/caf_iot"><img src="https://travis-ci.org/cafjs/caf_iot.svg?branch=master" alt="Build Status"></a></p>
 <p>IoT platform that runs on the device and pairs with a Cloud Assistant.</p>
 <p>The IoT device programming model is very similar to programming a CA (see <a href="external-caf_ca.html">external:caf_ca</a>). In fact, most of the code is reused.</p>
 <p>Method execution is serialized by a queue, no global state, similar plugins, and transactional changes to local state can be rolled backed on abort.</p>
 <p>However, we do not checkpoint state, and there is only one &quot;CA&quot;, i.e., the device. We are not that concerned about long term consistency either, since we reset the device every reboot; therefore, some plugins may not delay external actions, improving responsiveness.</p>
 <p>We have also simplified framework methods and config files. For instance, the file <code>iot.json</code> describes both the framework, i.e., <code>framework.json</code>, and  the device, i.e., <code>ca.json</code>, component hierarchies. Also, the naming of methods is more &quot;Arduino-friendly&quot;.</p>
-<h3>Hello World (see <code>examples/helloworld</code>)</h3><pre class="prettyprint source"><code>exports.methods = {
+<h3>Hello World (see <code>examples/helloworld</code>)</h3>
+<pre class="prettyprint source"><code>exports.methods = {
     async __iot_setup__() {
         this.state.counter = this.toCloud.get('counter') || 0;
         return [];
@@ -63,7 +66,9 @@
         this.toCloud.set('counter', this.state.counter);
         return [];
     }
-};</code></pre><p>Defines two methods called by the IoT framework:</p>
+};
+</code></pre>
+<p>Defines two methods called by the IoT framework:</p>
 <ul>
 <li><code>__iot_setup__</code>: initializes the state of the device everytime it resets.</li>
 <li><code>__iot_loop__</code>: similar to a <code>__ca_pulse__</code> CA method, it executes periodically. See <a href="module-caf_iot_plug_iot_handler.html">module:caf_iot/plug_iot_handler</a> for details.</li>
@@ -82,7 +87,8 @@
 </ul>
 <p>The purpose of <code>this.fromCloud</code> is to allow a client to indirectly modify the behavior of the device by communicating with its CA.</p>
 <p>The CA impersonates the device, enabling seamless interaction when the device is offline, or behind a firewall.</p>
-<h3>Hello Cron (see <code>examples/hellocron</code>)</h3><p>Similar to CA plugins, device plugins are exposed to application code with proxies in <code>this.$</code>.</p>
+<h3>Hello Cron (see <code>examples/hellocron</code>)</h3>
+<p>Similar to CA plugins, device plugins are exposed to application code with proxies in <code>this.$</code>.</p>
 <p>An interesting plugin is <code>cron</code> (see <a href="module-caf_iot_proxy_iot_cron.html">module:caf_iot/proxy_iot_cron</a>), which allows calls to arbitrary methods at regular intervals.</p>
 <pre class="prettyprint source"><code>exports.methods = {
     async __iot_setup__() {
@@ -97,18 +103,24 @@
         return [];
     },
     ...
-};</code></pre><h4>How are errors and exceptions handled?</h4><p>The default behavior is rather crude, just log and do a full reset.</p>
+};
+</code></pre>
+<h4>How are errors and exceptions handled?</h4>
+<p>The default behavior is rather crude, just log and do a full reset.</p>
 <p>It is recommended to override that behavior by adding a method <code>__iot_error__</code>.</p>
-<p>This method could avoid the reset by <strong>not</strong> propagating the error in the callback, see <a href="module-caf_iot_plug_iot_handler.html#__iot_error__">module:caf_iot/plug_iot_handler#__iot_error__</a>  and <code>examples/hellocron/iot/iot_methods.js</code>.</p>
-<h3>Hello Bundles (see <code>examples/hellobundle</code>)</h3><p>The CA can invoke device methods by using timed bundles of commands.</p>
+<p>This method could avoid the reset by <strong>not</strong> propagating the error in the callback, see <code>__iot_error__</code> in <a href="module-caf_iot_plug_iot_handler.html">module:caf_iot/plug_iot_handler</a>  and <code>examples/hellocron/iot/iot_methods.js</code>.</p>
+<h3>Hello Bundles (see <code>examples/hellobundle</code>)</h3>
+<p>The CA can invoke device methods by using timed bundles of commands.</p>
 <p>CAF.js synchronizes device clocks with the cloud, coordinating <strong>soft</strong> real-time actions across the globe with UTC time. Given a few seconds to propagate commands,  millions of devices could blink within a hundred milliseconds of each other.</p>
 <p>Why bundles and not just separate commands?</p>
 <p>Safety. Think of controlling a drone. One command to dive as fast as it can. Second command to gracefully recover. Lost network connection between them. Oops...</p>
 <p>If we bundle commands, both are cached in the drone before anything happens. If execution is based on UTC time, not on arrival time, we can pipeline bundles, ensuring smooth movement. And the CA can keep generating these bundles based on a higher goal. See <a href="module-caf_iot_plug_iot_bundles.html">module:caf_iot/plug_iot_bundles</a> for details.</p>
 <p>Extra time is added to bundles for network propagation but, when a bundle arrives to the device late, it gets ignored. The CA can detect that by monitoring responses in <code>this.state.acks</code>; this is an array of max size <code>this.state.maxAcks</code>, and elements of type:</p>
-<pre class="prettyprint source"><code>{response: boolean, index: number}</code></pre><p>where:</p>
+<pre><code>{result: boolean, index: number}
+</code></pre>
+<p>where:</p>
 <ul>
-<li><code>response</code>: <code>False</code> if the bundle was late, <code>True</code> otherwise.</li>
+<li><code>result</code>: <code>False</code> if the bundle was late, <code>True</code> otherwise.</li>
 <li><code>index</code>: An identifier for the bundle. It matches the one previously returned by <a href="module-caf_iot_ca_proxy_iot.html#sendBundle">module:caf_iot/ca/proxy_iot#sendBundle</a>.</li>
 </ul>
 <p>Let's look at an example.</p>
@@ -130,7 +142,9 @@
         this.$.log && this.$.log.debug('RECOVERING:' +  now + ' msg: ' + msg);
         return [];
     },
-};</code></pre><p>The CA code is a bit more interesting:</p>
+};
+</code></pre>
+<p>The CA code is a bit more interesting:</p>
 <pre class="prettyprint source"><code>var MARGIN=100;
 exports.methods = {
     async __ca_init__() {
@@ -150,16 +164,21 @@ exports.methods = {
         return [];
     },
   ...
-};</code></pre><p>If you are wondering how <code>bundle</code> gets methods <code>down</code>, <code>up</code>, and <code>recover</code>, the framework instrospects the device code, and generates them at run time. <em>I love JavaScript</em>.</p>
+};
+</code></pre>
+<p>If you are wondering how <code>bundle</code> gets methods <code>down</code>, <code>up</code>, and <code>recover</code>, the framework instrospects the device code, and generates them at run time. <em>I love JavaScript</em>.</p>
 <p><code>__ca_pulse__</code> gets called every <code>interval</code> msec. If <code>interval</code> is less than <code>5000</code>, we have two cases:</p>
 <ul>
-<li><p>Normal case: the next bundle starts before the recovery action of the previous bundle. Only one bundle can be active, and the device skips recovery.</p>
+<li>
+<p>Normal case: the next bundle starts before the recovery action of the previous bundle. Only one bundle can be active, and the device skips recovery.</p>
 </li>
-<li><p>Network partition for more than five seconds: no new bundles, and the device triggers recovery.</p>
+<li>
+<p>Network partition for more than five seconds: no new bundles, and the device triggers recovery.</p>
 </li>
 </ul>
 <p>Why <code>notify</code> after <code>sendBundle</code>? To save energy and bandwidth the device typically syncs with the cloud every few seconds, and we are providing a margin of only 100 msec to execute the bundle. If the device is currently connected, <code>notify</code> uses the websocket to force the device to sync.</p>
-<h3>Hello Cloud (see <code>examples/hellocloud</code>)</h3><p>The device can also call CA methods.</p>
+<h3>Hello Cloud (see <code>examples/hellocloud</code>)</h3>
+<p>The device can also call CA methods.</p>
 <p>The <code>cloud</code> plugin provides a standard client <code>Session</code> (see <a href="external-caf_cli.html">external:caf_cli</a>). It can also receive session notifications (see <a href="external-caf_session.html">external:caf_session</a>), and process them as conventional method calls.</p>
 <p>Notifications improve responsiveness, because otherwise the device waits until the next <code>__iot_loop__</code> to synchronize with the cloud.</p>
 <p>For example:</p>
@@ -184,8 +203,11 @@ exports.methods = {
         }
     },
     ...
-};</code></pre><p>Every time the CA notifies the device, a method call for <code>greetings</code> gets queued,  and eventually, that method will call back the CA, reading its counter. The default session identifier for a device is <code>iot</code>, but it can be changed with the property <code>session</code> (see <a href="module-caf_iot_plug_iot_cloud.html">module:caf_iot/plug_iot_cloud</a>).</p>
-<h3>Much more...</h3><p>We have a few RPi plugins in <code>caf/extra</code> that do real IoT stuff. Controlling <code>gpio</code> pins, managing external RTC/power boards, distance sensors...</p>
+};
+</code></pre>
+<p>Every time the CA notifies the device, a method call for <code>greetings</code> gets queued,  and eventually, that method will call back the CA, reading its counter. The default session identifier for a device is <code>iot</code>, but it can be changed with the property <code>session</code> (see <a href="module-caf_iot_plug_iot_cloud.html">module:caf_iot/plug_iot_cloud</a>).</p>
+<h3>Much more...</h3>
+<p>We have a few RPi plugins in <code>caf/extra</code> that do real IoT stuff. Controlling <code>gpio</code> pins, managing external RTC/power boards, distance sensors...</p>
 <p>The long term strategy is <strong>not</strong> to duplicate the great work of other JavaScript IoT libraries supporting zillions of sensors/actuators/devices. Instead, wrap these libraries with local plugins, and focus on cloud/client integration. This is consistent with our web client strategy, i.e., integrating with other libraries such as React/Redux.</p></article>
     </section>
 
@@ -203,7 +225,7 @@ exports.methods = {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 29 2018 21:39:31 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Dec 07 2019 23:28:27 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

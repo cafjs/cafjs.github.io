@@ -26,7 +26,7 @@
     
 
 
-    <h3>caf_dcinabox 0.3.3</h3>
+    <h3>caf_dcinabox 0.3.5</h3>
 
 
 
@@ -43,13 +43,18 @@
 
 
     <section>
-        <article><h1>CAF (Cloud Assistant Framework)</h1><p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and IoT devices.</p>
-<p>See http://<a href="http://www.cafjs.com">www.cafjs.com</a></p>
-<h2>CAF Command Line Tools</h2><p>To setup see <a href="external-caf.html">external:caf</a> (https://cafjs.github.io/api/caf/index.html).</p>
+        <article><h1>CAF (Cloud Assistant Framework)</h1>
+<p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and IoT devices.</p>
+<p>See http://www.cafjs.com</p>
+<h2>CAF Command Line Tools</h2>
+<p>To setup see <a href="external-caf.html">external:caf</a> (https://cafjs.github.io/api/caf/index.html).</p>
 <p>The wrapper tool <code>cafjs</code> has subcommands of the form:</p>
-<pre class="prettyprint source"><code>cafjs &lt;command> &lt;commandOptions> arg1 arg2...</code></pre><p>The <code>commandOptions</code> always start with <code>--</code>, and are passed unchanged to the underlying tools. They are mostly for power users.</p>
+<pre><code>cafjs &lt;command&gt; &lt;commandOptions&gt; arg1 arg2...
+</code></pre>
+<p>The <code>commandOptions</code> always start with <code>--</code>, and are passed unchanged to the underlying tools. They are mostly for power users.</p>
 <p>The other arguments, e.g., <code>arg1</code>, <code>arg2</code>, are ordered. Positional arguments can always be replaced with equivalent <code>commandOptions</code>. However, when the same option is specified with conflicting values, the result is undefined.</p>
-<h4><code>cafjs run  &lt;run_options&gt; &lt;appLocalName&gt; [appWorkingDir] [host/app Vol]</code></h4><p>Starts a simulated cloud to run your app. Uses separate Docker containers for a HAProxy-based http router, a Redis backend, and supporting apps for authentication, managing CAs, or registering devices.</p>
+<h4><code>cafjs run &lt;run_options&gt; &lt;appLocalName&gt; [appWorkingDir] [host/app Vol]</code></h4>
+<p>Starts a simulated cloud to run your app. Uses separate Docker containers for a HAProxy-based http router, a Redis backend, and supporting apps for authentication, managing CAs, or registering devices.</p>
 <p>The application can also be directly accessed using the http HOST <code>localhost</code>, i.e.,<code>http://localhost:&lt;externalPort&gt;</code>. Some browser features are only enabled with https or http with <code>localhost</code>, i.e., will not work with <code>*.vcap.me</code>. A valid token in the URL is required.</p>
 <p>Two common usecases of <code>cafjs run</code>:</p>
 <ul>
@@ -68,13 +73,45 @@
 <li><code>--debugApplication &lt;boolean&gt;</code> Start the node debugger listening on host port 9229 (app only).</li>
 </ul>
 <p>For example, in <em>Quick prototyping mode</em>:</p>
-<pre class="prettyprint source"><code>cd $HOME/caf/apps/caf_helloworld; cafjs build; cafjs run helloworld</code></pre><p>and in <em>Validation mode</em>:</p>
-<pre class="prettyprint source"><code>cafjs mkImage $HOME/caf/apps/caf_helloworld gcr.io/cafjs-k8/root-helloworld
-cafjs run --appImage gcr.io/cafjs-k8/root-helloworld helloworld</code></pre><h4><code>cafjs build</code></h4><p>Wrapper to <code>yarn</code> to build an application in the current directory using local dependencies. It assumes yarn workspaces, and a target task <code>build</code> in <code>package.json</code>.</p>
-<h4><code>cafjs reset</code></h4><p>Brute force clean up of both containers and networks.</p>
+<pre><code>cd $HOME/caf/apps/caf_helloworld; cafjs build; cafjs run helloworld
+</code></pre>
+<p>and in <em>Validation mode</em>:</p>
+<pre><code>cafjs mkImage $HOME/caf/apps/caf_helloworld gcr.io/cafjs-k8/root-helloworld
+cafjs run --appImage gcr.io/cafjs-k8/root-helloworld helloworld
+</code></pre>
+<h4><code>cafjs build</code></h4>
+<p>Wrapper to <code>yarn</code> to build an application in the current directory using local dependencies. It assumes yarn workspaces, and a target task <code>build</code> in <code>package.json</code>.</p>
+<h4><code>cafjs generate &lt;generate_options&gt; &lt;appName&gt; [target] [appDir] [appConfig]</code></h4>
+<p>Creates an application skeleton using the following <code>target</code> of increasing app complexity:</p>
+<ul>
+<li>
+<p><code>cloud</code>: Simple CA with a command line interface.</p>
+</li>
+<li>
+<p><code>web</code> (or <code>default</code>): Add a React+Redux web frontend to <code>cloud</code>.</p>
+</li>
+<li>
+<p><code>iot</code>: Add support for an iot device, e.g., a Rasperry Pi, to <code>web</code>.</p>
+</li>
+<li>
+<p><code>vr</code>: Add a virtual reality interface to <code>iot</code> using Aframe.</p>
+</li>
+</ul>
+<p>Note that <code>target</code> defaults to <code>web</code>.</p>
+<p>The <code>generate_options</code> to <code>cafjs generate</code> are:</p>
+<ul>
+<li><code>--templateImage &lt;string&gt;</code> An optional Docker image that contains the template targets. It defaults to <code>gcr.io/cafjs-k8/root-template</code>. See the example in https://github.com/cafjs/caf_template.git to create your own. Custom images could enable new values for the <code>target</code> argument.</li>
+</ul>
+<p>The argument <code>&lt;appName&gt;</code> is the name of your new application.</p>
+<p><code>&lt;appDir&gt;</code> is the directory where the app will be written (defaults to <code>$PWD</code>).</p>
+<p><code>&lt;appConfig&gt;</code> is a file with extra properties to instantiate the app template. It defaults to <code>generate.json</code> in the <code>caf_dcinabox/bin</code> directory. It leverages the CAF.js standard preprocessing of json component descriptions, so that it can default to system environment properties.</p>
+<h4><code>cafjs reset</code></h4>
+<p>Brute force clean up of both containers and networks.</p>
 <p>A reset for a running application is also triggered after two <code>Control-C</code> keystrokes. A single <code>Control-C</code> triggers a gentle, but slower, shutdown.</p>
-<h4><code>cafjs mkImage &lt;src&gt; &lt;imageName&gt;</code></h4><p>Creates a Docker image with the app. The arguments are the app directory and the image name.</p>
-<h4><code>cafjs device &lt;device_options&gt; &lt;deviceId&gt;</code></h4><p>Simulates a device that access a CA. It uses <code>qemu-arm-static</code> to execute ARM instructions on your laptop or VM. This enables testing or building Docker images for the Raspberry Pi anywhere, even with modules using native extensions. No more cross-compilation nightmares!</p>
+<h4><code>cafjs mkImage &lt;src&gt; &lt;imageName&gt;</code></h4>
+<p>Creates a Docker image with the app. The arguments are the app directory and the image name.</p>
+<h4><code>cafjs device &lt;device_options&gt; &lt;deviceId&gt;</code></h4>
+<p>Simulates a device that access a CA. It uses <code>qemu-arm-static</code> to execute ARM instructions on your laptop or VM. This enables testing or building Docker images for the Raspberry Pi anywhere, even with modules using native extensions. No more cross-compilation nightmares!</p>
 <p>The (Linux) host should have <code>binfmt</code> enabled and properly configured. In Ubuntu just install the packages <code>qemu-user-static</code> and <code>binfmt-support</code>.</p>
 <p>The execution speed is not that bad, mostly because <code>qemu-arm-static</code> only emulates the application, and not the OS (i.e., the I/O). A core of my laptop is roughly the same as an RPi 2 core.</p>
 <p>Many applications in the RPi are not CPU intensive, and it is possible to pack about a hundred simulated devices in a large VM. This simplifies stress testing, CI, or debugging, in a Cloud-only environment.</p>
@@ -94,29 +131,49 @@ cafjs run --appImage gcr.io/cafjs-k8/root-helloworld helloworld</code></pre><h4>
 <li><code>--ipAddress &lt;string&gt;</code> The network interface for the service. Defaults to <code>localhost</code>.</li>
 <li><code>--port &lt;number&gt;</code> The port number for the service. Defaults to port 80.</li>
 </ul>
-<h4><code>cafjs mkIoTImage &lt;appLocalName&gt; [privileged:boolean]</code></h4><p>This command is not commonly used because <code>cafjs device</code> transparently creates device container images.</p>
+<h4><code>cafjs mkIoTImage &lt;appLocalName&gt; [privileged:boolean]</code></h4>
+<p>This command is not commonly used because <code>cafjs device</code> transparently creates device container images.</p>
 <p>To execute this command we need the app running (see <code>cafjs run</code> above). <code>cafjs mkIoTImage</code> pretends to be a manager container, downloads a tar file with the app, and creates the device container image.</p>
-<h4><code>cafjs help [command]</code></h4><p>Prints a help summary, or details of any of the above commands.</p>
-<h3>Putting it all together: Workflows with a simulated device</h3><h4>Let's start in <em>quick prototyping mode</em></h4><p>First, we build and run an IoT CAF application:</p>
-<pre class="prettyprint source"><code>cd $HOME/caf/apps/caf_helloiot; cafjs build; cafjs run helloiot</code></pre><p>Login with user <code>foo</code>, password <code>pleasechange</code>, and URL <code>http://root-launcher.vcap.me</code>.</p>
+<h4><code>cafjs help [command]</code></h4>
+<p>Prints a help summary, or details of any of the above commands.</p>
+<h3>Putting it all together: Workflows with a simulated device</h3>
+<h4>Let's start in <em>quick prototyping mode</em></h4>
+<p>First, we build and run an IoT CAF application:</p>
+<pre><code>cd $HOME/caf/apps/caf_helloiot; cafjs build; cafjs run helloiot
+</code></pre>
+<p>Login with user <code>foo</code>, password <code>pleasechange</code>, and URL <code>http://root-launcher.vcap.me</code>.</p>
 <p>With the browser create a CA instance for application with owner<code>root</code>, local name <code>helloiot</code>, and CA name the device name, e.g., <code>device1</code>.</p>
 <p>Create a gadget  CA instance to manage the device <code>device1</code>. The application owner is <code>root</code>, local name <code>gadget</code>, and CA name <code>device1</code>. Configure in that app the target application as <code>root-helloiot</code> (don't click the privileged option). If <code>App Token Ready?</code> is <code>NO</code>, just go back to the <code>helloiot</code> app for <code>device1</code> to transparently register the token with the manager.</p>
 <p>And now we are ready to start the device:</p>
-<pre class="prettyprint source"><code>cafjs device foo-device1</code></pre><p>It builds the device image, and after about a minute, the main loop should be reporting information from the CA.</p>
+<pre><code>cafjs device foo-device1
+</code></pre>
+<p>It builds the device image, and after about a minute, the main loop should be reporting information from the CA.</p>
 <p>In the browser, choosing the <code>helloiot</code> app again, we can configure a pin <code>11</code> as input, and a pin <code>12</code> as <code>Output</code>, and change the pin <code>12</code> value. The simulated device main loop should print the new values. We can also interact with the mocked gpio pins using files:</p>
-<pre class="prettyprint source"><code>docker exec -ti root-helloiot-foo-device1 /bin/ash
+<pre><code>docker exec -ti root-helloiot-foo-device1 /bin/ash
 cat /tmp/gpio/out/gpio12
-echo 1 > /tmp/gpio/in/gpio11</code></pre><p>and the browser should now show the new input for pin <code>11</code>.</p>
-<h4>And now in <em>validation mode</em></h4><p>Build the container image, and run the app and device:</p>
-<pre class="prettyprint source"><code>cd $HOME/caf/apps/caf_helloiot
+echo 1 &gt; /tmp/gpio/in/gpio11
+</code></pre>
+<p>and the browser should now show the new input for pin <code>11</code>.</p>
+<h4>And now in <em>validation mode</em></h4>
+<p>Build the container image, and run the app and device:</p>
+<pre><code>cd $HOME/caf/apps/caf_helloiot
 cafjs mkImage . gcr.io/cafjs-k8/root-helloiot
 cafjs run --appImage gcr.io/cafjs-k8/root-helloiot helloiot
-cafjs device foo-device1</code></pre><p>The setup is similar to the previous case. In fact, since the <code>Redis</code> container persists changes in a host volume, all your CAs should still be there.</p>
-<h3>Local multi-host deployment</h3><p>Use an external network interface for the service. For example, if <code>192.168.1.15</code> is the address of <code>wlan0</code> in my laptop:</p>
-<pre class="prettyprint source"><code>cafjs run --appImage gcr.io/cafjs-k8/root-helloiot --ipAddress 192.168.1.15 --port 8080 helloiot</code></pre><p>and, in a different computer connected to the same wireless LAN, type</p>
-<pre class="prettyprint source"><code>cafjs device --ipAddress 192.168.1.15 --port 8080 --password pleasechange foo-device1</code></pre><p>to simulate a device that is connected to the service in my laptop using the wireless LAN.</p>
+cafjs device foo-device1
+</code></pre>
+<p>The setup is similar to the previous case. In fact, since the <code>Redis</code> container persists changes in a host volume, all your CAs should still be there.</p>
+<h3>Local multi-host deployment</h3>
+<p>Use an external network interface for the service. For example, if <code>192.168.1.15</code> is the address of <code>wlan0</code> in my laptop:</p>
+<pre><code>cafjs run --appImage gcr.io/cafjs-k8/root-helloiot --ipAddress 192.168.1.15 --port 8080 helloiot
+</code></pre>
+<p>and, in a different computer connected to the same wireless LAN, type</p>
+<pre><code>cafjs device --ipAddress 192.168.1.15 --port 8080 --password pleasechange foo-device1
+</code></pre>
+<p>to simulate a device that is connected to the service in my laptop using the wireless LAN.</p>
 <p>Note that the URL for the service is:</p>
-<pre class="prettyprint source"><code>http://root-launcher.192.168.1.15.xip.io:8080</code></pre><p>the trick is that <code>xip.io</code> provides a DNS wildcard domain that maps <code>whatever.192.168.1.15.xip.io</code> to my IP address <code>192.168.1.15</code>.</p>
+<pre><code>http://root-launcher.192.168.1.15.xip.io:8080
+</code></pre>
+<p>the trick is that <code>xip.io</code> provides a DNS wildcard domain that maps <code>whatever.192.168.1.15.xip.io</code> to my IP address <code>192.168.1.15</code>.</p>
 <p>Also, using that URL, we can connect real devices on the WLAN.</p></article>
     </section>
 
@@ -134,7 +191,7 @@ cafjs device foo-device1</code></pre><p>The setup is similar to the previous cas
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 29 2018 21:39:43 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Dec 07 2019 23:28:39 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

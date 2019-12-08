@@ -40,9 +40,11 @@
         
             <div class="description"><p>Security plug for authentication.</p>
 <p>Properties:</p>
-<pre class="prettyprint source"><code>  {keysDir: string=, trustedPubKeyFile: string, privateKeyFile: string=,
+<pre><code>  {keysDir: string=, trustedPubKeyFile: string, privateKeyFile: string=,
    publicKeyFile: string=, accountsURL: string, allowNobodyUser: boolean,
-   quotaURL: string=, quotaCA: string=}</code></pre><p>where:</p>
+   quotaURL: string=, quotaCA: string=}
+</code></pre>
+<p>where:</p>
 <ul>
 <li><code>keysDir:</code> directory for all key material.</li>
 <li><code>trustedPubKeyFile</code>: trusted public key that verifies tokens. Uses
@@ -131,6 +133,8 @@ authenticate without credentials.</li>
 
 
 
+
+
         
     
     </div>
@@ -178,7 +182,7 @@ authenticate without credentials.</li>
 
 <div class="description">
     <p>Weakens an authentication token generating generating one (or many)
- token(s).</p>
+token(s).</p>
 </div>
 
 
@@ -277,7 +281,7 @@ authenticate without credentials.</li>
             
 
             <td class="description last"><p>A callback to return the new token(s) or an
- error.</p></td>
+error.</p></td>
         </tr>
 
     
@@ -318,7 +322,7 @@ authenticate without credentials.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line340">line 340</a>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line345">line 345</a>
     </li></ul></dd>
     
 
@@ -335,6 +339,8 @@ authenticate without credentials.</li>
 
     
 </dl>
+
+
 
 
 
@@ -466,7 +472,7 @@ authenticate without credentials.</li>
             
 
             <td class="description last"><p>A callback with an error or the authenticated
- token.</p></td>
+token.</p></td>
         </tr>
 
     
@@ -517,6 +523,8 @@ authenticate without credentials.</li>
 
     
 </dl>
+
+
 
 
 
@@ -667,7 +675,7 @@ authenticate without credentials.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line260">line 260</a>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line265">line 265</a>
     </li></ul></dd>
     
 
@@ -690,12 +698,14 @@ authenticate without credentials.</li>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
 <div class="param-desc">
     <p>True if we should only allow returning a reference
- to an existing CA.</p>
+to an existing CA.</p>
 </div>
 
 
@@ -826,7 +836,7 @@ authenticate without credentials.</li>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line135">line 135</a>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line134">line 134</a>
     </li></ul></dd>
     
 
@@ -854,13 +864,15 @@ authenticate without credentials.</li>
 
 
 
+
+
         
             
 
     
 
     
-    <h4 class="name" id="__ca_quotaNewCA__"><span class="type-signature"></span>__ca_quotaNewCA__<span class="signature">(tokenStr, cb0<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="__ca_quotaCheck__"><span class="type-signature"></span>__ca_quotaCheck__<span class="signature">(caId, cb0)</span><span class="type-signature"></span></h4>
     
 
     
@@ -868,7 +880,7 @@ authenticate without credentials.</li>
 
 
 <div class="description">
-    <p>Registers a new CA with the <em>Quota</em> service.</p>
+    <p>Checks the quota of a CA with the <em>Quota</em> service.</p>
 </div>
 
 
@@ -892,8 +904,6 @@ authenticate without credentials.</li>
         <th>Type</th>
 
         
-        <th>Attributes</th>
-        
 
         
 
@@ -906,7 +916,7 @@ authenticate without credentials.</li>
 
         <tr>
             
-                <td class="name"><code>tokenStr</code></td>
+                <td class="name"><code>caId</code></td>
             
 
             <td class="type">
@@ -919,19 +929,10 @@ authenticate without credentials.</li>
             </td>
 
             
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"><p>An encoded token. This token was originally
-used to create the CA.</p></td>
+            <td class="description last"><p>A target CA identifier, e.g., <code>foo-ca1</code>.</p></td>
         </tr>
 
     
@@ -951,20 +952,13 @@ used to create the CA.</p></td>
             </td>
 
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"><p>An optional callback to return an error.</p></td>
+            <td class="description last"><p>A callback to return an error, or extra CA info
+(second argument).  If the error is not a system error, i.e., we
+accessed the quota service and there was no balance, the error field
+<code>quotaExceeded</code> is set to <code>true</code>.</p></td>
         </tr>
 
     
@@ -1005,7 +999,7 @@ used to create the CA.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line364">line 364</a>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line421">line 421</a>
     </li></ul></dd>
     
 
@@ -1015,6 +1009,172 @@ used to create the CA.</p></td>
 
     
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="__ca_quotaRenew__"><span class="type-signature"></span>__ca_quotaRenew__<span class="signature">(tokenStr, cb0)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Registers a new CA with the <em>Quota</em> service.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tokenStr</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An encoded token. This token was originally
+used to create the CA.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb0</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#cbType">cbType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A callback to return an error, or extra CA info
+(second argument).  If the error is not a system error, i.e., we
+accessed the quota service and there was no balance, the error field
+<code>quotaExceeded</code> is set to <code>true</code>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line395">line 395</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
 
 
 
@@ -1163,6 +1323,8 @@ used to create the CA.</p></td>
 
 
 
+
+
 <h5>Returns:</h5>
 
         
@@ -1216,7 +1378,7 @@ token invalid.</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 29 2018 21:39:35 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Dec 07 2019 23:28:31 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

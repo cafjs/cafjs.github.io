@@ -26,7 +26,7 @@
     
 
 
-    <h3>caf_ca 0.3.4</h3>
+    <h3>caf_ca 0.3.6</h3>
 
 
 
@@ -43,15 +43,18 @@
 
 
     <section>
-        <article><h1>CAF.js (Cloud Assistant Framework)</h1><p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.</p>
-<p>See http://<a href="http://www.cafjs.com">www.cafjs.com</a></p>
-<h2>CAF CA</h2><p><a href="https://travis-ci.org/cafjs/caf_ca"><img src="https://travis-ci.org/cafjs/caf_ca.svg?branch=master" alt="Build Status"></a></p>
+        <article><h1>CAF.js (Cloud Assistant Framework)</h1>
+<p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.</p>
+<p>See http://www.cafjs.com</p>
+<h2>CAF CA</h2>
+<p><a href="https://travis-ci.org/cafjs/caf_ca"><img src="https://travis-ci.org/cafjs/caf_ca.svg?branch=master" alt="Build Status"></a></p>
 <p>This library provides components to create a CA.</p>
 <p>A CA is an Actor, in the spirit of an Erlang/OTP <code>gen_server</code>, with a queue that serializes message processing, a location-independent name, some private state, and the ability to change behavior, or interact with other CAs.</p>
 <p>A CA processes a message in a transaction. External interactions are mediated by transactional plugins, and delayed until the message commits. Any non-commited changes to its internal state can be rolled back if errors are detected. State changes and pending interactions always checkpoint with a remote service before commiting. See <a href="external-caf_components_gen_transactional.html">external:caf_components/gen_transactional</a> for details.</p>
 <p>This makes it safe to kill, <strong>at any time</strong>, a node.js process hosting thousands of  CAs. The expectations of the external world are always consistent with the recovered CAs.</p>
 <p>In fact, our favorite load-balancing strategy is to just kill hot processes, and randomly spread recovered CAs to other instances.</p>
-<h3>Hello World (see <code>examples/helloworld</code>)</h3><p>CA methods are <strong>always</strong> asynchronous methods. They can be implemented using the <code>async/await</code> pattern, or using standard callbacks. In the first case we emulate the callback by returning an array with an error/data pair.</p>
+<h3>Hello World (see <code>examples/helloworld</code>)</h3>
+<p>CA methods are <strong>always</strong> asynchronous methods. They can be implemented using the <code>async/await</code> pattern, or using standard callbacks. In the first case we emulate the callback by returning an array with an error/data pair.</p>
 <p>When the method returns this array, or invokes the callback as a tail call, the framework knows that the message has been fully processed, and your application is ready for the next one. This enforces message serialization.</p>
 <p>Never throw in a method to propagate an application error. An unhandled exception closes the client session. This makes it easier to find programming errors.</p>
 <p>CAs have two sets of methods:</p>
@@ -68,12 +71,15 @@
         this.state.counter = this.state.counter + 1;
         return [null, this.state.counter];
     }
-};</code></pre><p>The <em>internal</em> method <code>__ca_init__</code> is called by the framework just once, initializing the state of the CA.</p>
+};
+</code></pre>
+<p>The <em>internal</em> method <code>__ca_init__</code> is called by the framework just once, initializing the state of the CA.</p>
 <p>The object property <code>this.state</code> should contain a JSON-serializable value, and is managed transactionally as described above.</p>
 <p>In contrast, <code>this.scratch</code> can contain anything, but is not checkpointed or rolled back.</p>
 <p>A CA is a sealed object, and application code should not try to add any properties outside <code>this.state</code> or <code>this.scratch</code>.</p>
 <p><em>External</em> methods, such as <code>increment</code>, are called by the client library, see <code>client.js</code> in the <code>examples</code> directory and <a href="external-caf_cli.html">external:caf_cli</a>.</p>
-<h3>Crashy Counter (see <code>examples/crashy</code>)</h3><p>Let's look at a more interesting CA.</p>
+<h3>Crashy Counter (see <code>examples/crashy</code>)</h3>
+<p>Let's look at a more interesting CA.</p>
 <pre class="prettyprint source"><code>var setTimeoutPromise = util.promisify(setTimeout);
 exports.methods = {
      ...
@@ -90,17 +96,23 @@ exports.methods = {
             return [null, this.state.counter]; // Case 3
         }
     }
-}</code></pre><p><em>Assertion 1</em> is always true, even if <code>increment</code> is called by many concurrent clients. The CA serializes the requests, and will patiently wait for the timeout  before processing the next one.</p>
+}
+</code></pre>
+<p><em>Assertion 1</em> is always true, even if <code>increment</code> is called by many concurrent clients. The CA serializes the requests, and will patiently wait for the timeout  before processing the next one.</p>
 <p>The client can receive three different type of responses:</p>
 <ul>
-<li><p><em>Case 1</em> An application error propagated by the client's callback. Changes to <code>this.state.counter</code> are rolled back.</p>
+<li>
+<p><em>Case 1</em> An application error propagated by the client's callback. Changes to <code>this.state.counter</code> are rolled back.</p>
 </li>
-<li><p><em>Case 2</em> An unhandled error, assumed to be an application bug, that closes the client session with an error. The framework also recovers from this error, with changes to <code>this.state.counter</code> being rolled back.</p>
+<li>
+<p><em>Case 2</em> An unhandled error, assumed to be an application bug, that closes the client session with an error. The framework also recovers from this error, with changes to <code>this.state.counter</code> being rolled back.</p>
 </li>
-<li><p><em>Case 3</em> A new counter value returned in the client's callback.</p>
+<li>
+<p><em>Case 3</em> A new counter value returned in the client's callback.</p>
 </li>
 </ul>
-<h3>Autonomous Behavior (see <code>examples/autonomous</code>)</h3><pre class="prettyprint source"><code>exports.methods = {
+<h3>Autonomous Behavior (see <code>examples/autonomous</code>)</h3>
+<pre class="prettyprint source"><code>exports.methods = {
     ...
     async __ca_resume__(cp) {
         this.$.log.debug('Resuming with counter:' + cp.state.counter);
@@ -111,9 +123,12 @@ exports.methods = {
         return [];
     }
     ...
-}</code></pre><p>Declaring a method <code>__ca_pulse__</code> guarantees that the framework will periodically invoke it, enabling autonomous behavior.</p>
+}
+</code></pre>
+<p>Declaring a method <code>__ca_pulse__</code> guarantees that the framework will periodically invoke it, enabling autonomous behavior.</p>
 <p>The method <code>__ca_resume__</code> is called every time we reload the CA state from a checkpoint <code>cp</code>. It allows customization after migration or failure recovery.</p>
-<h4>Plugins</h4><p>A CA extends its capabilities with a plugin architecture. CAF.js uses a component model <a href="external-caf_components.html">external:caf_components</a> to describe plugins with a configuration file <code>ca.json</code>. See <code>lib/ca.json</code> for an example.</p>
+<h4>Plugins</h4>
+<p>A CA extends its capabilities with a plugin architecture. CAF.js uses a component model <a href="external-caf_components.html">external:caf_components</a> to describe plugins with a configuration file <code>ca.json</code>. See <code>lib/ca.json</code> for an example.</p>
 <p>A plugin is exposed to application code with a security proxy (see <a href="external-caf_components_gen_proxy.html">external:caf_components/gen_proxy</a>). These proxies are properties of the object <code>this.$</code>.</p>
 <p>For example, the following CA uses two proxies: <code>log</code>, a logger plugin, and <code>session</code>, a plugin providing persistent sessions (see <a href="external-caf_session.html">external:caf_session</a>).</p>
 <pre class="prettyprint source"><code>exports.methods = {
@@ -127,7 +142,10 @@ exports.methods = {
         return [];
     }
     ...
-}</code></pre><h3>Versioning (see <code>examples/versioning</code>)</h3><p>(This example uses callbacks instead of <code>async/await</code>. Both are first-class citizens of the platform, but if you use node 8 or newer, we recommend <code>async/await</code> because programs are easier to read.)</p>
+}
+</code></pre>
+<h3>Versioning (see <code>examples/versioning</code>)</h3>
+<p>(This example uses callbacks instead of <code>async/await</code>. Both are first-class citizens of the platform, but if you use node 8 or newer, we recommend <code>async/await</code> because programs are easier to read.)</p>
 <p>When the implementation of a CA changes, the checkpointed state may be incompatible with the new code.</p>
 <p>We use <code>semver</code> conventions, and the configuration property <code>stateVersion</code>, to track versions of <code>this.state</code>.</p>
 <p>The value of <code>stateVersion</code> is stored in the checkpoint as property <code>this.state.__ca_version__</code>. When a CA resumes, it compares <code>this.state.__ca_version__</code> from the checkpoint with the desired value of <code>stateVersion</code>.</p>
@@ -155,14 +173,21 @@ exports.methods = {
         cb(null, this.state.myCounter);
     }
     ...
-}</code></pre><h3>Much More...</h3><ul>
-<li><p>Sharing Actors <a href="external-caf_sharing.html">external:caf_sharing</a></p>
+}
+</code></pre>
+<h3>Much More...</h3>
+<ul>
+<li>
+<p>Sharing Actors <a href="external-caf_sharing.html">external:caf_sharing</a></p>
 </li>
-<li><p>Security <a href="external-caf_security.html">external:caf_security</a></p>
+<li>
+<p>Security <a href="external-caf_security.html">external:caf_security</a></p>
 </li>
-<li><p>Persistent Sessions <a href="external-caf_session.html">external:caf_session</a></p>
+<li>
+<p>Persistent Sessions <a href="external-caf_session.html">external:caf_session</a></p>
 </li>
-<li><p>Pub/Sub <a href="external-caf_pubsub.html">external:caf_pubsub</a></p>
+<li>
+<p>Pub/Sub <a href="external-caf_pubsub.html">external:caf_pubsub</a></p>
 </li>
 </ul></article>
     </section>
@@ -181,7 +206,7 @@ exports.methods = {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 29 2018 21:39:27 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Dec 07 2019 23:28:23 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

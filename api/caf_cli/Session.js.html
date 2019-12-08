@@ -67,9 +67,10 @@
  *     {token: string, ca: string, from: string, session: string,
  *      appPublisher: string, appLocalName: string, disableBackchannel: boolean,
  *      maxRetries: number, retryTimeoutMsec: number, timeoutMsec: number,
- *      cacheKey: string,
+ *      cacheKey: string, initUser: boolean,
  *      log: function(string),
  *      newToken: function(caf.msg, cbType),
+ *      newUser: function(url: string, options: sessionOptionsType, cbType),
  *      newURL: function(caf.msg, cbType),
  *      timeAdjuster: TimeAdjuster()} + TokenFactory.options
  *
@@ -94,9 +95,12 @@
  *  * `timeoutMsec`: Max time in miliseconds for a request before
  * assuming an irrecoverable error, and closing the session.
  *  * `cacheKey`: custom key to cache server side rendering.
+ *  * `initUser`: Whether the owner in `from` is a new user that
+ * has to be registered.
  *  * `log`: custom function to log messages.
  *  * `newToken`: custom function to negotiate an authentication token.
  *  * `newURL`: custom function to redirect the session.
+ *  * `newUser`: custom function to initialize a new user.
  *  * `timeAdjuster`: custom object to synchronize clocks with the cloud.
  *
  *  see {@link module:caf_cli/TokenFactory} for other options.
@@ -111,8 +115,8 @@ var WebSocket = global.WebSocket || global.MozWebSocket || require('ws');
 var json_rpc = require('caf_transport').json_rpc;
 var Queue = require('./Queue').Queue;
 var querystring = require('querystring');
+var CreateUser = require('./CreateUser');
 var tf = require('./TokenFactory');
-
 var TokenFactory = exports.TokenFactory = tf.TokenFactory;
 var TimeAdjuster = exports.TimeAdjuster = require('./TimeAdjuster')
         .TimeAdjuster;
@@ -201,7 +205,8 @@ exports.Session = function(url, caId, options) {
                 var accURL = urlParser.parse(accountsURL);
                 var hashObj = newHash([
                     'from', 'ca', 'session', 'disableBackchannel',
-                    'durationInSec', 'unrestrictedToken'
+                    'durationInSec', 'unrestrictedToken', 'disableCache',
+                    'keepToken', 'newAccount'
                 ]);
                 hashObj.goTo = url;
                 accURL.hash = '#' + querystring.stringify(hashObj);
@@ -267,6 +272,8 @@ exports.Session = function(url, caId, options) {
     options.timeoutMsec =
         ((typeof options.timeoutMsec === 'number') ?
          options.timeoutMsec : DEFAULT_TIMEOUT_MSEC);
+
+    options.newUser = options.newUser || CreateUser.newUser;
 
     //options.disableBackchannel= &lt;boolean>
 
@@ -456,8 +463,20 @@ exports.Session = function(url, caId, options) {
         };
         if (firstTime) {
             firstTime = false;
-            queues.rpc.remoteInvoke(webSocket, '__external_ca_touch__', [],
-                                    [cb]);
+            let startF = () => queues.rpc.remoteInvoke(webSocket,
+                                                       '__external_ca_touch__',
+                                                       [], [cb]);
+            if (options.initUser) {
+                options.newUser(url, options, function (err) {
+                    if (err) {
+                        cb(err);
+                    } else {
+                        startF();
+                    }
+                });
+            } else {
+                startF();
+            }
         } else {
             retry();
         }
@@ -759,6 +778,27 @@ exports.extractTokenFromURL = function(urlStr) {
 };
 
 /**
+ * Helper function to delete a token encoded in a URL fragment.
+ *
+ * @param {string} urlStr A serialized URL
+ * @return {string} A serialized URL without a token in its fragment.
+ *
+ * @memberof! module:caf_cli/Session
+ * @alias deleteTokenFromURL
+ */
+exports.deleteTokenFromURL = function(urlStr) {
+    var parsedURL = urlParser.parse(urlStr);
+    if (parsedURL.hash &amp;&amp; (parsedURL.hash.indexOf('#') === 0)) {
+        var hash = querystring.parse(parsedURL.hash.slice(1));
+        delete hash.token;
+        parsedURL.hash = '#' + querystring.stringify(hash);
+        return urlParser.format(parsedURL);
+    } else {
+        return urlStr;
+    }
+};
+
+/**
  * Helper function to extract a spec in a URL fragment.
  *
  *
@@ -877,13 +917,13 @@ exports.patchURL = function(url, props) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_ca_main.html">caf_ca/main</a></li><li><a href="module-caf_cli_cryptoSession.html">caf_cli/cryptoSession</a></li><li><a href="module-caf_cli_Queue.html">caf_cli/Queue</a></li><li><a href="module-caf_cli_Session.html">caf_cli/Session</a></li><li><a href="module-caf_cli_TimeAdjuster.html">caf_cli/TimeAdjuster</a></li><li><a href="module-caf_cli_TokenFactory.html">caf_cli/TokenFactory</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul><h3><a href="global.html">Global</a></h3>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_ca_main.html">caf_ca/main</a></li><li><a href="module-caf_cli_CreateUser.html">caf_cli/CreateUser</a></li><li><a href="module-caf_cli_cryptoSession.html">caf_cli/cryptoSession</a></li><li><a href="module-caf_cli_Queue.html">caf_cli/Queue</a></li><li><a href="module-caf_cli_Session.html">caf_cli/Session</a></li><li><a href="module-caf_cli_TimeAdjuster.html">caf_cli/TimeAdjuster</a></li><li><a href="module-caf_cli_TokenFactory.html">caf_cli/TokenFactory</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 29 2018 21:39:28 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Dec 07 2019 23:28:23 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

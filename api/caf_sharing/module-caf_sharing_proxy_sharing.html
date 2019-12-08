@@ -115,6 +115,8 @@
 
 
 
+
+
         
     
     </div>
@@ -155,8 +157,10 @@
 <div class="description">
     <p>A context containing proxies to all the visible Shared Maps for this CA.</p>
 <p>Application code refers to these maps using aliases:</p>
-<pre class="prettyprint source"><code> this.$.sharing.$.myMap</code></pre><p>and this is typically shortened as follows:</p>
-<pre class="prettyprint source"><code> var $$ = this.$.sharing.$
+<pre><code> this.$.sharing.$.myMap
+</code></pre>
+<p>and this is typically shortened as follows:</p>
+<pre><code> var $$ = this.$.sharing.$
  $$.myMap.set('x', $$.myMap.get('y') + 1)</code></pre>
 </div>
 
@@ -195,7 +199,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line198">line 198</a>
+        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line199">line 199</a>
     </li></ul></dd>
     
 
@@ -332,7 +336,7 @@ previous ones.</p>
 
             <td class="description last"><p>A fully qualified name for the source of this
 Shared Map, i.e., scoped
- with the owner's CA name, like <code>caOwner-caLocalName-mapLocalName</code>.</p></td>
+with the owner's CA name, like <code>caOwner-caLocalName-mapLocalName</code>.</p></td>
         </tr>
 
     
@@ -366,7 +370,7 @@ Shared Map, i.e., scoped
             
 
             <td class="description last"><p>If <code>options.isAggregate</code> is <code>true</code>
- create an <code>AggregateMap</code>.</p></td>
+create an <code>AggregateMap</code>.</p></td>
         </tr>
 
     
@@ -407,7 +411,7 @@ Shared Map, i.e., scoped
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line78">line 78</a>
+        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line79">line 79</a>
     </li></ul></dd>
     
 
@@ -417,6 +421,8 @@ Shared Map, i.e., scoped
 
     
 </dl>
+
+
 
 
 
@@ -545,7 +551,7 @@ Shared Map, i.e., scoped
             
 
             <td class="description last"><p>A relative name for this map that will be scoped by
- this CA's name.</p></td>
+this CA's name.</p></td>
         </tr>
 
     
@@ -578,8 +584,9 @@ Shared Map, i.e., scoped
 
             
 
-            <td class="description last"><p>Placeholder for future map
-customization.</p></td>
+            <td class="description last"><p>With field <code>initialValue</code>, an optional
+initial value for the map. Note that this value is ignored if the map
+was already initialized.</p></td>
         </tr>
 
     
@@ -620,7 +627,7 @@ customization.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line50">line 50</a>
+        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line51">line 51</a>
     </li></ul></dd>
     
 
@@ -630,6 +637,8 @@ customization.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -831,7 +840,7 @@ i.e., <code>this.$.log</code>, to warn of ignored updates.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line141">line 141</a>
+        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line142">line 142</a>
     </li></ul></dd>
     
 
@@ -841,6 +850,8 @@ i.e., <code>this.$.log</code>, to warn of ignored updates.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -979,7 +990,7 @@ i.e., <code>this.$.log</code>, to warn of ignored updates.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line93">line 93</a>
+        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line94">line 94</a>
     </li></ul></dd>
     
 
@@ -989,6 +1000,8 @@ i.e., <code>this.$.log</code>, to warn of ignored updates.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -1116,7 +1129,7 @@ i.e., <code>this.$.log</code>, to warn of ignored updates.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line177">line 177</a>
+        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line178">line 178</a>
     </li></ul></dd>
     
 
@@ -1126,6 +1139,8 @@ i.e., <code>this.$.log</code>, to warn of ignored updates.</p></td>
 
     
 </dl>
+
+
 
 
 
@@ -1181,8 +1196,7 @@ i.e., <code>this.$.log</code>, to warn of ignored updates.</p></td>
 
 <div class="description">
     <p>Returns an incremental update or a full dump of the Shared Map.</p>
-<p>The type of <code>mapUpdateType</code> is <code>{version: number, remove : Array&lt;string&gt;,
-                                 add : Array&lt;string|Object&gt;}</code>
+<p>The type of <code>mapUpdateType</code> is <code>{version: number, remove : Array&lt;string&gt;, add : Array&lt;string|Object&gt;}</code>
 where <code>add</code> just flattens key/value pairs in a single array.</p>
 <p>Multiple incremental updates can be provided in an array of
 <code>mapUpdateType</code> objects.</p>
@@ -1323,7 +1337,7 @@ where <code>add</code> just flattens key/value pairs in a single array.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line118">line 118</a>
+        <a href="proxy_sharing.js.html">proxy_sharing.js</a>, <a href="proxy_sharing.js.html#line119">line 119</a>
     </li></ul></dd>
     
 
@@ -1333,6 +1347,8 @@ where <code>add</code> just flattens key/value pairs in a single array.</p>
 
     
 </dl>
+
+
 
 
 
@@ -1399,7 +1415,7 @@ or a list with incremental updates (empty if up to date).</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 29 2018 21:39:36 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Dec 07 2019 23:28:32 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

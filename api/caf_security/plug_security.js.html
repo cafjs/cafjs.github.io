@@ -81,7 +81,6 @@ var genPlug = caf_comp.gen_plug;
 var json_rpc = require('caf_transport').json_rpc;
 var tokens = require('./tokens');
 var secUtils = require('./utils');
-var cli = require('caf_cli');
 
 var MIN_DURATION_SEC = 0.01; // Safety margin before token expires
 
@@ -195,6 +194,7 @@ exports.newInstance = function($, spec, cb) {
         var verifyConstraints = function(from, token) {
             try {
                 var ca = json_rpc.splitName(from);
+                assert.ok(ca.length === 2, 'Invalid name');
                 var target = tokens.newPayload(appPublisher, appLocalName,
                                                ca[0], ca[1], MIN_DURATION_SEC);
                 return tokens.lessOrEqual(target, token);
@@ -242,8 +242,13 @@ exports.newInstance = function($, spec, cb) {
                 return err;
             };
 
+            var isNobodyUser = function() {
+                return (json_rpc.DEFAULT_FROM === from) ||
+                    tokens.validExtendedNobody(from);
+            };
+
             if (typeof from === 'string') {
-                if (allowNobodyUser &amp;&amp; (json_rpc.DEFAULT_FROM === from)) {
+                if (allowNobodyUser &amp;&amp; isNobodyUser()) {
                     // bypass authentication
                     cb0(null);
                 } else if (typeof tokenStr === 'string') {
@@ -288,8 +293,8 @@ exports.newInstance = function($, spec, cb) {
         that.__ca_blockCreate__ = function(from, to) {
             if (from !== to) {
                 // only the owner can create a CA.
-                $._.$.log &amp;&amp; $._.$.log.warn('Blocking create of ' + to +
-                                            ' by ' + from);
+                $._.$.log &amp;&amp; $._.$.log.trace('Blocking create of ' + to +
+                                             ' by ' + from);
                 return true;
             } else {
                 return false;
@@ -315,7 +320,7 @@ exports.newInstance = function($, spec, cb) {
                     }
                 };
                 secUtils.accountsSession(accounts, spec.env.accountsURL,
-                                         closeF, cb1);
+                                         constraints['caOwner'], closeF, cb1);
             } catch (err) {
                 cb0(err);
             }
@@ -379,44 +384,79 @@ exports.newInstance = function($, spec, cb) {
             }
         };
 
+        var callCrossApp = async function(fqn, method, args, cb0) {
+            try {
+                var res = await $._.$.crossapp.call(fqn, json_rpc.DEFAULT_FROM,
+                                                    method, args);
+                if (res[0]) {
+                    // system error defaults to `Internal Error`
+                    res[0].quotaExceeded = !(res[0].isSystemError);
+                    cb0(res[0]);
+                } else {
+                    cb0(null, res[1]);
+                }
+            } catch (err) {
+                cb0(err); //bad inputs, programming error
+            }
+        };
+
+        var toFQN = function(owner) {
+            return json_rpc.joinNameArray([
+                spec.env.quotaApp,
+                json_rpc.joinName(owner, json_rpc.DEFAULT_QUOTA_ID)
+            ], json_rpc.APP_SEPARATOR);
+        };
+
         /**
          * Registers a new CA with the *Quota* service.
          *
          * @param {string} tokenStr An encoded token. This token was originally
          * used to create the CA.
-         * @param {cbType=} cb0 An optional callback to return an error.
+         * @param {cbType} cb0 A callback to return an error, or extra CA info
+         * (second argument).  If the error is not a system error, i.e., we
+         * accessed the quota service and there was no balance, the error field
+         * `quotaExceeded` is set to `true`.
          *
          * @memberof! module:caf_security/plug_security#
-         * @alias __ca_quotaNewCA__
+         * @alias __ca_quotaRenew__
          */
-        that.__ca_quotaNewCA__ = function(tokenStr, cb0) {
-            cb0 = cb0 || function(err) {
-                if (err) {
-                    $._.$.log &amp;&amp;
-                        $._.$.log.debug(myUtils.errToPrettyStr(err));
+        that.__ca_quotaRenew__ = function(tokenStr, cb0) {
+            if (spec.env.quotaApp) {
+                var token = that.__ca_verifyToken__(tokenStr);
+                if (token) {
+                    var fqn = toFQN(token.caOwner);
+                    callCrossApp(fqn, 'registerCA', [tokenStr], cb0);
+                } else {
+                    cb0(new Error('Invalid token'));
                 }
-            };
-
-            if (spec.env.quotaURL &amp;&amp; spec.env.quotaCA) {
-                var specQuota = {
-                    log: function(x) { $._.$.log &amp;&amp; $._.$.log.debug(x); },
-                    from: json_rpc.DEFAULT_FROM, // `nobody` user
-                    disableBackchannel: true
-                };
-                var s = new cli.Session(spec.env.quotaURL, spec.env.quotaCA,
-                                        specQuota);
-                s.onopen = function() {
-                    s.newCA(tokenStr, function(err) {
-                        s.close(err);
-                    });
-                };
-
-                s.onclose = function(err) {
-                    cb0(err);
-                };
             } else {
-                $._.$.log &amp;&amp; $._.$.log.trace('Ignoring quota: new CA');
-                cb0(null);
+                cb0(null, 'Skip quota renew');
+            }
+        };
+
+        /**
+         * Checks the quota of a CA with the *Quota* service.
+         *
+         * @param {string} caId A target CA identifier, e.g., `foo-ca1`.
+         * @param {cbType} cb0 A callback to return an error, or extra CA info
+         * (second argument).  If the error is not a system error, i.e., we
+         * accessed the quota service and there was no balance, the error field
+         * `quotaExceeded` is set to `true`.
+         *
+         * @memberof! module:caf_security/plug_security#
+         * @alias __ca_quotaCheck__
+         */
+        that.__ca_quotaCheck__ = function(caId, cb0) {
+            if (spec.env.quotaApp) {
+                var splitName = json_rpc.splitName(caId);
+                if (splitName.length !== 2) {
+                    var fqn = toFQN(splitName[0]);
+                    callCrossApp(fqn, 'checkCA', [caId], cb0);
+                } else {
+                    cb0(new Error('Invalid CA identifier'));
+                }
+            } else {
+                cb0(null, 'Skip quota check');
             }
         };
 
@@ -441,7 +481,7 @@ exports.newInstance = function($, spec, cb) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 29 2018 21:39:35 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Dec 07 2019 23:28:31 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
