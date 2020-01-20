@@ -40,7 +40,7 @@
         
             <div class="description"><p>Creates timed bundles of commands.</p>
 <p>An example:</p>
-<pre><code>   var bundle = newInstance({foo: ['name', 'val'], bar: ['myArg']}, 2000)
+<pre><code>   var bundle = create({foo: ['name', 'val'], bar: ['myArg']}, 2000)
    bundle.foo(100, ['joe', 34]).bar(250, [43]).bar(100, [98]);
    bundle.__iot_freeze__((new Date()).getTime() + 1000)
 </code></pre>
@@ -303,6 +303,219 @@ it arrives to the target before that time.</p>
 
     
         <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="create"><span class="type-signature"></span>create<span class="signature">(methods<span class="signature-attributes">opt</span>, margin<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="global.html#bundleObjectType">bundleObjectType</a>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Constructor.</p>
+<p>Create timed bundle of commands.</p>
+<p>The type <code>bundleDescriptionType</code> is:</p>
+<pre><code>    Object&lt;string, Array.&lt;string&gt;&gt;
+</code></pre>
+<p>where the key is the name of the command, and the value an array of strings
+with the argument names of this command.</p>
+<p>The command should be a method described in the <code>iot_methods.js</code> file.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>methods</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#bundleDescriptionType">bundleDescriptionType</a></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Optional object with method
+names and arguments.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>margin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>A safety time margin in msec added to the starting
+time to allow bundle propagation. It defaults to <code>exports.MARGIN_IN_MSEC</code></p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="bundles.js.html">bundles.js</a>, <a href="bundles.js.html#line143">line 143</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A new bundle with no commands.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#bundleObjectType">bundleObjectType</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
 
         
             
@@ -1110,219 +1323,6 @@ as above.</li>
     
 
     
-    <h4 class="name" id="newInstance"><span class="type-signature"></span>newInstance<span class="signature">(methods<span class="signature-attributes">opt</span>, margin<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="global.html#bundleObjectType">bundleObjectType</a>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Constructor.</p>
-<p>Create timed bundle of commands.</p>
-<p>The type <code>bundleDescriptionType</code> is:</p>
-<pre><code>    Object&lt;string, Array.&lt;string&gt;&gt;
-</code></pre>
-<p>where the key is the name of the command, and the value an array of strings
-with the argument names of this command.</p>
-<p>The command should be a method described in the <code>iot_methods.js</code> file.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>methods</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#bundleDescriptionType">bundleDescriptionType</a></span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Optional object with method
-names and arguments.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>margin</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>A safety time margin in msec added to the starting
-time to allow bundle propagation. It defaults to <code>exports.MARGIN_IN_MSEC</code></p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bundles.js.html">bundles.js</a>, <a href="bundles.js.html#line143">line 143</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>A new bundle with no commands.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="global.html#bundleObjectType">bundleObjectType</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
     <h4 class="name" id="toObject"><span class="type-signature"></span>toObject<span class="signature">(bundle)</span><span class="type-signature"> &rarr; {<a href="global.html#bundleType">bundleType</a>}</span></h4>
     
 
@@ -1503,7 +1503,7 @@ time to allow bundle propagation. It defaults to <code>exports.MARGIN_IN_MSEC</c
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Jan 20 2020 11:32:37 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Jan 20 2020 12:27:48 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
