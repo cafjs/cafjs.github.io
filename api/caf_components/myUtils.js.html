@@ -49,12 +49,12 @@
  * @module caf_components/myUtils
  *
  */
-var async = require('async');
-var assert = require('assert');
-var crypto = require('crypto');
-var util = require('util');
+const async = require('async');
+const assert = require('assert');
+const crypto = require('crypto');
+const util = require('util');
 
-var mixin =
+const mixin =
 /**
  * Merges properties defined in a source map into a destination object.
  *
@@ -81,7 +81,7 @@ exports.mixin = function(dest, source, keepOld) {
     return dest;
 };
 
-var clone =
+const clone =
 /**
  * Clones arrays or objects.
  *
@@ -100,7 +100,7 @@ exports.clone = function(obj) {
     }
 };
 
-var deepClone =
+const deepClone =
 /**
  * Deep clones nested arrays and objects (e.g., JSON like collections)
  *
@@ -136,13 +136,13 @@ exports.deepClone = function(obj, filter) {
     return result;
 };
 
-var superior =
+const superior =
 /**
  * Captures in a closure a method of the parent class before we override it.
  *
  * For example:
  *
- *     var supHello = myUtils.superior(that, 'hello');
+ *     const supHello = myUtils.superior(that, 'hello');
  *     that.hello = function() {
  *        supHello(); // calls original 'hello'
  *        // do something else
@@ -159,9 +159,9 @@ var superior =
  *
  */
 exports.superior = function(target, methodName) {
-    var method = target[methodName];
+    const method = target[methodName];
+    const wrappedMethod = wrapAsyncFunction(method, target);
     return function() {
-        var wrappedMethod = wrapAsyncFunction(method, target);
         return wrappedMethod.apply(target, arguments);
     };
 };
@@ -172,10 +172,10 @@ exports.superior = function(target, methodName) {
  *
  * For example:
  *
- *     var supHello = myUtils.superiorPromisify(that, 'hello');
+ *     const supHello = myUtils.superiorPromisify(that, 'hello');
  *     that.hello = async function() {
  *        try {
- *           var data = await supHello(); // calls original 'hello'
+ *           const data = await supHello(); // calls original 'hello'
  *        // do something else
  *        } catch (err) {
  *           ...
@@ -233,7 +233,7 @@ exports.retryWithDelay = function(f, nTimes, delay, cb) {
     f = wrapAsyncFunction(f);
     async.retry(nTimes,
                 function(cb0) {
-                    var cb1 = function (err, res) {
+                    const cb1 = function (err, res) {
                         if (err &amp;&amp; (nTimes > 1)) {
                             setTimeout(function() { cb0(err, res); },
                                        delay);
@@ -247,7 +247,7 @@ exports.retryWithDelay = function(f, nTimes, delay, cb) {
                 });
 };
 
-var errToStr =
+const errToStr =
 /**
  * Stringifies an error object for logging or network transmission.
  *
@@ -259,7 +259,7 @@ var errToStr =
  */
 exports.errToStr = function(err) {
     if (err &amp;&amp; (typeof err === 'object')) {
-        var obj = {};
+        const obj = {};
         Object.getOwnPropertyNames(err)
             .forEach(function(key) { obj[key] = err[key]; });
         return JSON.stringify(obj, null, 2);
@@ -282,7 +282,7 @@ exports.errToStr = function(err) {
  */
 exports.errToPrettyStr= function(err) {
     try {
-        var result = errToStr(err);
+        let result = errToStr(err);
         if (typeof result === 'string') {
             result = result.replace(/\\n/g, '\n');
         }
@@ -318,8 +318,8 @@ exports.uniqueId = function() {
  */
 exports.hashCode = function(st) {
     var result = 5381;
-    for (var i =0; i&lt; st.length; i++) {
-        var ch = st.charCodeAt(i);
+    for (let i =0; i&lt; st.length; i++) {
+        const ch = st.charCodeAt(i);
         result = (result *33 + ch) &amp; 0xffffffff;
     }
     return result>>>0;
@@ -335,7 +335,7 @@ exports.hashCode = function(st) {
  * @alias onlyFun
  */
 exports.onlyFun = function(obj) {
-    var result = {};
+    const result = {};
     Object.keys(obj).forEach(function(key) {
         if (typeof obj[key] === 'function') {
             result[key] = obj[key];
@@ -344,7 +344,7 @@ exports.onlyFun = function(obj) {
     return result;
 };
 
-var callJustOnce =
+const callJustOnce =
 /**
  * Ensures that `cb` is only called once. If not, and optional `errF` callback
  *  is called.
@@ -387,9 +387,9 @@ exports.deepEqual = function(x, y) {
     }
 };
 
-var IDENT_F = function(x) { return x;};
+const IDENT_F = function(x) { return x;};
 
-var promiseToCallback =
+const promiseToCallback =
 /**
  * Maps a promise to a callback.
  *
@@ -421,7 +421,7 @@ exports.promiseToCallback = function(promise, cb, wrapException, wrapAppError) {
         wrapException = wrapException || IDENT_F;
         wrapAppError = wrapAppError || IDENT_F;
         if (Promise.resolve(promise) !== promise) {
-            var err = new Error('Returning an object that is not a promise.' +
+            const err = new Error('Returning an object that is not a promise.' +
                                 ' Is your function async?');
             err['obj'] = promise;
             cb(wrapException(err));
@@ -431,12 +431,12 @@ exports.promiseToCallback = function(promise, cb, wrapException, wrapAppError) {
                     if (value.length &lt;= 2) {
                         cb(wrapAppError(value[0]), value[1]);
                     } else {
-                        err = new Error('Promise array length > 2');
+                        const err = new Error('Promise array length > 2');
                         err['obj'] = value;
                         cb(wrapException(err));
                     }
                 } else {
-                    err = new Error('Promise value not an array');
+                    const err = new Error('Promise value not an array');
                     err['obj'] = value;
                     cb(wrapException(err));
                 }
@@ -447,7 +447,7 @@ exports.promiseToCallback = function(promise, cb, wrapException, wrapAppError) {
     }
 };
 
-var wrapAsyncFunction =
+const wrapAsyncFunction =
 /**
  * Wraps an asynchronous function.
  *
@@ -482,18 +482,14 @@ exports.wrapAsyncFunction = function(f, target) {
         throw new Error('Object to wrap is not a function');
     } else {
         return function() {
-            var args = Array.prototype.slice.call(arguments);
+            const args = Array.prototype.slice.call(arguments);
             if ((args.length === 0) ||
                 (typeof args[args.length -1] !== 'function')) {
                 throw new Error('No callback');
             } else {
-                var cb = args[args.length -1];
-                var promise = f.apply(target || f, args);
-                promiseToCallback(promise, cb, function(err) {
-                    if (err) {
-                        throw err;
-                    }
-                });
+                const cb = args[args.length -1];
+                const promise = f.apply(target || f, args);
+                promiseToCallback(promise, cb, err => {if (err) {throw err;}});
             }
         };
     }
@@ -517,9 +513,9 @@ exports.wrapWithTimeout = function(f, timeout) {
         return f;
     } else {
         return function(cb) {
-            var cbOnce = callJustOnce(null, cb);
-            var t = setTimeout(function () {
-                var err = new Error('Timeout!');
+            const cbOnce = callJustOnce(null, cb);
+            const t = setTimeout(function () {
+                const err = new Error('Timeout!');
                 err['timeout'] = true;
                 cbOnce(err);
             }, timeout);
@@ -555,6 +551,20 @@ exports.extractData = function(tuple) {
         return tuple[1];
     }
 };
+
+/**
+ * Deletes all the enumerable properties of an object
+ *
+ * @param {Object} obj An object to cleanup.
+ *
+ * @memberof! module:caf_components/myUtils
+ * @alias deleteProps
+ */
+exports.deleteProps = function(obj) {
+    if (obj &amp;&amp; (typeof obj === 'object')) {
+        Object.keys(obj).forEach((key) => delete obj[key]);
+    }
+};
 </code></pre>
         </article>
     </section>
@@ -571,7 +581,7 @@ exports.extractData = function(tuple) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Dec 25 2019 12:22:10 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Jan 20 2020 11:32:35 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

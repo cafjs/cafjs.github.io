@@ -52,36 +52,43 @@ limitations under the License.
  * @augments external:caf_components/gen_plug_ca
  */
 // @ts-ignore: augments not attached to a class
-var assert = require('assert');
-var caf_comp = require('caf_components');
-var myUtils = caf_comp.myUtils;
-var genPlugCA = caf_comp.gen_plug_ca;
-var json_rpc = require('caf_transport').json_rpc;
+const assert = require('assert');
+const caf_comp = require('caf_components');
+const myUtils = caf_comp.myUtils;
+const genPlugCA = caf_comp.gen_plug_ca;
+const json_rpc = require('caf_transport').json_rpc;
 
 exports.newInstance = async function($, spec) {
     try {
-        var handleMethod = null;
 
-        var that = genPlugCA.constructor($, spec);
+        const that = genPlugCA.create($, spec);
+
+        /*
+         * The contents of this variable are always checkpointed before
+         * any state externalization (see `gen_transactional`).
+         */
+        that.state = {};
 
         // transactional ops
-        var target = {
+        const target = {
             async callImpl(id, fqn, from, method, args, tokenStr) {
                 try {
-                    var data = await $._.$.crossapp.call(fqn, from, method,
-                                                         args, tokenStr);
-                    if (handleMethod !== null) {
+                    const data = await $._.$.crossapp.call(fqn, from, method,
+                                                           args, tokenStr);
+                    if (that.state.handleMethod) {
                         /* Response processed in a separate transaction, i.e.,
                          using a fresh message */
-                        var m = json_rpc.systemRequest($.ca.__ca_getName__(),
-                                                       handleMethod, id, data);
+                        const m = json_rpc.systemRequest(
+                            $.ca.__ca_getName__(), that.state.handleMethod,
+                            id, data
+                        );
                         $.ca.__ca_process__(m, function(err) {
                             err &amp;&amp; $.ca.$.log &amp;&amp;
                                 $.ca.$.log.error('Got handler exception ' +
                                                  myUtils.errToPrettyStr(err));
                         });
                     } else {
-                        var logMsg = 'Ignoring reply ' + JSON.stringify(data);
+                        const logMsg = 'Ignoring reply ' + JSON.stringify(data);
                         $.ca.$.log &amp;&amp; $.ca.$.log.trace(logMsg);
                     }
                     return [];
@@ -93,19 +100,19 @@ exports.newInstance = async function($, spec) {
                 }
             },
             async setHandleReplyMethodImpl(methodName) {
-                handleMethod = methodName;
+                that.state.handleMethod = methodName;
                 return [];
             }
         };
 
         that.__ca_setLogActionsTarget__(target);
 
-        var checkArgs = function(fqn, from, method, args, tokenStr) {
-            var c = json_rpc.splitName(fqn, json_rpc.APP_SEPARATOR);
+        const checkArgs = function(fqn, from, method, args, tokenStr) {
+            const c = json_rpc.splitName(fqn, json_rpc.APP_SEPARATOR);
             assert.equal(c.length, 2, 'Invalid fqn');
-            var app = json_rpc.splitName(c[0]);
+            const app = json_rpc.splitName(c[0]);
             assert.equal(app.length, 2, 'Invalid fqn/app');
-            var ca = json_rpc.splitName(c[1]);
+            const ca = json_rpc.splitName(c[1]);
             assert.equal(ca.length, 2, 'Invalid fqn/ca');
             from &amp;&amp; assert.equal(json_rpc.splitName(from).length, 2,
                                  'Invalid from');
@@ -117,8 +124,8 @@ exports.newInstance = async function($, spec) {
 
         that.call = function(fqn, from, method, args, tokenStr) {
             checkArgs(fqn, from, method, args, tokenStr);
-            var id = myUtils.uniqueId();
-            var allArgs = [id, fqn, from, method, args, tokenStr];
+            const id = myUtils.uniqueId();
+            const allArgs = [id, fqn, from, method, args, tokenStr];
             that.__ca_lazyApply__('callImpl', allArgs);
             return id;
         };
@@ -130,32 +137,6 @@ exports.newInstance = async function($, spec) {
         that.dirtyCall = function(fqn, from, method, args, tokenStr) {
             checkArgs(fqn, from, method, args, tokenStr);
             return $._.$.crossapp.call(fqn, from, method, args, tokenStr);
-        };
-
-        var super__ca_resume__ =
-                myUtils.superiorPromisify(that, '__ca_resume__');
-        that.__ca_resume__ = async function(cp) {
-            try {
-                if (cp) { // backwards compatible...
-                    handleMethod = cp.handleMethod;
-                    await super__ca_resume__(cp);
-                }
-                return [];
-            } catch (err) {
-                return [err];
-            }
-        };
-
-        var super__ca_prepare__ =
-                myUtils.superiorPromisify(that, '__ca_prepare__');
-        that.__ca_prepare__ = async function() {
-            try {
-                var data = await super__ca_prepare__();
-                data.handleMethod = handleMethod;
-                return [null, data];
-            } catch (err) {
-                return [err];
-            }
         };
 
         return [null, that];
@@ -179,7 +160,7 @@ exports.newInstance = async function($, spec) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Dec 25 2019 12:22:11 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Jan 20 2020 11:32:36 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -66,19 +66,19 @@ limitations under the License.
  * @augments external:caf_components/gen_plug
  */
 // @ts-ignore: augments not attached to a class
-var assert = require('assert');
-var os = require('os');
-var ifaces = os.networkInterfaces();
-var caf_comp = require('caf_components');
-var genPlug = caf_comp.gen_plug;
+const assert = require('assert');
+const os = require('os');
+const ifaces = os.networkInterfaces();
+const caf_comp = require('caf_components');
+const genPlug = caf_comp.gen_plug;
 
-var BYPASS_DEFAULT = 'default';
-var BYPASS_PORT = -1;
+const BYPASS_DEFAULT = 'default';
+const BYPASS_PORT = -1;
 
-var getIPAddress = function() {
+const getIPAddress = function() {
     var result = null;
     Object.keys(ifaces).some(function(x) {
-        var oneInterface = ifaces[x];
+        const oneInterface = ifaces[x];
         return oneInterface.some(function(ip) {
             if ((ip.family === 'IPv4') &amp;&amp; (!ip.internal)) {
                 result = ip.address;
@@ -91,7 +91,7 @@ var getIPAddress = function() {
     return result;
 };
 
-exports.newInstance = function($, spec, cb) {
+exports.newInstance = async function($, spec) {
     try {
         assert.equal(typeof spec.env.port, 'number',
                      "'spec.env.port' is not a number");
@@ -104,16 +104,16 @@ exports.newInstance = function($, spec, cb) {
         assert.equal(typeof spec.env.host, 'string',
                      "'spec.env.host' is not a string");
 
-        var host = (spec.env.host === 'localhost') &amp;&amp; (
-            (spec.env.paas === 'kubernetes') ?
-                getIPAddress() :
-                spec.env.host
-        );
+        const host = ((spec.env.host === 'localhost') &amp;&amp;
+                (spec.env.paas === 'kubernetes')) ?
+            getIPAddress() :
+            spec.env.host;
+
         if (!host) {
             throw new Error('Cannot find IP address for container');
         }
 
-        var that = genPlug.constructor($, spec);
+        const that = genPlug.create($, spec);
 
         $._.$.log &amp;&amp; $._.$.log.debug('New PaaS plug');
 
@@ -197,26 +197,25 @@ exports.newInstance = function($, spec, cb) {
          *                        ]}
          *
          */
-        var getCFServiceConfig = function(typePrefix, name) {
-            let vcapServices;
-            vcapServices = typeof process.env.VCAP_SERVICES === 'string' ?
+        const getCFServiceConfig = function(typePrefix, name) {
+            const vcapServices = typeof process.env.VCAP_SERVICES === 'string' ?
                 JSON.parse(process.env.VCAP_SERVICES) :
                 {};
-            var matchType = new RegExp('^' + typePrefix);
-            for (var type in vcapServices) {
+            const matchType = new RegExp('^' + typePrefix);
+            for (const type in vcapServices) {
                 if (matchType.test(type)) {
-                    var svcDef = vcapServices[type];
+                    const svcDef = vcapServices[type];
                     if (Array.isArray(svcDef)) {
                         if (name) {
-                            for (var svc in svcDef) {
-                                var val = svcDef[svc];
+                            for (const svc in svcDef) {
+                                const val = svcDef[svc];
                                 if ((typeof val === 'object') &amp;&amp;
                                     (val.name === name)) {
                                     return val.credentials;
                                 }
                             }
                         } else {
-                            var service = svcDef[0];
+                            const service = svcDef[0];
                             if (typeof service === 'object') {
                                 return service.credentials;
                             }
@@ -240,9 +239,9 @@ exports.newInstance = function($, spec, cb) {
          * @alias getServiceConfig
          */
         that.getServiceConfig = function(typePrefix, name) {
-            var filterDefaults = function(x) {
+            const filterDefaults = function(x) {
                 if (x &amp;&amp; typeof(x) === 'object') {
-                    var result = {};
+                    const result = {};
                     Object.keys(x).forEach(function(key) {
                         if ((x[key] !== BYPASS_DEFAULT) &amp;&amp;
                             (x[key] !== BYPASS_PORT)) {
@@ -255,13 +254,13 @@ exports.newInstance = function($, spec, cb) {
                 }
             };
 
-            var result = spec.env[typePrefix] || null;
+            let result = spec.env[typePrefix] || null;
             if (spec.env.paas === 'cloudfoundry') {
                 result = getCFServiceConfig(typePrefix, name);
             }
             if (spec.env.paas === 'kubernetes') {
                 // TODO: link to kubernetes service discovery
-                var msg = 'Ignoring service configuration under Kubernetes';
+                const msg = 'Ignoring service configuration under Kubernetes';
                 $._.$.log &amp;&amp; $._.$.log.warn(msg);
                 result = null;
             }
@@ -272,9 +271,9 @@ exports.newInstance = function($, spec, cb) {
             return filterDefaults(result);
         };
 
-        cb(null, that);
+        return [null, that];
     } catch (err) {
-        cb(err);
+        return [err];
     }
 };
 </code></pre>
@@ -293,7 +292,7 @@ exports.newInstance = function($, spec, cb) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Dec 25 2019 12:22:13 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Jan 20 2020 11:32:38 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -53,19 +53,19 @@ limitations under the License.
  * @augments external:caf_components/gen_plug_ca
  */
 // @ts-ignore: augments not attached to a class
-var caf_comp = require('caf_components');
-var myUtils = caf_comp.myUtils;
-var genPlugCA = caf_comp.gen_plug_ca;
-var async = caf_comp.async;
-var json_rpc = require('caf_transport').json_rpc;
+const caf_comp = require('caf_components');
+const myUtils = caf_comp.myUtils;
+const genPlugCA = caf_comp.gen_plug_ca;
+const async = caf_comp.async;
+const json_rpc = require('caf_transport').json_rpc;
 
-exports.newInstance = function($, spec, cb) {
+exports.newInstance = async function($, spec) {
     try {
         //{name{string} : &lt;SharedMap>}
-        var maps = {};
+        const maps = {};
 
         // {alias: &lt;RefSharedMap>}, writable by app code, untrusted!
-        var refMaps = {};
+        const refMaps = {};
 
         //{alias : {name: string, isWritable: boolean, options: options}
         var mapsInfo = {};
@@ -73,17 +73,17 @@ exports.newInstance = function($, spec, cb) {
         //{alias: &lt;SharedMapUpdate>}
         var mapsUpdates = {};
 
-        var that = genPlugCA.constructor($, spec);
+        const that = genPlugCA.create($, spec);
 
-        var mapIndex = function(alias, name) {
+        const mapIndex = function(alias, name) {
             return alias + '#' + name;
         };
 
 
         // transactional ops
-        var target = {
+        const target = {
             addMapImpl: function(isWritable, alias, name, options, cb0) {
-                var cb1 = function(err, map) {
+                const cb1 = function(err, map) {
                     if (err) {
                         cb0(err);
                     } else {
@@ -110,12 +110,12 @@ exports.newInstance = function($, spec, cb) {
                 }
             },
             deleteMapImpl: function(alias, cb0) {
-                var name = mapsInfo[alias].name;
-                var isWritable = mapsInfo[alias].isWritable;
-                var options = mapsInfo[alias].options;
+                const name = mapsInfo[alias].name;
+                const isWritable = mapsInfo[alias].isWritable;
+                const options = mapsInfo[alias].options;
                 delete mapsInfo[alias];
                 delete refMaps[alias];
-                var map = name &amp;&amp; maps[mapIndex(alias, name)];
+                const map = name &amp;&amp; maps[mapIndex(alias, name)];
                 if (map) {
                     delete maps[mapIndex(alias, name)];
                     if (isWritable) {
@@ -135,9 +135,9 @@ exports.newInstance = function($, spec, cb) {
         that.__ca_setLogActionsTarget__(target);
 
         that.addMap = function(isWritable, alias, name, options) {
-            var args = Array.prototype.slice.apply(arguments);
+            const args = Array.prototype.slice.apply(arguments);
             if (isWritable &amp;&amp; options &amp;&amp; options.isAggregate) {
-                let err = new Error('Aggregates cannot be writable');
+                const err = new Error('Aggregates cannot be writable');
                 err['isWritable'] = isWritable;
                 err['alias'] = alias;
                 err['name'] = name;
@@ -145,7 +145,7 @@ exports.newInstance = function($, spec, cb) {
                 throw err;
             }
             if (!isWritable &amp;&amp; options &amp;&amp; options.initialValue) {
-                let err = new Error('Read-only map with initial value');
+                const err = new Error('Read-only map with initial value');
                 err['isWritable'] = isWritable;
                 err['alias'] = alias;
                 err['name'] = name;
@@ -157,16 +157,16 @@ exports.newInstance = function($, spec, cb) {
 
         // eslint-disable-next-line
         that.deleteMap = function(alias) {
-            var args = Array.prototype.slice.apply(arguments);
+            const args = Array.prototype.slice.apply(arguments);
             that.__ca_lazyApply__('deleteMapImpl', args);
         };
 
         that.toFullName = function(name) {
             try {
-                var split = json_rpc.splitName(name);
+                const split = json_rpc.splitName(name);
                 if ((name.indexOf($.ca.__ca_getName__()) !== 0) ||
                     (split.length !== 3)) {
-                    var err = new Error('Invalid name');
+                    const err = new Error('Invalid name');
                     err.name = name;
                     throw err;
                 }
@@ -184,23 +184,23 @@ exports.newInstance = function($, spec, cb) {
             return refMaps;
         };
 
-        var isValidUpdate = function(alias) {
-            var value = mapsInfo[alias];
+        const isValidUpdate = function(alias) {
+            const value = mapsInfo[alias];
             return (value &amp;&amp; value.isWritable &amp;&amp;
                     (value.name.indexOf($.ca.__ca_getName__()) === 0));
         };
 
         // Framework methods
-        var applyUpdates = function (cb0) {
+        const applyUpdates = function (cb0) {
             async.each(Object.keys(mapsUpdates),
                        function(alias, cb1) {
-                           var value = mapsUpdates[alias];
-                           var info = mapsInfo[alias];
+                           const value = mapsUpdates[alias];
+                           const info = mapsInfo[alias];
                            if (isValidUpdate(alias) &amp;&amp; info &amp;&amp;
                                info.isWritable) {
                                $._.$.sharing.updatePrimary(info, value, cb1);
                            } else {
-                               var err = new Error('Invalid update');
+                               const err = new Error('Invalid update');
                                err['alias'] = alias;
                                err['update'] = value;
                                err['info'] = info;
@@ -209,7 +209,7 @@ exports.newInstance = function($, spec, cb) {
                        }, cb0);
         };
 
-        var super__ca_resume__ = myUtils.superior(that, '__ca_resume__');
+        const super__ca_resume__ = myUtils.superior(that, '__ca_resume__');
         that.__ca_resume__ = function(cp, cb0) {
             mapsInfo = cp.mapsInfo;
             mapsUpdates = cp.mapsUpdates || {};
@@ -217,7 +217,7 @@ exports.newInstance = function($, spec, cb) {
                 function(cb1) {
                     // recreate maps
                     async.each(Object.keys(mapsInfo), function(alias, cb2) {
-                        var value = mapsInfo[alias];
+                        const value = mapsInfo[alias];
                         target.addMapImpl(value.isWritable, alias, value.name,
                                           value.options, cb2);
                     }, cb1);
@@ -233,13 +233,13 @@ exports.newInstance = function($, spec, cb) {
             ], cb0);
         };
 
-        var super__ca_begin__ = myUtils.superior(that, '__ca_begin__');
+        const super__ca_begin__ = myUtils.superior(that, '__ca_begin__');
         that.__ca_begin__ = function(msg, cb0) {
 
             Object.keys(refMaps).forEach(function(x) { delete refMaps[x];});
             mapsUpdates = {};
 
-            var simpleMapInfo = Object.keys(mapsInfo).filter(function(alias) {
+            const simpleMapInfo = Object.keys(mapsInfo).filter(function(alias) {
                 return !(mapsInfo[alias].options &amp;&amp;
                          mapsInfo[alias].options.isAggregate);
             });
@@ -248,12 +248,12 @@ exports.newInstance = function($, spec, cb) {
                     .ref(!mapsInfo[alias].isWritable);
             });
 
-            var aggregateInfo = Object.keys(mapsInfo).filter(function(alias) {
+            const aggregateInfo = Object.keys(mapsInfo).filter(function(alias) {
                 return (mapsInfo[alias].options &amp;&amp;
                         mapsInfo[alias].options.isAggregate);
             });
             async.each(aggregateInfo, function(alias, cb1) {
-                var agg = maps[mapIndex(alias, mapsInfo[alias].name)];
+                const agg = maps[mapIndex(alias, mapsInfo[alias].name)];
                 agg.assemble(function(err, snapshot) {
                     if (err) {
                         cb1(err);
@@ -272,12 +272,12 @@ exports.newInstance = function($, spec, cb) {
         };
 
 
-        var super__ca_prepare__ = myUtils.superior(that, '__ca_prepare__');
+        const super__ca_prepare__ = myUtils.superior(that, '__ca_prepare__');
         that.__ca_prepare__ = function(cb0) {
-            var computeUpdates = function() {
-                var result = {};
+            const computeUpdates = function() {
+                const result = {};
                 Object.keys(mapsInfo).forEach(function(alias) {
-                    var info = mapsInfo[alias];
+                    const info = mapsInfo[alias];
                     if (info.isWritable) {
                         if (refMaps[alias] &amp;&amp; refMaps[alias].hasChanged()) {
                             result[alias] = refMaps[alias].prepare();
@@ -299,7 +299,7 @@ exports.newInstance = function($, spec, cb) {
             });
         };
 
-        var super__ca_commit__ = myUtils.superior(that, '__ca_commit__');
+        const super__ca_commit__ = myUtils.superior(that, '__ca_commit__');
         that.__ca_commit__ = function(cb0) {
             super__ca_commit__(function(err) {
                 if (err) {
@@ -310,7 +310,7 @@ exports.newInstance = function($, spec, cb) {
             });
         };
 
-        var super__ca_shutdown__ = myUtils.superior(that, '__ca_shutdown__');
+        const super__ca_shutdown__ = myUtils.superior(that, '__ca_shutdown__');
         that.__ca_shutdown__ = function(data, cb0) {
             if (that.__ca_isShutdown__) {
                 cb0(null);
@@ -329,9 +329,9 @@ exports.newInstance = function($, spec, cb) {
             }
         };
 
-        cb(null, that);
+        return [null, that];
     } catch (err) {
-        cb(err);
+        return [err];
     }
 };
 </code></pre>
@@ -350,7 +350,7 @@ exports.newInstance = function($, spec, cb) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Dec 25 2019 12:22:17 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Jan 20 2020 11:32:43 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

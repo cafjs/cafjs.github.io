@@ -72,12 +72,12 @@
  */
 // @ts-ignore: augments not attached to a class
 
-var assert = require('assert');
-var genComponent = require('./gen_component');
-var async = require('async');
-var myUtils = require('./myUtils');
-var containerUtils = require('./containerUtils');
-var naming = require('./naming');
+const assert = require('assert');
+const genComponent = require('./gen_component');
+const async = require('async');
+const myUtils = require('./myUtils');
+const containerUtils = require('./containerUtils');
+const naming = require('./naming');
 
 /**
  * Helper constructor method for a dynamic container component.
@@ -90,17 +90,17 @@ var naming = require('./naming');
  *
  * @throws {Error} If inputs are invalid.
  */
-exports.constructor = function($, spec) {
+exports.create = function($, spec) {
 
-    var that = genComponent.constructor($, spec);
+    const that = genComponent.create($, spec);
 
     assert.equal(typeof(spec.env.maxRetries), 'number',
                  "'spec.env.maxRetries' is not a number");
     assert.equal(typeof(spec.env.retryDelay), 'number',
                  "'spec.env.retryDelay' is not a number");
 
-    var cntUtils = containerUtils.utils(that, spec.env.maxRetries,
-                                        spec.env.retryDelay);
+    const cntUtils = containerUtils.utils(that, spec.env.maxRetries,
+                                          spec.env.retryDelay);
 
     /**
      * Run-time type information.
@@ -136,7 +136,7 @@ exports.constructor = function($, spec) {
      *
      * @type {Object.&lt;string, specType>}
      */
-    var childrenSpecObj = {};
+    const childrenSpecObj = {};
 
     /**
      *  Returns the spec for a created child.
@@ -161,9 +161,9 @@ exports.constructor = function($, spec) {
      *  child.
      *
      */
-    var createChild = function(data, childSpec, cb) {
+    const createChild = function(data, childSpec, cb) {
         childrenSpecObj[childSpec.name] = childSpec;
-        var cb0 = function(err, resp) {
+        const cb0 = function(err, resp) {
             if (err &amp;&amp; childSpec.env.__ca_temporary__) {
                 delete childrenSpecObj[childSpec.name];
             }
@@ -177,14 +177,14 @@ exports.constructor = function($, spec) {
      * the child name, and pick one of the queues to allow for some concurrency.
      *
      */
-    var NUMBER_OF_QUEUES = 47;
+    const NUMBER_OF_QUEUES = 47;
 
-    var queues = [];
-    for (var i =0; i &lt; NUMBER_OF_QUEUES; i++) {
+    const queues = [];
+    for (let i =0; i &lt; NUMBER_OF_QUEUES; i++) {
         queues[i] = async
             .queue(function(req, cb) {
-                var data = req.data;
-                var childSpec = req.childSpec;
+                const data = req.data;
+                const childSpec = req.childSpec;
                 if (that.$[childSpec.name]) {
                     // @ts-ignore: return data in 'async' callback
                     cb(null, that.$[childSpec.name]);
@@ -212,7 +212,7 @@ exports.constructor = function($, spec) {
      * @alias __ca_instanceChild__
      */
     that.__ca_instanceChild__ = function(data, childSpec, cb) {
-        var index = myUtils.hashCode(childSpec.name)%NUMBER_OF_QUEUES;
+        const index = myUtils.hashCode(childSpec.name)%NUMBER_OF_QUEUES;
         queues[index].push({data: data, childSpec: childSpec}, cb);
     };
 
@@ -239,7 +239,7 @@ exports.constructor = function($, spec) {
     };
 
 
-    var known = function() {
+    const known = function() {
         return Object.keys(that.$)
             .filter(function(x) {
                 return (childrenSpecObj[x] !== undefined);
@@ -259,7 +259,7 @@ exports.constructor = function($, spec) {
         return known();
     };
 
-    var unknown = function() {
+    const unknown = function() {
         return Object.keys(that.$)
             .filter(function(x) {
                 return ((x !== naming.TOP) &amp;&amp; (x !== naming.CA) &amp;&amp;
@@ -276,7 +276,7 @@ exports.constructor = function($, spec) {
      * @param {Object} data A hint on how to perform the checkup.
      * @param {cbType} cb A callback to propagate a checkup error/success.
      */
-    var checkupChildren = function(data, cb) {
+    const checkupChildren = function(data, cb) {
         async.series([
             cntUtils.many('shutdownChild', unknown(), data),
             // childrenSpecObj type cannot be {}??
@@ -285,7 +285,7 @@ exports.constructor = function($, spec) {
         ], cb);
     };
 
-    var super__ca_checkup__ = myUtils.superior(that, '__ca_checkup__');
+    const super__ca_checkup__ = myUtils.superior(that, '__ca_checkup__');
     that.__ca_checkup__ = function(data, cb) {
         super__ca_checkup__(data, function(err) {
             if (err) {
@@ -309,7 +309,7 @@ exports.constructor = function($, spec) {
         });
     };
 
-    var super__ca_shutdown__ = myUtils.superior(that, '__ca_shutdown__');
+    const super__ca_shutdown__ = myUtils.superior(that, '__ca_shutdown__');
     that.__ca_shutdown__ = function(data, cb) {
         super__ca_shutdown__(data, function(err) {
             if (err) {
@@ -318,9 +318,9 @@ exports.constructor = function($, spec) {
                 cntUtils.many('shutdownChild', unknown().concat(known()), data)(
                     function(err) {
                         if (err) {
-                            var msgLog = 'Error in child shutdown: ' +
-                                    spec.name + ' due to ' +
-                                    myUtils.errToPrettyStr(err);
+                            const msgLog = 'Error in child shutdown: ' +
+                                      spec.name + ' due to ' +
+                                      myUtils.errToPrettyStr(err);
                             $._.$.log &amp;&amp; $._.$.log.debug(msgLog);
                         }
                         cb(err);
@@ -348,7 +348,7 @@ exports.constructor = function($, spec) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Dec 25 2019 12:22:10 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Jan 20 2020 11:32:35 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -49,7 +49,8 @@ limitations under the License.
  *
  *     {nodeId: string=, paas: string, redis: {password: string|null,
  *                                            hostname: string, port: number},
- *      coalescing: {interval: number, maxPendingUpdates: number}}
+ *      coalescing: {interval: number, maxPendingUpdates: number},
+ *      compressState: boolean}
  *
  * where:
  *
@@ -62,23 +63,26 @@ limitations under the License.
  *  * `maxPendingUpdates:` The maximum number of pending updates before
  *  we flush them in a single request.
  *  * `redis:` standard `Redis` configuration.
+ *  * `compressState`: Whether to compress checkpointed state. Typically turned
+ * off for debugging.
  *
  * @module caf_redis/gen_redis_plug
  * @augments external:caf_components/gen_plug
  *
  */
 // @ts-ignore: augments not attached to a class
-var assert = require('assert');
-var redis = require('redis');
-var caf_comp = require('caf_components');
-var async = caf_comp.async;
-var myUtils = caf_comp.myUtils;
-var genPlug = caf_comp.gen_plug;
-var genCron = caf_comp.gen_cron;
+const assert = require('assert');
+const redis = require('redis');
+const caf_comp = require('caf_components');
+const async = caf_comp.async;
+const myUtils = caf_comp.myUtils;
+const genPlug = caf_comp.gen_plug;
+const genCron = caf_comp.gen_cron;
+const utilR = require('./util_redis');
 
-var PING_RATIO = 100; //typical 10msec * 100 = 1sec between redis pings
+const PING_RATIO = 100; //typical 10msec * 100 = 1sec between redis pings
 
-exports.constructor = function($, spec) {
+exports.create = function($, spec) {
 
     if ($._.$.log &amp;&amp; $._.$.log.isActive('TRACE')) {
         redis.debug_mode = true;
@@ -89,12 +93,14 @@ exports.constructor = function($, spec) {
                  "'spec.env.coalescing.maxPendingUpdates' is not a number");
     assert.equal(typeof(spec.env.coalescing.interval), 'number',
                  "'spec.env.coalescing.interval' is not a number");
+    assert.equal(typeof(spec.env.compressState), 'boolean',
+                 "'spec.env.compressState' is not a boolean");
 
-    var maxPendingUpdates = spec.env.coalescing.maxPendingUpdates;
+    const maxPendingUpdates = spec.env.coalescing.maxPendingUpdates;
 
     /* config type is {password: &lt;null| string>, hostname: &lt;string>,
      port: &lt;integer>}.*/
-    var config = spec.env.redis;
+    const config = spec.env.redis;
     assert.ok((typeof(config.password) === 'string') ||
               (config.password === null),
               "'config.password' not null or string");
@@ -103,14 +109,14 @@ exports.constructor = function($, spec) {
     assert.equal(typeof(config.port), 'number',
                  "'config.port' not a number");
 
-    var cronSpec = {
+    const cronSpec = {
         name: spec.name + '_cron__',
         module: 'gen_cron', // module ignored
         env: {interval: spec.env.coalescing.interval}
     };
-    var updateCron = genCron.constructor(null, cronSpec);
+    const updateCron = genCron.create(null, cronSpec);
 
-    var that = genPlug.constructor($, spec);
+    const that = genPlug.create($, spec);
 
     /**
      * Run-time type information.
@@ -152,25 +158,27 @@ exports.constructor = function($, spec) {
      */
     that.__ca_doLuaOp__ = function(op, ids, argsList, cb) {
         if (that.__ca_isShutdown__) {
-            var err = new Error('Shutdown redis plug cannot process LUA op');
+            const err = new Error('Shutdown redis plug cannot process LUA op');
             err['op'] = op;
             err['ids'] = ids;
             err['argsList'] = argsList;
             cb(err);
         } else {
-            var cb0 = function(err, data) {
+            const cb0 = function(err, data) {
+                let argsStr;
+                argsStr = argsList.map(x => utilR.decompressJSON(x).toString());
                 if (err) {
-                    var newErr = new Error('Error in LUA operation');
+                    const newErr = new Error('Error in LUA operation');
                     newErr['err'] = err;
                     newErr['op'] = op;
                     newErr['ids'] = ids;
-                    newErr['argsList'] = argsList;
+                    newErr['argsList'] = argsStr;
                     cb(newErr);
                 } else {
                     cb(err, data);
                 }
             };
-            var args = [luaHashes[op], ids.length]
+            const args = [luaHashes[op], ids.length]
                 .concat(ids)
                 .concat(argsList);
             clientRedis.send_command('evalsha', args, cb0);
@@ -197,14 +205,14 @@ exports.constructor = function($, spec) {
         }
     };
 
-    var registerScripts = function(all, cb) {
-        var seriesF = {};
-        var newF = function(script) {
+    const registerScripts = function(all, cb) {
+        const seriesF = {};
+        const newF = function(script) {
             return function(cb1) {
                 clientRedis.send_command('SCRIPT', ['LOAD', script], cb1);
             };
         };
-        for (var scriptName in all) {
+        for (let scriptName in all) {
             seriesF[scriptName] = newF(all[scriptName]);
         }
         /* We could have used 'parallel', but 'series' is easier to debug, and
@@ -249,11 +257,11 @@ exports.constructor = function($, spec) {
         }
         if ((pendingUpdates.length >= maxPendingUpdates) ||
             (force &amp;&amp; pendingUpdates.length > 0)) {
-            var pending = myUtils.clone(pendingUpdates);
-            var commands = pending.map(function(x) { return x.command;});
-            var callbacks = pending.map(function(x) { return x.callback;});
+            const pending = myUtils.clone(pendingUpdates);
+            const commands = pending.map(function(x) { return x.command;});
+            const callbacks = pending.map(function(x) { return x.callback;});
             pendingUpdates = [];
-            var cb = function(err, response) {
+            const cb = function(err, response) {
                 if (err) {
                     $._.$.log &amp;&amp;
                         $._.$.log.debug('__ca_flush__:Retrying separate' +
@@ -296,13 +304,14 @@ exports.constructor = function($, spec) {
      */
     that.__ca_initClient__ = function(optConfig, lua, flushF, cb) {
         if (clientRedis) {
-            var err = new Error('Redis: initializating twice');
+            const err = new Error('Redis: initializating twice');
             err['optConfig'] = optConfig;
             cb(err);
         } else {
-            var newConfig = myUtils.cloneAndMixin(config, optConfig || {});
+            const newConfig = myUtils.cloneAndMixin(config, optConfig || {});
             clientRedis = redis.createClient(newConfig.port,
-                                             newConfig.hostname);
+                                             newConfig.hostname,
+                                             {detect_buffers: true});
             clientRedis
                 .on('error', function(err) {
                     $._.$.log &amp;&amp;
@@ -356,7 +365,7 @@ exports.constructor = function($, spec) {
         }
     };
 
-    var super__ca_shutdown__ = myUtils.superior(that, '__ca_shutdown__');
+    const super__ca_shutdown__ = myUtils.superior(that, '__ca_shutdown__');
     that.__ca_shutdown__ = function(data, cb) {
         if (that.__ca_isShutdown__) {
             // do nothing, return OK
@@ -404,13 +413,13 @@ exports.constructor = function($, spec) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_redis_gen_redis_plug.html">caf_redis/gen_redis_plug</a></li><li><a href="module-caf_redis_main.html">caf_redis/main</a></li><li><a href="module-caf_redis_plug_checkpoint.html">caf_redis/plug_checkpoint</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li></ul><h3><a href="global.html">Global</a></h3>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_redis_gen_redis_plug.html">caf_redis/gen_redis_plug</a></li><li><a href="module-caf_redis_main.html">caf_redis/main</a></li><li><a href="module-caf_redis_plug_checkpoint.html">caf_redis/plug_checkpoint</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li></ul><h3>Namespaces</h3><ul><li><a href="caf_redis_util_builder.html">caf_redis/util_builder</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Dec 25 2019 12:22:15 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Jan 20 2020 11:32:40 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -43,7 +43,7 @@ limitations under the License.
 */
 
 'use strict';
-var crypto = require('crypto');
+const crypto = require('crypto');
 
 /**
  * Basic authorization rules.
@@ -51,20 +51,20 @@ var crypto = require('crypto');
  *
  * @module caf_security/rules
  */
-var SIMPLE_RULE_TYPE = exports.SIMPLE_RULE_TYPE = 'caf.simpleRule';
-var HASH_ALGO = 'md5';
-var WILDCARD = '*';
+const SIMPLE_RULE_TYPE = exports.SIMPLE_RULE_TYPE = 'caf.simpleRule';
+const HASH_ALGO = 'md5';
+const WILDCARD = '*';
 
 /* The owner of this CA.*/
-var SELF = exports.SELF = '!SELF';
+const SELF = exports.SELF = '!SELF';
 
 /* The local name of this CA.*/
-var CA_LOCAL = exports.CA_LOCAL = '!CA_LOCAL';
+const CA_LOCAL = exports.CA_LOCAL = '!CA_LOCAL';
 
 
-var checkSimpleRule = function(rule) {
+const checkSimpleRule = function(rule) {
     if (rule.type !== SIMPLE_RULE_TYPE) {
-        var err = new Error('Invalid rule');
+        const err = new Error('Invalid rule');
         err['rule'] = rule;
         throw err;
     }
@@ -85,7 +85,7 @@ var checkSimpleRule = function(rule) {
 exports.computeRuleId = function(rule) {
     checkSimpleRule(rule);
 
-    var tokenId = function(t) {
+    const tokenId = function(t) {
         t = t || {};
         return [
             t.appPublisher || null, t.appLocalName || null,
@@ -93,11 +93,11 @@ exports.computeRuleId = function(rule) {
         ];
     };
 
-    var p = [
+    const p = [
         SIMPLE_RULE_TYPE, tokenId(/** @type simpleRuleType*/ (rule).ac),
         rule.methods || null
     ];
-    var pStr = JSON.stringify(p);
+    const pStr = JSON.stringify(p);
     return crypto.createHash(HASH_ALGO).update(pStr).digest('hex');
 };
 
@@ -116,30 +116,29 @@ exports.computeRuleId = function(rule) {
  */
 exports.newRuleEngine = function(meOwner, meLocalName, rules) {
     /** @type ruleEngineType*/
-    var rE = {};
-    var addOneRule = function(rule) {
+    const rE = {};
+    const addOneRule = function(rule) {
 
         checkSimpleRule(rule);
-        let caOwner = rule.ac.caOwner === SELF ? meOwner : rule.ac.caOwner;
-        let caLocalName;
-        caLocalName = rule.ac.caLocalName === CA_LOCAL ?
+        const caOwner = rule.ac.caOwner === SELF ? meOwner : rule.ac.caOwner;
+        const caLocalName = rule.ac.caLocalName === CA_LOCAL ?
             meLocalName :
             rule.ac.caLocalName;
-        var p = [
+        const p = [
             caOwner || WILDCARD,
             caLocalName || WILDCARD,
             rule.methods || WILDCARD
         ];
-        var insertRule = function(ruleE, pList) {
+        const insertRule = function(ruleE, pList) {
             if (pList.length > 1) {
-                var head = pList.shift();
+                const head = pList.shift();
                 if (!ruleE[head]) {
                     ruleE[head] = {};
                 }
                 insertRule(ruleE[head], pList);
             } else {
                 // expand methods
-                var m = pList.shift();
+                const m = pList.shift();
                 if (Array.isArray(m)) {
                     m.forEach(function(x) { ruleE[x] = true;});
                 } else {
@@ -152,14 +151,14 @@ exports.newRuleEngine = function(meOwner, meLocalName, rules) {
 
     rules.forEach(function(rule) { addOneRule(rule);});
 
-    var optimize = function(rules) {
+    const optimize = function(rules) {
         if (typeof rules === 'boolean') {
             return rules;
         } else {
-            var result = {};
-            var collapse = Object.keys(rules)
+            const result = {};
+            const collapse = Object.keys(rules)
                 .some(function(x) {
-                    var value = optimize(rules[x]);
+                    const value = optimize(rules[x]);
                     if ((x === WILDCARD) &amp;&amp;
                                  ((value === null) ||
                                   (value &amp;&amp; (typeof value === 'boolean')))) {
@@ -197,12 +196,12 @@ exports.isAuthorized = function(caOwner, caLocalName, method, rE) {
 
     // breadth-first, worse case ten look-ups
     // level 1
-    var pOwner = rE[caOwner];
+    const pOwner = rE[caOwner];
     if (pOwner === null) {
         return true;
     }
 
-    var pWildcard = rE[WILDCARD];
+    const pWildcard = rE[WILDCARD];
     /*  should be removed by 'optimize'
     if (pWildcard === null) {
         return true;
@@ -210,26 +209,26 @@ exports.isAuthorized = function(caOwner, caLocalName, method, rE) {
      */
 
     // level 2
-    var pOwnerWildcard = pOwner &amp;&amp; pOwner[WILDCARD];
+    const pOwnerWildcard = pOwner &amp;&amp; pOwner[WILDCARD];
     /* should be removed by 'optimize'
     if (pOwnerWildcard === null) {
         return true;
     }
      */
 
-    var pOwnerLocal = pOwner &amp;&amp; pOwner[caLocalName];
+    const pOwnerLocal = pOwner &amp;&amp; pOwner[caLocalName];
     if (pOwnerLocal === null) {
         return true;
     }
 
-    var pWildcardWildcard = pWildcard &amp;&amp; pWildcard[WILDCARD];
+    const pWildcardWildcard = pWildcard &amp;&amp; pWildcard[WILDCARD];
     /* should be removed by 'optimize'
     if (pWildcardWildcard === null) {
         return true;
     }
      */
 
-    var pWildcardLocal = pWildcard &amp;&amp; pWildcard[caLocalName];
+    const pWildcardLocal = pWildcard &amp;&amp; pWildcard[caLocalName];
     if (pWildcardLocal === null) {
         return true;
     }
@@ -271,12 +270,12 @@ exports.isAuthorized = function(caOwner, caLocalName, method, rE) {
  */
 exports.newSimpleRule = function(methods, caOwner, caLocalName) {
     /** @type simpleRuleType*/
-    var result = {type: SIMPLE_RULE_TYPE};
+    const result = {type: SIMPLE_RULE_TYPE};
     if (methods) {
         result.methods = methods;
     }
     /** @type CANameType*/
-    var ac = {};
+    const ac = {};
     if (caOwner) {
         ac.caOwner = caOwner;
     }
@@ -302,7 +301,7 @@ exports.newSimpleRule = function(methods, caOwner, caLocalName) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Dec 25 2019 12:22:15 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Jan 20 2020 11:32:41 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

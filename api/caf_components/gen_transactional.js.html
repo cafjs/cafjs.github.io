@@ -84,13 +84,17 @@
  * Methods `__ca_begin__`,  `__ca_prepare__`, `__ca_commit__` and `__ca_abort__`
  * implement the two-phase commit protocol.
  *
+ * Variable `that.state` is a JSON-serializable representation of this plugin
+ * state. The contents of this variable are always checkpointed before
+ * any state externalization, unless it is `null`.
+ *
  * @module caf_components/gen_transactional
  * @augments module:caf_components/gen_container
  */
 // @ts-ignore: augments not attached to a class
-var genContainer = require('./gen_container');
-var myUtils = require('./myUtils');
-var async = require('async');
+const genContainer = require('./gen_container');
+const myUtils = require('./myUtils');
+const async = require('async');
 
 /**
  * Helper constructor method for a transactional component.
@@ -103,24 +107,43 @@ var async = require('async');
  *
  * @throws {Error} If inputs are invalid.
  */
-exports.constructor = function($, spec) {
+exports.create = function($, spec) {
 
-    var that = genContainer.constructor($, spec);
+    const that = genContainer.create($, spec);
+
+    /**
+     * JSON-serializable representation of a plugin private state.
+     *
+     * The contents of this variable are always checkpointed before
+     * any state externalization, unless it is `null`.
+     *
+     *
+     * @type {Object}
+     * @memberof! module:caf_ca/gen_transactional#
+     * @alias state
+     */
+    that.state = null;
+
+    /*
+     * Backup state to provide transactional behavior for the handler.
+     *
+     */
+    var stateBackup = '';
 
     var logActions = [];
 
     var logActionsTarget = that;
 
-    var childrenSpec = that.__ca_getChildrenSpec__();
+    const childrenSpec = that.__ca_getChildrenSpec__();
 
     var transChildrenObj = null;
 
-    var applyFun = function(method, args) {
+    const applyFun = function(method, args) {
         return function(x, cb0) {
             try {
-                var argsAll = (args || []).concat([cb0]);
-                var wrappedMethod = myUtils.wrapAsyncFunction(x.obj[method],
-                                                              x.obj);
+                const argsAll = (args || []).concat([cb0]);
+                const wrappedMethod = myUtils.wrapAsyncFunction(x.obj[method],
+                                                                x.obj);
                 wrappedMethod.apply(x.obj, argsAll);
             } catch (err) {
                 cb0(err);
@@ -129,9 +152,9 @@ exports.constructor = function($, spec) {
     };
 
 
-    var childrenSeriesTransF = function(f, cb) {
-        var findTrans = function() {
-            var result = {};
+    const childrenSeriesTransF = function(f, cb) {
+        const findTrans = function() {
+            const result = {};
             childrenSpec.forEach(function(x) {
                 if (!that.$[x.name]) {
                     throw new Error('Missing child ' + x.name);
@@ -142,12 +165,12 @@ exports.constructor = function($, spec) {
             return result;
         };
         transChildrenObj = findTrans(); // throw if any child missing
-        var transSpec = childrenSpec.filter(function(x) {
+        const transSpec = childrenSpec.filter(function(x) {
             return transChildrenObj[x.name];
         });
-        var transComp = [];
+        const transComp = [];
         transSpec.forEach(function(x) {
-            var obj = that.$[x.name];
+            const obj = that.$[x.name];
             if (obj) {
                 transComp.push({obj: obj, name: x.name});
             }
@@ -156,7 +179,7 @@ exports.constructor = function($, spec) {
             if (err) {
                 cb(err, res);
             } else {
-                var result = {};
+                const result = {};
                 transComp.forEach(function(x, i) {
                     result[x.name] = res[i];
                 });
@@ -175,12 +198,12 @@ exports.constructor = function($, spec) {
      */
     that.__ca_isTransactional__ = true;
 
-    var replayLog = function(cb) {
+    const replayLog = function(cb) {
         async.eachSeries(logActions, function(x, cb0) {
             try {
-                var args = (x.args &amp;&amp; x.args.slice(0) || []);
+                const args = (x.args &amp;&amp; x.args.slice(0) || []);
                 args.push(cb0);
-                var wrappedMethod = myUtils.wrapAsyncFunction(
+                const wrappedMethod = myUtils.wrapAsyncFunction(
                     logActionsTarget[x.method],
                     logActionsTarget
                 );
@@ -268,17 +291,18 @@ exports.constructor = function($, spec) {
      */
     that.__ca_resume__ = function(cp, cb) {
         try {
-            var cb0 = function(err, data) {
+            const cb0 = function(err, data) {
                 if (err) {
                     cb(err, data);
                 } else {
+                    that.state = cp.state || that.state;
                     logActions = cp.logActions || [];
                     replayLog(cb);
                 }
             };
             childrenSeriesTransF(function(x, cb1) {
                 try {
-                    var wrappedMethod = myUtils.wrapAsyncFunction(
+                    const wrappedMethod = myUtils.wrapAsyncFunction(
                         x.obj.__ca_resume__,
                         x.obj
                     );
@@ -308,6 +332,9 @@ exports.constructor = function($, spec) {
      */
     that.__ca_begin__ = function(msg, cb) {
         try {
+            if (that.state) {
+                stateBackup = JSON.stringify(that.state);
+            }
             logActions = [];
             childrenSeriesTransF(applyFun('__ca_begin__', [msg]), cb);
         } catch (err) {
@@ -337,11 +364,16 @@ exports.constructor = function($, spec) {
      */
     that.__ca_prepare__ = function(cb) {
         try {
-            var cb0 = function(err, data) {
+            const cb0 = function(err, data) {
                 if (err) {
                     cb(err, data);
                 } else {
-                    data.logActions = logActions;
+                    if (that.state) {
+                        data.state = that.state;
+                    }
+                    if (logActions.length > 0) {
+                        data.logActions = logActions;
+                    }
                     cb(err, data);
                 }
             };
@@ -368,7 +400,7 @@ exports.constructor = function($, spec) {
      */
     that.__ca_commit__ = function(cb) {
         try {
-            var cb0 = function(err, data) {
+            const cb0 = function(err, data) {
                 if (err) {
                     cb(err, data);
                 } else {
@@ -402,6 +434,9 @@ exports.constructor = function($, spec) {
      */
     that.__ca_abort__ = function(cb) {
         try {
+            if (that.state &amp;&amp; stateBackup) {
+                that.state = JSON.parse(stateBackup);
+            }
             logActions = [];
             childrenSeriesTransF(applyFun('__ca_abort__', []), cb);
         } catch (err) {
@@ -427,7 +462,7 @@ exports.constructor = function($, spec) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Dec 25 2019 12:22:10 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Jan 20 2020 11:32:35 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

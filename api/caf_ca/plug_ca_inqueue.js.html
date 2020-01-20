@@ -53,13 +53,13 @@
  */
 // @ts-ignore: augments not attached to a class
 
-var domain = require('domain');
-var caf_comp = require('caf_components');
-var async = caf_comp.async;
-var myUtils = caf_comp.myUtils;
-var genPlugCA = caf_comp.gen_plug_ca;
-var json_rpc = require('caf_transport').json_rpc;
-var ERROR_CODES = json_rpc.ERROR_CODES;
+const domain = require('domain');
+const caf_comp = require('caf_components');
+const async = caf_comp.async;
+const myUtils = caf_comp.myUtils;
+const genPlugCA = caf_comp.gen_plug_ca;
+const json_rpc = require('caf_transport').json_rpc;
+const ERROR_CODES = json_rpc.ERROR_CODES;
 
 /*
  * The behavior of this queue is quite different from a traditional message
@@ -80,9 +80,9 @@ var ERROR_CODES = json_rpc.ERROR_CODES;
  *  basic abstraction.
 */
 
-exports.newInstance = function($, spec, cb) {
+exports.newInstance = async function($, spec) {
     try {
-        var that = genPlugCA.constructor($, spec);
+        const that = genPlugCA.create($, spec);
         var queue = null;
 
         var messagesProcessed = 0;
@@ -132,9 +132,9 @@ exports.newInstance = function($, spec, cb) {
         /*
          *  See that.process()
          */
-        var handleError = function(error, cb) {
-            var doShutdown = function() {
-                var cb0 = function(err0) {
+        const handleError = function(error, cb) {
+            const doShutdown = function() {
+                const cb0 = function(err0) {
                     if (err0) {
                         $._.$.log &amp;&amp;
                             $._.$.log.fatal('handleError: Critical shutdown' +
@@ -149,8 +149,8 @@ exports.newInstance = function($, spec, cb) {
                 $.ca.__ca_shutdown__(null, cb0);
             };
 
-            var doAbort = function() {
-                var cb0 = function(err0) {
+            const doAbort = function() {
+                const cb0 = function(err0) {
                     if (err0) {
                         // abort failed, try something more drastic
                         $._.$.log &amp;&amp;
@@ -198,8 +198,7 @@ exports.newInstance = function($, spec, cb) {
                 }
             } else {
                 // This is a bug, all the errors should be App or System by now.
-                let msg;
-                msg = error &amp;&amp;
+                const msg = error &amp;&amp;
                     typeof error === 'object' ?
                     myUtils.errToPrettyStr(error) :
                     JSON.stringify(error);
@@ -260,7 +259,7 @@ exports.newInstance = function($, spec, cb) {
          * @alias process
          */
         that.process = function(msg, cb) {
-            var cb0 = function(err, data) {
+            const cb0 = function(err, data) {
                 if (err) {
                     handleError(err, cb);
                 } else {
@@ -270,7 +269,7 @@ exports.newInstance = function($, spec, cb) {
             queue.push(msg, cb0);
         };
 
-        var super__ca_shutdown__ = myUtils.superior(that, '__ca_shutdown__');
+        const super__ca_shutdown__ = myUtils.superior(that, '__ca_shutdown__');
         that.__ca_shutdown__ = function(data, cb0) {
             if (queue.length() !== 0) {
                 $._.$.log &amp;&amp;
@@ -280,11 +279,11 @@ exports.newInstance = function($, spec, cb) {
             super__ca_shutdown__(data, cb0);
         };
 
-        var worker = function(msg, cbTop) {
+        const worker = function(msg, cbTop) {
             /**
              * Wraps error into a SystemError
              */
-            var toSysErrorF = function(msg, code, errorStr, cb) {
+            const toSysErrorF = function(msg, code, errorStr, cb) {
                 return function(error, data) {
                     if (error) {
                         error = json_rpc.newSysError(msg, code, errorStr,
@@ -297,13 +296,13 @@ exports.newInstance = function($, spec, cb) {
             var callResponse;
             var snapshot;
             // domains may trigger multiple error calls
-            var cb = myUtils.callJustOnce(function(err, data) {
+            const cb = myUtils.callJustOnce(function(err, data) {
                 $._.$.log &amp;&amp; $._.$.log.debug('Ignore Call >1: err:' +
                                              myUtils.errToPrettyStr(err) +
                                              ' data:' + JSON.stringify(data));
             }, cbTop);
-            var dom = domain.create();
-            var wrapException = function(err) {
+            const dom = domain.create();
+            const wrapException = function(err) {
                 $._.$.log &amp;&amp; $._.$.log.debug('Got exception in queue' +
                                              err.toString());
                 return json_rpc.newSysError(msg, ERROR_CODES.exceptionThrown,
@@ -311,11 +310,11 @@ exports.newInstance = function($, spec, cb) {
             };
             dom.on('error', function(err) {cb(wrapException(err));});
 
-            var wrapAppError = function(err) {
+            const wrapAppError = function(err) {
                 return (err ? json_rpc.newAppError(msg, 'AppError', err) : err);
             };
 
-            var mainF = function() {
+            const mainF = function() {
                 json_rpc.metaFreeze(msg);//to trust meta-data after user methods
                 async.series(
                     [
@@ -327,14 +326,16 @@ exports.newInstance = function($, spec, cb) {
                                                          ERROR_CODES.shutdownCA,
                                                          'CA shutdown'));
                             } else {
-                                var cb1 = toSysErrorF(msg,
-                                                      ERROR_CODES.beginFailure,
-                                                      'beginFailed', cb0);
+                                const cb1 = toSysErrorF(
+                                    msg, ERROR_CODES.beginFailure,
+                                    'beginFailed', cb0
+                                );
                                 // notAuthorized error, client should not retry
-                                var cb1Auth =
-                                    toSysErrorF(msg, ERROR_CODES.notAuthorized,
-                                                'Not Authorized', cb0);
-                                var cb2 = function(err, data) {
+                                const cb1Auth = toSysErrorF(
+                                    msg, ERROR_CODES.notAuthorized,
+                                    'Not Authorized', cb0
+                                );
+                                const cb2 = function(err, data) {
                                     if (err &amp;&amp; err.code ===
                                         ERROR_CODES.notAuthorized) {
                                         cb1Auth(err, data);
@@ -346,7 +347,7 @@ exports.newInstance = function($, spec, cb) {
                             }
                         },
                         function(cb0) {
-                            var cb1 = function(error, data) {
+                            const cb1 = function(error, data) {
                                 var reply = data;
                                 if (!error) {
                                     reply = json_rpc.isNotification(msg) ?
@@ -356,24 +357,25 @@ exports.newInstance = function($, spec, cb) {
                                 }
                                 cb0(error, reply);
                             };
-                            var logF = function(err, val) {
+                            const logF = function(err, val) {
                                 $._.$.log &amp;&amp;
                                     $._.$.log.warn('Ignoring rpc_call>1 err: ' +
                                                    myUtils.errToPrettyStr(err) +
                                                    ' data: ' + val);
                             };
-                            var cbOnce = myUtils.callJustOnce(logF, cb1);
+                            const cbOnce = myUtils.callJustOnce(logF, cb1);
                             // call method
-                            var p = json_rpc.call(msg, $.ca.$.handler, cbOnce);
+                            const p = json_rpc.call(msg, $.ca.$.handler,
+                                                    cbOnce);
                             myUtils.promiseToCallback(p, cbOnce, wrapException,
                                                       wrapAppError);
                         },
                         function(cb0) {
                             // prepare
-                            var cb1 = toSysErrorF(msg,
-                                                  ERROR_CODES.prepareFailure,
-                                                  'prepareFailed', cb0);
-                            var cb2 = function (err, data) {
+                            const cb1 = toSysErrorF(msg,
+                                                    ERROR_CODES.prepareFailure,
+                                                    'prepareFailed', cb0);
+                            const cb2 = function (err, data) {
                                 if (err) {
                                     cb1(err);
                                 } else {
@@ -389,9 +391,10 @@ exports.newInstance = function($, spec, cb) {
                         },
                         function(cb0) {
                             // update state
-                            var cb1 = toSysErrorF(msg,
-                                                  ERROR_CODES.checkpointFailure,
-                                                  'updateState', cb0);
+                            const cb1 = toSysErrorF(
+                                msg, ERROR_CODES.checkpointFailure,
+                                'updateState', cb0
+                            );
                             try {
                                 $._.$.cp.updateState($.ca.__ca_getName__(),
                                                      snapshot, cb1);
@@ -404,9 +407,9 @@ exports.newInstance = function($, spec, cb) {
                         },
                         function(cb0) {
                             // commit
-                            var cb1 = toSysErrorF(msg,
-                                                  ERROR_CODES.commitFailure,
-                                                  'commitFailure', cb0);
+                            const cb1 = toSysErrorF(msg,
+                                                    ERROR_CODES.commitFailure,
+                                                    'commitFailure', cb0);
                             $.ca.__ca_commit__(cb1);
                         }
                     ],
@@ -422,9 +425,9 @@ exports.newInstance = function($, spec, cb) {
         };
         queue = async.queue(worker, 1); // serialize
 
-        cb(null, that);
+        return [null, that];
     } catch (err) {
-        cb(err);
+        return [err];
     }
 };
 </code></pre>
@@ -443,7 +446,7 @@ exports.newInstance = function($, spec, cb) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Dec 25 2019 12:22:08 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Jan 20 2020 11:32:33 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

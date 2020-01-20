@@ -71,19 +71,20 @@
  * @augments module:caf_redis/gen_redis_plug
  */
 // @ts-ignore: augments not attached to a class
-var assert = require('assert');
-var genRedisPlug = require('./gen_redis_plug');
-var json_rpc = require('caf_transport').json_rpc;
+const assert = require('assert');
+const genRedisPlug = require('./gen_redis_plug');
+const json_rpc = require('caf_transport').json_rpc;
+const utilR = require('./util_redis');
 
-var CACHE_PREFIX = 'cache:';
+const CACHE_PREFIX = 'cache:';
 
-var BITS_PREFIX = 'bits:';
+const BITS_PREFIX = 'bits:';
 
-var MAP_PREFIX = 'map:';
+const MAP_PREFIX = 'map:';
 
-var PUBSUB_PREFIX = 'pubsub:';
+const PUBSUB_PREFIX = 'pubsub:';
 
-var luaPreamble = 'local owners = redis.call("mget", unpack(KEYS)) \
+const luaPreamble = 'local owners = redis.call("mget", unpack(KEYS)) \
 local data = {} \
 for i =1, #KEYS, 1 do \
 if owners[i] ~= ARGV[1] then \
@@ -104,7 +105,7 @@ end ';
  *
  */
 /*eslint-disable */
-var luaUpdateState = luaPreamble +
+const luaUpdateState = luaPreamble +
     'local mixed = {} \
     if (#data ~= (#ARGV -1)) then \
     return { err = "wrong number of arguments" .. (#ARGV -1) " instead of " .. #data} \
@@ -123,7 +124,7 @@ var luaUpdateState = luaPreamble +
  * KEYS is an array with all the CA ids
  * ARGV[1] is the local nodeId
  */
-var luaDeleteState = luaPreamble + 'return  redis.call("del", unpack(data))';
+const luaDeleteState = luaPreamble + 'return  redis.call("del", unpack(data))';
 
 /*
  * Bulk query of states. It returns an error (without doing any changes)
@@ -135,7 +136,7 @@ var luaDeleteState = luaPreamble + 'return  redis.call("del", unpack(data))';
  * returns an array of string representing CA states
  *
  */
-var luaGetState = luaPreamble + 'return  redis.call("mget", unpack(data))';
+const luaGetState = luaPreamble + 'return  redis.call("mget", unpack(data))';
 
 /*
  * Grabs leases for a set of CAs.
@@ -147,7 +148,7 @@ var luaGetState = luaPreamble + 'return  redis.call("mget", unpack(data))';
  * Returns an array of size #KEYS with false entries for sucessfull lease grabs
  * and a remote owner (string)  for the others.
  */
-var luaGrabLease = 'local owners = redis.call("mget", unpack(KEYS)) \
+const luaGrabLease = 'local owners = redis.call("mget", unpack(KEYS)) \
 local leases = {} \
 for i =1, #KEYS, 1 do \
 if not owners[i] then \
@@ -176,7 +177,7 @@ return leases';
  *
  *
  */
-var luaGrabNodeLease ='local owners = redis.call("mget", unpack(KEYS)) \
+const luaGrabNodeLease ='local owners = redis.call("mget", unpack(KEYS)) \
 for i =1, #KEYS, 1 do \
 if owners[i] == ARGV[1] then \
 redis.call("expire", KEYS[i], tonumber(ARGV[2])) \
@@ -204,7 +205,7 @@ return { err = "No free external nodeIds."}';
  *
  *
  */
-var luaListNodes = 'return redis.call("mget", unpack(KEYS))';
+const luaListNodes = 'return redis.call("mget", unpack(KEYS))';
 
 /*
  * List the status of all external nodeIds.
@@ -219,7 +220,7 @@ var luaListNodes = 'return redis.call("mget", unpack(KEYS))';
  *
  *
  */
-var luaListAllNodes = 'local matches = redis.call("KEYS", ARGV[2]) \
+const luaListAllNodes = 'local matches = redis.call("KEYS", ARGV[2]) \
 local nodes = {} \
 for _,key in ipairs(matches) do \
 local val = redis.call("GET", key) \
@@ -240,7 +241,7 @@ return nodes';
  *  renew.
  *
  */
-var luaRenewLeases =
+const luaRenewLeases =
     'local owners = redis.call("mget", unpack(KEYS)) \
     local gone = {} \
     for i =1, #KEYS, 1 do \
@@ -261,7 +262,7 @@ var luaRenewLeases =
  * Returns the cached values for those keys.
  *
  */
-var luaGetCache ='return  redis.call("mget", unpack(KEYS))';
+const luaGetCache ='return  redis.call("mget", unpack(KEYS))';
 
 
 /*
@@ -272,7 +273,7 @@ var luaGetCache ='return  redis.call("mget", unpack(KEYS))';
  * ARGV[2] is the timeout in seconds
  *
  */
-var luaUpdateCache = 'redis.call("set", KEYS[1], ARGV[1]) \
+const luaUpdateCache = 'redis.call("set", KEYS[1], ARGV[1]) \
 return redis.call("expire", KEYS[1], tonumber(ARGV[2]))';
 
 /*
@@ -282,7 +283,7 @@ return redis.call("expire", KEYS[1], tonumber(ARGV[2]))';
  * ARGV is an array with bit indexes to set
  *
  */
-var luaSetBits = 'for i =1, #ARGV, 1 do \
+const luaSetBits = 'for i =1, #ARGV, 1 do \
   redis.call("setbit", KEYS[1], ARGV[i], 1)  \
 end ';
 
@@ -292,7 +293,7 @@ end ';
  * KEYS is an array with the field name
  *
  */
-var luaClearBits = 'redis.call("del", KEYS[1])';
+const luaClearBits = 'redis.call("del", KEYS[1])';
 
 /*
  * Check bits in a bitfield. Return null if any not set, otherwise `true`.
@@ -301,7 +302,7 @@ var luaClearBits = 'redis.call("del", KEYS[1])';
  * ARGV is an array with bit indexes to check
  *
  */
-var luaCheckBits = 'for i =1, #ARGV, 1 do \
+const luaCheckBits = 'for i =1, #ARGV, 1 do \
   local value = redis.call("getbit", KEYS[1], ARGV[i])  \
   if (value ~= 1) then \
      return nil \
@@ -316,7 +317,7 @@ return true';
  * ARGV key value pairs
  *
  */
-var luaCreateMap =
+const luaCreateMap =
 'if redis.call("exists", KEYS[1]) == 0 then \
    redis.call("hmset", KEYS[1], unpack(ARGV)) \
  end \
@@ -327,7 +328,7 @@ var luaCreateMap =
  * KEYS map name
  *
  */
-var luaReadMap =
+const luaReadMap =
 'if redis.call("exists", KEYS[1]) == 0 then \
    return { err = "Map does not exist."} \
 else \
@@ -340,7 +341,7 @@ end';
  * KEYS map name
  *
  */
-var luaDeleteMap =
+const luaDeleteMap =
 'return redis.call("del", KEYS[1])';
 
 
@@ -361,7 +362,7 @@ var luaDeleteMap =
  * ARGV[3].. ARGV[ARGV[2] +2] deleted keys
  * ARGV[ARGV[2] +3] ... added key value pairs
  */
-var luaUpdateMap =
+const luaUpdateMap =
 'local deleteKeys = {} \
 local addedProps = {} \
 local toPublish = {} \
@@ -393,7 +394,7 @@ else \
    return redis.call("publish", KEYS[1], cjson.encode(toPublish)) \
 end';
 
-var luaAll = {
+const luaAll = {
     updateState: luaUpdateState,
     deleteState: luaDeleteState,
     getState: luaGetState,
@@ -414,7 +415,7 @@ var luaAll = {
 };
 
 
-var NODE_KEY_PREFIX = 'node:';
+const NODE_KEY_PREFIX = 'node:';
 
 exports.newInstance = function($, spec, cb) {
     try {
@@ -428,15 +429,15 @@ exports.newInstance = function($, spec, cb) {
 
         var firstTimePubSub = true;
 
-        var that = genRedisPlug.constructor($, spec);
+        const that = genRedisPlug.create($, spec);
 
-        var appName = ($._.__ca_getAppName__ &amp;&amp; $._.__ca_getAppName__()) ||
+        const appName = ($._.__ca_getAppName__ &amp;&amp; $._.__ca_getAppName__()) ||
                 spec.env.appName;
 
         assert.equal(typeof(appName), 'string',
                      "'appName' is not a string");
 
-        var getNodeId = function() {
+        const getNodeId = function() {
             return $._.$.nodes &amp;&amp; $._.$.nodes.getNodeId() ||
                 spec.env.nodeId;
         };
@@ -447,7 +448,7 @@ exports.newInstance = function($, spec, cb) {
         assert.equal(typeof(spec.env.paas), 'string',
                      "'spec.env.paas' is not a string");
 
-        var wrapAppName = function(x) {
+        const wrapAppName = function(x) {
             if (Array.isArray(x)) {
                 return x.map(wrapAppName);
             } else if (typeof x === 'string') {
@@ -457,7 +458,7 @@ exports.newInstance = function($, spec, cb) {
             }
         };
 
-        var doLua = function(op, ids, argsList, cb0) {
+        const doLua = function(op, ids, argsList, cb0) {
             that.__ca_doLuaOp__(op, ids, [getNodeId()].concat(argsList), cb0);
         };
 
@@ -465,9 +466,9 @@ exports.newInstance = function($, spec, cb) {
           * type of newStates is Array.&lt;{id:string, value:string}>
          *
          */
-        var updateStateF = function(newStates, cb0) {
-            var ids = newStates.map(function(x) { return x.id;});
-            var values = newStates.map(function(x) { return x.value;});
+        const updateStateF = function(newStates, cb0) {
+            const ids = newStates.map(x => x.id);
+            const values = newStates.map(x => x.value);
             doLua('updateState', ids, values, cb0);
         };
 
@@ -483,7 +484,11 @@ exports.newInstance = function($, spec, cb) {
          * @alias updateState
          */
         that.updateState = function(id, newValue, cb0) {
-            that.__ca_queue__(cb0, {id: wrapAppName(id), value: newValue});
+            let bufValue = Buffer.from(newValue, 'utf-8');
+            bufValue = spec.env.compressState ?
+                utilR.compressJSON(bufValue) :
+                bufValue;
+            that.__ca_queue__(cb0, {id: wrapAppName(id), value: bufValue});
             that.__ca_flush__(updateStateF, false);
         };
 
@@ -516,14 +521,18 @@ exports.newInstance = function($, spec, cb) {
          * @alias getState
          */
         that.getState = function(id, cb0) {
-            var cb1 = function(err, data) {
+            const cb1 = function(err, data) {
                 if (err) {
                     cb0(err);
                 } else {
-                    cb0(err, data[0]);
+                    let newState = data[0];
+                    newState = Buffer.isBuffer(newState) ?
+                        utilR.decompressJSON(newState).toString('utf-8') :
+                        newState;
+                    cb0(err, newState);
                 }
             };
-            doLua('getState', [wrapAppName(id)], [], cb1);
+            doLua('getState', [Buffer.from(wrapAppName(id), 'utf-8')], [], cb1);
         };
 
         /**
@@ -541,14 +550,14 @@ exports.newInstance = function($, spec, cb) {
          * @alias grabLease
          */
         that.grabLease = function(id, leaseTimeout, cb0) {
-            var cb1 = function(err, remote) {
+            const cb1 = function(err, remote) {
                 if (err) {
                     // not owned by me due to error
                     cb0(err);
                 } else {
                     if (remote &amp;&amp; (typeof remote[0] === 'string')) {
                         // not owned by me because already owned by someone else
-                        var newErr = new Error('Lease owned by someone else');
+                        const newErr = new Error('Lease owned by someone else');
                         newErr['remoteNode'] = remote[0];
                         cb0(newErr);
                     } else {
@@ -574,7 +583,7 @@ exports.newInstance = function($, spec, cb) {
          */
         that.renewLeases = function(ids, leaseTimeout, cb0) {
             if (ids.length > 8000) {
-                var err = new Error('LUA unpack limited to 8000');
+                const err = new Error('LUA unpack limited to 8000');
                 err['length'] = ids.length;
                 cb0(err);
             } else {
@@ -582,7 +591,7 @@ exports.newInstance = function($, spec, cb) {
             }
         };
 
-        var doOneOrMany = function(x, f) {
+        const doOneOrMany = function(x, f) {
             if (Array.isArray(x)) {
                 return x.map(f);
             } else {
@@ -590,15 +599,15 @@ exports.newInstance = function($, spec, cb) {
             }
         };
 
-        var addNodeKeyPrefix = function(x) {
-            var f = function(key) {
+        const addNodeKeyPrefix = function(x) {
+            const f = function(key) {
                 return NODE_KEY_PREFIX + key;
             };
             return doOneOrMany(x, f);
         };
 
-        var removeNodeKeyPrefix = function(x) {
-            var f = function(key) {
+        const removeNodeKeyPrefix = function(x) {
+            const f = function(key) {
                 if (key.indexOf(NODE_KEY_PREFIX) === 0) {
                     return key.split(NODE_KEY_PREFIX)[1];
                 } else {
@@ -618,7 +627,7 @@ exports.newInstance = function($, spec, cb) {
          * @alias getCache
          */
         that.getCache = function(key, cb0) {
-            var cb1 = function(err, data) {
+            const cb1 = function(err, data) {
                 if (err) {
                     cb0(err);
                 } else {
@@ -644,19 +653,19 @@ exports.newInstance = function($, spec, cb) {
                                 [value, timeout], cb0);
         };
 
-        var wrapMapResponse = function(cb0) {
+        const wrapMapResponse = function(cb0) {
             return function (err, value) {
                 if (err) {
                     cb0(err);
                 } else {
                     try {
-                        var result = {remove: [], add: [], version: 0};
-                        var key = null;
+                        const result = {remove: [], add: [], version: 0};
+                        let key = null;
                         value.forEach(function(x, i) {
                             if (i%2 === 0) {
                                 key = x;
                             } else {
-                                var parsedX = JSON.parse(x);
+                                const parsedX = JSON.parse(x);
                                 result.add.push(key);
                                 result.add.push(parsedX);
                             }
@@ -680,7 +689,7 @@ exports.newInstance = function($, spec, cb) {
          * @alias setBits
          */
         that.setBits = function(bitfieldName, bits, cb0) {
-            var newBitsKey = [BITS_PREFIX + wrapAppName(bitfieldName)];
+            const newBitsKey = [BITS_PREFIX + wrapAppName(bitfieldName)];
             that.__ca_doLuaOp__('setBits', newBitsKey, bits, cb0);
         };
 
@@ -694,7 +703,7 @@ exports.newInstance = function($, spec, cb) {
          * @alias clearBits
          */
         that.clearBits = function(bitfieldName, cb0) {
-            var newBitsKey = [BITS_PREFIX + wrapAppName(bitfieldName)];
+            const newBitsKey = [BITS_PREFIX + wrapAppName(bitfieldName)];
             that.__ca_doLuaOp__('clearBits', newBitsKey, [], cb0);
         };
 
@@ -710,7 +719,7 @@ exports.newInstance = function($, spec, cb) {
          * @alias checkBits
          */
         that.checkBits = function(bitfieldName, bits, cb0) {
-            var newBitsKey = [BITS_PREFIX + wrapAppName(bitfieldName)];
+            const newBitsKey = [BITS_PREFIX + wrapAppName(bitfieldName)];
             that.__ca_doLuaOp__('checkBits', newBitsKey, bits, cb0);
         };
 
@@ -727,7 +736,7 @@ exports.newInstance = function($, spec, cb) {
          * @alias createMap
          */
         that.createMap = function(mapName, initialValue, cb0) {
-            var toAdd = ['__ca_version__', '0'];
+            const toAdd = ['__ca_version__', '0'];
             if (initialValue &amp;&amp; (typeof initialValue === 'object')) {
                 Object.entries(initialValue)
                     .forEach(([k, v]) => {
@@ -793,9 +802,9 @@ exports.newInstance = function($, spec, cb) {
          * @alias updateMap
          */
         that.updateMap = function(mapName, changes, cb0) {
-            var args = [];
+            let args = [];
             args.push(JSON.stringify(changes.version));
-            var toDelete = [];
+            const toDelete = [];
             changes.remove.forEach(function(x) {
                 toDelete.push(x);
             });
@@ -809,13 +818,13 @@ exports.newInstance = function($, spec, cb) {
                                               wrapAppName(mapName)], args, cb0);
         };
 
-        var wrapMapMessage = function(cb0) {
+        const wrapMapMessage = function(cb0) {
             return function (err, value) {
                 if (err) {
                     cb0(err);
                 } else {
                     try {
-                        var result = JSON.parse(value);
+                        const result = JSON.parse(value);
                         if (!Array.isArray(result.remove)) {
                             // cjson maps [] to {}
                             result.remove = [];
@@ -824,13 +833,13 @@ exports.newInstance = function($, spec, cb) {
                             // cjson maps [] to {}
                             result.add = [];
                         }
-                        var key = null;
-                        var add = [];
+                        let key = null;
+                        const add = [];
                         result.add.forEach(function(x, i) {
                             if (i%2 === 0) {
                                 key = x;
                             } else {
-                                var parsedX = JSON.parse(x);
+                                const parsedX = JSON.parse(x);
                                 add.push(key);
                                 add.push(parsedX);
                             }
@@ -855,12 +864,12 @@ exports.newInstance = function($, spec, cb) {
          * @alias subscribeMap
          */
         that.subscribeMap = function(mapName, handler, cb0) {
-            var mapFull = MAP_PREFIX + wrapAppName(mapName);
+            const mapFull = MAP_PREFIX + wrapAppName(mapName);
             if (handlerTable === null) {
                 that.__ca_getClientRedis__()
                     .on('message', function(channel, message) {
                         if (channel.indexOf(MAP_PREFIX) === 0) {
-                            var h = handlerTable[channel];
+                            const h = handlerTable[channel];
                             if (h) {
                                 // fun (err, message)
                                 h(null, message);
@@ -887,7 +896,7 @@ exports.newInstance = function($, spec, cb) {
          * @alias unsubscribeMap
          */
         that.unsubscribeMap = function(mapName, cb0) {
-            var mapFull = MAP_PREFIX + wrapAppName(mapName);
+            const mapFull = MAP_PREFIX + wrapAppName(mapName);
             delete handlerTable[mapFull];
             that.__ca_getClientRedis__().unsubscribe(mapFull, cb0);
         };
@@ -905,8 +914,8 @@ exports.newInstance = function($, spec, cb) {
             }
         };
 
-        var initPubSub = function() {
-            var prefix = PUBSUB_PREFIX + wrapAppName('');
+        const initPubSub = function() {
+            const prefix = PUBSUB_PREFIX + wrapAppName('');
             that.__ca_getClientRedis__()
                 .on('message', function(channel, message) {
                     if (channel.indexOf(prefix) === 0) {
@@ -940,7 +949,7 @@ exports.newInstance = function($, spec, cb) {
             }
             // only one handler active for all pubsub topics (single client)
             handlerPubSub = deliverMsgF;
-            var topicFull = PUBSUB_PREFIX + wrapAppName(topic);
+            const topicFull = PUBSUB_PREFIX + wrapAppName(topic);
             that.__ca_getClientRedis__().subscribe(topicFull, cb0);
         };
 
@@ -954,7 +963,7 @@ exports.newInstance = function($, spec, cb) {
          * @alias unsubscribePubSub
          */
         that.unsubscribePubSub = function(topic, cb0) {
-            var topicFull = PUBSUB_PREFIX + wrapAppName(topic);
+            const topicFull = PUBSUB_PREFIX + wrapAppName(topic);
             that.__ca_getClientRedis__().unsubscribe(topicFull, cb0);
         };
 
@@ -969,7 +978,7 @@ exports.newInstance = function($, spec, cb) {
          * @alias publishPubSub
          */
         that.publishPubSub = function(topic, message, cb0) {
-            var topicFull = PUBSUB_PREFIX + wrapAppName(topic);
+            const topicFull = PUBSUB_PREFIX + wrapAppName(topic);
             that.__ca_getClientRedis__().publish(topicFull, message, cb0);
         };
 
@@ -987,12 +996,12 @@ exports.newInstance = function($, spec, cb) {
          * @alias renewNodeLease
          */
         that.renewNodeLease = function(privateNodeId, leaseTimeout, cb0) {
-            var cb1 = function(err, data) {
+            const cb1 = function(err, data) {
                 if (err) {
                     cb0(err);
                 } else {
                     if (Array.isArray(data) &amp;&amp; (data.length > 0)) {
-                        var error = new Error('Cannot renew node lease');
+                        const error = new Error('Cannot renew node lease');
                         error['nodeId'] = removeNodeKeyPrefix(data[0]);
                         cb0(error);
                     } else {
@@ -1023,11 +1032,11 @@ exports.newInstance = function($, spec, cb) {
         that.grabNodeLease = function(allPublicNodeIds, privateNodeId,
                                       leaseTimeout, cb0) {
             if (allPublicNodeIds.length > 8000) {
-                var err = new Error('LUA unpack limited to 8000');
+                const err = new Error('LUA unpack limited to 8000');
                 err['length'] = allPublicNodeIds.length;
                 cb0(err);
             } else {
-                var cb1 = function(err, data) {
+                const cb1 = function(err, data) {
                     if (err) {
                         cb0(err);
                     } else {
@@ -1056,12 +1065,12 @@ exports.newInstance = function($, spec, cb) {
          */
         that.listNodes = function(allPublicNodeIds, cb0) {
             if (!allPublicNodeIds) {
-                var cb1 = function(err, data) {
+                const cb1 = function(err, data) {
                     if (err) {
                         cb0(err);
                     } else {
-                        var result = {};
-                        var key = null;
+                        const result = {};
+                        let key = null;
                         data.forEach(function(x) {
                             if (key === null) {
                                 key = removeNodeKeyPrefix(x);
@@ -1078,15 +1087,15 @@ exports.newInstance = function($, spec, cb) {
                 };
                 doLua('listAllNodes', [], [NODE_KEY_PREFIX+'*'], cb1);
             } else if (allPublicNodeIds.length > 8000) {
-                var err = new Error('LUA unpack limited to 8000');
+                const err = new Error('LUA unpack limited to 8000');
                 err['length'] = allPublicNodeIds.length;
                 cb0(err);
             } else {
-                var cb2 = function(err, data) {
+                const cb2 = function(err, data) {
                     if (err) {
                         cb0(err);
                     } else {
-                        var result = {};
+                        const result = {};
                         data.forEach(function(x, i) {
                             if (x) {
                                 result[allPublicNodeIds[i]] = x;
@@ -1100,8 +1109,8 @@ exports.newInstance = function($, spec, cb) {
             }
         };
 
-        var dynamicServiceConfig = $._.$.paas &amp;&amp;
-            $._.$.paas.getServiceConfig(spec.env.paas) || null;
+        const dynamicServiceConfig = $._.$.paas &amp;&amp;
+                  $._.$.paas.getServiceConfig(spec.env.paas) || null;
         that.__ca_initClient__(dynamicServiceConfig, luaAll, updateStateF, cb);
 
     } catch (err) {
@@ -1118,13 +1127,13 @@ exports.newInstance = function($, spec, cb) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_redis_gen_redis_plug.html">caf_redis/gen_redis_plug</a></li><li><a href="module-caf_redis_main.html">caf_redis/main</a></li><li><a href="module-caf_redis_plug_checkpoint.html">caf_redis/plug_checkpoint</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li></ul><h3><a href="global.html">Global</a></h3>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_redis_gen_redis_plug.html">caf_redis/gen_redis_plug</a></li><li><a href="module-caf_redis_main.html">caf_redis/main</a></li><li><a href="module-caf_redis_plug_checkpoint.html">caf_redis/plug_checkpoint</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li></ul><h3>Namespaces</h3><ul><li><a href="caf_redis_util_builder.html">caf_redis/util_builder</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Dec 25 2019 12:22:15 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Jan 20 2020 11:32:40 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
