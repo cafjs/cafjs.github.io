@@ -66,11 +66,11 @@ limitations under the License.
  * @augments external:caf_iot/gen_plug_iot
  *
  */
-var assert = require('assert');
-var caf_iot = require('caf_iot');
-var caf_comp = caf_iot.caf_components;
-var myUtils = caf_comp.myUtils;
-var genPlugIoT = caf_iot.gen_plug_iot;
+const assert = require('assert');
+const caf_iot = require('caf_iot');
+const caf_comp = caf_iot.caf_components;
+const myUtils = caf_comp.myUtils;
+const genPlugIoT = caf_iot.gen_plug_iot;
 
 var rpio = null;
 var disableWithError = null;
@@ -82,11 +82,10 @@ try {
     rpio = require('./mock_gpio');
 }
 
-var NEVER_CALLED = -1;
+const NEVER_CALLED = -1;
 
-exports.newInstance = function($, spec, cb) {
+exports.newInstance = async function($, spec) {
     try {
-
         /* The type `pinConfig` is
          *     { &lt;pinNumber:string> : {
          *           input: boolean,
@@ -103,9 +102,9 @@ exports.newInstance = function($, spec, cb) {
          *     debounceMsec: number=
          *   }
          */
-        var pinConfig = {};
+        let pinConfig = {};
 
-        var that = genPlugIoT.create($, spec);
+        const that = genPlugIoT.create($, spec);
 
         $._.$.log &amp;&amp; $._.$.log.debug('New GPIO plug');
 
@@ -125,7 +124,7 @@ exports.newInstance = function($, spec, cb) {
             $._.$.log &amp;&amp; $._.$.log.warn('Cannot load rpio, using a MOCK!');
         }
 
-        var checkDisable = function() {
+        const checkDisable = function() {
             if (disableWithError &amp;&amp; !spec.env.allowMock) {
                 throw disableWithError;
             }
@@ -139,13 +138,13 @@ exports.newInstance = function($, spec, cb) {
         };
 
 
-        var openPin = function(pin, conf) {
-            var resistor = function(conf) {
+        const openPin = function(pin, conf) {
+            const resistor = function(conf) {
                 assert(typeof conf.pullUp, 'boolean');
                 return (conf.pullUp ? rpio.PULL_UP : rpio.PULL_DOWN);
             };
 
-            var gpioState = function(conf) {
+            const gpioState = function(conf) {
                 assert(typeof conf.high, 'boolean');
                 return (conf.high ? rpio.HIGH : rpio.LOW);
             };
@@ -167,18 +166,18 @@ exports.newInstance = function($, spec, cb) {
             }
         };
 
-        var closePin = function(pin) {
+        const closePin = function(pin) {
             pin = parseInt(pin);
             rpio.close(pin);
             unwatchPin(pin);
         };
 
-        var boolToPin = function(val) {
+        const boolToPin = function(val) {
             assert(typeof val, 'boolean');
             return (val ? rpio.HIGH : rpio.LOW);
         };
 
-        var pinToBool = function(val) {
+        const pinToBool = function(val) {
             assert(typeof val, 'number');
             if (val === rpio.HIGH) {
                 return true;
@@ -189,17 +188,17 @@ exports.newInstance = function($, spec, cb) {
             }
         };
 
-        var readPin = function(pin) {
+        const readPin = function(pin) {
             pin = parseInt(pin);
             return pinToBool(rpio.read(pin));
         };
 
-        var writePin = function(pin, value) {
+        const writePin = function(pin, value) {
             pin = parseInt(pin);
             rpio.write(pin, boolToPin(value));
         };
 
-        var unwatchPin = function(pin) {
+        const unwatchPin = function(pin) {
             pin = parseInt(pin);
             try {
                 rpio.poll(pin, null);
@@ -208,11 +207,11 @@ exports.newInstance = function($, spec, cb) {
             }
         };
 
-        var watchPin = function(pin, config) {
+        const watchPin = function(pin, config) {
             pin = parseInt(pin);
             var lastCall = NEVER_CALLED;
-            var newF = function(pinNum) {
-                var now = (new Date()).getTime();
+            const newF = function(pinNum) {
+                const now = (new Date()).getTime();
 
                 if (pin !== pinNum) {
                     throw new Error('Pin not matching:' + pin + ' vs ' +
@@ -222,7 +221,7 @@ exports.newInstance = function($, spec, cb) {
                     (typeof config.debounceMsec !== 'number') ||
                     (now - lastCall > config.debounceMsec)) {
                     lastCall = now;
-                    var args = [pin, readPin(pin)];
+                    const args = [pin, readPin(pin)];
                     $._.$.queue.process(config.methodName, args);
                 } else {
                     $._.$.log &amp;&amp; $._.$.log.trace('Debouncing input ' + pin);
@@ -249,13 +248,13 @@ exports.newInstance = function($, spec, cb) {
          */
         that.__iot_setPinConfig__ = function(newConfig) {
             checkDisable();
-            var hasWatcherChanged = function(oldW, newW) {
+            const hasWatcherChanged = function(oldW, newW) {
                 return !myUtils.deepEqual(oldW, newW);
             };
 
             // freshly exported  pins
             Object.keys(newConfig).forEach(function(x) {
-                var conf = newConfig[x];
+                const conf = newConfig[x];
                 if (!pinConfig[x] || (pinConfig[x].input !== conf.input)) {
                     openPin(x, conf);
                 }
@@ -281,9 +280,9 @@ exports.newInstance = function($, spec, cb) {
 
         that.__iot_readAll__ = function() {
             checkDisable();
-            var results = {};
+            const results = {};
             Object.keys(pinConfig).filter(function(x) {
-                var val = pinConfig[x];
+                const val = pinConfig[x];
                 return val.input;
             }).forEach(function(x) {
                 results[x] = readPin(x);
@@ -294,11 +293,11 @@ exports.newInstance = function($, spec, cb) {
         that.__iot_writeMany__ = function(newValues) {
             checkDisable();
             Object.keys(newValues).forEach(function(x) {
-                var value = pinConfig[x];
+                const value = pinConfig[x];
                 if (value &amp;&amp; !value.input) {
                     writePin(x, newValues[x]);
                 } else {
-                    var err = new Error('Cannot write to pin ' + x);
+                    const err = new Error('Cannot write to pin ' + x);
                     err.newValues = newValues;
                     throw err;
                 }
@@ -307,7 +306,7 @@ exports.newInstance = function($, spec, cb) {
 
         that.__iot_setWatcher__ = function(pin, watcherConfig) {
             if (pinConfig[pin]) {
-                var newConfig = that.__iot_getPinConfig__();
+                const newConfig = that.__iot_getPinConfig__();
                 newConfig[pin].watcher = myUtils.deepClone(watcherConfig);
                 that.__iot_setPinConfig__(newConfig);
             } else {
@@ -317,13 +316,13 @@ exports.newInstance = function($, spec, cb) {
 
         that.__iot_unsetWatcher__ = function(pin) {
             if (pinConfig[pin]) {
-                var newConfig = that.__iot_getPinConfig__();
+                const newConfig = that.__iot_getPinConfig__();
                 delete newConfig[pin].watcher;
                 that.__iot_setPinConfig__(newConfig);
             }
         };
 
-        var initF = function() {
+        const initF = function() {
             rpio.init({
                 gpiomem: spec.env.gpiomem,
                 mapping: spec.env.mapping,
@@ -341,9 +340,9 @@ exports.newInstance = function($, spec, cb) {
 
         initF();
 
-        cb(null, that);
+        return [null, that];
     } catch (err) {
-        cb(err);
+        return [err];
     }
 };
 </code></pre>
@@ -362,7 +361,7 @@ exports.newInstance = function($, spec, cb) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Jan 20 2020 16:19:28 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Feb 02 2020 11:34:58 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
