@@ -26,7 +26,7 @@
     
 
 
-    <h3>caf_cli 0.3.11</h3>
+    <h3>caf_cli 0.4.0</h3>
 
 
 
@@ -43,13 +43,13 @@
 
 
     <section>
-        <article><h1>CAF.js (Cloud Assistant Framework)</h1>
+        <article><h1>Caf.js</h1>
 <p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.</p>
 <p>See http://www.cafjs.com</p>
-<h2>CAF Client Lib for node.js</h2>
+<h2>Client Library</h2>
 <p><a href="https://travis-ci.org/cafjs/caf_cli"><img src="https://travis-ci.org/cafjs/caf_cli.svg?branch=master" alt="Build Status"></a></p>
-<p>This repository contains a client CAF library for browser (using <code>browserify</code> and native websockets), cloud, scripting, and gadget (<code>node.js</code>).</p>
-<p>The base interface is very similar to a websocket, but CAF dynamically adds remote invocation methods with local argument checking.</p>
+<p>This repository contains a <code>Caf.js</code> client library for browser (using <code>browserify</code> and native websockets), cloud, scripting, and gadget (<code>node.js</code>).</p>
+<p>The interface is similar to the websocket client API, but <code>Caf.js</code> dynamically extends it with remote methods and local argument checking.</p>
 <p>For example, with the CA:</p>
 <pre class="prettyprint source"><code>exports.methods = {
     async __ca_init__() {
@@ -69,9 +69,9 @@
 <p>and the client code:</p>
 <pre class="prettyprint source"><code>var URL = 'http://root-hello.vcap.me:3000/#from=foo-ca1&ca=foo-ca1';
 var s = new caf_cli.Session(URL);
-s.onopen = async function() {
+s.onopen = async () => {
     try {
-        var counter = await s.increment().getPromise();
+        let counter = await s.increment().getPromise();
         console.log(counter);
         counter = await s.decrement().getPromise();
         console.log('Final count:' + counter);
@@ -80,7 +80,7 @@ s.onopen = async function() {
         s.close(ex);
     }
 }
-s.onclose = function(err) {
+s.onclose = (err) => {
     if (err) {
         console.log(myUtils.errToPrettyStr(err));
         process.exit(1);
@@ -88,13 +88,13 @@ s.onclose = function(err) {
     console.log('Done OK');
 };
 </code></pre>
-<p>the methods <code>increment</code> and <code>decrement</code> magically appear in <code>s</code> after we open the session. <strong>I love javascript!</strong></p>
-<p>Remote invocations are always serialized. The session locally buffers new requests until the previous ones have been processed. Session properties can be configured in the URL, or in a separate constructor argument. See <a href="module-caf_cli_Session.html">module:caf_cli/Session</a> for details.</p>
+<p>The methods <code>increment</code> and <code>decrement</code> magically appear in <code>s</code> after we open the session. <strong>I love JavaScript!</strong></p>
+<p>Remote invocations are always serialized, i.e., the session object locally buffers new requests until the previous ones have been processed. The session properties can be configured in the URL, or in an extra constructor argument. See <a href="module-caf_cli_Session.html">module:caf_cli/Session</a> for details.</p>
 <h3>Errors</h3>
 <p>There are two types of errors:</p>
 <ul>
 <li>
-<p>Application error: propagated in the callback or exception in <code>await</code>, no attempt to recover it.</p>
+<p>Application error: propagated in the callback or exception in <code>await</code>, no attempt to recover it, your logic knows best how to handle it.</p>
 </li>
 <li>
 <p>System error: after all the attempts to recover fail, the error is propagated in the <code>onclose</code> handler. The session is no longer usable.</p>
@@ -104,11 +104,11 @@ s.onclose = function(err) {
 <p>Note that the <code>onerror</code> handler in the websocket interface is for <em>internal use</em> only. Just use <code>onclose</code>.</p>
 <h3>Multi-method</h3>
 <p>In some cases we want to execute multiple methods in a single transaction (see <a href="external-caf_ca.html">external:caf_ca</a>). If one fails, we roll back all state changes and (delayed) external interactions.</p>
-<p>This is easy in CAF.js, because methods that do not provide a callback are assumed to be multi-method calls:</p>
+<p>This is easy in <code>Caf.js</code>, because methods that do not provide a callback are assumed to be multi-method calls:</p>
 <pre class="prettyprint source"><code>...
 s.onopen = async function() {
     try {
-        var counter = await s.increment().decrement().getPromise();
+        const counter = await s.increment().decrement().getPromise();
         console.log('Final count:' + counter);
         s.close();
     } catch (err) {
@@ -118,11 +118,11 @@ s.onopen = async function() {
 ...
 </code></pre>
 <h3>Notifications</h3>
-<p>In other cases, the CA will send notifications to one (or many) client(s). See
-<a href="external-caf_session.html">external:caf_session</a>. Notifications are processed in the <code>onmessage</code> handler:</p>
+<p>The CA can also send notifications to one (or many) client(s), see
+<a href="external-caf_session.html">external:caf_session</a> for details. Notifications are processed in the <code>onmessage</code> handler:</p>
 <pre class="prettyprint source"><code>...
 s.onmessage = function(msg) {
-    var notif = caf_cli.getMethodArgs(msg)[0];
+    const notif = caf_cli.getMethodArgs(msg)[0];
     console.log('Got notification in client:' + notif);
 };
 ...
@@ -146,7 +146,7 @@ s.onmessage = function(msg) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Feb 02 2020 11:34:47 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Mar 31 2020 22:15:27 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

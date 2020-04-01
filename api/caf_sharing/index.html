@@ -26,7 +26,7 @@
     
 
 
-    <h3>caf_sharing 0.3.6</h3>
+    <h3>caf_sharing 0.4.0</h3>
 
 
 
@@ -43,15 +43,15 @@
 
 
     <section>
-        <article><h1>CAF (Cloud Assistant Framework)</h1>
+        <article><h1>Caf.js</h1>
 <p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.</p>
-<p>See http://www.cafjs.com</p>
-<h2>CAF Lib Sharing</h2>
+<p>See https://www.cafjs.com</p>
+<h2>Library for Implementing Sharing Actors</h2>
 <p><a href="https://travis-ci.org/cafjs/caf_sharing"><img src="https://travis-ci.org/cafjs/caf_sharing.svg?branch=master" alt="Build Status"></a></p>
 <p>This repository implements distributed, replicated data structures for <em>Sharing Actors</em>, a core abstraction for our CAs.</p>
 <p>In a traditional Actor model, Actor's state is private, and data sharing is implemented by exchanging messages. This simplifies concurrent programming by avoiding data races, deadlocks, and complex fault recovery.</p>
 <p>Unfortunately, when slow changing data has to be shared by many Actors, the most efficient solutions use shared memory, and that breaks the Actor model.</p>
-<p>Does it? Can we have our cake and eat it? Can we create a system that from the outside looks like a duck, walks like a duck, but it combines a shared data structure with an Actor model, in a way that we cannot tell it is not a pure Actor model?</p>
+<p>Does it? Can we create a system that from the outside looks like a duck, walks like a duck, but it combines a shared data structure with an Actor model, in a way that we cannot tell it is not a pure Actor model?</p>
 <p>In the general case we can't. The shared data structure is seen as internal state by many Actors. Changes by one of them could be visible by others in the middle of processing a message, breaking message serialization.</p>
 <p>But if we make certain assumptions we can!</p>
 <ol>
@@ -59,39 +59,39 @@
 <p><em>Single Writer</em>: one Actor <em>owns</em> the data structure, the others can only read it. Everybody sees the data structure as internal state.</p>
 </li>
 <li>
-<p><em>Readers Isolation</em>: a read-only view of the data structure can only change in between messages.</p>
+<p><em>Readers Isolation</em>: a read-only view of the data structure can only change between messages.</p>
 </li>
 <li>
 <p><em>Fairness</em>: an Actor cannot indefinitely block other local Actors from seeing new updates.</p>
 </li>
 <li>
-<p><em>Writer Atomicity</em>: changes are flushed, as an atomic unit, when the processing of a message finishes. No partial leaks allowed.</p>
+<p><em>Writer Atomicity</em>: changes are flushed, as an atomic unit, when the processing of a message finishes. No partial data leaks allowed.</p>
 </li>
 <li>
 <p><em>Consistency</em>: implements monotonic read consistency, i.e., replicas can be stale, but they never roll back to older versions.</p>
 </li>
 </ol>
-<p>And these properties are not that difficult to guarantee in CAF.js.</p>
-<p>In CAF.js a CA (<a href="external-caf_ca.html">external:caf_ca</a>) is an Actor, and an example of a shared data structure is a <em>SharedMap</em> (<a href="module-caf_sharing_SharedMap.html">module:caf_sharing/SharedMap</a>).</p>
+<p>And these properties are not that difficult to guarantee in <code>Caf.js</code>.</p>
+<p>In <code>Caf.js</code> a CA (<a href="external-caf_ca.html">external:caf_ca</a>) is an Actor, and an example of a shared data structure is a <em>SharedMap</em> (<a href="module-caf_sharing_SharedMap.html">module:caf_sharing/SharedMap</a>).</p>
 <p>We name a <em>SharedMap</em>  with a local name in the context of the CA that owns it, and this makes it trivial to enforce <em>Single Writer</em>.</p>
-<p>CAF.js processes a message within a transaction, and changes to a <em>SharedMap</em> are also part of that transaction, guaranteeing <em>Writer Atomicity</em>.</p>
+<p><code>Caf.js</code> processes a message within a transaction, and changes to a <em>SharedMap</em> are also part of that transaction, guaranteeing <em>Writer Atomicity</em>.</p>
 <p>Monotonic read consistency is enforced by using version numbers to identify change sets.</p>
-<p>The tricky part is how to guarantee both <em>Fairness</em> and <em>Readers Isolation</em> at the same time, since they impose conflicting requirements. CAF keeps multiple local versions of a <em>SharedMap</em>, and uses the most recent one when processing a new message. Therefore, it can safely garbage collect old versions after all CAs finish processing a message.</p>
+<p>The tricky part is how to guarantee both <em>Fairness</em> and <em>Readers Isolation</em> at the same time, since they impose conflicting requirements. The solution is to have multiple local versions of a <em>SharedMap</em>, and pick the most recent one when processing a new message.  When all the CAs using an old version finish processing its current message, that version gets garbage collected.</p>
 <p><em>SharedMaps</em> are implemented with persistent data structures, i.e., <code>Immutable.js</code>, to efficiently maintain many read-only snapshots. Since <em>SharedMaps</em> can be easily replicated in the browser (or gadgets), these persistent data structures are also used by <em>React/Redux</em> to speed up user interfaces.</p>
-<p><em>SharedMaps</em> can contain serialized methods that CAF.js uses to dynamically change the behavior of CAs or gadgets. For example, by adding getters and setters to the map we can hide schema changes, or provide new functionality to a device, or change the rules on how CAs react to certain events...</p>
+<p><em>SharedMaps</em> can contain serialized methods that <code>Caf.js</code> uses to dynamically change the behavior of CAs or gadgets. For example, we can hide schema changes by adding getters and setters, or provide new functionality to a device, or change the rules on how CAs react to certain events...</p>
 <p>And those changes respect  <em>Single Writer</em>, <em>Writer Atomicity</em>,  <em>Readers Isolation</em>, <em>Fairness</em>, and <em>Consistency</em>, enabling <strong>safe</strong> adaptive behavior.</p>
 <p>Let's look at some examples:</p>
 <h3>Hello World (see <code>examples/helloworld</code>)</h3>
 <p>Each user has a privileged CA called <code>admin</code> that owns a <em>SharedMap</em>. All the CAs belonging to this user replicate this map. CAs could be running in different node.js processes, deployed across multiple servers or VMs.</p>
 <p>Helper functions to identify the privileged CA, and the name of the <em>SharedMap</em>:</p>
-<pre class="prettyprint source"><code>var ADMIN_CA = 'admin';
-var ADMIN_MAP = 'primarySharedMap';
-var isAdmin = function(self) {
-    var name = self.__ca_getName__();
+<pre class="prettyprint source"><code>const ADMIN_CA = 'admin';
+const ADMIN_MAP = 'primarySharedMap';
+const isAdmin = function(self) {
+    const name = self.__ca_getName__();
     return (caf.splitName(name)[1] === ADMIN_CA);
 };
-var primaryMap = function(self) {
-    var name = self.__ca_getName__();
+const primaryMap = function(self) {
+    const name = self.__ca_getName__();
     return caf.joinName(caf.splitName(name)[0], ADMIN_CA, ADMIN_MAP);
 };
 </code></pre>
@@ -105,9 +105,9 @@ var primaryMap = function(self) {
         return [];
     },
     async increment() {
-        var $$ = this.$.sharing.$;
+        const $$ = this.$.sharing.$;
         if (isAdmin(this)) {
-            var counter = $$.primary.get('counter') || 0;
+            const counter = $$.primary.get('counter') || 0;
             $$.primary.set('counter', counter + 1);
             return [null, counter];
         } else {
@@ -115,21 +115,21 @@ var primaryMap = function(self) {
         }
     },
     async getCounter() {
-        var $$ = this.$.sharing.$;
+        const $$ = this.$.sharing.$;
         return [null, $$.replica.get('counter')];
     }
 };
 </code></pre>
 <h3>Hello Adaptive (see <code>examples/helloadaptive</code>)</h3>
 <p>Let's add dynamic behavior to the previous example.</p>
-<p>The privileged CA installs in the <em>SharedMap</em> a serialized method that computes a random label. CAs generate new labels using <code>applyMethod</code>. Labels can be customized by the <code>base</code> map property and the <code>prefix</code> argument. If the method is missing, an error is thrown, and the client retries after a delay.</p>
+<p>The privileged CA installs in the <em>SharedMap</em> a serialized method <code>computeLabel()</code> that generates a random label. The method is created with <code>setFun()</code> and invoked with <code>applyMethod()</code>. Methods can take external arguments (<code>prefix</code>), or read map values (<code>base</code>).</p>
 <pre class="prettyprint source"><code>exports.methods = {
     ...
     async install(base) {
-        var $$ = this.$.sharing.$;
+        const $$ = this.$.sharing.$;
         if (isAdmin(this)) {
             $$.primary.set('base', base);
-            var body = &quot;return prefix + (this.get('base') + Math.random());&quot;;
+            const body = &quot;return prefix + (this.get('base') + Math.random());&quot;;
             $$.primary.setFun('computeLabel', ['prefix'], body);
             return [null, base];
         } else {
@@ -137,7 +137,7 @@ var primaryMap = function(self) {
         }
     },
     async getLabel(prefix) {
-        var $$ = this.$.sharing.$;
+        const $$ = this.$.sharing.$;
         try {
             return [null, $$.replica.applyMethod('computeLabel', [prefix])];
         } catch (err) {
@@ -147,7 +147,7 @@ var primaryMap = function(self) {
 };
 </code></pre>
 <p>Changes to <code>base</code> and <code>computeLabel</code> are committed in a single transaction, eliminating dangerous transients.</p>
-<p>Also, if inside <code>getLabel</code> we call the method <code>computeLabel</code> multiple times, even with asynchronous control flow between calls, the  <em>Readers Isolation</em> property guarantees that the method does not change.</p></article>
+<p>Also, if inside <code>getLabel()</code> we call the method <code>computeLabel()</code> multiple times, even with asynchronous control flow between calls, the  <em>Readers Isolation</em> property guarantees that the method does not change.</p></article>
     </section>
 
 
@@ -164,7 +164,7 @@ var primaryMap = function(self) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Feb 02 2020 11:34:55 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Mar 31 2020 22:15:34 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

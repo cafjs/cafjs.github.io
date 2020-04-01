@@ -26,7 +26,7 @@
     
 
 
-    <h3>caf_ca 0.3.8</h3>
+    <h3>caf_ca 0.4.0</h3>
 
 
 
@@ -43,24 +43,24 @@
 
 
     <section>
-        <article><h1>CAF.js (Cloud Assistant Framework)</h1>
+        <article><h1>Caf.js</h1>
 <p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.</p>
-<p>See http://www.cafjs.com</p>
-<h2>CAF CA</h2>
+<p>See https://www.cafjs.com</p>
+<h2>Library for creating CAs</h2>
 <p><a href="https://travis-ci.org/cafjs/caf_ca"><img src="https://travis-ci.org/cafjs/caf_ca.svg?branch=master" alt="Build Status"></a></p>
-<p>This library provides components to create a CA.</p>
+<p>This library provides components to create a CA (Cloud Assistant).</p>
 <p>A CA is an Actor, in the spirit of an Erlang/OTP <code>gen_server</code>, with a queue that serializes message processing, a location-independent name, some private state, and the ability to change behavior, or interact with other CAs.</p>
 <p>A CA processes a message in a transaction. External interactions are mediated by transactional plugins, and delayed until the message commits. Any non-commited changes to its internal state can be rolled back if errors are detected. State changes and pending interactions always checkpoint with a remote service before commiting. See <a href="external-caf_components_gen_transactional.html">external:caf_components/gen_transactional</a> for details.</p>
 <p>This makes it safe to kill, <strong>at any time</strong>, a node.js process hosting thousands of  CAs. The expectations of the external world are always consistent with the recovered CAs.</p>
 <p>In fact, our favorite load-balancing strategy is to just kill hot processes, and randomly spread recovered CAs to other instances.</p>
 <h3>Hello World (see <code>examples/helloworld</code>)</h3>
 <p>CA methods are <strong>always</strong> asynchronous methods. They can be implemented using the <code>async/await</code> pattern, or using standard callbacks. In the first case we emulate the callback by returning an array with an error/data pair.</p>
-<p>When the method returns this array, or invokes the callback as a tail call, the framework knows that the message has been fully processed, and your application is ready for the next one. This enforces message serialization.</p>
-<p>Never throw in a method to propagate an application error. An unhandled exception closes the client session. This makes it easier to find programming errors.</p>
+<p>When the method returns this array, or invokes the callback as a tail call, the framework knows that the message has been fully processed, and your application is ready for the next one. This enforces message serialization, even if we <code>await</code> while processing a message, eliminating races.</p>
+<p>Never throw in a method to propagate an application error. An unhandled exception closes the client session. Instead, return the error as the first argument of the array (or callback), and the client will process it inline, without closing the session. This strategy makes it easier to find programming errors.</p>
 <p>CAs have two sets of methods:</p>
 <ul>
 <li><em>internal:</em> always prefixed by <code>__ca_</code> and called by the framework.</li>
-<li><em>external:</em> called remotely by the client library.</li>
+<li><em>external:</em> all the others, called remotely by the client library.</li>
 </ul>
 <pre class="prettyprint source"><code>exports.methods = {
     async __ca_init__() {
@@ -128,7 +128,7 @@ exports.methods = {
 <p>Declaring a method <code>__ca_pulse__</code> guarantees that the framework will periodically invoke it, enabling autonomous behavior.</p>
 <p>The method <code>__ca_resume__</code> is called every time we reload the CA state from a checkpoint <code>cp</code>. It allows customization after migration or failure recovery.</p>
 <h4>Plugins</h4>
-<p>A CA extends its capabilities with a plugin architecture. CAF.js uses a component model <a href="external-caf_components.html">external:caf_components</a> to describe plugins with a configuration file <code>ca.json</code>. See <code>lib/ca.json</code> for an example.</p>
+<p>A CA extends its capabilities with a plugin architecture. <code>Caf.js</code> uses a component model <a href="external-caf_components.html">external:caf_components</a> to describe plugins with a configuration file <code>ca.json</code>. See <code>lib/ca.json</code> for an example.</p>
 <p>A plugin is exposed to application code with a security proxy (see <a href="external-caf_components_gen_proxy.html">external:caf_components/gen_proxy</a>). These proxies are properties of the object <code>this.$</code>.</p>
 <p>For example, the following CA uses two proxies: <code>log</code>, a logger plugin, and <code>session</code>, a plugin providing persistent sessions (see <a href="external-caf_session.html">external:caf_session</a>).</p>
 <pre class="prettyprint source"><code>exports.methods = {
@@ -206,7 +206,7 @@ exports.methods = {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Feb 02 2020 11:34:47 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Mar 31 2020 22:15:26 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

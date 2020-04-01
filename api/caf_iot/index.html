@@ -26,7 +26,7 @@
     
 
 
-    <h3>caf_iot 0.3.6</h3>
+    <h3>caf_iot 0.4.0</h3>
 
 
 
@@ -43,14 +43,14 @@
 
 
     <section>
-        <article><h1>CAF.js (Cloud Assistant Framework)</h1>
+        <article><h1>Caf.js</h1>
 <p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.</p>
-<p>See http://www.cafjs.com</p>
-<h2>CAF for IoT</h2>
+<p>See https://www.cafjs.com</p>
+<h2>Platform for IoT Devices</h2>
 <p><a href="https://travis-ci.org/cafjs/caf_iot"><img src="https://travis-ci.org/cafjs/caf_iot.svg?branch=master" alt="Build Status"></a></p>
-<p>IoT platform that runs on the device and pairs with a Cloud Assistant.</p>
+<p>IoT platform that runs on the device and pairs with a CA.</p>
 <p>The IoT device programming model is very similar to programming a CA (see <a href="external-caf_ca.html">external:caf_ca</a>). In fact, most of the code is reused.</p>
-<p>Method execution is serialized by a queue, no global state, similar plugins, and transactional changes to local state can be rolled backed on abort.</p>
+<p>Things similar to the cloud implementation. Method execution is serialized by a queue, no global state, similar plugins, and transactional changes to local state can be rolled backed on abort.</p>
 <p>However, we do not checkpoint state, and there is only one &quot;CA&quot;, i.e., the device. We are not that concerned about long term consistency either, since we reset the device every reboot; therefore, some plugins may not delay external actions, improving responsiveness.</p>
 <p>We have also simplified framework methods and config files. For instance, the file <code>iot.json</code> describes both the framework, i.e., <code>framework.json</code>, and  the device, i.e., <code>ca.json</code>, component hierarchies. Also, the naming of methods is more &quot;Arduino-friendly&quot;.</p>
 <h3>Hello World (see <code>examples/helloworld</code>)</h3>
@@ -98,7 +98,7 @@
         return [];
     },
     async greetings(greet) {
-        var now = (new Date()).getTime();
+        const now = (new Date()).getTime();
         this.$.log && this.$.log.debug(greet + now);
         return [];
     },
@@ -111,7 +111,7 @@
 <p>This method could avoid the reset by <strong>not</strong> propagating the error in the callback, see <code>__iot_error__</code> in <a href="module-caf_iot_plug_iot_handler.html">module:caf_iot/plug_iot_handler</a>  and <code>examples/hellocron/iot/iot_methods.js</code>.</p>
 <h3>Hello Bundles (see <code>examples/hellobundle</code>)</h3>
 <p>The CA can invoke device methods by using timed bundles of commands.</p>
-<p>CAF.js synchronizes device clocks with the cloud, coordinating <strong>soft</strong> real-time actions across the globe with UTC time. Given a few seconds to propagate commands,  millions of devices could blink within a hundred milliseconds of each other.</p>
+<p><code>Caf.js</code> synchronizes device clocks with the cloud, coordinating <strong>soft</strong> real-time actions across the globe with UTC time. Given a few seconds to propagate commands,  millions of devices could blink within a hundred milliseconds of each other.</p>
 <p>Why bundles and not just separate commands?</p>
 <p>Safety. Think of controlling a drone. One command to dive as fast as it can. Second command to gracefully recover. Lost network connection between them. Oops...</p>
 <p>If we bundle commands, both are cached in the drone before anything happens. If execution is based on UTC time, not on arrival time, we can pipeline bundles, ensuring smooth movement. And the CA can keep generating these bundles based on a higher goal. See <a href="module-caf_iot_plug_iot_bundles.html">module:caf_iot/plug_iot_bundles</a> for details.</p>
@@ -128,17 +128,17 @@
 <pre class="prettyprint source"><code>exports.methods = {
 ...
     async down(speed) {
-        var now = (new Date()).getTime();
+        const now = (new Date()).getTime();
         this.$.log && this.$.log.debug('Down:' +  now + ' speed: ' + speed);
         return [];
     },
     async up(speed) {
-        var now = (new Date()).getTime();
+        const now = (new Date()).getTime();
         this.$.log && this.$.log.debug('Up:  ' +  now + ' speed: ' + speed);
         return [];
     },
     async recover(msg) {
-        var now = (new Date()).getTime();
+        const now = (new Date()).getTime();
         this.$.log && this.$.log.debug('RECOVERING:' +  now + ' msg: ' + msg);
         return [];
     },
@@ -184,18 +184,17 @@ exports.methods = {
 <p>For example:</p>
 <pre class="prettyprint source"><code>exports.methods = {
     async __iot_setup__() {
-        var self = this;
-        this.$.cloud.registerHandler(function(msg) {
-            var args = self.$.cloud.getMethodArgs(msg);
-            self.$.queue.process('greetings', args);
+        this.$.cloud.registerHandler((msg) => {
+            var args = this.$.cloud.getMethodArgs(msg);
+            this.$.queue.process('greetings', args);
         });
         return [];
     },
     async greetings(msg) {
-        var now = (new Date()).getTime();
+        const now = (new Date()).getTime();
         this.$.log && this.$.log.debug(msg + now);
         try {
-            var value = await this.$.cloud.cli.getCounter().getPromise();
+            const value = await this.$.cloud.cli.getCounter().getPromise();
             this.$.log && this.$.log.debug('Got ' + value);
             return [];
         } catch (err) {
@@ -205,7 +204,8 @@ exports.methods = {
     ...
 };
 </code></pre>
-<p>Every time the CA notifies the device, a method call for <code>greetings</code> gets queued,  and eventually, that method will call back the CA, reading its counter. The default session identifier for a device is <code>iot</code>, but it can be changed with the property <code>session</code> (see <a href="module-caf_iot_plug_iot_cloud.html">module:caf_iot/plug_iot_cloud</a>).</p>
+<p>Every time the CA notifies the device, a method call for <code>greetings</code> gets queued,  and eventually, that method will call back the CA, reading its counter.</p>
+<p>The default session identifier for a device is <code>iot</code>, but it can be changed with the property <code>session</code> (see <a href="module-caf_iot_plug_iot_cloud.html">module:caf_iot/plug_iot_cloud</a>).</p>
 <h3>Much more...</h3>
 <p>We have a few RPi plugins in <code>caf/extra</code> that do real IoT stuff. Controlling <code>gpio</code> pins, managing external RTC/power boards, distance sensors...</p>
 <p>The long term strategy is <strong>not</strong> to duplicate the great work of other JavaScript IoT libraries supporting zillions of sensors/actuators/devices. Instead, wrap these libraries with local plugins, and focus on cloud/client integration. This is consistent with our web client strategy, i.e., integrating with other libraries such as React/Redux.</p></article>
@@ -225,7 +225,7 @@ exports.methods = {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Feb 02 2020 11:34:50 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Mar 31 2020 22:15:30 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
