@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: proxy_iot_gatt.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: proxy_iot_gatt.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// Modifications copyright 2020 Caf.js Labs and contributors
+/*!
+Copyright 2013 Hewlett-Packard Development Company, L.P.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+'use strict';
+
+/**
+ * A proxy to access BLE GATT services.
+ *
+ *  The typical workflow is:
+ *
+ * 1. `findServices` to find devices that export a particular service. If
+ *  reading advertised data is all it is needed, stop here.
+ *
+ * 2. Otherwise, pick one of them. Use `findCharacteristics` to create a
+ * connnection and discover its characteristics.
+ *
+ * 3. Read/Write/Subscribe/Unsubscribe to these characteristics.
+ *
+ * 4. Disconnect, and if needed, go back to step 2 with a different device.
+ *
+ * Note that to maintain compatibility with current WebBluetooth API we are
+ * not discovering all BLE services in a device. The service id needs
+ * to be known beforehand.
+ *
+ *
+ * @module caf_iot_gatt/proxy_iot_gatt
+ * @augments external:caf_components/gen_proxy
+ *
+ */
+const assert = require('assert');
+const caf_iot = require('caf_iot');
+const caf_comp = caf_iot.caf_components;
+const genProxy = caf_comp.gen_proxy;
+
+/**
+ * Factory method to access GATT services.
+ *
+ */
+exports.newInstance = async function($, spec) {
+    try {
+        const that = genProxy.create($, spec);
+
+        /**
+         * Finds BLE devices that export a GATT service or a collection of
+         * GATT services.
+         *
+         * The provided method will be called with each device exporting the
+         *  service. To stop the scanning call `stopFindServices` or
+         * `findCharacteristics`.
+         *
+         * @param {string|Array.&lt;string>} service A service(s) id.
+         * @param {string} handlerMethodName The method called when a device is
+         * found. The type is signature is `function(service, device, cb)`
+         * where:
+         *  * `service` type  is string or array of strings
+         *  * `device` type is noble.peripheral (see
+         *      https://github.com/sandeepmistry/noble.git)
+         *  * `cb` type is `caf.cb`
+         *
+         * or `async function(service, device)` returning an array with an
+         * error/data pair.
+         *
+         * @memberof!  module:caf_iot_gatt/proxy_iot_gatt#
+         * @alias findServices
+         */
+        that.findServices = function(service, handlerMethodName) {
+            assert((typeof service === 'string') || Array.isArray(service));
+            assert(typeof handlerMethodName === 'string');
+            $._.__iot_findServices__(service, handlerMethodName);
+        };
+
+        /**
+         * Stops scanning for services.
+         *
+         * @memberof!  module:caf_iot_gatt/proxy_iot_gatt#
+         * @alias stopFindServices
+         */
+        that.stopFindServices = function() {
+            $._.__iot_stopFindServices__();
+        };
+
+        /**
+         * Finds all the GATT characteristics of a service.
+         *
+         *  Implicitly stops scanning for services.
+         *
+         * @param {string} serviceId A service identifier.
+         * @param {noble.peripheral} device A device returned by `findServices`.
+         * @param {cbType=} cb A standard callback returning an error, possibly
+         * due to a timeout, or an object of type `CharactInfo`:
+         *
+         *    {service: noble.service, device: noble.peripheral,
+         *     characteristics:  Array.&lt;noble.characteristic>}
+         *
+         * where `service.uuid` is the original identifier.
+         *
+         * @return {Promise&lt;CharactInfo>|null} A promise with the
+         * characteristics if no callback was provided, or `null` otherwise.
+         *
+         * @memberof!  module:caf_iot_gatt/proxy_iot_gatt#
+         * @alias findCharacteristics
+         */
+        that.findCharacteristics = function(serviceId, device, cb) {
+            assert(typeof serviceId === 'string');
+            assert(device &amp;&amp; (typeof device === 'object'));
+            cb &amp;&amp; assert(typeof cb === 'function');
+
+            return $._.__iot_findCharacteristics__(serviceId, device, cb);
+        };
+
+        /**
+         * Disconnects from a device.
+         *
+         * The method `findCharacteristics` creates the connection, and keeps it
+         * open to read/write/subscribe characteristics.
+         *
+         * @param {noble.peripheral} device A device to disconnect.
+         * @param {number=} delay An optional delay in msec before
+         * disconnecting.
+         * @param {cbType=} cb An optional callback to wait for disconnection.
+         *
+         * @return {Promise&lt;null>|null} A promise to wait for disconnection if
+         * there was no callback, or `null` otherwise.
+
+         *
+         * @memberof!  module:caf_iot_gatt/proxy_iot_gatt#
+         * @alias disconnect
+         */
+        that.disconnect = function(device, delay, cb) {
+            assert(device &amp;&amp; (typeof device === 'object'));
+            return $._.__iot_disconnect__(device, delay, cb);
+        };
+
+        /**
+         * Reads the value of a  GATT characteristic.
+         *
+         * @param {noble.characteristic} characteristic A characteristic to
+         * read.
+         * @param {string} handlerMethodName The method called with the
+         * characteristic value.
+         *
+         * The type is signature is `function(charact, value, cb)`
+         * where:
+         *  * `charact` type is noble.characteristic
+         *  * `value` type is Buffer
+         *  * `cb` type is `caf.cb`
+         *
+         * or `async function(charact, value)` returning an array with an
+         * error/data pair.
+         *
+         * @memberof!  module:caf_iot_gatt/proxy_iot_gatt#
+         * @alias read
+         */
+        that.read = function(characteristic, handlerMethodName) {
+            assert(characteristic &amp;&amp; (typeof characteristic === 'object'));
+            assert(typeof handlerMethodName === 'string');
+            $._.__iot_read__(characteristic, handlerMethodName);
+        };
+
+        /**
+         * Dirty reads the value of a GATT characteristic, i.e., breaking the
+         * transaction.
+         *
+         * The read timed out, rejecting the promise with an error, if it takes
+         * longer than `RWCharactTimeout` msec.
+         *
+         * @param {noble.characteristic} characteristic A characteristic to
+         * read.
+         * @return {Promise&lt;Buffer>} A promise with the read value.
+         *
+         * @memberof!  module:caf_iot_gatt/proxy_iot_gatt#
+         * @alias dirtyRead
+         */
+        that.dirtyRead = function(characteristic) {
+            assert(characteristic &amp;&amp; (typeof characteristic === 'object'));
+            return $._.__iot_dirtyRead__(characteristic);
+        };
+
+        /**
+         * Writes the value of a  GATT characteristic.
+         *
+         * The write timed out, rejecting the promise with an error, if it takes
+         * longer than `RWCharactTimeout` msec.
+         *
+         * @param {noble.characteristic} characteristic A characteristic to
+         * write.
+         * @param {Buffer} value The new value.
+         *
+         * @return {Promise&lt;null>} A promise to wait for completion or notify
+         * a timeout error.
+         *
+         * @memberof!  module:caf_iot_gatt/proxy_iot_gatt#
+         * @alias write
+         */
+        that.write = function(characteristic, value) {
+            assert(characteristic &amp;&amp; (typeof characteristic === 'object'));
+            return $._.__iot_write__(characteristic, value);
+        };
+
+        /**
+         * Subscribes to a  GATT characteristic.
+         *
+         * @param {noble.characteristic} characteristic A characteristic to
+         * read.
+         * @param {string} handlerMethodName The method called with the
+         * characteristic value.
+         *
+         * The method type signature is `function(charact, value, cb)`
+         * where:
+         *  * `charact` type is noble.characteristic
+         *  * `value` type is Buffer
+         *  * `cb` type is `caf.cb`
+         *
+         * or `async function(charact, value)` returning an array with an
+         * error/data pair.
+         *
+         * @memberof!  module:caf_iot_gatt/proxy_iot_gatt#
+         * @alias subscribe
+         */
+        that.subscribe = function(characteristic, handlerMethodName) {
+            assert(characteristic &amp;&amp; (typeof characteristic === 'object'));
+            assert(typeof handlerMethodName === 'string');
+            $._.__iot_subscribe__(characteristic, handlerMethodName);
+        };
+
+        /**
+         * Unsubscribes to a  GATT characteristic.
+         *
+         * @param {noble.characteristic} characteristic A characteristic to
+         * unsubscribe.
+         *
+         * @memberof!  module:caf_iot_gatt/proxy_iot_gatt#
+         * @alias unsubscribe
+         */
+        that.unsubscribe = function(characteristic) {
+            assert(characteristic &amp;&amp; (typeof characteristic === 'object'));
+            $._.__iot_unsubscribe__(characteristic);
+        };
+
+        Object.freeze(that);
+        return [null, that];
+    } catch (err) {
+        return [err];
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_iot_gatt_plug_iot_gatt.html">caf_iot_gatt/plug_iot_gatt</a></li><li><a href="module-caf_iot_gatt_proxy_iot_gatt.html">caf_iot_gatt/proxy_iot_gatt</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_iot_gen_plug_iot.html">caf_iot/gen_plug_iot</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Apr 12 2020 11:41:22 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
