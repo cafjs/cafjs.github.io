@@ -227,7 +227,7 @@ to be known beforehand.</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line53">line 53</a>
+        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line54">line 54</a>
     </li></ul></dd>
     
 
@@ -252,6 +252,194 @@ to be known beforehand.</p></div>
 
 
 
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="compareId"><span class="type-signature"></span>compareId<span class="signature">(x, y)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Utility function to compare characteristic ids.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A characteristic id to compare.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Another characteristic id to compare.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line393">line 393</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>True if they map to the same characteristic.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -368,7 +556,7 @@ read.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line188">line 188</a>
+        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line304">line 304</a>
     </li></ul></dd>
     
 
@@ -606,7 +794,7 @@ disconnecting.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line143">line 143</a>
+        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line247">line 247</a>
     </li></ul></dd>
     
 
@@ -668,7 +856,7 @@ there was no callback, or <code>null</code> otherwise.</p>
     
 
     
-    <h4 class="name" id="findCharacteristics"><span class="type-signature"></span>findCharacteristics<span class="signature">(serviceId, device, cb<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;CharactInfo>|null}</span></h4>
+    <h4 class="name" id="findCharacteristics"><span class="type-signature"></span>findCharacteristics<span class="signature">(serviceId, device, charIds<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;CharactInfo>|null}</span></h4>
     
 
     
@@ -676,7 +864,7 @@ there was no callback, or <code>null</code> otherwise.</p>
 
 
 <div class="description">
-    <p>Finds all the GATT characteristics of a service.</p>
+    <p>Finds GATT characteristics of a service.</p>
 <p>Implicitly stops scanning for services.</p>
 </div>
 
@@ -777,6 +965,43 @@ there was no callback, or <code>null</code> otherwise.</p>
 
         <tr>
             
+                <td class="name"><code>charIds</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Optional identifiers for the
+characteristics. If undefined, all the characteristics
+will be returned. Otherwise, the order in the array response
+will match the order of this array, and an error will be propagated
+if any is missing.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>cb</code></td>
             
 
@@ -848,7 +1073,7 @@ characteristics:  Array.&lt;noble.characteristic&gt;}</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line117">line 117</a>
+        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line214">line 214</a>
     </li></ul></dd>
     
 
@@ -910,7 +1135,7 @@ characteristics if no callback was provided, or <code>null</code> otherwise.</p>
     
 
     
-    <h4 class="name" id="findServices"><span class="type-signature"></span>findServices<span class="signature">(service, handlerMethodName)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="findServices"><span class="type-signature"></span>findServices<span class="signature">(service, handlerMethodName, namePrefix)</span><span class="type-signature"></span></h4>
     
 
     
@@ -923,6 +1148,216 @@ GATT services.</p>
 <p>The provided method will be called with each device exporting the
 service. To stop the scanning call <code>stopFindServices</code> or
 <code>findCharacteristics</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>service</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">Array.&lt;string></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A service(s) id. They will get
+converted to lower case due to <code>noble</code> package requirements.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>handlerMethodName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The method called when a device is
+found. The type is signature is <code>function(service, device, cb)</code>
+where:</p>
+<ul>
+<li><code>service</code> type  is string or array of strings</li>
+<li><code>device</code> type is noble.peripheral (see
+https://github.com/sandeepmistry/noble.git)</li>
+<li><code>cb</code> type is <code>caf.cb</code></li>
+</ul>
+<p>or <code>async function(service, device)</code> returning an array with an
+error/data pair.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>namePrefix</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An optional name prefix to filter
+devices. This is needed if no GATT services are advertised. If the
+value is not null, this call will no longer filter based on service
+ids.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line86">line 86</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="findServicesWeb"><span class="type-signature"></span>findServicesWeb<span class="signature">(service, handlerMethodName, clickable, confirm, namePrefix)</span><span class="type-signature"> &rarr; {Promise.&lt;null>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Finds BLE devices using the <code>Web Bluetooth API</code> that export a GATT
+service or a collection of GATT services.</p>
+<p>This method is needed in the browser since the
+<code>Web Bluetooth API</code> requires a user click before starting the
+search. It needs access to the DOM, so it only works in the browser.</p>
+<p>A returned promise allows the client to wait for user selection.</p>
+<p>The provided method will be called with the selected device
+exporting the service(s).</p>
 </div>
 
 
@@ -1014,6 +1449,82 @@ error/data pair.</p></td>
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>clickable</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The id of an HTML button to start the
+search.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>confirm</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The id of an HTML confirmation message.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>namePrefix</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An optional name prefix to filter
+devices. This is needed if no GATT services are advertised. If the
+value is not null, this call will no longer filter based on service
+ids.</p></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -1051,7 +1562,7 @@ error/data pair.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line80">line 80</a>
+        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line133">line 133</a>
     </li></ul></dd>
     
 
@@ -1076,6 +1587,218 @@ error/data pair.</p></td>
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise to wait for selection.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;null></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="matchServiceId"><span class="type-signature"></span>matchServiceId<span class="signature">(services, serviceId)</span><span class="type-signature"> &rarr; {noble.service|null}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Utility function to select a service by comparing ids.</p>
+<p>The type <code>noble.service</code> is an object that contains the field <code>uuid</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>services</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;noble.service></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An array of gatt services.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>serviceId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A service id to compare.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line412">line 412</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A service in <code>services</code> with matching
+id or <code>null</code> if not found.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">noble.service</span>
+|
+
+<span class="param-type">null</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -1222,7 +1945,7 @@ error/data pair.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line168">line 168</a>
+        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line284">line 284</a>
     </li></ul></dd>
     
 
@@ -1247,6 +1970,116 @@ error/data pair.</p></td>
 
 
 
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="reset"><span class="type-signature"></span>reset<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;null>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Disconnects from all connections.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line260">line 260</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise to wait for disconnection.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Array.&lt;null>></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -1310,7 +2143,7 @@ error/data pair.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line92">line 92</a>
+        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line184">line 184</a>
     </li></ul></dd>
     
 
@@ -1346,7 +2179,7 @@ error/data pair.</p></td>
     
 
     
-    <h4 class="name" id="subscribe"><span class="type-signature"></span>subscribe<span class="signature">(characteristic, handlerMethodName)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="subscribe"><span class="type-signature"></span>subscribe<span class="signature">(characteristic, handlerMethodName)</span><span class="type-signature"> &rarr; {Promise.&lt;null>}</span></h4>
     
 
     
@@ -1355,6 +2188,8 @@ error/data pair.</p></td>
 
 <div class="description">
     <p>Subscribes to a  GATT characteristic.</p>
+<p>This operation times out, rejecting the promise with an error, if it
+takes longer than <code>RWCharactTimeout</code> msec.</p>
 </div>
 
 
@@ -1481,7 +2316,7 @@ error/data pair.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line234">line 234</a>
+        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line357">line 357</a>
     </li></ul></dd>
     
 
@@ -1506,6 +2341,29 @@ error/data pair.</p></td>
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise to wait for completion or notify
+a timeout error.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;null></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -1517,7 +2375,7 @@ error/data pair.</p></td>
     
 
     
-    <h4 class="name" id="unsubscribe"><span class="type-signature"></span>unsubscribe<span class="signature">(characteristic)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="unsubscribe"><span class="type-signature"></span>unsubscribe<span class="signature">(characteristic)</span><span class="type-signature"> &rarr; {Promise.&lt;null>}</span></h4>
     
 
     
@@ -1526,6 +2384,8 @@ error/data pair.</p></td>
 
 <div class="description">
     <p>Unsubscribes to a  GATT characteristic.</p>
+<p>This operation times out, rejecting the promise with an error, if it
+takes longer than <code>RWCharactTimeout</code> msec.</p>
 </div>
 
 
@@ -1619,7 +2479,7 @@ unsubscribe.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line249">line 249</a>
+        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line378">line 378</a>
     </li></ul></dd>
     
 
@@ -1644,6 +2504,29 @@ unsubscribe.</p></td>
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise to wait for completion or notify
+a timeout error.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;null></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -1655,7 +2538,7 @@ unsubscribe.</p></td>
     
 
     
-    <h4 class="name" id="write"><span class="type-signature"></span>write<span class="signature">(characteristic, value)</span><span class="type-signature"> &rarr; {Promise.&lt;null>}</span></h4>
+    <h4 class="name" id="write"><span class="type-signature"></span>write<span class="signature">(characteristic, value, withoutResponse<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;null>}</span></h4>
     
 
     
@@ -1664,8 +2547,8 @@ unsubscribe.</p></td>
 
 <div class="description">
     <p>Writes the value of a  GATT characteristic.</p>
-<p>The write timed out, rejecting the promise with an error, if it takes
-longer than <code>RWCharactTimeout</code> msec.</p>
+<p>This write times out, rejecting the promise with an error, if it
+takes longer than <code>RWCharactTimeout</code> msec.</p>
 </div>
 
 
@@ -1688,6 +2571,8 @@ longer than <code>RWCharactTimeout</code> msec.</p>
 
         <th>Type</th>
 
+        
+        <th>Attributes</th>
         
 
         
@@ -1714,6 +2599,14 @@ longer than <code>RWCharactTimeout</code> msec.</p>
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -1738,10 +2631,52 @@ write.</p></td>
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
             <td class="description last"><p>The new value.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>withoutResponse</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Uses GATT &quot;write without response&quot;
+whenever possible. Web Bluetooth API currently ignores it.</p></td>
         </tr>
 
     
@@ -1782,7 +2717,7 @@ write.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line209">line 209</a>
+        <a href="proxy_iot_gatt.js.html">proxy_iot_gatt.js</a>, <a href="proxy_iot_gatt.js.html#line326">line 326</a>
     </li></ul></dd>
     
 
@@ -1851,13 +2786,13 @@ a timeout error.</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_iot_gatt_plug_iot_gatt.html">caf_iot_gatt/plug_iot_gatt</a></li><li><a href="module-caf_iot_gatt_proxy_iot_gatt.html">caf_iot_gatt/proxy_iot_gatt</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_iot_gen_plug_iot.html">caf_iot/gen_plug_iot</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_iot_gatt_plug_iot_gatt.html">caf_iot_gatt/plug_iot_gatt</a></li><li><a href="module-caf_iot_gatt_proxy_iot_gatt.html">caf_iot_gatt/proxy_iot_gatt</a></li><li><a href="module-caf_iot_gatt_util_gatt.html">caf_iot_gatt/util_gatt</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_iot_gen_plug_iot.html">caf_iot/gen_plug_iot</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Apr 12 2020 11:56:06 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:14 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -433,7 +433,7 @@ context. See <a href="external-caf_sharing.html">external:caf_sharing</a>.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line193">line 193</a>
+        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line195">line 195</a>
     </li></ul></dd>
     
 
@@ -649,7 +649,7 @@ description  of the new token(s).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line288">line 288</a>
+        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line290">line 290</a>
     </li></ul></dd>
     
 
@@ -786,7 +786,7 @@ description  of the new token(s).</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line226">line 226</a>
+        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line228">line 228</a>
     </li></ul></dd>
     
 
@@ -1095,7 +1095,7 @@ processing, i.e., <code>&lt;caOwner&gt;-&lt;caLocalName&gt;</code>.</p>
     
 
     
-    <h4 class="name" id="isAuthorized"><span class="type-signature"></span>isAuthorized<span class="signature">(caller, method)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    <h4 class="name" id="isAuthorized"><span class="type-signature"></span>isAuthorized<span class="signature">(caller, method, ignoreInternal<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
 
     
@@ -1130,6 +1130,8 @@ application-level checks.</p>
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -1155,6 +1157,14 @@ application-level checks.</p>
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -1178,10 +1188,52 @@ application-level checks.</p>
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
             <td class="description last"><p>A method name.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ignoreInternal</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Treat internal methods, i.e., starting
+with <code>__ca_</code>, as external ones while checking authorization.</p></td>
         </tr>
 
     
@@ -1222,7 +1274,7 @@ application-level checks.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line139">line 139</a>
+        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line141">line 141</a>
     </li></ul></dd>
     
 
@@ -1333,7 +1385,7 @@ application-level checks.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line209">line 209</a>
+        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line211">line 211</a>
     </li></ul></dd>
     
 
@@ -1958,7 +2010,7 @@ to all.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line240">line 240</a>
+        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line242">line 242</a>
     </li></ul></dd>
     
 
@@ -2098,7 +2150,7 @@ to all.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line262">line 262</a>
+        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line264">line 264</a>
     </li></ul></dd>
     
 
@@ -2176,7 +2228,7 @@ invalid.</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Apr 12 2020 11:56:00 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:07 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

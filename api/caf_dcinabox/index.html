@@ -26,7 +26,7 @@
     
 
 
-    <h3>caf_dcinabox 0.4.0</h3>
+    <h3>caf_dcinabox 0.4.3</h3>
 
 
 
@@ -53,10 +53,10 @@
 </code></pre>
 <p>The <code>commandOptions</code> always start with <code>--</code>, and are passed unchanged to the underlying tools. They are mostly for power users.</p>
 <p>The other arguments, e.g., <code>arg1</code>, <code>arg2</code>, are ordered. Positional arguments can always be replaced with equivalent <code>commandOptions</code>. However, when the same option is specified with conflicting values, the result is undefined.</p>
-<h4><code>cafjs run &lt;run_options&gt; &lt;appLocalName&gt; [appWorkingDir] [host/app Vol]</code></h4>
+<h4><code>cafjs run  &lt;run_options&gt; &lt;appLocalName&gt; [appWorkingDir] [host/app Vol]</code></h4>
 <p>Starts a simulated cloud to run your app. Uses separate Docker containers for a HAProxy-based http router, a Redis backend, and supporting apps for authentication, managing CAs, or registering devices.</p>
 <p>The application can also be directly accessed using the http HOST <code>localhost</code>, i.e.,<code>http://localhost:&lt;externalPort&gt;</code>. Some browser features are only enabled with https or http with <code>localhost</code>, i.e., will not work with <code>*.vcap.me</code>. A valid token in the URL is required.</p>
-<p>Two common usecases of <code>cafjs run</code>:</p>
+<p>Two common use cases of <code>cafjs run</code>:</p>
 <ul>
 <li><em>Quick prototyping mode</em>: when creating a fresh container image is too expensive. Instead, build the app outside the container (<code>cafjs build</code>), and mount the host directory in a generic container image.</li>
 <li><em>Validation mode</em>: create a container image with your app  (<code>cafjs mkImage</code>), and test locally before cloud deployment.</li>
@@ -70,7 +70,7 @@
 <li><code>--appVolume &lt;string&gt;</code> The internal container directory where the <code>hostVolume</code> is mounted (<em>quick prototyping mode</em> only). Defaults to <code>$HOME</code>.</li>
 <li><code>--ipAddress &lt;string&gt;</code> The network interface for the service. Defaults to <code>localhost</code>.</li>
 <li><code>--port &lt;number&gt;</code> The port number for the service. Defaults to port 80.</li>
-<li><code>--debugApplication &lt;boolean&gt;</code> Start the node debugger listening on host port 9229 (app only).</li>
+<li><code>--debugApplication</code> (or just <code>-d</code>) Start the node debugger listening on host port 9229 (app only).</li>
 </ul>
 <p>For example, in <em>Quick prototyping mode</em>:</p>
 <pre><code>cd $HOME/caf/apps/caf_helloworld; cafjs build; cafjs run helloworld
@@ -133,6 +133,7 @@ cafjs run --appImage gcr.io/cafjs-k8/root-helloworld helloworld
 <li><code>--appSuffix &lt;string&gt;</code>: the URL suffix for the Cloud services. It defaults to <code>vcap.me</code>. If set to a non-local suffix, the protocol switches to <code>https</code>, e.g., <code>https://root-accounts.cafjs.com</code>. This allows to simulate devices connected to a Cloud service.</li>
 <li><code>--ipAddress &lt;string&gt;</code> The network interface for the service. Defaults to <code>localhost</code>.</li>
 <li><code>--port &lt;number&gt;</code> The port number for the service. Defaults to port 80.</li>
+<li><code>--debugApplication</code> (or just <code>-d</code>) Start the node debugger listening on host port 9230 (app only).</li>
 </ul>
 <h4><code>cafjs mkIoTImage &lt;appLocalName&gt; [privileged:boolean]</code></h4>
 <p>This command is not commonly used because <code>cafjs device</code> transparently creates device container images.</p>
@@ -146,7 +147,7 @@ cafjs run --appImage gcr.io/cafjs-k8/root-helloworld helloworld
 </code></pre>
 <p>Login with user <code>foo</code>, password <code>pleasechange</code>, and URL <code>http://root-launcher.vcap.me</code>.</p>
 <p>With the browser create a CA instance for application with owner<code>root</code>, local name <code>helloiot</code>, and CA name the device name, e.g., <code>device1</code>.</p>
-<p>Create a gadget  CA instance to manage the device <code>device1</code>. The application owner is <code>root</code>, local name <code>gadget</code>, and CA name <code>device1</code>. Configure in that app the target application as <code>root-helloiot</code> (don't click the privileged option). If <code>App Token Ready?</code> is <code>NO</code>, just go back to the <code>helloiot</code> app for <code>device1</code> to transparently register the token with the manager.</p>
+<p>Create a gadget  CA instance to manage the device <code>device1</code>. The application owner is <code>root</code>, local name <code>gadget</code>, and CA name <code>device1</code>. Configure in that app the target application as <code>root-helloiot</code> (don't click the privileged option). If <code>Token</code> is <code>NO</code>, just go back to the <code>helloiot</code> app for <code>device1</code> to transparently register the token with the manager.</p>
 <p>And now we are ready to start the device:</p>
 <pre><code>cafjs device foo-device1
 </code></pre>
@@ -194,7 +195,7 @@ cafjs device foo-device1
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Apr 12 2020 11:56:07 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:16 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

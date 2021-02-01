@@ -73,6 +73,7 @@ const assert = require('assert');
 const caf_iot = require('caf_iot');
 const caf_comp = caf_iot.caf_components;
 const genProxy = caf_comp.gen_proxy;
+const utilGatt = require('./util_gatt');
 
 /**
  * Factory method to access GATT services.
@@ -90,6 +91,49 @@ exports.newInstance = async function($, spec) {
          *  service. To stop the scanning call `stopFindServices` or
          * `findCharacteristics`.
          *
+         * @param {string|Array.&lt;string>} service A service(s) id. They will get
+         * converted to lower case due to `noble` package requirements.
+         * @param {string} handlerMethodName The method called when a device is
+         * found. The type is signature is `function(service, device, cb)`
+         * where:
+         *  * `service` type  is string or array of strings
+         *  * `device` type is noble.peripheral (see
+         *      https://github.com/sandeepmistry/noble.git)
+         *  * `cb` type is `caf.cb`
+         *
+         * or `async function(service, device)` returning an array with an
+         * error/data pair.
+         * @param {string|null} namePrefix An optional name prefix to filter
+         * devices. This is needed if no GATT services are advertised. If the
+         * value is not null, this call will no longer filter based on service
+         * ids.
+           *
+         * @memberof!  module:caf_iot_gatt/proxy_iot_gatt#
+         * @alias findServices
+         */
+        that.findServices = function(service, handlerMethodName, namePrefix) {
+            assert((typeof service === 'string') || Array.isArray(service));
+            assert(typeof handlerMethodName === 'string');
+            const serviceLowerCase = Array.isArray(service) ?
+                service.map(x => x.toLowerCase()) :
+                service.toLowerCase();
+            $._.__iot_findServices__(serviceLowerCase, handlerMethodName,
+                                     namePrefix, false);
+        };
+
+        /**
+         * Finds BLE devices using the `Web Bluetooth API` that export a GATT
+         * service or a collection of GATT services.
+         *
+         * This method is needed in the browser since the
+         * `Web Bluetooth API` requires a user click before starting the
+         * search. It needs access to the DOM, so it only works in the browser.
+         *
+         * A returned promise allows the client to wait for user selection.
+         *
+         * The provided method will be called with the selected device
+         * exporting the service(s).
+         *
          * @param {string|Array.&lt;string>} service A service(s) id.
          * @param {string} handlerMethodName The method called when a device is
          * found. The type is signature is `function(service, device, cb)`
@@ -101,15 +145,63 @@ exports.newInstance = async function($, spec) {
          *
          * or `async function(service, device)` returning an array with an
          * error/data pair.
+         * @param {string} clickable The id of an HTML button to start the
+         * search.
+         * @param {string} confirm The id of an HTML confirmation message.
+         * @param {string|null} namePrefix An optional name prefix to filter
+         * devices. This is needed if no GATT services are advertised. If the
+         * value is not null, this call will no longer filter based on service
+         * ids.
+         *
+         * @return {Promise&lt;null>} A promise to wait for selection.
          *
          * @memberof!  module:caf_iot_gatt/proxy_iot_gatt#
-         * @alias findServices
+         * @alias findServicesWeb
          */
-        that.findServices = function(service, handlerMethodName) {
+        that.findServicesWeb = function(service, handlerMethodName, clickable,
+                                        confirm, namePrefix) {
             assert((typeof service === 'string') || Array.isArray(service));
             assert(typeof handlerMethodName === 'string');
-            $._.__iot_findServices__(service, handlerMethodName);
+            assert(typeof clickable === 'string');
+            assert(typeof confirm === 'string');
+            assert(typeof window !== 'undefined');
+
+            return new Promise((resolve, reject) => {
+                try {
+                    /* For example:
+                     *  A button with id 'confirmScan' that is only
+                     * visible when input is needed to bypass Web BT security
+                     * check.
+                     *  A confirmation message with id 'afterConfirmScan'
+                     * visible after the selection.
+                     *
+                     *   &lt;button id="confirmScan" style= "display:none;">
+                     *     Click to allow Bluetooth scan&lt;/button>
+                     *   &lt;h2 id="afterConfirmScan" style= "display:none;">
+                     *     Running... &lt;/h2>
+                     */
+                    const button = document.getElementById(clickable);
+                    button.style = 'display:inline;';
+                    button.addEventListener('click', function handler() {
+                        try {
+                            $._.__iot_findServices__(service,
+                                                     handlerMethodName,
+                                                     namePrefix, true);
+                            button.removeEventListener('click', handler);
+                            button.style = 'display:none;';
+                            const message = document.getElementById(confirm);
+                            message.style = 'display:inline;';
+                            resolve(null);
+                        } catch (err) {
+                            reject(err);
+                        }
+                    });
+                } catch (err) {
+                    reject(err);
+                }
+            });
         };
+
 
         /**
          * Stops scanning for services.
@@ -122,12 +214,17 @@ exports.newInstance = async function($, spec) {
         };
 
         /**
-         * Finds all the GATT characteristics of a service.
+         * Finds GATT characteristics of a service.
          *
          *  Implicitly stops scanning for services.
          *
          * @param {string} serviceId A service identifier.
          * @param {noble.peripheral} device A device returned by `findServices`.
+         * @param {Array.&lt;string>=} charIds Optional identifiers for the
+         * characteristics. If undefined, all the characteristics
+         * will be returned. Otherwise, the order in the array response
+         * will match the order of this array, and an error will be propagated
+         * if any is missing.
          * @param {cbType=} cb A standard callback returning an error, possibly
          * due to a timeout, or an object of type `CharactInfo`:
          *
@@ -142,12 +239,19 @@ exports.newInstance = async function($, spec) {
          * @memberof!  module:caf_iot_gatt/proxy_iot_gatt#
          * @alias findCharacteristics
          */
-        that.findCharacteristics = function(serviceId, device, cb) {
+        that.findCharacteristics = function(serviceId, device, charIds, cb) {
             assert(typeof serviceId === 'string');
             assert(device &amp;&amp; (typeof device === 'object'));
+            if (!cb &amp;&amp; (typeof charIds === 'function')) {
+                // backwards compatibility...
+                cb = charIds;
+                charIds = undefined;
+            }
+            charIds &amp;&amp; assert(Array.isArray(charIds));
             cb &amp;&amp; assert(typeof cb === 'function');
 
-            return $._.__iot_findCharacteristics__(serviceId, device, cb);
+            return $._.__iot_findCharacteristics__(serviceId, device, charIds,
+                                                   cb);
         };
 
         /**
@@ -171,6 +275,18 @@ exports.newInstance = async function($, spec) {
         that.disconnect = function(device, delay, cb) {
             assert(device &amp;&amp; (typeof device === 'object'));
             return $._.__iot_disconnect__(device, delay, cb);
+        };
+
+        /**
+         * Disconnects from all connections.
+         *
+         * @return {Promise&lt;Array.&lt;null>>} A promise to wait for disconnection.
+         *
+         * @memberof!  module:caf_iot_gatt/proxy_iot_gatt#
+         * @alias reset
+         */
+        that.reset = function() {
+            return $._.__iot_reset__();
         };
 
         /**
@@ -221,26 +337,30 @@ exports.newInstance = async function($, spec) {
         /**
          * Writes the value of a  GATT characteristic.
          *
-         * The write timed out, rejecting the promise with an error, if it takes
-         * longer than `RWCharactTimeout` msec.
+         * This write times out, rejecting the promise with an error, if it
+         * takes longer than `RWCharactTimeout` msec.
          *
          * @param {noble.characteristic} characteristic A characteristic to
          * write.
          * @param {Buffer} value The new value.
-         *
+         * @param {boolean=} withoutResponse Uses GATT "write without response"
+         * whenever possible. Web Bluetooth API currently ignores it.
          * @return {Promise&lt;null>} A promise to wait for completion or notify
          * a timeout error.
          *
          * @memberof!  module:caf_iot_gatt/proxy_iot_gatt#
          * @alias write
          */
-        that.write = function(characteristic, value) {
+        that.write = function(characteristic, value, withoutResponse) {
             assert(characteristic &amp;&amp; (typeof characteristic === 'object'));
-            return $._.__iot_write__(characteristic, value);
+            return $._.__iot_write__(characteristic, value, withoutResponse);
         };
 
         /**
          * Subscribes to a  GATT characteristic.
+         *
+         * This operation times out, rejecting the promise with an error, if it
+         * takes longer than `RWCharactTimeout` msec.
          *
          * @param {noble.characteristic} characteristic A characteristic to
          * read.
@@ -256,27 +376,69 @@ exports.newInstance = async function($, spec) {
          * or `async function(charact, value)` returning an array with an
          * error/data pair.
          *
+         * @return {Promise&lt;null>} A promise to wait for completion or notify
+         * a timeout error.
+         *
          * @memberof!  module:caf_iot_gatt/proxy_iot_gatt#
          * @alias subscribe
          */
         that.subscribe = function(characteristic, handlerMethodName) {
             assert(characteristic &amp;&amp; (typeof characteristic === 'object'));
             assert(typeof handlerMethodName === 'string');
-            $._.__iot_subscribe__(characteristic, handlerMethodName);
+            return $._.__iot_subscribe__(characteristic, handlerMethodName);
         };
 
         /**
          * Unsubscribes to a  GATT characteristic.
          *
+         * This operation times out, rejecting the promise with an error, if it
+         * takes longer than `RWCharactTimeout` msec.
+         *
          * @param {noble.characteristic} characteristic A characteristic to
          * unsubscribe.
+         *
+         * @return {Promise&lt;null>} A promise to wait for completion or notify
+         * a timeout error.
          *
          * @memberof!  module:caf_iot_gatt/proxy_iot_gatt#
          * @alias unsubscribe
          */
         that.unsubscribe = function(characteristic) {
             assert(characteristic &amp;&amp; (typeof characteristic === 'object'));
-            $._.__iot_unsubscribe__(characteristic);
+            return $._.__iot_unsubscribe__(characteristic);
+        };
+
+        /**
+         * Utility function to compare characteristic ids.
+         *
+         * @param {string|number} x A characteristic id to compare.
+         * @param {string|number} y Another characteristic id to compare.
+         * @return {boolean} True if they map to the same characteristic.
+         *
+         * @memberof!  module:caf_iot_gatt/proxy_iot_gatt#
+         * @alias compareId
+         */
+        that.compareId = function(x, y) {
+            assert(typeof x === 'string');
+            assert(typeof y === 'string');
+            return utilGatt.compareId(x, y);
+        };
+
+        /**
+         * Utility function to select a service by comparing ids.
+         *
+         * The type `noble.service` is an object that contains the field `uuid`.
+         *
+         * @param {Array.&lt;noble.service>} services An array of gatt services.
+         * @param {string|number} serviceId A service id to compare.
+         * @return {noble.service|null} A service in `services` with matching
+         * id or `null` if not found.
+         *
+         * @memberof!  module:caf_iot_gatt/proxy_iot_gatt#
+         * @alias matchServiceId
+         */
+        that.matchServiceId = function(services, serviceId) {
+            return utilGatt.matchServiceId(services, serviceId);
         };
 
         Object.freeze(that);
@@ -295,13 +457,13 @@ exports.newInstance = async function($, spec) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_iot_gatt_plug_iot_gatt.html">caf_iot_gatt/plug_iot_gatt</a></li><li><a href="module-caf_iot_gatt_proxy_iot_gatt.html">caf_iot_gatt/proxy_iot_gatt</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_iot_gen_plug_iot.html">caf_iot/gen_plug_iot</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_iot_gatt_plug_iot_gatt.html">caf_iot_gatt/plug_iot_gatt</a></li><li><a href="module-caf_iot_gatt_proxy_iot_gatt.html">caf_iot_gatt/proxy_iot_gatt</a></li><li><a href="module-caf_iot_gatt_util_gatt.html">caf_iot_gatt/util_gatt</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_iot_gen_plug_iot.html">caf_iot/gen_plug_iot</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Apr 12 2020 11:56:06 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:14 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

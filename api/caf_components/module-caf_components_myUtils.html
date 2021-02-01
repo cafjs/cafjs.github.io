@@ -289,7 +289,7 @@ is called.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line331">line 331</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line350">line 350</a>
     </li></ul></dd>
     
 
@@ -870,7 +870,7 @@ structure.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line354">line 354</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line373">line 373</a>
     </li></ul></dd>
     
 
@@ -1029,7 +1029,7 @@ structure.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line536">line 536</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line560">line 560</a>
     </li></ul></dd>
     
 
@@ -1486,7 +1486,7 @@ console.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line520">line 520</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line544">line 544</a>
     </li></ul></dd>
     
 
@@ -1674,7 +1674,7 @@ console.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line292">line 292</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line311">line 311</a>
     </li></ul></dd>
     
 
@@ -2199,7 +2199,7 @@ defined methods, false if we allow changing existing  ones.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line310">line 310</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line329">line 329</a>
     </li></ul></dd>
     
 
@@ -2437,7 +2437,7 @@ application errors propagated in the first element of the returned array.</p></t
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line392">line 392</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line411">line 411</a>
     </li></ul></dd>
     
 
@@ -2462,6 +2462,116 @@ application errors propagated in the first element of the returned array.</p></t
 
 
 
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="randomString"><span class="type-signature"></span>randomString<span class="signature">()</span><span class="type-signature"> &rarr; {len}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Returns a random string with capital letters and digits.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line289">line 289</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The number of characters in the string.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">len</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -3190,8 +3300,8 @@ returns a promise, e.g, uses the async/await pattern.</p>
 <p>Assumes that the promise resolves to a <code>[error, value]</code> array, compatible
 with an standard node.js callback.</p>
 <p>If the function throws, and the exception was captured in the promise, we
-just rethrow the exception, so that it behaves like a callback based async
-function.</p>
+just mark the exception as thrown, i.e., <code>wasThrown=true</code>, so that later we
+can handle it like a callback-based function exception.</p>
 <p>It does nothing if the function is missing. It throws if called without a
 callback or something that is not a function.</p>
 </div>
@@ -3332,7 +3442,7 @@ of its methods. It defaults to <code>f</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line451">line 451</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line470">line 470</a>
     </li></ul></dd>
     
 
@@ -3565,7 +3675,7 @@ callback or promise based.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line484">line 484</a>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line508">line 508</a>
     </li></ul></dd>
     
 
@@ -3641,7 +3751,7 @@ the callback if timeout expires. The error has a field <code>timeout</code> set 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Apr 12 2020 11:55:54 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:01 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

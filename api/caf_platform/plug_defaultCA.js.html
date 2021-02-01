@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: plug_defaultCA.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: plug_defaultCA.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*!
+Copyright  2020 Caf.js Labs and contributors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+'use strict';
+
+
+/**
+ * Ensures that a CA is running in one of the nodes, otherwise it creates the CA
+ * locally.
+ *
+ * This component should always initialize **after** the rest of the pipeline.
+ *
+ * @module caf_platform/plug_defaultCA
+ * @augments external:caf_components/gen_plug
+ */
+// @ts-ignore: augments not attached to a class
+
+const assert = require('assert');
+const caf_comp = require('caf_components');
+const genPlug = caf_comp.gen_plug;
+const json_rpc = require('caf_transport').json_rpc;
+const util = require('util');
+
+exports.newInstance = async function($, spec) {
+    const that = genPlug.create($, spec);
+    try {
+        const CAId = spec.env.defaultCAId;
+        assert.equal(typeof CAId, 'string',
+                     "'spec.env.CAId' is not a string");
+
+        if (!$._.$.registry.$[CAId]) {
+            const spec = {
+                name: CAId,
+                env: {
+                    blockCreate: false
+                }
+            };
+
+            const instanceChildAsync =
+                  util.promisify($._.$.registry.__ca_instanceChild__);
+
+            const ca = await instanceChildAsync(null, spec);
+            const msg = json_rpc.systemRequest(CAId, '__external_ca_touch__');
+            const processAsync = util.promisify(ca.__ca_process__);
+            await processAsync(msg);
+        }
+
+        return [null, that];
+    } catch (err) {
+        if (err.remoteNode) {
+            $._.$.log &amp;&amp; $._.$.log.debug('CA ' + spec.env.defaultCAId +
+                                         ' already created in node ' +
+                                         err.remoteNode);
+            return [null, that];
+        } else {
+            return [err];
+        }
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_platform_cron_lease.html">caf_platform/cron_lease</a></li><li><a href="module-caf_platform_cron_nodes.html">caf_platform/cron_nodes</a></li><li><a href="module-caf_platform_cron_pulser.html">caf_platform/cron_pulser</a></li><li><a href="module-caf_platform_cron_ripper.html">caf_platform/cron_ripper</a></li><li><a href="module-caf_platform_cron_security.html">caf_platform/cron_security</a></li><li><a href="module-caf_platform_gen_pipe.html">caf_platform/gen_pipe</a></li><li><a href="module-caf_platform_main.html">caf_platform/main</a></li><li><a href="module-caf_platform_pipe_bodyParser.html">caf_platform/pipe_bodyParser</a></li><li><a href="module-caf_platform_pipe_cache.html">caf_platform/pipe_cache</a></li><li><a href="module-caf_platform_pipe_cdn.html">caf_platform/pipe_cdn</a></li><li><a href="module-caf_platform_pipe_compress.html">caf_platform/pipe_compress</a></li><li><a href="module-caf_platform_pipe_dispatcher.html">caf_platform/pipe_dispatcher</a></li><li><a href="module-caf_platform_pipe_ping.html">caf_platform/pipe_ping</a></li><li><a href="module-caf_platform_pipe_redirect.html">caf_platform/pipe_redirect</a></li><li><a href="module-caf_platform_pipe_security.html">caf_platform/pipe_security</a></li><li><a href="module-caf_platform_pipe_static.html">caf_platform/pipe_static</a></li><li><a href="module-caf_platform_pipe_stats.html">caf_platform/pipe_stats</a></li><li><a href="module-caf_platform_pipeline_main.html">caf_platform/pipeline_main</a></li><li><a href="module-caf_platform_platform_main.html">caf_platform/platform_main</a></li><li><a href="module-caf_platform_plug_defaultCA.html">caf_platform/plug_defaultCA</a></li><li><a href="module-caf_platform_plug_lease.html">caf_platform/plug_lease</a></li><li><a href="module-caf_platform_plug_nodes.html">caf_platform/plug_nodes</a></li><li><a href="module-caf_platform_plug_paas.html">caf_platform/plug_paas</a></li><li><a href="module-caf_platform_plug_registry.html">caf_platform/plug_registry</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="external-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="external-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:04 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

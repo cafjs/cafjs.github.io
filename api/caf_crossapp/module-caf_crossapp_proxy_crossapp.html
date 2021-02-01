@@ -155,7 +155,7 @@
     
 
     
-    <h4 class="name" id="call"><span class="type-signature"></span>call<span class="signature">(fqn, from<span class="signature-attributes">opt</span>, method, args, tokenStr<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="call"><span class="type-signature"></span>call<span class="signature">(fqn, from<span class="signature-attributes">opt</span>, method, args, tokenStr<span class="signature-attributes">opt</span>, maxRetries<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -367,6 +367,40 @@ request that authenticates the client described in <code>from</code>.</p></td>
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>maxRetries</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Number of retries before giving up.
+The default is to retry forever.</p></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -404,7 +438,7 @@ request that authenticates the client described in <code>from</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_crossapp.js.html">proxy_crossapp.js</a>, <a href="proxy_crossapp.js.html#line100">line 100</a>
+        <a href="proxy_crossapp.js.html">proxy_crossapp.js</a>, <a href="proxy_crossapp.js.html#line105">line 105</a>
     </li></ul></dd>
     
 
@@ -492,7 +526,7 @@ replies for this request.</p>
     
 
     
-    <h4 class="name" id="dirtyCall"><span class="type-signature"></span>dirtyCall<span class="signature">(fqn, from<span class="signature-attributes">opt</span>, method, args, tokenStr<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;Object>>}</span></h4>
+    <h4 class="name" id="dirtyCall"><span class="type-signature"></span>dirtyCall<span class="signature">(fqn, from<span class="signature-attributes">opt</span>, method, args, tokenStr<span class="signature-attributes">opt</span>, maxRetries<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;Object>>}</span></h4>
     
 
     
@@ -705,6 +739,40 @@ request that authenticates the client described in <code>from</code>.</p></td>
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>maxRetries</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Number of retries before giving up.
+The default is to retry forever.</p></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -742,7 +810,7 @@ request that authenticates the client described in <code>from</code>.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_crossapp.js.html">proxy_crossapp.js</a>, <a href="proxy_crossapp.js.html#line67">line 67</a>
+        <a href="proxy_crossapp.js.html">proxy_crossapp.js</a>, <a href="proxy_crossapp.js.html#line69">line 69</a>
     </li></ul></dd>
     
 
@@ -816,6 +884,168 @@ closed with an error, and <code>false</code> when it was an application error.</
     <dd>
         
 <span class="param-type">Promise.&lt;Array.&lt;Object>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="dirtyIsAppRunning"><span class="type-signature"></span>dirtyIsAppRunning<span class="signature">(app)</span><span class="type-signature"> &rarr; {Promise.&lt;boolean>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Checks whether an app is running.</p>
+<p>The check is non-transactional and blocks the processing of the
+current message by using <code>await</code> on the returned promise.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>app</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An app name, e.g., <code>root-helloworld</code>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_crossapp.js.html">proxy_crossapp.js</a>, <a href="proxy_crossapp.js.html#line124">line 124</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A promise that resolves to <code>true</code> if
+the app is running, <code>false</code> otherwise.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;boolean></span>
 
 
     </dd>
@@ -949,7 +1179,7 @@ process replies.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_crossapp.js.html">proxy_crossapp.js</a>, <a href="proxy_crossapp.js.html#line127">line 127</a>
+        <a href="proxy_crossapp.js.html">proxy_crossapp.js</a>, <a href="proxy_crossapp.js.html#line151">line 151</a>
     </li></ul></dd>
     
 
@@ -1001,7 +1231,7 @@ process replies.</p></td>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Apr 12 2020 11:55:55 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:02 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

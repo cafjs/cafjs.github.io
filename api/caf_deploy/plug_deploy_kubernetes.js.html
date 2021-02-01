@@ -52,120 +52,27 @@
  *
  * Properties:
  *
- *       {refreshInterval: number,
- *        useK8SConfig: string, redis: caf.redis, app: caf.app}
- *
- * where:
- *
- * * `refreshInterval`: time between Kubernetes status polling in msec.
- * * `useK8SConfig`: whether to use the k8s config file from the kubelet client.
- * *  `redis`: configuration properties for the redis service.
- * *  `app`: configuration properties for deploying the app.
- *
- * The type `caf.redis` is:
- *
- *        {templateFile: string, k8SNamespace: string,
- *          image: string, cpus: number, memory: number, memoryLimit: number}
- *
- * where:
- *
- * * `templateFile`: name of the Redis template.
- * * `k8SNamespace`: a namespace for the instance.
- * * `image`: Docker image for the redis service.
- * * `cpus`, `memory`, `memoryLimit`: Fraction of cpu for the instance,
- *  memory in megabytes requested and its hard limit.
- *
- * The type `caf.app` is:
- *
- *        {templateFile: string, k8SNamespace: string, args: Array.&lt;caf.json>,
- *         instances: number, memoryLimit: number, appSuffix: string,
- *         isDeployer: boolean, isAccounts: boolean,
- *         services: Array.&lt;string>, cpus: number, memory: number}
- *
- * where:
- *
- * * `templateFile`: name of the app template.
- * * `k8SNamespace`: a namespace for the instance.
- * * `appSuffix`: a common url suffix for apps, e.g., `cafjs.com`.
- * * `args`: default app arguments.
- * * `instances`: number of instances.
- * * `isDeployer`: whether this is a privileged app that deploys others.
- * * `isAccounts`: whether this is a privileged app that authenticates others.
- * * `services`: dependent services like `redis`.
- * * `cpus`, `memory`, `memoryLimit`: Fraction of cpu for the instance,
- *  memory in megabytes requested and its hard limit.
+ *     See type `deploymentSpecType` in file `types.js`
  *
  * @module caf_deploy/plug_deploy_kubernetes
  * @augments external:caf_components/gen_plug
  */
-const assert = require('assert');
-const fs = require('fs');
 const caf_core = require('caf_core');
 const caf_comp = caf_core.caf_components;
 const myUtils = caf_comp.myUtils;
 const genPlug = caf_comp.gen_plug;
 const genCron = caf_comp.gen_cron;
 
-const mustache = require('mustache');
-const path = require('path');
 const deploy_util = require('./plug_deploy_util_k8s');
-
-const processCommonSpec = function (spec, errMsg) {
-    spec = myUtils.deepClone(spec);
-    assert.equal(typeof spec.templateFile, 'string',
-                 errMsg + "'templateFile' is not a string");
-
-    spec.templateFile = path.resolve(__dirname, spec.templateFile);
-    spec.template = fs.readFileSync(spec.templateFile, {encoding: 'utf8'});
-    mustache.parse(spec.template);
-    assert.equal(typeof spec.k8SNamespace, 'string',
-                 errMsg + "'k8SNamespace' is not a string");
-    assert.equal(typeof spec.cpus, 'number',
-                 errMsg + "'cpus' is not a number");
-    assert.equal(typeof spec.memory, 'number',
-                 errMsg + "'memory' is not a number");
-    spec.memory = '' + spec.memory + 'M'; // megabytes
-
-    assert.equal(typeof spec.memoryLimit, 'number',
-                 errMsg + "'memoryLimit' is not a number");
-    spec.memoryLimit = '' + spec.memoryLimit + 'M'; // megabytes
-    return spec;
-};
-
-const processAppSpec = function(appSpec) {
-    appSpec = processCommonSpec(appSpec, "'spec.env.app.");
-
-    assert.equal(typeof appSpec.instances, 'number',
-                 "'spec.env.app.instances' is not a number");
-    assert.ok(Array.isArray(appSpec.args),
-              "'spec.env.app.args' is not an array");
-    appSpec.args = JSON.stringify(appSpec.args);
-    assert.equal(typeof appSpec.appSuffix, 'string',
-                 "'spec.env.app.appSuffix' is not a string");
-    assert.equal(typeof appSpec.isDeployer, 'boolean',
-                 "'spec.env.app.isDeployer' is not a boolean");
-    assert.equal(typeof appSpec.isAccounts, 'boolean',
-                 "'spec.env.app.isAccounts' is not a boolean");
-    return appSpec;
-};
-
-const processRedisSpec = function(redisSpec) {
-    redisSpec = processCommonSpec(redisSpec, "'spec.env.redis.");
-    assert.equal(typeof redisSpec.image, 'string',
-                 "'spec.env.redis.image' is not a string");
-    return redisSpec;
-};
-
+const deploy_templates = require('./plug_deploy_templates_k8s');
+const types = require('./types');
 
 exports.newInstance = async function($, spec) {
     try {
         let appsStatus = {};
 
-        assert.equal(typeof spec.env.useK8SConfig, 'boolean',
-                     "'spec.env.useK8SConfig' is not a boolean");
+        types.checkSpec(spec.env);
 
-        assert.equal(typeof spec.env.refreshInterval, 'number',
-                     "'spec.env.refreshInterval' is not a number");
         const cronSpec = {
             name: spec.name + '_cron__',
             module: 'gen_cron', // module ignored
@@ -175,85 +82,76 @@ exports.newInstance = async function($, spec) {
 
         const that = genPlug.create($, spec);
 
-        let appSpec = spec.env.app;
-        assert.ok(appSpec &amp;&amp; (typeof appSpec === 'object'),
-                  "'spec.env.app' is not an object");
-        appSpec = processAppSpec(appSpec);
 
-        let redisSpec = spec.env[appSpec.services[0]];
-        assert.ok(redisSpec &amp;&amp; (typeof redisSpec === 'object'),
-                  "'spec.env.redis' is not an object");
-        redisSpec = processRedisSpec(redisSpec);
-        const deployUtil = await deploy_util.newUtil(spec.env, appSpec,
-                                                     redisSpec);
+        const deployTemplates = deploy_templates.newTemplates($, spec.env);
+        const deployUtil = await deploy_util.newUtil($, spec.env,
+                                                     deployTemplates);
 
-        const __ca_createApp__ = async function(appProps) {
-            try {
-                await __ca_statAll__();
-                if (appsStatus[appProps.id]) {
-                    // already deployed, ignore to make call idempotent.
-                    return [null, appProps.id];
-                } else {
-                    await deployUtil.createRedis(appProps);
-                    return await deployUtil.createApp(appProps);
-                }
-            } catch (err) {
-                return [err, null];
+        that.__ca_createApp__ = async function(createOptions) {
+            await that.__ca_statAll__();
+            if (appsStatus[createOptions.id]) {
+                // already deployed, ignore to make call idempotent.
+                return [];
+            } else {
+                const props = deployTemplates.createProps(createOptions);
+                await deployUtil.createRedis(props.redis);
+                return deployUtil.createAppProcess(props.app);
             }
         };
-        that.__ca_createApp__ = myUtils.wrapAsyncFunction(__ca_createApp__);
 
-
-        that.__ca_getAllRedisPorts__ = function() {
-            throw new Error('Unsupported call getAllRedisPorts on Kubernetes');
-        };
-
-        const __ca_updateApp__ = async function(appProps) {
-            try {
-                await __ca_statAll__();
-                return await deployUtil.updateApp(appProps);
-            } catch (err) {
-                return [err, null];
+        that.__ca_updateApp__ = async function(updateOptions) {
+            if (!updateOptions.currentProps.redis.isDedicatedVolume &amp;&amp;
+                (updateOptions.currentProps.app.instances >
+                 spec.env.redis.maxNFSInstances)) {
+                await that.__ca_upgradeToDedicatedDisk__(updateOptions.id);
+                // refresh props
+                await that.__ca_statAll__();
+                const deployed = that.__ca_statApp__(updateOptions.id);
+                updateOptions.currentProps = deployed.props;
+            }
+            const props = deployTemplates.updateProps(updateOptions);
+            if (props.redis) {
+                await deployUtil.updateRedis(props.redis);
+            }
+            if (props.app) {
+                return deployUtil.updateAppProcess(props.app);
+            } else {
+                return [];
             }
         };
-        that.__ca_updateApp__ = myUtils.wrapAsyncFunction(__ca_updateApp__);
+
+        that.__ca_statApp__ = (id) => appsStatus[id];
 
 
-        that.__ca_statApp__ = function(id) {
-            return appsStatus[id];
-        };
+        that.__ca_restartApp__ = (id) => deployUtil.restartApp(id);
 
-        const __ca_restartApp__ = async function(appProps) {
-            try {
-                await __ca_statAll__();
-                return await deployUtil.restartApp(appProps);
-            } catch (err) {
-                return [err, null];
+
+        that.__ca_upgradeToDedicatedDisk__ = async function(id) {
+            await that.__ca_statAll__();
+            if (!appsStatus[id]) {
+                throw new Error(`Missing app ${id} cannot upgrade disk`);
             }
-        };
-        that.__ca_restartApp__ = myUtils.wrapAsyncFunction(__ca_restartApp__);
-
-        const __ca_deleteApp__ = async function(appProps) {
-            try {
-                await __ca_statAll__();
-                const app = appsStatus[appProps.id];
-                if (app) {
-                    await deployUtil.deleteApp(appProps);
-                    return await deployUtil.deleteRedis(appProps);
-                } else {
-                    // idempotent
-                    return [null, null];
-                }
-            } catch (err) {
-                return [err, null];
+            if (!appsStatus[id].props) {
+                throw new Error(`Missing props for ${id} cannot upgrade disk`);
             }
-        };
-        that.__ca_deleteApp__ = myUtils.wrapAsyncFunction(__ca_deleteApp__);
+            if (appsStatus[id].props.redis.isDedicatedVolume) {
+                throw new Error('Already dedicated, cannot upgrade disk');
+            }
 
-        const __ca_statAll__ = async function() {
-            // does not catch exceptions...
-            const res = await deployUtil.statAll();
-            const apps = res[1];
+            const props = myUtils.deepClone(appsStatus[id].props);
+            props.redis.isDedicatedVolume = true;
+            await deployUtil.upgradeToDedicatedDisk(props.redis);
+            return deployUtil.updateProps(id, props);
+        };
+
+        that.__ca_deleteApp__ = async function(deleteOptions) {
+            // Always try to delete, even if we don't see it...
+            await deployUtil.deleteAppProcess(deleteOptions);
+            return deployUtil.deleteRedis(deleteOptions);
+        };
+
+        that.__ca_statAll__ = async function() {
+            const apps = await deployUtil.statAll();
             if (Array.isArray(apps)) {
                 appsStatus = {};
                 apps.forEach(function(x) {
@@ -264,38 +162,22 @@ exports.newInstance = async function($, spec) {
                                                             JSON.stringify(x));
                     }
                 });
-                return [null, appsStatus];
+                return appsStatus;
             } else {
                 $._ &amp;&amp; $._.$.log &amp;&amp; $._.$.log.debug('Got invalid app update: ' +
                                                     JSON.stringify(apps));
-                throw new Error('Got invalid apps  update:' +
+                throw new Error('Got invalid apps update:' +
                                 JSON.stringify(apps));
             }
         };
-
-        that.__ca_statAll__ = function(cb0) {
-            cb0 = cb0 || function(err) {
-                if (err) {
-                    $._ &amp;&amp; $._.$.log &amp;&amp;
-                        $._.$.log.debug('Got error in __ca_statAll__: ' +
-                                        myUtils.errToPrettyStr(err));
-                }
-            };
-            myUtils.wrapAsyncFunction(async function() {
-                try {
-                    return await __ca_statAll__();
-                } catch (err) {
-                    return [err, null];
-                }
-            })(cb0);
-        };
-
 
         const super__ca_shutdown__ = myUtils.superior(that, '__ca_shutdown__');
         that.__ca_shutdown__ = function(data, cb) {
             updateCron &amp;&amp; updateCron.__ca_stop__();
             super__ca_shutdown__(data, cb);
         };
+
+        await that.__ca_statAll__();
 
         updateCron.__ca_start__(that.__ca_statAll__);
 
@@ -314,13 +196,13 @@ exports.newInstance = async function($, spec) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_deploy_main.html">caf_deploy/main</a></li><li><a href="module-caf_deploy_plug_ca_deploy.html">caf_deploy/plug_ca_deploy</a></li><li><a href="module-caf_deploy_plug_deploy.html">caf_deploy/plug_deploy</a></li><li><a href="module-caf_deploy_plug_deploy_kubernetes.html">caf_deploy/plug_deploy_kubernetes</a></li><li><a href="module-caf_deploy_plug_deploy_util_k8s.html">caf_deploy/plug_deploy_util_k8s</a></li><li><a href="module-caf_deploy_proxy_deploy.html">caf_deploy/proxy_deploy</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_deploy_main.html">caf_deploy/main</a></li><li><a href="module-caf_deploy_plug_ca_deploy.html">caf_deploy/plug_ca_deploy</a></li><li><a href="module-caf_deploy_plug_deploy.html">caf_deploy/plug_deploy</a></li><li><a href="module-caf_deploy_plug_deploy_kubernetes.html">caf_deploy/plug_deploy_kubernetes</a></li><li><a href="module-caf_deploy_plug_deploy_util_k8s.html">caf_deploy/plug_deploy_util_k8s</a></li><li><a href="module-caf_deploy_proxy_deploy.html">caf_deploy/proxy_deploy</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Apr 12 2020 11:56:05 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:13 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

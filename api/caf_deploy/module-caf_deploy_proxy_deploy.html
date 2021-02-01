@@ -155,7 +155,7 @@
     
 
     
-    <h4 class="name" id="createApp"><span class="type-signature"></span>createApp<span class="signature">(appLocalName, image, options)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="createApp"><span class="type-signature"></span>createApp<span class="signature">(appLocalName, image, isUntrusted, plan, {{cdnType|null}, timestamp, props<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -164,8 +164,6 @@
 
 <div class="description">
     <p>Creates a new app.</p>
-<p>The type <code>caf.createAppOptions</code> is:</p>
-<pre><code>{args: Array.&lt;caf.json&gt;, instances: number, memory: number}</code></pre>
 </div>
 
 
@@ -188,6 +186,8 @@
 
         <th>Type</th>
 
+        
+        <th>Attributes</th>
         
 
         
@@ -214,6 +214,14 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -238,6 +246,14 @@ qualified by the owner of this CA, i.e., 'owner-appLocalName'.</p></td>
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -248,24 +264,159 @@ qualified by the owner of this CA, i.e., 'owner-appLocalName'.</p></td>
 
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>isUntrusted</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">caf.createAppOptions</span>
+<span class="param-type">boolean</span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last"><p>Extra options to configure this
-app. Memory is in megabytes.</p></td>
+            <td class="description last"><p>Whether it is not a core app, i.e.,
+not trusted by the  system.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>plan</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The strategy for flexing resources.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>{{cdnType|null}</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>cdn An override for the image CDN settings.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>timestamp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">null</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An optional tag to recover state from
+a previous service instance.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>props</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, string></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>An optional object with
+application properties to set. Keys need to be valid bash variables,
+i.e., alphanumeric or <code>_</code> only, and starting with a character.</p></td>
         </tr>
 
     
@@ -306,7 +457,7 @@ app. Memory is in megabytes.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line79">line 79</a>
+        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line81">line 81</a>
     </li></ul></dd>
     
 
@@ -364,7 +515,7 @@ app. Memory is in megabytes.</p></td>
     
 
     
-    <h4 class="name" id="deleteApp"><span class="type-signature"></span>deleteApp<span class="signature">(id)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="deleteApp"><span class="type-signature"></span>deleteApp<span class="signature">(id, keepData)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -372,7 +523,7 @@ app. Memory is in megabytes.</p></td>
 
 
 <div class="description">
-    <p>Deletes deployed app.</p>
+    <p>Deletes the deployed app.</p>
 </div>
 
 
@@ -428,6 +579,29 @@ app. Memory is in megabytes.</p></td>
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>keepData</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Whether to keep the app state.</p></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -465,7 +639,7 @@ app. Memory is in megabytes.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line94">line 94</a>
+        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line98">line 98</a>
     </li></ul></dd>
     
 
@@ -523,7 +697,7 @@ app. Memory is in megabytes.</p></td>
     
 
     
-    <h4 class="name" id="flexApp"><span class="type-signature"></span>flexApp<span class="signature">(id)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="flexApp"><span class="type-signature"></span>flexApp<span class="signature">(id, plan, numberOfCAs)</span><span class="type-signature"> &rarr; {string}</span></h4>
     
 
     
@@ -588,6 +762,52 @@ app. Memory is in megabytes.</p></td>
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>plan</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The strategy for flexing resources.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>numberOfCAs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The number of active CAs.</p></td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -625,7 +845,7 @@ app. Memory is in megabytes.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line125">line 125</a>
+        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line131">line 131</a>
     </li></ul></dd>
     
 
@@ -666,123 +886,6 @@ app. Memory is in megabytes.</p></td>
     <dd>
         
 <span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="getAllRedisPorts"><span class="type-signature"></span>getAllRedisPorts<span class="signature">()</span><span class="type-signature"> &rarr; {Object.&lt;string, number>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Returns all the Redis ports being used by deployed applications.</p>
-<p>This is useful for management applications that need to have a
-global view of what has been deployed.</p>
-<p>Kubernetes uses the default Redis port 6379 for all instances.
-Calling this method with a Kubernetes backend throws an error.</p>
-<p>This is a privileged operation that needs to be explicitly enabled
-with <code>spec.env.listAllRedisPorts=true</code> in <code>framework.json</code>.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line164">line 164</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>Map of appName/ports used by Redis
-instances.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object.&lt;string, number></span>
 
 
     </dd>
@@ -901,7 +1004,7 @@ instances.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line109">line 109</a>
+        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line113">line 113</a>
     </li></ul></dd>
     
 
@@ -970,13 +1073,12 @@ instances.</p>
     <p>Sets the name of the method in this CA that will process reply
 messages.</p>
 <p>To ignore replies, just set it to <code>null</code>.</p>
-<p>The type of the method should be <code>function(requestId, error, data, cb)</code></p>
+<p>The type of the method should be <code>async function(requestId, error, data)</code></p>
 <p>where:</p>
 <ul>
 <li><code>requestId</code>: is an unique identifier to match the request.</li>
 <li><code>error</code>: a deployment error.</li>
 <li><code>data</code>: a deployment response.</li>
-<li><code>cb</code>: the standard callback to notify completion.</li>
 </ul>
 </div>
 
@@ -1074,7 +1176,7 @@ process reply messages.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line57">line 57</a>
+        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line56">line 56</a>
     </li></ul></dd>
     
 
@@ -1110,7 +1212,7 @@ process reply messages.</p></td>
     
 
     
-    <h4 class="name" id="statApps"><span class="type-signature"></span>statApps<span class="signature">(ids)</span><span class="type-signature"> &rarr; {Array.&lt;Object>}</span></h4>
+    <h4 class="name" id="statApps"><span class="type-signature"></span>statApps<span class="signature">(ids)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="global.html#statType">statType</a>>}</span></h4>
     
 
     
@@ -1212,7 +1314,7 @@ collection of apps.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line142">line 142</a>
+        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line148">line 148</a>
     </li></ul></dd>
     
 
@@ -1253,7 +1355,7 @@ in the array means missing app.</p>
     </dt>
     <dd>
         
-<span class="param-type">Array.&lt;Object></span>
+<span class="param-type">Array.&lt;<a href="global.html#statType">statType</a>></span>
 
 
     </dd>
@@ -1281,13 +1383,13 @@ in the array means missing app.</p>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_deploy_main.html">caf_deploy/main</a></li><li><a href="module-caf_deploy_plug_ca_deploy.html">caf_deploy/plug_ca_deploy</a></li><li><a href="module-caf_deploy_plug_deploy.html">caf_deploy/plug_deploy</a></li><li><a href="module-caf_deploy_plug_deploy_kubernetes.html">caf_deploy/plug_deploy_kubernetes</a></li><li><a href="module-caf_deploy_plug_deploy_util_k8s.html">caf_deploy/plug_deploy_util_k8s</a></li><li><a href="module-caf_deploy_proxy_deploy.html">caf_deploy/proxy_deploy</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_deploy_main.html">caf_deploy/main</a></li><li><a href="module-caf_deploy_plug_ca_deploy.html">caf_deploy/plug_ca_deploy</a></li><li><a href="module-caf_deploy_plug_deploy.html">caf_deploy/plug_deploy</a></li><li><a href="module-caf_deploy_plug_deploy_kubernetes.html">caf_deploy/plug_deploy_kubernetes</a></li><li><a href="module-caf_deploy_plug_deploy_util_k8s.html">caf_deploy/plug_deploy_util_k8s</a></li><li><a href="module-caf_deploy_proxy_deploy.html">caf_deploy/proxy_deploy</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Apr 12 2020 11:56:05 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:13 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

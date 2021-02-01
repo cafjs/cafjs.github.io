@@ -60,30 +60,12 @@ const caf_comp = caf_core.caf_components;
 const genPlugCA = caf_comp.gen_plug_ca;
 const json_rpc = caf_core.caf_transport.json_rpc;
 const myUtils = caf_comp.myUtils;
+const REGEXP_BASH_VAR = /^[a-zA-Z][a-zA-Z0-9_]*$/;
+const REGEXP_TIMESTAMP = /^[0-9]*$/;
 
 exports.newInstance = async function($, spec) {
     try {
         const that = genPlugCA.create($, spec);
-
-        const caOwner = json_rpc.splitName($.ca.__ca_getName__())[0];
-
-        const responseCallback = function(reqId) {
-            return function(err, data) {
-                if (that.state.replyMethod) {
-                    const m = json_rpc.systemRequest(
-                        $.ca.__ca_getName__(), that.state.replyMethod,
-                        reqId, err || null, data || null
-                    );
-                    $.ca.__ca_process__(m, function(err) {
-                        if (err) {
-                            $._.$.log &amp;&amp;
-                                $._.$.log.err('Got handler error ' +
-                                              myUtils.errToPrettyStr(err));
-                        }
-                    });
-                }
-            };
-        };
 
         /*
          * The contents of this variable are always checkpointed before
@@ -91,31 +73,55 @@ exports.newInstance = async function($, spec) {
          */
         that.state = {}; // replyMethod:string
 
+        const caOwner = json_rpc.splitName($.ca.__ca_getName__())[0];
+
+        const handleReply = function(id, [err, data]) {
+            if (that.state.replyMethod) {
+                /* Response processed in a separate transaction, i.e.,
+                 using a fresh message */
+                const m = json_rpc.systemRequest($.ca.__ca_getName__(),
+                                                 that.state.replyMethod,
+                                                 id, err || null, data || null);
+                $.ca.__ca_process__(m, function(err) {
+                    err &amp;&amp; $.ca.$.log &amp;&amp;
+                        $.ca.$.log.error('Got handler exception ' +
+                                         myUtils.errToPrettyStr(err));
+                });
+            } else {
+                const logMsg = 'Ignoring reply ' + JSON.stringify(data);
+                $.ca.$.log &amp;&amp; $.ca.$.log.trace(logMsg);
+            }
+        };
+
+        const genericImpl = async function(methodName, id, argsArray) {
+            const reply = [null];
+            try {
+                let method = $._.$.deploy[methodName];
+                reply[1] = await method.apply(method, argsArray);
+            } catch (err) {
+                reply[0] = err;
+            }
+            handleReply(id, reply);
+            return [];
+        };
+
         // transactional ops
         const target = {
-            setHandleReplyMethodImpl: function(methodName, cb0) {
+            async setHandleReplyMethodImpl(methodName) {
                 that.state.replyMethod = methodName;
-                cb0(null);
+                return [];
             },
-            createAppImpl: function(appOptions, reqId, cb0) {
-                const cb1 = responseCallback(reqId);
-                $._.$.deploy.__ca_createApp__(appOptions, cb1);
-                cb0(null);
+            async createAppImpl(appOptions, reqId) {
+                return genericImpl('__ca_createApp__', reqId, [appOptions]);
             },
-            deleteAppImpl: function(appOptions, reqId, cb0) {
-                const cb1 = responseCallback(reqId);
-                $._.$.deploy.__ca_deleteApp__(appOptions, cb1);
-                cb0(null);
+            async deleteAppImpl(appOptions, reqId) {
+                return genericImpl('__ca_deleteApp__', reqId, [appOptions]);
             },
-            restartAppImpl: function(appOptions, reqId, cb0) {
-                const cb1 = responseCallback(reqId);
-                $._.$.deploy.__ca_restartApp__(appOptions, cb1);
-                cb0(null);
+            async restartAppImpl(appOptions, reqId) {
+                return genericImpl('__ca_restartApp__', reqId, [appOptions]);
             },
-            updateAppImpl: function(appOptions, reqId, cb0) {
-                const cb1 = responseCallback(reqId);
-                $._.$.deploy.__ca_updateApp__(appOptions, cb1);
-                cb0(null);
+            async updateAppImpl(appOptions, reqId) {
+                return genericImpl('__ca_updateApp__', reqId, [appOptions]);
             }
         };
 
@@ -125,82 +131,107 @@ exports.newInstance = async function($, spec) {
             that.__ca_lazyApply__('setHandleReplyMethodImpl', [methodName]);
         };
 
-        that.createApp = function(appLocalName, image, options) {
+        that.createApp = function(appLocalName, image, isUntrusted, plan, cdn,
+                                  timestamp, props) {
+            assert.equal(typeof appLocalName, 'string',
+                         "Invalid 'appLocalName'");
+            assert.equal(typeof image, 'string', "Invalid 'image'");
+            assert.equal(typeof plan, 'string', "Invalid 'plan'");
+            assert.equal(typeof isUntrusted, 'boolean',
+                         "Invalid 'isUntrusted'");
+            timestamp &amp;&amp; assert.equal(typeof timestamp, 'string',
+                                      "Invalid 'timestamp'");
+            props &amp;&amp; assert.equal(typeof props, 'object',
+                                  "Invalid 'props'");
             const id = json_rpc.joinName(caOwner, appLocalName);
-            const appOptions = {
-                id: id,
-                image: image,
-                appPublisher: caOwner,
-                appLocalName: appLocalName
+
+            /** @type {createOptionsType} */
+            const createOptions = {
+                id,
+                image: JSON.stringify(image),
+                isUntrusted,
+                plan
             };
-            if (typeof options.memory === 'number') {
-                appOptions.memory = options.memory;
+            if (cdn) {
+                createOptions.cdn = {
+                    appCDN: JSON.stringify(cdn.appCDN),
+                    appSubdirCDN: JSON.stringify(cdn.appSubdirCDN)
+                };
             }
-            appOptions.instances = (options.instances ? options.instances : 1);
-            if (options &amp;&amp; Array.isArray(options.args)) {
-                appOptions.args = JSON.stringify(options.args);
+            if (timestamp) {
+                assert(timestamp.match(REGEXP_TIMESTAMP),
+                       `Invalid timestamp ${timestamp}`);
+                createOptions.timestamp = timestamp;
             }
-            that.__ca_lazyApply__('createAppImpl', [appOptions, id]);
+            if (props) {
+                const envProps = [];
+                Object.keys(props).forEach((k) => {
+                    assert(k.match(REGEXP_BASH_VAR), `Invalid key ${k}`);
+                    assert(typeof props[k] === 'string',
+                           `Value ${props[k]} is not a string`);
+                    // stringify the string to escape special characters
+                    envProps.push({key: k, value: JSON.stringify(props[k])});
+                });
+                createOptions.envProps = envProps;
+            }
+            that.__ca_lazyApply__('createAppImpl', [createOptions, id]);
             return id;
         };
 
-        that.deleteApp = function(id) {
+        that.deleteApp = function(id, keepData) {
             assert(id.startsWith(caOwner + json_rpc.NAME_SEPARATOR));
             const reqId = myUtils.uniqueId();
-            that.__ca_lazyApply__('deleteAppImpl', [{id: id}, reqId]);
+
+            const deployed = $._.$.deploy.__ca_statApp__(id);
+
+            /** @type {deleteOptionsType} */
+            const deleteOptions = {
+                id,
+                keepData,
+                /* Allow missing apps to make delete idempotent*/
+                timestamp: deployed &amp;&amp; deployed.props &amp;&amp; deployed.props.redis &amp;&amp;
+                    deployed.props.redis.timestamp || null
+            };
+
+            that.__ca_lazyApply__('deleteAppImpl', [deleteOptions, reqId]);
             return reqId;
         };
 
         that.restartApp = function(id) {
             assert(id.startsWith(caOwner + json_rpc.NAME_SEPARATOR));
             const reqId = myUtils.uniqueId();
-            that.__ca_lazyApply__('restartAppImpl', [{id: id}, reqId]);
+            that.__ca_lazyApply__('restartAppImpl', [id, reqId]);
             return reqId;
         };
 
-        that.flexApp = function(id, instances) {
+        that.flexApp = function(id, plan, numberOfCAs) {
+            assert.equal(typeof id, 'string', "Invalid 'id'");
+            assert.equal(typeof plan, 'string', "Invalid 'plan'");
+            assert.equal(typeof numberOfCAs, 'number', "Invalid 'numberOfCAs'");
+
             const reqId = myUtils.uniqueId();
             const split = json_rpc.splitName(id);
             assert(split[0] === caOwner);
+
             const deployed = $._.$.deploy.__ca_statApp__(id);
-            assert(deployed);
-            const appOptions = {
-                id: id,
-                instances: instances,
-                appPublisher: caOwner,
-                appLocalName: split[1]
+            assert(deployed, 'Missing app ' + id);
+            assert(deployed.props &amp;&amp; (deployed.props.app.id === id));
+
+            /** @type {updateOptionsType} */
+            const updateOptions = {
+                id,
+                plan,
+                numberOfCAs,
+                currentProps: deployed.props
             };
-            that.__ca_lazyApply__('updateAppImpl', [appOptions, reqId]);
+            that.__ca_lazyApply__('updateAppImpl', [updateOptions, reqId]);
             return reqId;
         };
 
-        that.getAllRedisPorts = function() {
-            return $._.$.deploy.__ca_getAllRedisPorts__();
-        };
-
         that.statApps = function(ids) {
-            return ids.filter(function(x) {
-                return x.startsWith(caOwner + json_rpc.NAME_SEPARATOR);
-            }).map(function(x) {
-                return $._.$.deploy.__ca_statApp__(x);
-            });
-        };
-
-        // Framework methods
-        const super__ca_resume__ =
-                myUtils.superiorPromisify(that, '__ca_resume__');
-        that.__ca_resume__ = async function(cp) {
-            try {
-                if (cp) {
-                    await super__ca_resume__(cp);
-                    // backwards compatible...
-                    that.state.replyMethod = that.state.replyMethod ||
-                        cp.replyMethod;
-                }
-                return [];
-            } catch (err) {
-                return [err];
-            }
+            return ids.filter(
+                (x) => x.startsWith(caOwner + json_rpc.NAME_SEPARATOR)
+            ).map((x) => $._.$.deploy.__ca_statApp__(x));
         };
 
         return [null, that];
@@ -218,13 +249,13 @@ exports.newInstance = async function($, spec) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_deploy_main.html">caf_deploy/main</a></li><li><a href="module-caf_deploy_plug_ca_deploy.html">caf_deploy/plug_ca_deploy</a></li><li><a href="module-caf_deploy_plug_deploy.html">caf_deploy/plug_deploy</a></li><li><a href="module-caf_deploy_plug_deploy_kubernetes.html">caf_deploy/plug_deploy_kubernetes</a></li><li><a href="module-caf_deploy_plug_deploy_util_k8s.html">caf_deploy/plug_deploy_util_k8s</a></li><li><a href="module-caf_deploy_proxy_deploy.html">caf_deploy/proxy_deploy</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_deploy_main.html">caf_deploy/main</a></li><li><a href="module-caf_deploy_plug_ca_deploy.html">caf_deploy/plug_ca_deploy</a></li><li><a href="module-caf_deploy_plug_deploy.html">caf_deploy/plug_deploy</a></li><li><a href="module-caf_deploy_plug_deploy_kubernetes.html">caf_deploy/plug_deploy_kubernetes</a></li><li><a href="module-caf_deploy_plug_deploy_util_k8s.html">caf_deploy/plug_deploy_util_k8s</a></li><li><a href="module-caf_deploy_proxy_deploy.html">caf_deploy/proxy_deploy</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Apr 12 2020 11:56:05 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:13 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

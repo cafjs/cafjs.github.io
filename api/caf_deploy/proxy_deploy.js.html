@@ -65,15 +65,14 @@ exports.newInstance = async function($, spec) {
          *
          * To ignore replies, just set it to `null`.
          *
-         * The type of the method should be `function(requestId, error, data,
-         * cb)`
+         * The type of the method should be `async function(requestId, error,
+         * data)`
          *
          * where:
          *
          *  *  `requestId`: is an unique identifier to match the request.
          *  *  `error`: a deployment error.
          *  *  `data`: a deployment response.
-         *  *   `cb`: the standard callback to notify completion.
          *
          * @param {string| null} methodName The name of this CA's method that
          *  process reply messages.
@@ -89,38 +88,43 @@ exports.newInstance = async function($, spec) {
         /**
          * Creates a new app.
          *
-         * The type `caf.createAppOptions` is:
-         *
-         *     {args: Array.&lt;caf.json>, instances: number, memory: number}
-         *
          * @param {string} appLocalName A name for this app that will be
          * qualified by the owner of this CA, i.e., 'owner-appLocalName'.
          * @param {string} image A Docker image containing the app.
-         * @param {caf.createAppOptions} options Extra options to configure this
-         * app. Memory is in megabytes.
+         * @param {boolean} isUntrusted  Whether it is not a core app, i.e.,
+         * not trusted by the  system.
+         * @param {string} plan The strategy for flexing resources.
+         * @param {{cdnType|null} cdn An override for the image CDN settings.
+         * @param {string|null} timestamp An optional tag to recover state from
+         * a previous service instance.
+         * @param {Object.&lt;string, string>=} props An optional object with
+         * application properties to set. Keys need to be valid bash variables,
+         * i.e., alphanumeric or `_` only, and starting with a character.
          *
          * @return {string} An id to identify this app instance.
          *
          * @memberof! module:caf_deploy/proxy_deploy#
          * @alias createApp
          */
-        that.createApp = function(appLocalName, image, options) {
-            return $._.createApp(appLocalName, image, options);
+        that.createApp = function(appLocalName, image, isUntrusted, plan,
+                                  cdn, timestamp, props) {
+            return $._.createApp(appLocalName, image, isUntrusted, plan, cdn,
+                                 timestamp, props);
         };
 
 
         /**
-         * Deletes deployed app.
+         * Deletes the deployed app.
          *
          * @param {string} id An instance identifier.
-         *
+         * @param {boolean} keepData Whether to keep the app state.
          * @return {string} A request identifier.
          *
          * @memberof! module:caf_deploy/proxy_deploy#
          * @alias deleteApp
          */
-        that.deleteApp = function(id) {
-            return $._.deleteApp(id);
+        that.deleteApp = function(id, keepData) {
+            return $._.deleteApp(id, keepData);
         };
 
 
@@ -144,14 +148,16 @@ exports.newInstance = async function($, spec) {
          * A zero value suspends the app without losing its state.
          *
          * @param {string} id An instance identifier.
+         * @param {string} plan The strategy for flexing resources.
+         * @param {number} numberOfCAs The number of active CAs.
          *
          * @return {string} A request identifier.
          *
          * @memberof! module:caf_deploy/proxy_deploy#
          * @alias flexApp
          */
-        that.flexApp = function(id, numInstances) {
-            return $._.flexApp(id, numInstances);
+        that.flexApp = function(id, plan, numberOfCAs) {
+            return $._.flexApp(id, plan, numberOfCAs);
         };
 
         /**
@@ -161,7 +167,7 @@ exports.newInstance = async function($, spec) {
          *
          * @param {Array&lt;string>} ids An array of app identifiers.
          *
-         * @return {Array.&lt;Object>} Status info for these apps. `null` element
+         * @return {Array.&lt;statType>} Status info for these apps. `null` element
          * in the array means missing app.
          *
          * @memberof! module:caf_deploy/proxy_deploy#
@@ -169,28 +175,6 @@ exports.newInstance = async function($, spec) {
          */
         that.statApps = function(ids) {
             return $._.statApps(ids);
-        };
-
-        /**
-         * Returns all the Redis ports being used by deployed applications.
-         *
-         *  This is useful for management applications that need to have a
-         * global view of what has been deployed.
-         *
-         *  Kubernetes uses the default Redis port 6379 for all instances.
-         *  Calling this method with a Kubernetes backend throws an error.
-         *
-         * This is a privileged operation that needs to be explicitly enabled
-         * with `spec.env.listAllRedisPorts=true` in `framework.json`.
-         *
-         * @return {Object&lt;string,number>} Map of appName/ports used by Redis
-         * instances.
-         *
-         * @memberof! module:caf_deploy/proxy_deploy#
-         * @alias getAllRedisPorts
-         */
-        that.getAllRedisPorts = function() {
-            return $._.getAllRedisPorts();
         };
 
         Object.freeze(that);
@@ -209,13 +193,13 @@ exports.newInstance = async function($, spec) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_deploy_main.html">caf_deploy/main</a></li><li><a href="module-caf_deploy_plug_ca_deploy.html">caf_deploy/plug_ca_deploy</a></li><li><a href="module-caf_deploy_plug_deploy.html">caf_deploy/plug_deploy</a></li><li><a href="module-caf_deploy_plug_deploy_kubernetes.html">caf_deploy/plug_deploy_kubernetes</a></li><li><a href="module-caf_deploy_plug_deploy_util_k8s.html">caf_deploy/plug_deploy_util_k8s</a></li><li><a href="module-caf_deploy_proxy_deploy.html">caf_deploy/proxy_deploy</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_deploy_main.html">caf_deploy/main</a></li><li><a href="module-caf_deploy_plug_ca_deploy.html">caf_deploy/plug_ca_deploy</a></li><li><a href="module-caf_deploy_plug_deploy.html">caf_deploy/plug_deploy</a></li><li><a href="module-caf_deploy_plug_deploy_kubernetes.html">caf_deploy/plug_deploy_kubernetes</a></li><li><a href="module-caf_deploy_plug_deploy_util_k8s.html">caf_deploy/plug_deploy_util_k8s</a></li><li><a href="module-caf_deploy_proxy_deploy.html">caf_deploy/proxy_deploy</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Apr 12 2020 11:56:05 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:13 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
