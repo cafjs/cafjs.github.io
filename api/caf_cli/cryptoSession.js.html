@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Source: cryptoSession.js</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>cryptoSession.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Source: cryptoSession.js</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_cli_CreateUser.html">caf_cli/CreateUser</a><ul class='methods'><li data-type='method'><a href="module-caf_cli_CreateUser.html">newUser</a></li></ul></li><li><a href="module-caf_cli_cryptoSession.html">caf_cli/cryptoSession</a><ul class='methods'><li data-type='method'><a href="module-caf_cli_cryptoSession.html">create</a></li><li data-type='method'><a href="module-caf_cli_cryptoSession.html#authAndDecrypt">authAndDecrypt</a></li><li data-type='method'><a href="module-caf_cli_cryptoSession.html#encryptAndMAC">encryptAndMAC</a></li><li data-type='method'><a href="module-caf_cli_cryptoSession.html#getPublicKey">getPublicKey</a></li><li data-type='method'><a href="module-caf_cli_cryptoSession.html#setOtherPublicKey">setOtherPublicKey</a></li></ul></li><li><a href="module-caf_cli_main.html">caf_cli/main</a></li><li><a href="module-caf_cli_Queue.html">caf_cli/Queue</a></li><li><a href="module-caf_cli_Session.html">caf_cli/Session</a><ul class='methods'><li data-type='method'><a href="module-caf_cli_Session.html">deleteTokenFromURL</a></li><li data-type='method'><a href="module-caf_cli_Session.html">extractSpecFromURL</a></li><li data-type='method'><a href="module-caf_cli_Session.html">extractTokenFromURL</a></li><li data-type='method'><a href="module-caf_cli_Session.html">getMethodArgs</a></li><li data-type='method'><a href="module-caf_cli_Session.html#changeSessionId">changeSessionId</a></li><li data-type='method'><a href="module-caf_cli_Session.html#close">close</a></li><li data-type='method'><a href="module-caf_cli_Session.html#getCacheKey">getCacheKey</a></li><li data-type='method'><a href="module-caf_cli_Session.html#getCrypto">getCrypto</a></li><li data-type='method'><a href="module-caf_cli_Session.html#getEstimatedTimeOffset">getEstimatedTimeOffset</a></li><li data-type='method'><a href="module-caf_cli_Session.html#getPromise">getPromise</a></li><li data-type='method'><a href="module-caf_cli_Session.html#isClosed">isClosed</a></li><li data-type='method'><a href="module-caf_cli_Session.html#numPending">numPending</a></li><li data-type='method'><a href="module-caf_cli_Session.html">patchURL</a></li><li data-type='method'><a href="module-caf_cli_Session.html">Session</a></li></ul></li><li><a href="module-caf_cli_TimeAdjuster.html">caf_cli/TimeAdjuster</a><ul class='methods'><li data-type='method'><a href="module-caf_cli_TimeAdjuster.html#endRequest">endRequest</a></li><li data-type='method'><a href="module-caf_cli_TimeAdjuster.html#offset">offset</a></li><li data-type='method'><a href="module-caf_cli_TimeAdjuster.html#startRequest">startRequest</a></li><li data-type='method'><a href="module-caf_cli_TimeAdjuster.html">TimeAdjuster</a></li></ul></li><li><a href="module-caf_cli_TokenFactory.html">caf_cli/TokenFactory</a><ul class='methods'><li data-type='method'><a href="module-caf_cli_TokenFactory.html#newToken">newToken</a></li><li data-type='method'><a href="module-caf_cli_TokenFactory.html">TokenFactory</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">cryptoSession.js</h1>
+    
 
     
 
@@ -193,19 +209,21 @@ exports.create = function() {
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_cli_CreateUser.html">caf_cli/CreateUser</a></li><li><a href="module-caf_cli_cryptoSession.html">caf_cli/cryptoSession</a></li><li><a href="module-caf_cli_main.html">caf_cli/main</a></li><li><a href="module-caf_cli_Queue.html">caf_cli/Queue</a></li><li><a href="module-caf_cli_Session.html">caf_cli/Session</a></li><li><a href="module-caf_cli_TimeAdjuster.html">caf_cli/TimeAdjuster</a></li><li><a href="module-caf_cli_TokenFactory.html">caf_cli/TokenFactory</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul><h3><a href="global.html">Global</a></h3>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:00 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:37 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

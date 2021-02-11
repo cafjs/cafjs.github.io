@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Module: caf_security/tokens</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>caf_security/tokens - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Module: caf_security/tokens</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_security_aggregates.html">caf_security/aggregates</a><ul class='methods'><li data-type='method'><a href="module-caf_security_rules.html">computeRuleId</a></li><li data-type='method'><a href="module-caf_security_rules.html">isAuthorized</a></li><li data-type='method'><a href="module-caf_security_aggregates.html">newAggregateRule</a></li><li data-type='method'><a href="module-caf_security_rules.html">newRuleEngine</a></li></ul></li><li><a href="module-caf_security_main.html">caf_security/main</a></li><li><a href="module-caf_security_plug_ca_security.html">caf_security/plug_ca_security</a></li><li><a href="module-caf_security_plug_security.html">caf_security/plug_security</a><ul class='methods'><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_attenuateToken__">__ca_attenuateToken__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_authenticate__">__ca_authenticate__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_blockCreate__">__ca_blockCreate__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_pulse__">__ca_pulse__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_quotaCheck__">__ca_quotaCheck__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_quotaRenew__">__ca_quotaRenew__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_verifyToken__">__ca_verifyToken__</a></li></ul></li><li><a href="module-caf_security_proxy_security.html">caf_security/proxy_security</a><ul class='methods'><li data-type='method'><a href="module-caf_security_proxy_security.html#addRule">addRule</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#attenuateToken">attenuateToken</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#computeRuleId">computeRuleId</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#getAppName">getAppName</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#getCallerFrom">getCallerFrom</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#isAuthorized">isAuthorized</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#listRules">listRules</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#newAggregateRule">newAggregateRule</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#newSimpleRule">newSimpleRule</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#removeRule">removeRule</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#verifyToken">verifyToken</a></li></ul></li><li><a href="module-caf_security_rules.html">caf_security/rules</a><ul class='methods'><li data-type='method'><a href="module-caf_security_rules.html">computeRuleId</a></li><li data-type='method'><a href="module-caf_security_rules.html">isAuthorized</a></li><li data-type='method'><a href="module-caf_security_rules.html">newRuleEngine</a></li><li data-type='method'><a href="module-caf_security_rules.html">newSimpleRule</a></li></ul></li><li><a href="module-caf_security_tokens.html">caf_security/tokens</a><ul class='methods'><li data-type='method'><a href="module-caf_security_tokens.html">decode</a></li><li data-type='method'><a href="module-caf_security_tokens.html">lessOrEqual</a></li><li data-type='method'><a href="module-caf_security_tokens.html">meet</a></li><li data-type='method'><a href="module-caf_security_tokens.html">newPayload</a></li><li data-type='method'><a href="module-caf_security_tokens.html">satisfyACL</a></li><li data-type='method'><a href="module-caf_security_tokens.html">sign</a></li><li data-type='method'><a href="module-caf_security_tokens.html">similar</a></li><li data-type='method'><a href="module-caf_security_tokens.html">validate</a></li><li data-type='method'><a href="module-caf_security_tokens.html">validExtendedNobody</a></li><li data-type='method'><a href="module-caf_security_tokens.html">validUsername</a></li></ul></li><li><a href="module-caf_security_utils.html">caf_security/utils</a><ul class='methods'><li data-type='method'><a href="module-caf_security_utils.html">accountsSession</a></li><li data-type='method'><a href="module-caf_security_utils.html">loadKey</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li><li><a href="external-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">caf_security/tokens</h1>
+    
 
     
 
@@ -35,10 +51,11 @@
 </header>
 
 <article>
-    <div class="container-overview">
     
+        <div class="container-overview">
         
-            <div class="description"><p>Tokens are the primary mechanism to implement single sign on for all
+            
+                <div class="description usertext"><p>Tokens are the primary mechanism to implement single sign on for all
 the user apps.</p>
 <p>A token is used by the client to create a
 secure channel with its corresponding CA running in the cloud.</p>
@@ -87,21 +104,10 @@ using the meet operator for access checks:</p>
 </code></pre>
 <p>where the result of ^ is 'empty' if any of the constraints has an
 'empty' set.</p></div>
-        
-
-        
             
 
-
-
-
-
-
-
-
-
-
-
+            
+                
 
 
 
@@ -109,34 +115,34 @@ using the meet operator for access checks:</p>
 <dl class="details">
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line23">line 23</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -165,10 +171,21 @@ using the meet operator for access checks:</p>
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+            
         
-    
-    </div>
-
+        </div>
     
 
     
@@ -176,8 +193,10 @@ using the meet operator for access checks:</p>
     
 
     
-
     
+    
+
+     
 
     
 
@@ -191,18 +210,63 @@ using the meet operator for access checks:</p>
 
     
 
-    
     <h4 class="name" id="decode"><span class="type-signature"></span>decode<span class="signature">(tokenStr)</span><span class="type-signature"> &rarr; {<a href="global.html#tokenType">tokenType</a>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line325">line 325</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Decode a token without doing any checks. This is sometimes useful to choose
 a public key for validation.</p>
 </div>
+
+
 
 
 
@@ -265,50 +329,6 @@ a public key for validation.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line325">line 325</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -328,7 +348,7 @@ a public key for validation.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -344,25 +364,68 @@ a public key for validation.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="lessOrEqual"><span class="type-signature"></span>lessOrEqual<span class="signature">(t1, t2)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line201">line 201</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Whether for tokens t1 and t2, t1 &lt;= t2.</p>
 <p>Note that <code>null</code> represents the empty token, and <code>null &lt;= t2 for all t2</code>.</p>
 </div>
+
+
 
 
 
@@ -448,50 +511,6 @@ a public key for validation.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line201">line 201</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -506,13 +525,13 @@ a public key for validation.</p>
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         <p>Malformed token.</p>
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -540,7 +559,7 @@ a public key for validation.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -556,22 +575,63 @@ a public key for validation.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="meet"><span class="type-signature"></span>meet<span class="signature">(t1, t2)</span><span class="type-signature"> &rarr; {<a href="global.html#tokenType">tokenType</a>|null}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line112">line 112</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>'Meet' (^)  operation of two tokens. Performs set intersection for each
 constraint, and if any resulting constraint is empty it returns <code>null</code>, the
 empty token.</p>
@@ -580,6 +640,8 @@ set.</p>
 <p>Intersection of <code>expiresAfter</code> uses time intervals.</p>
 <p>There is no validation of the tokens or signing of the result.</p>
 </div>
+
+
 
 
 
@@ -665,50 +727,6 @@ set.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line112">line 112</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -729,7 +747,7 @@ token payload with 't1^t2'.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -748,27 +766,70 @@ token payload with 't1^t2'.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="newPayload"><span class="type-signature"></span>newPayload<span class="signature">(appPublisher<span class="signature-attributes">opt</span>, appLocalName<span class="signature-attributes">opt</span>, caOwner<span class="signature-attributes">opt</span>, caLocalName<span class="signature-attributes">opt</span>, durationInSec<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="global.html#tokenType">tokenType</a>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line377">line 377</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Constructor for a new token or acl element payload.</p>
 <p>The type of tokenType is</p>
 <pre><code> {appPublisher: string=, appLocalName:string=,
   caOwner: string=, caLocalName: string=, expiresAfter: number=}</code></pre>
 </div>
+
+
 
 
 
@@ -975,50 +1036,6 @@ token payload with 't1^t2'.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line377">line 377</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1033,13 +1050,13 @@ token payload with 't1^t2'.</p>
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         <p>when input is malformed.</p>
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -1067,7 +1084,7 @@ token payload with 't1^t2'.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1083,26 +1100,69 @@ token payload with 't1^t2'.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="satisfyACL"><span class="type-signature"></span>satisfyACL<span class="signature">(acl, token)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line346">line 346</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Checks whether a valid token satisfies an ACL (Access control List).</p>
 <p>Inefficient with many ACLs. See <a href="module-caf_security_rules.html">module:caf_security/rules</a> for a
 recommended alternative.</p>
 </div>
+
+
 
 
 
@@ -1192,50 +1252,6 @@ of constraints using a token format.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line346">line 346</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1255,7 +1271,7 @@ of constraints using a token format.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1271,24 +1287,67 @@ of constraints using a token format.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="sign"><span class="type-signature"></span>sign<span class="signature">(token, privKey)</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line220">line 220</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Signs a token.</p>
 </div>
+
+
 
 
 
@@ -1374,50 +1433,6 @@ of constraints using a token format.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line220">line 220</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1432,13 +1447,13 @@ of constraints using a token format.</p></td>
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         <p>Cannot sign.</p>
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -1466,7 +1481,7 @@ of constraints using a token format.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1482,25 +1497,68 @@ of constraints using a token format.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="similar"><span class="type-signature"></span>similar<span class="signature">(t1, t2, ignoreExpires)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line169">line 169</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Deep equality of two tokens ignoring fields that are not constraints.</p>
 <p>Note that <code>null</code> represents the empty token.</p>
 </div>
+
+
 
 
 
@@ -1609,50 +1667,6 @@ of constraints using a token format.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line169">line 169</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1672,7 +1686,7 @@ of constraints using a token format.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1688,25 +1702,68 @@ of constraints using a token format.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="validate"><span class="type-signature"></span>validate<span class="signature">(tokenStr, pubKey)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line297">line 297</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Validates a token.</p>
 <p>Checks signature, expire time, and string format (ASCII alphanumeric).</p>
 </div>
+
+
 
 
 
@@ -1792,50 +1849,6 @@ of constraints using a token format.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line297">line 297</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1850,13 +1863,13 @@ of constraints using a token format.</p></td>
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         <p>Token does not validate</p>
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -1878,25 +1891,68 @@ of constraints using a token format.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="validExtendedNobody"><span class="type-signature"></span>validExtendedNobody<span class="signature">(from)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line268">line 268</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Checks whether a username is an extended NOBODY user.</p>
 <p>This user can have many CAs as long as their names have only two characters.</p>
 </div>
+
+
 
 
 
@@ -1959,50 +2015,6 @@ of constraints using a token format.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line268">line 268</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -2022,7 +2034,7 @@ of constraints using a token format.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -2038,25 +2050,68 @@ of constraints using a token format.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="validUsername"><span class="type-signature"></span>validUsername<span class="signature">(username)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line252">line 252</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Checks whether a username contains only valid characters (lower case letters
 and numbers, ASCII only), and it has at least three characters.</p>
 </div>
+
+
 
 
 
@@ -2119,50 +2174,6 @@ and numbers, ASCII only), and it has at least three characters.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tokens.js.html">tokens.js</a>, <a href="tokens.js.html#line252">line 252</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -2182,7 +2193,7 @@ and numbers, ASCII only), and it has at least three characters.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -2195,8 +2206,6 @@ and numbers, ASCII only), and it has at least three characters.</p>
 </dl>
 
     
-
-
 
 
 
@@ -2213,19 +2222,21 @@ and numbers, ASCII only), and it has at least three characters.</p>
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_security_aggregates.html">caf_security/aggregates</a></li><li><a href="module-caf_security_main.html">caf_security/main</a></li><li><a href="module-caf_security_plug_ca_security.html">caf_security/plug_ca_security</a></li><li><a href="module-caf_security_plug_security.html">caf_security/plug_security</a></li><li><a href="module-caf_security_proxy_security.html">caf_security/proxy_security</a></li><li><a href="module-caf_security_rules.html">caf_security/rules</a></li><li><a href="module-caf_security_tokens.html">caf_security/tokens</a></li><li><a href="module-caf_security_utils.html">caf_security/utils</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li><li><a href="external-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li></ul><h3><a href="global.html">Global</a></h3>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:07 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:45 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Module: caf_ca/gen_handler</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>caf_ca/gen_handler - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Module: caf_ca/gen_handler</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_ca_ca_main.html">caf_ca/ca_main</a></li><li><a href="module-caf_ca_gen_ca.html">caf_ca/gen_ca</a><ul class='methods'><li data-type='method'><a href="module-caf_ca_gen_ca.html#__ca_destroy__">__ca_destroy__</a></li><li data-type='method'><a href="module-caf_ca_gen_ca.html#__ca_getAppName__">__ca_getAppName__</a></li><li data-type='method'><a href="module-caf_ca_gen_ca.html#__ca_getName__">__ca_getName__</a></li><li data-type='method'><a href="module-caf_ca_gen_ca.html#__ca_isJustCreated__">__ca_isJustCreated__</a></li><li data-type='method'><a href="module-caf_ca_gen_ca.html#__ca_process__">__ca_process__</a></li><li data-type='method'><a href="module-caf_ca_gen_ca.html#__ca_progress__">__ca_progress__</a></li><li data-type='method'><a href="module-caf_ca_gen_ca.html#__ca_pull__">__ca_pull__</a></li><li data-type='method'><a href="module-caf_ca_gen_ca.html#__ca_pulse__">__ca_pulse__</a></li><li data-type='method'><a href="module-caf_ca_gen_ca.html#__ca_setJustCreated__">__ca_setJustCreated__</a></li></ul></li><li><a href="module-caf_ca_gen_handler.html">caf_ca/gen_handler</a><ul class='methods'><li data-type='method'><a href="module-caf_ca_gen_handler.html#__ca_pulse__">__ca_pulse__</a></li><li data-type='method'><a href="module-caf_ca_gen_handler.html#__ca_upgrade__">__ca_upgrade__</a></li><li data-type='method'><a href="module-caf_ca_gen_handler.html#__external_ca_destroy__">__external_ca_destroy__</a></li><li data-type='method'><a href="module-caf_ca_gen_handler.html#__external_ca_multi__">__external_ca_multi__</a></li><li data-type='method'><a href="module-caf_ca_gen_handler.html#__external_ca_touch__">__external_ca_touch__</a></li></ul></li><li><a href="module-caf_ca_main.html">caf_ca/main</a><ul class='methods'><li data-type='method'><a href="module-caf_ca_main.html">getModule</a></li></ul></li><li><a href="module-caf_ca_plug_ca_handler.html">caf_ca/plug_ca_handler</a></li><li><a href="module-caf_ca_plug_ca_inqueue.html">caf_ca/plug_ca_inqueue</a><ul class='methods'><li data-type='method'><a href="module-caf_ca_plug_ca_inqueue.html#getQueue">getQueue</a></li><li data-type='method'><a href="module-caf_ca_plug_ca_inqueue.html#process">process</a></li><li data-type='method'><a href="module-caf_ca_plug_ca_inqueue.html#progress">progress</a></li></ul></li><li><a href="module-caf_ca_proxy_handler.html">caf_ca/proxy_handler</a></li><li><a href="module-caf_ca_proxy_inqueue.html">caf_ca/proxy_inqueue</a><ul class='methods'><li data-type='method'><a href="module-caf_ca_proxy_inqueue.html#queueLength">queueLength</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components.html">caf_components</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="external-caf_pubsub.html">caf_pubsub</a></li><li><a href="external-caf_security.html">caf_security</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">caf_ca/gen_handler</h1>
+    
 
     
 
@@ -35,29 +51,19 @@
 </header>
 
 <article>
-    <div class="container-overview">
     
+        <div class="container-overview">
         
-            <div class="description"><p>Generic CA handler plug.</p>
+            
+                <div class="description usertext"><p>Generic CA handler plug.</p>
 <p>A handler combines custom application methods with private state.</p>
 <p>CAF binds methods to the handler object, enabling user code to
 access CA state using <code>this</code>, i.e., a traditional, non-functional,
 object abstraction.</p></div>
-        
-
-        
             
 
-
-
-
-
-
-
-
-
-
-
+            
+                
 
 
 
@@ -65,34 +71,34 @@ object abstraction.</p></div>
 <dl class="details">
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="gen_handler.js.html">gen_handler.js</a>, <a href="gen_handler.js.html#line18">line 18</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -121,9 +127,22 @@ object abstraction.</p></div>
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+            
         
+        </div>
     
-    </div>
 
     
         <h3 class="subsection-title">Extends</h3>
@@ -141,10 +160,10 @@ object abstraction.</p></div>
     
 
     
-
+    
     
 
-    
+     
 
     
 
@@ -158,7 +177,52 @@ object abstraction.</p></div>
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gen_handler.js.html">gen_handler.js</a>, <a href="gen_handler.js.html#line121">line 121</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Run-time type information.</p>
 </div>
 
@@ -178,37 +242,46 @@ object abstraction.</p></div>
 
 
 
+
+        
+            
+<h4 class="name" id="scratch"><span class="type-signature"></span>scratch<span class="type-signature"> :Object</span></h4>
+
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="gen_handler.js.html">gen_handler.js</a>, <a href="gen_handler.js.html#line121">line 121</a>
+        <a href="gen_handler.js.html">gen_handler.js</a>, <a href="gen_handler.js.html#line151">line 151</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -222,15 +295,7 @@ object abstraction.</p></div>
 
 
 
-
-        
-            
-<h4 class="name" id="scratch"><span class="type-signature"></span>scratch<span class="type-signature"> :Object</span></h4>
-
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>Contains anything, but it is not guaranteed to be preserved across
 message invocations.</p>
 <p>Scratch is used for caching since in most cases it will be preserved
@@ -254,37 +319,46 @@ across messages.</p>
 
 
 
+
+        
+            
+<h4 class="name" id="state"><span class="type-signature"></span>state<span class="type-signature"> :Object</span></h4>
+
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="gen_handler.js.html">gen_handler.js</a>, <a href="gen_handler.js.html#line151">line 151</a>
+        <a href="gen_handler.js.html">gen_handler.js</a>, <a href="gen_handler.js.html#line136">line 136</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -298,15 +372,7 @@ across messages.</p>
 
 
 
-
-        
-            
-<h4 class="name" id="state"><span class="type-signature"></span>state<span class="type-signature"> :Object</span></h4>
-
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>JSON-serializable representation of a CA's private state.</p>
 <p>The contents of this variable are always checkpointed before
 any state externalization.</p>
@@ -330,37 +396,56 @@ any state externalization.</p>
 
 
 
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="__ca_pulse__"><span class="type-signature"></span>__ca_pulse__<span class="signature">(cb)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="gen_handler.js.html">gen_handler.js</a>, <a href="gen_handler.js.html#line136">line 136</a>
+        <a href="gen_handler.js.html">gen_handler.js</a>, <a href="gen_handler.js.html#line162">line 162</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -374,30 +459,12 @@ any state externalization.</p>
 
 
 
-
-        
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="__ca_pulse__"><span class="type-signature"></span>__ca_pulse__<span class="signature">(cb)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>Enables autonomous computation by processing pulse messages that
 CAF periodically sends to all CAs.</p>
 </div>
+
+
 
 
 
@@ -460,52 +527,6 @@ CAF periodically sends to all CAs.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="gen_handler.js.html">gen_handler.js</a>, <a href="gen_handler.js.html#line162">line 162</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -524,15 +545,58 @@ CAF periodically sends to all CAs.</p>
 
     
 
-    
     <h4 class="name" id="__ca_upgrade__"><span class="type-signature"></span>__ca_upgrade__<span class="signature">(newVersion, cb)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gen_handler.js.html">gen_handler.js</a>, <a href="gen_handler.js.html#line282">line 282</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Versions the checkpointed state of a resumed CA so that is consistent
 with its expected version <code>props.$.stateVersion</code>, set in file <code>ca.json</code>.</p>
 <p>A resumed CA always calls this function once, just before it starts
@@ -544,6 +608,8 @@ Otherwise, we return an error in the callback.</p>
 <p>It is expected that applications will override this function
 to upgrade between non-compatible versions.</p>
 </div>
+
+
 
 
 
@@ -630,52 +696,6 @@ state.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="gen_handler.js.html">gen_handler.js</a>, <a href="gen_handler.js.html#line282">line 282</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -694,19 +714,64 @@ state.</p></td>
 
     
 
-    
     <h4 class="name" id="__external_ca_destroy__"><span class="type-signature"></span>__external_ca_destroy__<span class="signature">(data<span class="signature-attributes">opt</span>, cb)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gen_handler.js.html">gen_handler.js</a>, <a href="gen_handler.js.html#line254">line 254</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Destroys this CA permanently by deleting its checkpointed state.</p>
 <p>Destroyed CAs cannot be resumed and input/output queues are
 immediately discarded.</p>
 </div>
+
+
 
 
 
@@ -812,52 +877,6 @@ immediately discarded.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="gen_handler.js.html">gen_handler.js</a>, <a href="gen_handler.js.html#line254">line 254</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -876,15 +895,58 @@ immediately discarded.</p>
 
     
 
-    
     <h4 class="name" id="__external_ca_multi__"><span class="type-signature"></span>__external_ca_multi__<span class="signature">(multiArgs, cb)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gen_handler.js.html">gen_handler.js</a>, <a href="gen_handler.js.html#line214">line 214</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>A method that aggregates multiple method invocations in a single message.
 The failure of one of them will abort changes for all of them,
 as if they were all executed in one transaction.</p>
@@ -894,6 +956,8 @@ can be called ***</p>
 <p>type of invocationType is {method: string, meta : Array.<string>,
 args: Array.&lt;caf.json&gt;}</p>
 </div>
+
+
 
 
 
@@ -979,52 +1043,6 @@ args: Array.&lt;caf.json&gt;}</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="gen_handler.js.html">gen_handler.js</a>, <a href="gen_handler.js.html#line214">line 214</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -1043,15 +1061,58 @@ args: Array.&lt;caf.json&gt;}</p>
 
     
 
-    
     <h4 class="name" id="__external_ca_touch__"><span class="type-signature"></span>__external_ca_touch__<span class="signature">(cb)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gen_handler.js.html">gen_handler.js</a>, <a href="gen_handler.js.html#line191">line 191</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>A dummy method that ensures a CA is active.</p>
 <p>The 'Touch' method should not have any side-effects and is present in
 all CAs.</p>
@@ -1061,6 +1122,8 @@ with keys the method names, and values and array with the argument names)</p>
 predictable. It can also guarantee that <code>pulse</code> methods are regularly
 invoked after a failure, even without active clients.</p>
 </div>
+
+
 
 
 
@@ -1125,52 +1188,6 @@ a value is an array with arguments names.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="gen_handler.js.html">gen_handler.js</a>, <a href="gen_handler.js.html#line191">line 191</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -1197,19 +1214,21 @@ a value is an array with arguments names.</p></td>
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_ca_ca_main.html">caf_ca/ca_main</a></li><li><a href="module-caf_ca_gen_ca.html">caf_ca/gen_ca</a></li><li><a href="module-caf_ca_gen_handler.html">caf_ca/gen_handler</a></li><li><a href="module-caf_ca_main.html">caf_ca/main</a></li><li><a href="module-caf_ca_plug_ca_handler.html">caf_ca/plug_ca_handler</a></li><li><a href="module-caf_ca_plug_ca_inqueue.html">caf_ca/plug_ca_inqueue</a></li><li><a href="module-caf_ca_proxy_handler.html">caf_ca/proxy_handler</a></li><li><a href="module-caf_ca_proxy_inqueue.html">caf_ca/proxy_inqueue</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components.html">caf_components</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="external-caf_pubsub.html">caf_pubsub</a></li><li><a href="external-caf_security.html">caf_security</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul><h3><a href="global.html">Global</a></h3>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:32:59 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:37 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

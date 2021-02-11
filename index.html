@@ -29,7 +29,7 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
-            <li><a href="api/caf">Getting Started</a></li>
+            <li><a href="api/caf/index.html">Getting Started</a></li>
             <li><a href="https://github.com/cafjs/caf">GitHub</a></li>
             <!-- <li><a href="#contact">Contact</a></li> -->
           </ul>
@@ -39,10 +39,40 @@
 
     <div class="container">
 
-      <div class="row row-offcanvas row-offcanvas-right">
+      <div class="row row-offcanvas row-offcanvas-left">
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
+          <div class="list-group">
+            <a href="api/caf_components/index.html" class="list-group-item">caf_components</a>
+            <a href="api/caf_ca/index.html" class="list-group-item">caf_ca</a>
+            <a href="api/caf_cli/index.html" class="list-group-item">caf_cli</a>
+            <a href="api/caf_core/index.html" class="list-group-item">caf_core</a>
+            <a href="api/caf_sharing/index.html" class="list-group-item">caf_sharing</a>
+            <a href="api/caf_security/index.html" class="list-group-item">caf_security</a>
+            <a href="api/caf_session/index.html" class="list-group-item">caf_session</a>
+            <a href="api/caf_pubsub/index.html" class="list-group-item">caf_pubsub</a>
+            <a href="api/caf_iot/index.html" class="list-group-item">caf_iot</a>
+            <a href="api/caf_platform/index.html" class="list-group-item">caf_platform</a>
+            <a href="api/caf_profiler/index.html" class="list-group-item">caf_profiler</a>
+            <a href="api/caf_redis/index.html" class="list-group-item">caf_redis</a>
+            <a href="api/caf_transport/index.html" class="list-group-item">caf_transport</a>
+            <a href="api/caf_iot_gatt/index.html" class="list-group-item">caf_iot_gatt</a>
+            <a href="api/caf_iot_http/index.html" class="list-group-item">caf_iot_http</a>
+            <a href="api/caf_crossapp/index.html" class="list-group-item">caf_crossapp</a>
+            <a href="api/caf_sms/index.html" class="list-group-item">caf_sms</a>
+            <a href="api/caf_smtp/index.html" class="list-group-item">caf_smtp</a>
+            <a href="api/caf_paypal/index.html" class="list-group-item">caf_paypal</a>
+            <a href="api/caf_graphql/index.html" class="list-group-item">caf_graphql</a>
+            <a href="api/caf_forward/index.html" class="list-group-item">caf_forward</a>
+            <a href="api/caf_dcinabox/index.html" class="list-group-item">caf_dcinabox</a>
+            <a href="api/caf_rpi/index.html" class="list-group-item">caf_rpi</a>
+            <a href="api/caf_rpi_gpio/index.html" class="list-group-item">caf_rpi_gpio</a>
+            <a href="api/caf_react/index.html" class="list-group-item">caf_react</a>
+            <a href="api/caf_deploy/index.html" class="list-group-item">caf_deploy</a>
+          </div>
+        </div><!--/.sidebar-offcanvas-->
 
         <div class="col-xs-12 col-sm-9">
-          <p class="pull-right visible-xs">
+          <p class="pull-left visible-xs">
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
           </p>
           <div class="jumbotron">
@@ -53,63 +83,36 @@
             <div class="col-xs-6 col-lg-4">
               <h2>Components</h2>
               <p>Caf.js is built with hierarchies of components configured with JSON descriptions. Parent components monitor children and take recovery action when needed. Component constructors are asynchronous, but the initialization order is deterministic, facilitating dependency injection.</p>
-              <p><a class="btn btn-default" href="api/caf_components" role="button">View details &raquo;</a></p>
+              <p><a class="btn btn-default" href="api/caf_components/index.html" role="button">View details &raquo;</a></p>
             </div><!--/.col-xs-6.col-lg-4-->
             <div class="col-xs-6 col-lg-4">
               <h2>Actors</h2>
               <p> A Cloud Assistant (CA) is similar to an Erlang/OTP actor. It has a queue that serializes message processing, a location-independent name, some private state, and the ability to change behavior, or interact with other CAs. It always checkpoints its state before externalizing it.</p>
-              <p><a class="btn btn-default" href="api/caf_ca" role="button">View details &raquo;</a></p>
+              <p><a class="btn btn-default" href="api/caf_ca/index.html" role="button">View details &raquo;</a></p>
             </div><!--/.col-xs-6.col-lg-4-->
             <div class="col-xs-6 col-lg-4">
               <h2>Sharing</h2>
               <p>Caf.js combines Actors with Distributed Data Structures (DDS) in a novel way. The result is observationally equivalent to a pure Actor system, just faster. Persistent data structures (Immutable.js) help to maintain this property. A DDS can also contain serialized methods, updated atomically with data.</p>
-              <p><a class="btn btn-default" href="api/caf_sharing" role="button">View details &raquo;</a></p>
+              <p><a class="btn btn-default" href="api/caf_sharing/index.html" role="button">View details &raquo;</a></p>
             </div><!--/.col-xs-6.col-lg-4-->
             <div class="col-xs-6 col-lg-4">
               <h2>Linked Local Namespaces</h2>
               <p> Security mechanisms provide to application writers safe collaborative multi-tenancy. Decentralized authorization borrows from SDSI the linking of globally-identifiable local namespaces; however, it relies on single writer DDSs, not on certificates. Single sign-on uses restricted, signed tokens.</p>
-              <p><a class="btn btn-default" href="api/caf_security" role="button">View details &raquo;</a></p>
+              <p><a class="btn btn-default" href="api/caf_security/index.html" role="button">View details &raquo;</a></p>
             </div><!--/.col-xs-6.col-lg-4-->
             <div class="col-xs-6 col-lg-4">
               <h2>Persistent Sessions</h2>
               <p> CA sessions can have simple names, chosen by the client, and portable across devices. Names help notification delivery by choosing the best target device. Combined with message serialization and checkpointing, sessions enable exactly-once message delivery for stateless clients.</p>
-              <p><a class="btn btn-default" href="api/caf_session" role="button">View details &raquo;</a></p>
+              <p><a class="btn btn-default" href="api/caf_session/index.html" role="button">View details &raquo;</a></p>
             </div><!--/.col-xs-6.col-lg-4-->
             <div class="col-xs-6 col-lg-4">
               <h2>Putting It All Together</h2>
               <p> A Caf.js application bundle has three parts: a web app with React/Redux, a CA, and a device app. Applications are three-way isomorphic, with the CA providing server-side rendering, and introspecting the IoT code. We use Docker containers to deploy both in the Cloud and the device.</p>
-              <p><a class="btn btn-default" href="api/caf_iot" role="button">View details &raquo;</a></p>
+              <p><a class="btn btn-default" href="api/caf_iot/index.html" role="button">View details &raquo;</a></p>
             </div><!--/.col-xs-6.col-lg-4-->
           </div><!--/row-->
         </div><!--/.col-xs-12.col-sm-9-->
 
-        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
-          <div class="list-group">
-            <a href="api/caf_components" class="list-group-item">caf_components</a>
-            <a href="api/caf_ca" class="list-group-item">caf_ca</a>
-            <a href="api/caf_cli" class="list-group-item">caf_cli</a>
-            <a href="api/caf_core" class="list-group-item">caf_core</a>
-            <a href="api/caf_sharing" class="list-group-item">caf_sharing</a>
-            <a href="api/caf_security" class="list-group-item">caf_security</a>
-            <a href="api/caf_session" class="list-group-item">caf_session</a>
-            <a href="api/caf_pubsub" class="list-group-item">caf_pubsub</a>
-            <a href="api/caf_iot" class="list-group-item">caf_iot</a>
-            <a href="api/caf_platform" class="list-group-item">caf_platform</a>
-            <a href="api/caf_profiler" class="list-group-item">caf_profiler</a>
-            <a href="api/caf_redis" class="list-group-item">caf_redis</a>
-            <a href="api/caf_transport" class="list-group-item">caf_transport</a>
-            <a href="api/caf_iot_gatt" class="list-group-item">caf_iot_gatt</a>
-            <a href="api/caf_crossapp" class="list-group-item">caf_crossapp</a>
-            <a href="api/caf_sms" class="list-group-item">caf_sms</a>
-            <a href="api/caf_bloom" class="list-group-item">caf_bloom</a>
-            <a href="api/caf_forward" class="list-group-item">caf_forward</a>
-            <a href="api/caf_dcinabox" class="list-group-item">caf_dcinabox</a>
-            <a href="api/caf_rpi" class="list-group-item">caf_rpi</a>
-            <a href="api/caf_rpi_gpio" class="list-group-item">caf_rpi_gpio</a>
-            <a href="api/caf_react" class="list-group-item">caf_react</a>
-            <a href="api/caf_deploy" class="list-group-item">caf_deploy</a>
-          </div>
-        </div><!--/.sidebar-offcanvas-->
       </div><!--/row-->
 
       <hr>

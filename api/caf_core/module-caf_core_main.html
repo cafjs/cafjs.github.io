@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Module: caf_core/main</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>caf_core/main - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Module: caf_core/main</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_core_main.html">caf_core/main</a><ul class='methods'><li data-type='method'><a href="module-caf_core_main.html">init</a></li><li data-type='method'><a href="module-caf_core_main.html">joinName</a></li><li data-type='method'><a href="module-caf_core_main.html">splitName</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_components.html">caf_components</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">caf_core/main</h1>
+    
 
     
 
@@ -35,25 +51,15 @@
 </header>
 
 <article>
-    <div class="container-overview">
     
-        
-            <div class="description"><p>Main package module.</p></div>
-        
-
+        <div class="container-overview">
         
             
+                <div class="description usertext"><p>Main package module.</p></div>
+            
 
-
-
-
-
-
-
-
-
-
-
+            
+                
 
 
 
@@ -61,34 +67,34 @@
 <dl class="details">
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="main.js.html">main.js</a>, <a href="main.js.html#line18">line 18</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -117,10 +123,21 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+            
         
-    
-    </div>
-
+        </div>
     
 
     
@@ -128,8 +145,10 @@
     
 
     
-
     
+    
+
+     
 
     
 
@@ -143,21 +162,66 @@
 
     
 
-    
     <h4 class="name" id="init"><span class="type-signature"></span>init<span class="signature">(modules<span class="signature-attributes">opt</span>, spec<span class="signature-attributes">opt</span>, frameworkFileName<span class="signature-attributes">opt</span>, cb<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line113">line 113</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Main initialization function for the framework.</p>
 <p>This is typically the last call in your <code>ca_methods.js</code> file.</p>
 <p>It recursively loads and instantiates all the components described
 in <code>framework.json</code>. When all of them are active, it starts
 listening for requests at an specified port.</p>
 </div>
+
+
 
 
 
@@ -339,52 +403,6 @@ or the context <code>$</code> with the created top level component bound by its 
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line113">line 113</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -403,17 +421,62 @@ or the context <code>$</code> with the created top level component bound by its 
 
     
 
-    
     <h4 class="name" id="joinName"><span class="type-signature"></span>joinName<span class="signature">(&hellip;strings)</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line85">line 85</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Joins partial names using the standard separator.</p>
 </div>
+
+
 
 
 
@@ -488,50 +551,6 @@ or the context <code>$</code> with the created top level component bound by its 
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line85">line 85</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -551,7 +570,7 @@ or the context <code>$</code> with the created top level component bound by its 
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -567,25 +586,68 @@ or the context <code>$</code> with the created top level component bound by its 
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="splitName"><span class="type-signature"></span>splitName<span class="signature">(name, separator<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Array.&lt;string>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="main.js.html">main.js</a>, <a href="main.js.html#line72">line 72</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Splits a compound name into namespace root and local name.
 The convention is to use the character '-' to separate them.</p>
 </div>
+
+
 
 
 
@@ -691,50 +753,6 @@ The convention is to use the character '-' to separate them.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="main.js.html">main.js</a>, <a href="main.js.html#line72">line 72</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -749,13 +767,13 @@ The convention is to use the character '-' to separate them.</p>
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         <p>Invalid compound name.</p>
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -785,7 +803,7 @@ qualified CA name ,i.e., <code>appPublisher-appLocalName-caOwner-caLocalName</co
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -798,8 +816,6 @@ qualified CA name ,i.e., <code>appPublisher-appLocalName-caOwner-caLocalName</co
 </dl>
 
     
-
-
 
 
 
@@ -816,19 +832,21 @@ qualified CA name ,i.e., <code>appPublisher-appLocalName-caOwner-caLocalName</co
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_core_main.html">caf_core/main</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_components.html">caf_components</a></li></ul><h3><a href="global.html">Global</a></h3>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:02 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:39 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

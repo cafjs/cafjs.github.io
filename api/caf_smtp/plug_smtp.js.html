@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>plug_smtp.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_smtp_main.html">caf_smtp/main</a></li><li><a href="module-caf_smtp_plug_ca_smtp.html">caf_smtp/plug_ca_smtp</a></li><li><a href="module-caf_smtp_plug_smtp.html">caf_smtp/plug_smtp</a></li><li><a href="module-caf_smtp_proxy_smtp.html">caf_smtp/proxy_smtp</a><ul class='methods'><li data-type='method'><a href="module-caf_smtp_proxy_smtp.html#dirtySend">dirtySend</a></li><li data-type='method'><a href="module-caf_smtp_proxy_smtp.html#instantiateTemplate">instantiateTemplate</a></li><li data-type='method'><a href="module-caf_smtp_proxy_smtp.html#send">send</a></li><li data-type='method'><a href="module-caf_smtp_proxy_smtp.html#setHandleReplyMethod">setHandleReplyMethod</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">plug_smtp.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*!
+Copyright 2020 Caf.js Labs and contributors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+'use strict';
+/**
+ * Calls an external service to send email.
+ *
+ *  Properties:
+ *
+ *       {smtpDir: string=, smtpFile: string, templates: [{name: string,
+ *        dir: string|null, fileName: string}]=}
+ *
+ * where:
+ *
+ * * `smtpDir:` a directory for the SMTP client config.
+ * * `smtpFile`: a json file to configure SMTP. See `nodemailer` documentation
+ * for details (https://nodemailer.com)
+ * * `templates`: an optional set of mustache templates identified by a `name`
+ * and in a file with name `fileName` in directory `dir` (or relative to the
+ * first module loaded if `null` or `undefined`).
+ *
+ * @module caf_smtp/plug_smtp
+ * @augments external:caf_components/gen_plug
+ */
+// @ts-ignore: augments not attached to a class
+const assert = require('assert');
+const caf_comp = require('caf_components');
+const genPlug = caf_comp.gen_plug;
+const mustache = require('mustache');
+
+const path = require('path');
+const fs = require('fs');
+const nodemailer = require('nodemailer');
+const htmlToText = require('nodemailer-html-to-text').htmlToText;
+
+exports.newInstance = async function($, spec) {
+    try {
+        const that = genPlug.create($, spec);
+
+        let transport = null;
+
+        $._.$.log &amp;&amp; $._.$.log.debug('New SMTP plug');
+
+        const smtpDir = spec.env.smtpDir || $.loader.__ca_firstModulePath__();
+
+        const loadSMTP = function(fileName) {
+            if (fileName) {
+                try {
+                    const buf = fs.readFileSync(path.resolve(smtpDir,
+                                                             fileName));
+                    return JSON.parse(buf.toString('utf8'));
+                } catch (err) {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        };
+
+        assert.equal(typeof spec.env.smtpFile, 'string',
+                     "'spec.env.smtpFile' is not a string");
+        const smtpConfig = loadSMTP(spec.env.smtpFile);
+
+        if (!smtpConfig) {
+            $._.$.log &amp;&amp; $._.$.log.warn('SMTP plug disabled');
+        } else {
+            transport = nodemailer.createTransport(smtpConfig);
+            transport.use('compile', htmlToText());
+        }
+
+        const loadOneTemplate = function(template) {
+            const dir = template.dir || $.loader.__ca_firstModulePath__();
+            const mus = fs.readFileSync(path.resolve(dir, template.fileName),
+                                        {encoding: 'utf8'});
+            mustache.parse(mus); // caching
+            return mus;
+        };
+
+        const loadTemplates = function(templates) {
+            const result = {};
+            templates &amp;&amp; templates.forEach((x) => {
+                result[x.name] = loadOneTemplate(x);
+            });
+            return result;
+        };
+
+        spec.env.templates &amp;&amp; assert(Array.isArray(spec.env.templates),
+                                     "'spec.env.templates' is not an array");
+
+        const templates = loadTemplates(spec.env.templates);
+
+        that.send = async function(to, subject, body) {
+            if (smtpConfig) {
+                const mailOptions = {
+                    from: smtpConfig.auth &amp;&amp; smtpConfig.auth.user,
+                    to: to,
+                    subject: subject,
+                    html: body
+                };
+                return transport.sendMail(mailOptions);
+            } else {
+                $._.$.log &amp;&amp; $._.$.log.warn(`SMTP: Ignoring send to ${to}`);
+                return null;
+            }
+        };
+
+        that.instantiateTemplate = function(templateName, props) {
+            const mus = templates[templateName];
+            if (mus) {
+                return mustache.render(mus, props);
+            } else {
+                throw new Error(`Template ${templateName} not found`);
+            }
+        };
+
+        return [null, that];
+    } catch (err) {
+        return [err];
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:54 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

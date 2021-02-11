@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>proxy_paypal.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_paypal_main.html">caf_paypal/main</a></li><li><a href="module-caf_paypal_plug_ca_paypal.html">caf_paypal/plug_ca_paypal</a></li><li><a href="module-caf_paypal_plug_paypal.html">caf_paypal/plug_paypal</a></li><li><a href="module-caf_paypal_proxy_paypal.html">caf_paypal/proxy_paypal</a><ul class='methods'><li data-type='method'><a href="module-caf_paypal_proxy_paypal.html#dirtyCaptureOrder">dirtyCaptureOrder</a></li><li data-type='method'><a href="module-caf_paypal_proxy_paypal.html#dirtyCreateOrder">dirtyCreateOrder</a></li><li data-type='method'><a href="module-caf_paypal_proxy_paypal.html#getClientId">getClientId</a></li><li data-type='method'><a href="module-caf_paypal_proxy_paypal.html#getPrice">getPrice</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">proxy_paypal.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ *  Proxy that allows a CA to pay using PayPal.
+ *
+ * @module caf_paypal/proxy_paypal
+ * @augments external:caf_components/gen_proxy
+ */
+// @ts-ignore: augments not attached to a class
+const caf_comp = require('caf_components');
+const genProxy = caf_comp.gen_proxy;
+
+exports.newInstance = async function($, spec) {
+    try {
+        const that = genProxy.create($, spec);
+
+        /**
+         * Creates a PayPal order to buy units.
+         *
+         * This is a `dirty` call, i.e., outside the transaction that process
+         * the request, and it could externalize and forget about its actions
+         * if there are failures or errors.
+         *
+         * In practice this means that it could create "abandoned" orders that
+         * PayPal will eventually garbage collect.
+         *
+         * @param {number} units The number of units to purchase.
+         *
+         * @return {Promise&lt;{id: string}>} A promise to an object containing an
+         * order id.
+         *
+         * @throws {Error} When it cannot create the order.
+         *
+         * @memberof! module:caf_paypal/proxy_paypal#
+         * @alias dirtyCreateOrder
+         */
+        that.dirtyCreateOrder = function(units) {
+            return $._.dirtyCreateOrder(units);
+        };
+
+        /**
+         * Captures the funds of an accepted order.
+         *
+         * This is a `dirty` call, i.e., outside the transaction that process
+         * the request, and it could externalize and forget about its actions
+         * if there are failures or errors.
+         *
+         * This call is idempotent, and the caller should retry it until it
+         * succeeds.
+         *
+         * @param {string} id The identifier of the order.
+         *
+         * @return {Promise&lt;orderType>} A promise to an order id.
+         *
+         * @throws {Error} When it cannot capture the order.
+         *
+         * @memberof! module:caf_paypal/proxy_paypal#
+         * @alias dirtyCaptureOrder
+         */
+        that.dirtyCaptureOrder = function(id) {
+            return $._.dirtyCaptureOrder(id);
+        };
+
+        /**
+         * Gets the total cost in dollars.
+         *
+         * @param {number} units The number of units.
+         *
+         * @return {number} The total cost in dollars.
+         *
+         * @memberof! module:caf_paypal/proxy_paypal#
+         * @alias getPrice
+         */
+        that.getPrice = function(units) {
+            return $._.getPrice(units);
+        };
+
+        /**
+         * Gets the client id of the payee.
+         *
+         * @return {string} The client id of the payee.
+         *
+         * @memberof! module:caf_paypal/proxy_paypal#
+         * @alias getClientId
+         */
+        that.getClientId = function() {
+            return $._.getClientId();
+        };
+
+        Object.freeze(that);
+
+        return [null, that];
+    } catch (err) {
+        return [err];
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:53 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

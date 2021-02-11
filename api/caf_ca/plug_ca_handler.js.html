@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Source: plug_ca_handler.js</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>plug_ca_handler.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Source: plug_ca_handler.js</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_ca_ca_main.html">caf_ca/ca_main</a></li><li><a href="module-caf_ca_gen_ca.html">caf_ca/gen_ca</a><ul class='methods'><li data-type='method'><a href="module-caf_ca_gen_ca.html#__ca_destroy__">__ca_destroy__</a></li><li data-type='method'><a href="module-caf_ca_gen_ca.html#__ca_getAppName__">__ca_getAppName__</a></li><li data-type='method'><a href="module-caf_ca_gen_ca.html#__ca_getName__">__ca_getName__</a></li><li data-type='method'><a href="module-caf_ca_gen_ca.html#__ca_isJustCreated__">__ca_isJustCreated__</a></li><li data-type='method'><a href="module-caf_ca_gen_ca.html#__ca_process__">__ca_process__</a></li><li data-type='method'><a href="module-caf_ca_gen_ca.html#__ca_progress__">__ca_progress__</a></li><li data-type='method'><a href="module-caf_ca_gen_ca.html#__ca_pull__">__ca_pull__</a></li><li data-type='method'><a href="module-caf_ca_gen_ca.html#__ca_pulse__">__ca_pulse__</a></li><li data-type='method'><a href="module-caf_ca_gen_ca.html#__ca_setJustCreated__">__ca_setJustCreated__</a></li></ul></li><li><a href="module-caf_ca_gen_handler.html">caf_ca/gen_handler</a><ul class='methods'><li data-type='method'><a href="module-caf_ca_gen_handler.html#__ca_pulse__">__ca_pulse__</a></li><li data-type='method'><a href="module-caf_ca_gen_handler.html#__ca_upgrade__">__ca_upgrade__</a></li><li data-type='method'><a href="module-caf_ca_gen_handler.html#__external_ca_destroy__">__external_ca_destroy__</a></li><li data-type='method'><a href="module-caf_ca_gen_handler.html#__external_ca_multi__">__external_ca_multi__</a></li><li data-type='method'><a href="module-caf_ca_gen_handler.html#__external_ca_touch__">__external_ca_touch__</a></li></ul></li><li><a href="module-caf_ca_main.html">caf_ca/main</a><ul class='methods'><li data-type='method'><a href="module-caf_ca_main.html">getModule</a></li></ul></li><li><a href="module-caf_ca_plug_ca_handler.html">caf_ca/plug_ca_handler</a></li><li><a href="module-caf_ca_plug_ca_inqueue.html">caf_ca/plug_ca_inqueue</a><ul class='methods'><li data-type='method'><a href="module-caf_ca_plug_ca_inqueue.html#getQueue">getQueue</a></li><li data-type='method'><a href="module-caf_ca_plug_ca_inqueue.html#process">process</a></li><li data-type='method'><a href="module-caf_ca_plug_ca_inqueue.html#progress">progress</a></li></ul></li><li><a href="module-caf_ca_proxy_handler.html">caf_ca/proxy_handler</a></li><li><a href="module-caf_ca_proxy_inqueue.html">caf_ca/proxy_inqueue</a><ul class='methods'><li data-type='method'><a href="module-caf_ca_proxy_inqueue.html#queueLength">queueLength</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components.html">caf_components</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="external-caf_pubsub.html">caf_pubsub</a></li><li><a href="external-caf_security.html">caf_security</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">plug_ca_handler.js</h1>
+    
 
     
 
@@ -94,19 +110,21 @@ exports.newInstance = async function($, spec) {
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_ca_ca_main.html">caf_ca/ca_main</a></li><li><a href="module-caf_ca_gen_ca.html">caf_ca/gen_ca</a></li><li><a href="module-caf_ca_gen_handler.html">caf_ca/gen_handler</a></li><li><a href="module-caf_ca_main.html">caf_ca/main</a></li><li><a href="module-caf_ca_plug_ca_handler.html">caf_ca/plug_ca_handler</a></li><li><a href="module-caf_ca_plug_ca_inqueue.html">caf_ca/plug_ca_inqueue</a></li><li><a href="module-caf_ca_proxy_handler.html">caf_ca/proxy_handler</a></li><li><a href="module-caf_ca_proxy_inqueue.html">caf_ca/proxy_inqueue</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components.html">caf_components</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="external-caf_pubsub.html">caf_pubsub</a></li><li><a href="external-caf_security.html">caf_security</a></li><li><a href="external-caf_session.html">caf_session</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li></ul><h3><a href="global.html">Global</a></h3>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:32:59 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:36 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

@@ -1,23 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>Home - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_react_main.html">caf_react/main</a></li><li><a href="module-caf_react_plug_ca_react.html">caf_react/plug_ca_react</a></li><li><a href="module-caf_react_plug_react.html">caf_react/plug_react</a></li><li><a href="module-caf_react_proxy_react.html">caf_react/proxy_react</a><ul class='methods'><li data-type='method'><a href="module-caf_react_proxy_react.html#coin">coin</a></li><li data-type='method'><a href="module-caf_react_proxy_react.html#render">render</a></li><li data-type='method'><a href="module-caf_react_proxy_react.html#setCacheKey">setCacheKey</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul>
+</nav>
+
 <div id="main">
-
-    <h1 class="page-title">Home</h1>
+    
 
     
 
@@ -26,8 +40,9 @@
     
 
 
-    <h3>caf_react 0.4.1</h3>
-
+    <section class="package">
+        <h3>caf_react 0.4.1</h3>		
+    </section>
 
 
 
@@ -41,8 +56,7 @@
 
 
 
-
-    <section>
+    <section class="readme usertext">
         <article><h1>Caf.js</h1>
 <p>Co-design permanent, active, stateful, reliable cloud proxies with your web app and gadgets.</p>
 <p>See https://www.cafjs.com</p>
@@ -51,7 +65,7 @@
 <p>Reduces latency for React.js applications by server-rendering the UI with a CA.</p>
 <p>Rendering could be triggered by a CA's state change, or periodically. The goal is that there is always a reasonably up-to-date version in the (Redis) cache.</p>
 <p>To access that pre-rendered page we simply do a http GET using an unguessable cache key in the query:</p>
-<pre><code>  http://foo.vcap.me:3000?cacheKey=dfgsraa44ww6632ss
+<pre class="prettyprint source"><code>      http://foo.vcap.me:3000?cacheKey=dfgsraa44ww6632ss
 </code></pre>
 <p>The page is cached by <code>Redis</code>, and any CA can serve this http request, eliminating redirections that increase latency.</p>
 <h2>API</h2>
@@ -59,40 +73,40 @@
 <h2>Configuration Example</h2>
 <p>See <a href="module-caf_react_plug_react.html">module:caf_react/plug_react</a> and  <a href="module-caf_react_plug_ca_react.html">module:caf_react/plug_ca_react</a></p>
 <h3>framework.json</h3>
-<pre><code>    // after &quot;cp&quot;
-    {
-        &quot;name&quot; : &quot;react&quot;,
-        &quot;module&quot;: &quot;caf_react#plug&quot;,
-        &quot;description&quot;: &quot;React.js background rendering&quot;,
-        &quot;env&quot;: {
-            &quot;appFileName&quot; : &quot;index.html&quot;,
-            &quot;separator&quot; : &quot;&lt;section id=\&quot;content\&quot;&gt;&quot;,
-            &quot;cacheService&quot; : &quot;cp&quot;,
-            &quot;expiresInSec&quot; : 10
+<pre class="prettyprint source"><code>        // after &quot;cp&quot;
+        {
+            &quot;name&quot; : &quot;react&quot;,
+            &quot;module&quot;: &quot;caf_react#plug&quot;,
+            &quot;description&quot;: &quot;React.js background rendering&quot;,
+            &quot;env&quot;: {
+                &quot;appFileName&quot; : &quot;index.html&quot;,
+                &quot;separator&quot; : &quot;&lt;section id=\&quot;content\&quot;>&quot;,
+                &quot;cacheService&quot; : &quot;cp&quot;,
+                &quot;expiresInSec&quot; : 10
+            }
         }
-    }
 </code></pre>
 <h3>ca.json</h3>
-<pre><code>        {
-        &quot;module&quot;: &quot;caf_react#plug_ca&quot;,
-        &quot;name&quot;: &quot;react&quot;,
-        &quot;description&quot;: &quot;Manages background rendering for this CA.&quot;,
-        &quot;env&quot; : {
-            &quot;maxRetries&quot; : &quot;$._.env.maxRetries&quot;,
-            &quot;retryDelay&quot; : &quot;$._.env.retryDelay&quot;
-            &quot;coinPlayTime&quot; : 900
-        },
-        &quot;components&quot; : [
-            {
-                &quot;module&quot;: &quot;caf_react#proxy&quot;,
-                &quot;name&quot;: &quot;proxy&quot;,
-                &quot;description&quot;: &quot;Provides the background rendering API.&quot;,
-                &quot;env&quot; : {
+<pre class="prettyprint source"><code>            {
+            &quot;module&quot;: &quot;caf_react#plug_ca&quot;,
+            &quot;name&quot;: &quot;react&quot;,
+            &quot;description&quot;: &quot;Manages background rendering for this CA.&quot;,
+            &quot;env&quot; : {
+                &quot;maxRetries&quot; : &quot;$._.env.maxRetries&quot;,
+                &quot;retryDelay&quot; : &quot;$._.env.retryDelay&quot;
+                &quot;coinPlayTime&quot; : 900
+            },
+            &quot;components&quot; : [
+                {
+                    &quot;module&quot;: &quot;caf_react#proxy&quot;,
+                    &quot;name&quot;: &quot;proxy&quot;,
+                    &quot;description&quot;: &quot;Provides the background rendering API.&quot;,
+                    &quot;env&quot; : {
 
+                    }
                 }
-            }
-        ]
-    }
+            ]
+        }
 </code></pre></article>
     </section>
 
@@ -101,19 +115,21 @@
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_react_main.html">caf_react/main</a></li><li><a href="module-caf_react_plug_ca_react.html">caf_react/plug_ca_react</a></li><li><a href="module-caf_react_plug_react.html">caf_react/plug_react</a></li><li><a href="module-caf_react_proxy_react.html">caf_react/proxy_react</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:12 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:50 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

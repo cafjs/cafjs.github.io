@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Module: caf_bloom/plug_bloom</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>caf_bloom/plug_bloom - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Module: caf_bloom/plug_bloom</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_bloom_main.html">caf_bloom/main</a></li><li><a href="module-caf_bloom_plug_bloom.html">caf_bloom/plug_bloom</a><ul class='methods'><li data-type='method'><a href="module-caf_bloom_plug_bloom.html#add">add</a></li><li data-type='method'><a href="module-caf_bloom_plug_bloom.html#clear">clear</a></li><li data-type='method'><a href="module-caf_bloom_plug_bloom.html#has">has</a></li></ul></li><li><a href="module-caf_bloom_plug_ca_bloom.html">caf_bloom/plug_ca_bloom</a></li><li><a href="module-caf_bloom_proxy_bloom.html">caf_bloom/proxy_bloom</a><ul class='methods'><li data-type='method'><a href="module-caf_bloom_proxy_bloom.html#add">add</a></li><li data-type='method'><a href="module-caf_bloom_proxy_bloom.html#clear">clear</a></li><li data-type='method'><a href="module-caf_bloom_proxy_bloom.html#has">has</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">caf_bloom/plug_bloom</h1>
+    
 
     
 
@@ -35,10 +51,11 @@
 </header>
 
 <article>
-    <div class="container-overview">
     
+        <div class="container-overview">
         
-            <div class="description"><p>A plug to access a Bloom filter backed by Redis.</p>
+            
+                <div class="description usertext"><p>A plug to access a Bloom filter backed by Redis.</p>
 <p>Properties:</p>
 <pre><code> {bitFieldName: string, service: string, size: number, slices: number}
 </code></pre>
@@ -49,21 +66,10 @@
 <li><code>size</code>: the number of bits.</li>
 <li><code>slices</code>: the number of hash functions.</li>
 </ul></div>
-        
-
-        
             
 
-
-
-
-
-
-
-
-
-
-
+            
+                
 
 
 
@@ -71,34 +77,34 @@
 <dl class="details">
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="plug_bloom.js.html">plug_bloom.js</a>, <a href="plug_bloom.js.html#line18">line 18</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -127,9 +133,22 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+            
         
+        </div>
     
-    </div>
 
     
         <h3 class="subsection-title">Extends</h3>
@@ -147,10 +166,10 @@
     
 
     
-
+    
     
 
-    
+     
 
     
 
@@ -164,17 +183,62 @@
 
     
 
-    
     <h4 class="name" id="add"><span class="type-signature"></span>add<span class="signature">(key, cb)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plug_bloom.js.html">plug_bloom.js</a>, <a href="plug_bloom.js.html#line74">line 74</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Adds a key to the set.</p>
 </div>
+
+
 
 
 
@@ -260,52 +324,6 @@
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_bloom.js.html">plug_bloom.js</a>, <a href="plug_bloom.js.html#line74">line 74</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -324,17 +342,62 @@
 
     
 
-    
     <h4 class="name" id="clear"><span class="type-signature"></span>clear<span class="signature">(cb)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plug_bloom.js.html">plug_bloom.js</a>, <a href="plug_bloom.js.html#line86">line 86</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Clears the filter.</p>
 </div>
+
+
 
 
 
@@ -397,52 +460,6 @@
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_bloom.js.html">plug_bloom.js</a>, <a href="plug_bloom.js.html#line86">line 86</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -461,19 +478,64 @@
 
     
 
-    
     <h4 class="name" id="has"><span class="type-signature"></span>has<span class="signature">(key, cb)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plug_bloom.js.html">plug_bloom.js</a>, <a href="plug_bloom.js.html#line103">line 103</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Checks that a key is in the set.</p>
 <p>It uses a Bloom filter that can introduce false positives, but no
 false negatives.</p>
 </div>
+
+
 
 
 
@@ -560,52 +622,6 @@ set, or an error.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_bloom.js.html">plug_bloom.js</a>, <a href="plug_bloom.js.html#line103">line 103</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -632,19 +648,21 @@ set, or an error.</p></td>
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_bloom_main.html">caf_bloom/main</a></li><li><a href="module-caf_bloom_plug_bloom.html">caf_bloom/plug_bloom</a></li><li><a href="module-caf_bloom_plug_ca_bloom.html">caf_bloom/plug_ca_bloom</a></li><li><a href="module-caf_bloom_proxy_bloom.html">caf_bloom/proxy_bloom</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:14 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:51 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Module: caf_security/aggregates</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>caf_security/aggregates - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Module: caf_security/aggregates</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_security_aggregates.html">caf_security/aggregates</a><ul class='methods'><li data-type='method'><a href="module-caf_security_rules.html">computeRuleId</a></li><li data-type='method'><a href="module-caf_security_rules.html">isAuthorized</a></li><li data-type='method'><a href="module-caf_security_aggregates.html">newAggregateRule</a></li><li data-type='method'><a href="module-caf_security_rules.html">newRuleEngine</a></li></ul></li><li><a href="module-caf_security_main.html">caf_security/main</a></li><li><a href="module-caf_security_plug_ca_security.html">caf_security/plug_ca_security</a></li><li><a href="module-caf_security_plug_security.html">caf_security/plug_security</a><ul class='methods'><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_attenuateToken__">__ca_attenuateToken__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_authenticate__">__ca_authenticate__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_blockCreate__">__ca_blockCreate__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_pulse__">__ca_pulse__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_quotaCheck__">__ca_quotaCheck__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_quotaRenew__">__ca_quotaRenew__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_verifyToken__">__ca_verifyToken__</a></li></ul></li><li><a href="module-caf_security_proxy_security.html">caf_security/proxy_security</a><ul class='methods'><li data-type='method'><a href="module-caf_security_proxy_security.html#addRule">addRule</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#attenuateToken">attenuateToken</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#computeRuleId">computeRuleId</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#getAppName">getAppName</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#getCallerFrom">getCallerFrom</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#isAuthorized">isAuthorized</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#listRules">listRules</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#newAggregateRule">newAggregateRule</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#newSimpleRule">newSimpleRule</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#removeRule">removeRule</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#verifyToken">verifyToken</a></li></ul></li><li><a href="module-caf_security_rules.html">caf_security/rules</a><ul class='methods'><li data-type='method'><a href="module-caf_security_rules.html">computeRuleId</a></li><li data-type='method'><a href="module-caf_security_rules.html">isAuthorized</a></li><li data-type='method'><a href="module-caf_security_rules.html">newRuleEngine</a></li><li data-type='method'><a href="module-caf_security_rules.html">newSimpleRule</a></li></ul></li><li><a href="module-caf_security_tokens.html">caf_security/tokens</a><ul class='methods'><li data-type='method'><a href="module-caf_security_tokens.html">decode</a></li><li data-type='method'><a href="module-caf_security_tokens.html">lessOrEqual</a></li><li data-type='method'><a href="module-caf_security_tokens.html">meet</a></li><li data-type='method'><a href="module-caf_security_tokens.html">newPayload</a></li><li data-type='method'><a href="module-caf_security_tokens.html">satisfyACL</a></li><li data-type='method'><a href="module-caf_security_tokens.html">sign</a></li><li data-type='method'><a href="module-caf_security_tokens.html">similar</a></li><li data-type='method'><a href="module-caf_security_tokens.html">validate</a></li><li data-type='method'><a href="module-caf_security_tokens.html">validExtendedNobody</a></li><li data-type='method'><a href="module-caf_security_tokens.html">validUsername</a></li></ul></li><li><a href="module-caf_security_utils.html">caf_security/utils</a><ul class='methods'><li data-type='method'><a href="module-caf_security_utils.html">accountsSession</a></li><li data-type='method'><a href="module-caf_security_utils.html">loadKey</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li><li><a href="external-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">caf_security/aggregates</h1>
+    
 
     
 
@@ -35,26 +51,16 @@
 </header>
 
 <article>
-    <div class="container-overview">
     
-        
-            <div class="description"><p>Authorization rule that implements linked local namespaces with
-an <code>AggregateMap</code> (see <a href="external-caf_sharing_AggregateMap.html">external:caf_sharing/AggregateMap</a>).</p></div>
-        
-
+        <div class="container-overview">
         
             
+                <div class="description usertext"><p>Authorization rule that implements linked local namespaces with
+an <code>AggregateMap</code> (see <a href="external-caf_sharing_AggregateMap.html">external:caf_sharing/AggregateMap</a>).</p></div>
+            
 
-
-
-
-
-
-
-
-
-
-
+            
+                
 
 
 
@@ -62,34 +68,34 @@ an <code>AggregateMap</code> (see <a href="external-caf_sharing_AggregateMap.htm
 <dl class="details">
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="aggregates.js.html">aggregates.js</a>, <a href="aggregates.js.html#line19">line 19</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -118,10 +124,21 @@ an <code>AggregateMap</code> (see <a href="external-caf_sharing_AggregateMap.htm
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+            
         
-    
-    </div>
-
+        </div>
     
 
     
@@ -129,8 +146,10 @@ an <code>AggregateMap</code> (see <a href="external-caf_sharing_AggregateMap.htm
     
 
     
-
     
+    
+
+     
 
     
 
@@ -144,17 +163,69 @@ an <code>AggregateMap</code> (see <a href="external-caf_sharing_AggregateMap.htm
 
     
 
-    
     <h4 class="name" id="computeRuleId"><span class="type-signature"></span>computeRuleId<span class="signature">(rule)</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="aggregates.js.html">aggregates.js</a>, <a href="aggregates.js.html#line52">line 52</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="module-caf_security_proxy_security.html#addRule">module:caf_security/proxy_security#addRule</a>.</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Computes a content-based identifier for a rule.</p>
 </div>
+
+
 
 
 
@@ -217,57 +288,6 @@ an <code>AggregateMap</code> (see <a href="external-caf_sharing_AggregateMap.htm
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="aggregates.js.html">aggregates.js</a>, <a href="aggregates.js.html#line52">line 52</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="module-caf_security_proxy_security.html#addRule">module:caf_security/proxy_security#addRule</a>.</li>
-        </ul>
-    </dd>
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -282,13 +302,13 @@ an <code>AggregateMap</code> (see <a href="external-caf_sharing_AggregateMap.htm
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         <p>Invalid rule.</p>
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -316,7 +336,7 @@ an <code>AggregateMap</code> (see <a href="external-caf_sharing_AggregateMap.htm
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -332,24 +352,67 @@ an <code>AggregateMap</code> (see <a href="external-caf_sharing_AggregateMap.htm
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="isAuthorized"><span class="type-signature"></span>isAuthorized<span class="signature">(caOwner, caLocalName, method, rE)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="aggregates.js.html">aggregates.js</a>, <a href="aggregates.js.html#line151">line 151</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Checks whether a CA is authorized to make a method call.</p>
 </div>
+
+
 
 
 
@@ -481,50 +544,6 @@ an <code>AggregateMap</code> (see <a href="external-caf_sharing_AggregateMap.htm
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="aggregates.js.html">aggregates.js</a>, <a href="aggregates.js.html#line151">line 151</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -544,7 +563,7 @@ an <code>AggregateMap</code> (see <a href="external-caf_sharing_AggregateMap.htm
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -560,27 +579,79 @@ an <code>AggregateMap</code> (see <a href="external-caf_sharing_AggregateMap.htm
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="newAggregateRule"><span class="type-signature"></span>newAggregateRule<span class="signature">(methods<span class="signature-attributes">opt</span>, aggregateMapAlias)</span><span class="type-signature"> &rarr; {<a href="global.html#ruleType">ruleType</a>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="aggregates.js.html">aggregates.js</a>, <a href="aggregates.js.html#line175">line 175</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="external-caf_sharing.html">external:caf_sharing</a></li>
+        
+            <li><a href="module-caf_security_proxy_security.html#addRule">module:caf_security/proxy_security#addRule</a>.</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Constructor for a rule that uses an <code>AggregateMap</code> to represent a linked
 local namespace.</p>
 <p>Note that aggregate rules are only active if the corresponding
 <code>AggregateMap</code> has been added using the <code>caf_sharing</code> plugin.</p>
 </div>
+
+
 
 
 
@@ -690,59 +761,6 @@ instantiate the <code>AggregateMap</code>.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="aggregates.js.html">aggregates.js</a>, <a href="aggregates.js.html#line175">line 175</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="external-caf_sharing.html">external:caf_sharing</a></li>
-        
-            <li><a href="module-caf_security_proxy_security.html#addRule">module:caf_security/proxy_security#addRule</a>.</li>
-        </ul>
-    </dd>
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -762,7 +780,7 @@ instantiate the <code>AggregateMap</code>.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -778,24 +796,67 @@ instantiate the <code>AggregateMap</code>.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="newRuleEngine"><span class="type-signature"></span>newRuleEngine<span class="signature">(ca, rules)</span><span class="type-signature"> &rarr; {<a href="global.html#ruleEngineType">ruleEngineType</a>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="aggregates.js.html">aggregates.js</a>, <a href="aggregates.js.html#line74">line 74</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Preprocess an array of rules for quick authorization checks.</p>
 </div>
+
+
 
 
 
@@ -881,50 +942,6 @@ instantiate the <code>AggregateMap</code>.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="aggregates.js.html">aggregates.js</a>, <a href="aggregates.js.html#line74">line 74</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -944,7 +961,7 @@ instantiate the <code>AggregateMap</code>.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -957,8 +974,6 @@ instantiate the <code>AggregateMap</code>.</p></td>
 </dl>
 
     
-
-
 
 
 
@@ -975,19 +990,21 @@ instantiate the <code>AggregateMap</code>.</p></td>
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_security_aggregates.html">caf_security/aggregates</a></li><li><a href="module-caf_security_main.html">caf_security/main</a></li><li><a href="module-caf_security_plug_ca_security.html">caf_security/plug_ca_security</a></li><li><a href="module-caf_security_plug_security.html">caf_security/plug_security</a></li><li><a href="module-caf_security_proxy_security.html">caf_security/proxy_security</a></li><li><a href="module-caf_security_rules.html">caf_security/rules</a></li><li><a href="module-caf_security_tokens.html">caf_security/tokens</a></li><li><a href="module-caf_security_utils.html">caf_security/utils</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li><li><a href="external-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li></ul><h3><a href="global.html">Global</a></h3>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:07 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:45 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Module: caf_sharing/ReliableChannel</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>caf_sharing/ReliableChannel - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Module: caf_sharing/ReliableChannel</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a><ul class='methods'><li data-type='method'><a href="module-caf_sharing_AggregateMap.html">AggregateMap</a></li><li data-type='method'><a href="module-caf_sharing_AggregateMap.html#assemble">assemble</a></li><li data-type='method'><a href="module-caf_sharing_AggregateMap.html#getMaps">getMaps</a></li></ul></li><li><a href="module-caf_sharing_main.html">caf_sharing/main</a></li><li><a href="module-caf_sharing_plug_ca_sharing.html">caf_sharing/plug_ca_sharing</a></li><li><a href="module-caf_sharing_plug_sharing.html">caf_sharing/plug_sharing</a></li><li><a href="module-caf_sharing_proxy_sharing.html">caf_sharing/proxy_sharing</a><ul class='methods'><li data-type='method'><a href="module-caf_sharing_proxy_sharing.html#addReadOnlyMap">addReadOnlyMap</a></li><li data-type='method'><a href="module-caf_sharing_proxy_sharing.html#addWritableMap">addWritableMap</a></li><li data-type='method'><a href="module-caf_sharing_proxy_sharing.html#applyDelta">applyDelta</a></li><li data-type='method'><a href="module-caf_sharing_proxy_sharing.html#deleteMap">deleteMap</a></li><li data-type='method'><a href="module-caf_sharing_proxy_sharing.html#fullName">fullName</a></li><li data-type='method'><a href="module-caf_sharing_proxy_sharing.html#pullUpdate">pullUpdate</a></li></ul></li><li><a href="module-caf_sharing_ReliableChannel.html">caf_sharing/ReliableChannel</a><ul class='methods'><li data-type='method'><a href="module-caf_sharing_ReliableChannel.html">allChannelNames</a></li><li data-type='method'><a href="module-caf_sharing_ReliableChannel.html">deleteChannel</a></li><li data-type='method'><a href="module-caf_sharing_ReliableChannel.html">firstAckIndex</a></li><li data-type='method'><a href="module-caf_sharing_ReliableChannel.html">firstIndex</a></li><li data-type='method'><a href="module-caf_sharing_ReliableChannel.html">gc</a></li><li data-type='method'><a href="module-caf_sharing_ReliableChannel.html">init</a></li><li data-type='method'><a href="module-caf_sharing_ReliableChannel.html">receive</a></li><li data-type='method'><a href="module-caf_sharing_ReliableChannel.html">send</a></li></ul></li><li><a href="module-caf_sharing_SharedMap.html">caf_sharing/SharedMap</a><ul class='methods'><li data-type='method'><a href="module-caf_sharing_SharedMap.html#applyChanges">applyChanges</a></li><li data-type='method'><a href="module-caf_sharing_SharedMap.html#commit">commit</a></li><li data-type='method'><a href="module-caf_sharing_SharedMap.html#getVersion">getVersion</a></li><li data-type='method'><a href="module-caf_sharing_SharedMap.html#ref">ref</a></li><li data-type='method'><a href="module-caf_sharing_SharedMap.html#reset">reset</a></li><li data-type='method'><a href="module-caf_sharing_SharedMap.html#toImmutableObject">toImmutableObject</a></li><li data-type='method'><a href="module-caf_sharing_SharedMap.html">SharedMap</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_redis.html">caf_redis</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">caf_sharing/ReliableChannel</h1>
+    
 
     
 
@@ -35,10 +51,11 @@
 </header>
 
 <article>
-    <div class="container-overview">
     
+        <div class="container-overview">
         
-            <div class="description"><p>A collection of helper functions to create a reliable, unidirectional
+            
+                <div class="description usertext"><p>A collection of helper functions to create a reliable, unidirectional
 channel from <code>A</code> to <code>B</code>, using a pair of Shared Maps.</p>
 <p>One Shared Map (the <code>writer</code>) is writable by <code>A</code> and readable by <code>B</code>.
 The other one (the <code>reader</code>) is writable by <code>B</code> and readable by <code>A</code>.
@@ -70,21 +87,10 @@ those that have not been acknowledged are actually present in the Shared Map.</p
 <p>When <code>A</code> garbage collects the channel, it drops all the acknowledged messages
 by comparing <code>__ca_channels__.foo.index</code> with <code>__ca_acks__.foo</code>, and
 shifting the list.</p></div>
-        
-
-        
             
 
-
-
-
-
-
-
-
-
-
-
+            
+                
 
 
 
@@ -92,34 +98,34 @@ shifting the list.</p></div>
 <dl class="details">
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="ReliableChannel.js.html">ReliableChannel.js</a>, <a href="ReliableChannel.js.html#line20">line 20</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -148,10 +154,21 @@ shifting the list.</p></div>
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+            
         
-    
-    </div>
-
+        </div>
     
 
     
@@ -159,8 +176,10 @@ shifting the list.</p></div>
     
 
     
-
     
+    
+
+     
 
     
 
@@ -174,7 +193,52 @@ shifting the list.</p></div>
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ReliableChannel.js.html">ReliableChannel.js</a>, <a href="ReliableChannel.js.html#line84">line 84</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Invalid ack index.</p>
 </div>
 
@@ -194,37 +258,56 @@ shifting the list.</p></div>
 
 
 
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="allChannelNames"><span class="type-signature"></span>allChannelNames<span class="signature">(writerRef)</span><span class="type-signature"> &rarr; {Array.&lt;string>}</span></h4>
+
+    
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ReliableChannel.js.html">ReliableChannel.js</a>, <a href="ReliableChannel.js.html#line84">line 84</a>
+        <a href="ReliableChannel.js.html">ReliableChannel.js</a>, <a href="ReliableChannel.js.html#line178">line 178</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -238,29 +321,11 @@ shifting the list.</p></div>
 
 
 
-
-        
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="allChannelNames"><span class="type-signature"></span>allChannelNames<span class="signature">(writerRef)</span><span class="type-signature"> &rarr; {Array.&lt;string>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>Lists all channel names in a Shared Map.</p>
 </div>
+
+
 
 
 
@@ -323,50 +388,6 @@ shifting the list.</p></div>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ReliableChannel.js.html">ReliableChannel.js</a>, <a href="ReliableChannel.js.html#line178">line 178</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -386,7 +407,7 @@ shifting the list.</p></div>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -402,24 +423,67 @@ shifting the list.</p></div>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="deleteChannel"><span class="type-signature"></span>deleteChannel<span class="signature">(writerRef, channelName)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ReliableChannel.js.html">ReliableChannel.js</a>, <a href="ReliableChannel.js.html#line115">line 115</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Deletes a channel in a Shared Map.</p>
 </div>
+
+
 
 
 
@@ -505,52 +569,6 @@ shifting the list.</p></div>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ReliableChannel.js.html">ReliableChannel.js</a>, <a href="ReliableChannel.js.html#line115">line 115</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -569,17 +587,62 @@ shifting the list.</p></div>
 
     
 
-    
     <h4 class="name" id="firstAckIndex"><span class="type-signature"></span>firstAckIndex<span class="signature">(readerRef, channelName)</span><span class="type-signature"> &rarr; {number}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ReliableChannel.js.html">ReliableChannel.js</a>, <a href="ReliableChannel.js.html#line161">line 161</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Returns the index of the last ack message.</p>
 </div>
+
+
 
 
 
@@ -666,50 +729,6 @@ acks.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ReliableChannel.js.html">ReliableChannel.js</a>, <a href="ReliableChannel.js.html#line161">line 161</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -729,7 +748,7 @@ acks.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -745,24 +764,67 @@ acks.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="firstIndex"><span class="type-signature"></span>firstIndex<span class="signature">(writerRef, channelName)</span><span class="type-signature"> &rarr; {number}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ReliableChannel.js.html">ReliableChannel.js</a>, <a href="ReliableChannel.js.html#line141">line 141</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Returns the index of the first message available in the channel.</p>
 </div>
+
+
 
 
 
@@ -848,50 +910,6 @@ acks.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ReliableChannel.js.html">ReliableChannel.js</a>, <a href="ReliableChannel.js.html#line141">line 141</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -911,7 +929,7 @@ acks.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -927,24 +945,67 @@ acks.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="gc"><span class="type-signature"></span>gc<span class="signature">(writerRef, readerRef)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ReliableChannel.js.html">ReliableChannel.js</a>, <a href="ReliableChannel.js.html#line225">line 225</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Garbage collects acknowledged messages.</p>
 </div>
+
+
 
 
 
@@ -1030,52 +1091,6 @@ acks.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ReliableChannel.js.html">ReliableChannel.js</a>, <a href="ReliableChannel.js.html#line225">line 225</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -1094,17 +1109,62 @@ acks.</p></td>
 
     
 
-    
     <h4 class="name" id="init"><span class="type-signature"></span>init<span class="signature">(writerRef)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ReliableChannel.js.html">ReliableChannel.js</a>, <a href="ReliableChannel.js.html#line95">line 95</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Initializes a Shared Map containing reliable channels.</p>
 </div>
+
+
 
 
 
@@ -1167,52 +1227,6 @@ acks.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ReliableChannel.js.html">ReliableChannel.js</a>, <a href="ReliableChannel.js.html#line95">line 95</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -1231,15 +1245,58 @@ acks.</p></td>
 
     
 
-    
     <h4 class="name" id="receive"><span class="type-signature"></span>receive<span class="signature">(writerRef, readerRef, channelName)</span><span class="type-signature"> &rarr; {<a href="global.html#messagesType">messagesType</a>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ReliableChannel.js.html">ReliableChannel.js</a>, <a href="ReliableChannel.js.html#line272">line 272</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Receives messages and updates ack counters accordingly. This operation is
 not idempotent, already acknowledged messages are ignored.</p>
 <p>The return type 'messagesType' is:</p>
@@ -1248,6 +1305,8 @@ not idempotent, already acknowledged messages are ignored.</p>
 <p>where the <code>index</code> field corresponds to the first message in <code>messages</code> or
 UNKNOWN_ACK_INDEX if no messages.</p>
 </div>
+
+
 
 
 
@@ -1356,50 +1415,6 @@ UNKNOWN_ACK_INDEX if no messages.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ReliableChannel.js.html">ReliableChannel.js</a>, <a href="ReliableChannel.js.html#line272">line 272</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1420,7 +1435,7 @@ acknowledged previously.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1436,24 +1451,67 @@ acknowledged previously.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="send"><span class="type-signature"></span>send<span class="signature">(writerRef, channelName, messages)</span><span class="type-signature"> &rarr; {number}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="ReliableChannel.js.html">ReliableChannel.js</a>, <a href="ReliableChannel.js.html#line197">line 197</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Sends an array of messages through a channel.</p>
 </div>
+
+
 
 
 
@@ -1563,50 +1621,6 @@ to be sent.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ReliableChannel.js.html">ReliableChannel.js</a>, <a href="ReliableChannel.js.html#line197">line 197</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1619,7 +1633,7 @@ to be sent.</p></td>
 
         
 
-    <div class="param-desc">
+    <div class="param-desc usertext">
     
         <p>Error If <code>messages</code> is not an array or is empty.</p>
     
@@ -1638,7 +1652,7 @@ to be sent.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1651,8 +1665,6 @@ to be sent.</p></td>
 </dl>
 
     
-
-
 
 
 
@@ -1669,19 +1681,21 @@ to be sent.</p></td>
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li><li><a href="module-caf_sharing_main.html">caf_sharing/main</a></li><li><a href="module-caf_sharing_plug_ca_sharing.html">caf_sharing/plug_ca_sharing</a></li><li><a href="module-caf_sharing_plug_sharing.html">caf_sharing/plug_sharing</a></li><li><a href="module-caf_sharing_proxy_sharing.html">caf_sharing/proxy_sharing</a></li><li><a href="module-caf_sharing_ReliableChannel.html">caf_sharing/ReliableChannel</a></li><li><a href="module-caf_sharing_SharedMap.html">caf_sharing/SharedMap</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_redis.html">caf_redis</a></li></ul><h3><a href="global.html">Global</a></h3>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:09 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:46 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

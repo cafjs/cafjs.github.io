@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Module: caf_platform/pipe_cdn</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>caf_platform/pipe_cdn - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Module: caf_platform/pipe_cdn</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_platform_cron_lease.html">caf_platform/cron_lease</a></li><li><a href="module-caf_platform_cron_nodes.html">caf_platform/cron_nodes</a></li><li><a href="module-caf_platform_cron_pulser.html">caf_platform/cron_pulser</a></li><li><a href="module-caf_platform_cron_ripper.html">caf_platform/cron_ripper</a></li><li><a href="module-caf_platform_cron_security.html">caf_platform/cron_security</a></li><li><a href="module-caf_platform_gen_pipe.html">caf_platform/gen_pipe</a><ul class='methods'><li data-type='method'><a href="module-caf_platform_gen_pipe.html#__ca_connectSetup__">__ca_connectSetup__</a></li><li data-type='method'><a href="module-caf_platform_gen_pipe.html#__ca_isHttpPipe__">__ca_isHttpPipe__</a></li><li data-type='method'><a href="module-caf_platform_gen_pipe.html#__ca_isWebSocketPipe__">__ca_isWebSocketPipe__</a></li><li data-type='method'><a href="module-caf_platform_gen_pipe.html#__ca_send__">__ca_send__</a></li></ul></li><li><a href="module-caf_platform_main.html">caf_platform/main</a></li><li><a href="module-caf_platform_pipe_bodyParser.html">caf_platform/pipe_bodyParser</a></li><li><a href="module-caf_platform_pipe_cache.html">caf_platform/pipe_cache</a></li><li><a href="module-caf_platform_pipe_cdn.html">caf_platform/pipe_cdn</a></li><li><a href="module-caf_platform_pipe_compress.html">caf_platform/pipe_compress</a></li><li><a href="module-caf_platform_pipe_dispatcher.html">caf_platform/pipe_dispatcher</a></li><li><a href="module-caf_platform_pipe_ping.html">caf_platform/pipe_ping</a></li><li><a href="module-caf_platform_pipe_redirect.html">caf_platform/pipe_redirect</a></li><li><a href="module-caf_platform_pipe_security.html">caf_platform/pipe_security</a></li><li><a href="module-caf_platform_pipe_static.html">caf_platform/pipe_static</a></li><li><a href="module-caf_platform_pipe_stats.html">caf_platform/pipe_stats</a></li><li><a href="module-caf_platform_pipeline_main.html">caf_platform/pipeline_main</a></li><li><a href="module-caf_platform_platform_main.html">caf_platform/platform_main</a><ul class='methods'><li data-type='method'><a href="module-caf_platform_platform_main.html#__ca_getAppFullName__">__ca_getAppFullName__</a></li><li data-type='method'><a href="module-caf_platform_platform_main.html#__ca_getAppName__">__ca_getAppName__</a></li><li data-type='method'><a href="module-caf_platform_platform_main.html#__ca_getAppSuffix__">__ca_getAppSuffix__</a></li><li data-type='method'><a href="module-caf_platform_platform_main.html#__ca_graceful_shutdown__">__ca_graceful_shutdown__</a></li></ul></li><li><a href="module-caf_platform_plug_defaultCA.html">caf_platform/plug_defaultCA</a></li><li><a href="module-caf_platform_plug_lease.html">caf_platform/plug_lease</a><ul class='methods'><li data-type='method'><a href="module-caf_platform_plug_lease.html#getLeaseTimeout">getLeaseTimeout</a></li><li data-type='method'><a href="module-caf_platform_plug_lease.html#grabLease">grabLease</a></li><li data-type='method'><a href="module-caf_platform_plug_lease.html#renewLeases">renewLeases</a></li></ul></li><li><a href="module-caf_platform_plug_nodes.html">caf_platform/plug_nodes</a><ul class='methods'><li data-type='method'><a href="module-caf_platform_plug_nodes.html#__ca_pulse__">__ca_pulse__</a></li><li data-type='method'><a href="module-caf_platform_plug_nodes.html#getAllPublicNodeIds">getAllPublicNodeIds</a></li><li data-type='method'><a href="module-caf_platform_plug_nodes.html#getNodeId">getNodeId</a></li><li data-type='method'><a href="module-caf_platform_plug_nodes.html#getPrivateNodeId">getPrivateNodeId</a></li><li data-type='method'><a href="module-caf_platform_plug_nodes.html#getVersion">getVersion</a></li><li data-type='method'><a href="module-caf_platform_plug_nodes.html#onChange">onChange</a></li></ul></li><li><a href="module-caf_platform_plug_paas.html">caf_platform/plug_paas</a><ul class='methods'><li data-type='method'><a href="module-caf_platform_plug_paas.html#getAppHost">getAppHost</a></li><li data-type='method'><a href="module-caf_platform_plug_paas.html#getAppInternalPort">getAppInternalPort</a></li><li data-type='method'><a href="module-caf_platform_plug_paas.html#getAppPort">getAppPort</a></li><li data-type='method'><a href="module-caf_platform_plug_paas.html#getHome">getHome</a></li><li data-type='method'><a href="module-caf_platform_plug_paas.html#getPaaS">getPaaS</a></li><li data-type='method'><a href="module-caf_platform_plug_paas.html#getServiceConfig">getServiceConfig</a></li></ul></li><li><a href="module-caf_platform_plug_registry.html">caf_platform/plug_registry</a><ul class='methods'><li data-type='method'><a href="module-caf_platform_plug_registry.html#__ca_instanceChild__">__ca_instanceChild__</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="external-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="external-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">caf_platform/pipe_cdn</h1>
+    
 
     
 
@@ -35,10 +51,11 @@
 </header>
 
 <article>
-    <div class="container-overview">
     
+        <div class="container-overview">
         
-            <div class="description"><p>Processing pipeline for enabling CDN.</p>
+            
+                <div class="description usertext"><p>Processing pipeline for enabling CDN.</p>
 <p>Properties:</p>
 <pre><code> {appCDN: string=, appLocalName: string=, appSubdirCDN: string=}
 </code></pre>
@@ -53,21 +70,10 @@ it should not be a falsy.
 <p>When <code>appCDN</code> is <code>https://cdn-2332.kxcdn.com</code>, <code>appLocalName</code> is <code>myApp</code>,
 and <code>appSubdirCDN</code> is <code>v1.01</code> occurrences in html and js files of
 <code>json_rpc.CDN</code> are replaced by <code>https://cdn-2332.kxcdn.com/myApp/v1.01</code></p></div>
-        
-
-        
             
 
-
-
-
-
-
-
-
-
-
-
+            
+                
 
 
 
@@ -75,34 +81,34 @@ and <code>appSubdirCDN</code> is <code>v1.01</code> occurrences in html and js f
 <dl class="details">
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="pipe_cdn.js.html">pipe_cdn.js</a>, <a href="pipe_cdn.js.html#line17">line 17</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -131,9 +137,22 @@ and <code>appSubdirCDN</code> is <code>v1.01</code> occurrences in html and js f
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+            
         
+        </div>
     
-    </div>
 
     
         <h3 class="subsection-title">Extends</h3>
@@ -151,10 +170,10 @@ and <code>appSubdirCDN</code> is <code>v1.01</code> occurrences in html and js f
     
 
     
-
+    
     
 
-    
+     
 
     
 
@@ -172,19 +191,21 @@ and <code>appSubdirCDN</code> is <code>v1.01</code> occurrences in html and js f
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_platform_cron_lease.html">caf_platform/cron_lease</a></li><li><a href="module-caf_platform_cron_nodes.html">caf_platform/cron_nodes</a></li><li><a href="module-caf_platform_cron_pulser.html">caf_platform/cron_pulser</a></li><li><a href="module-caf_platform_cron_ripper.html">caf_platform/cron_ripper</a></li><li><a href="module-caf_platform_cron_security.html">caf_platform/cron_security</a></li><li><a href="module-caf_platform_gen_pipe.html">caf_platform/gen_pipe</a></li><li><a href="module-caf_platform_main.html">caf_platform/main</a></li><li><a href="module-caf_platform_pipe_bodyParser.html">caf_platform/pipe_bodyParser</a></li><li><a href="module-caf_platform_pipe_cache.html">caf_platform/pipe_cache</a></li><li><a href="module-caf_platform_pipe_cdn.html">caf_platform/pipe_cdn</a></li><li><a href="module-caf_platform_pipe_compress.html">caf_platform/pipe_compress</a></li><li><a href="module-caf_platform_pipe_dispatcher.html">caf_platform/pipe_dispatcher</a></li><li><a href="module-caf_platform_pipe_ping.html">caf_platform/pipe_ping</a></li><li><a href="module-caf_platform_pipe_redirect.html">caf_platform/pipe_redirect</a></li><li><a href="module-caf_platform_pipe_security.html">caf_platform/pipe_security</a></li><li><a href="module-caf_platform_pipe_static.html">caf_platform/pipe_static</a></li><li><a href="module-caf_platform_pipe_stats.html">caf_platform/pipe_stats</a></li><li><a href="module-caf_platform_pipeline_main.html">caf_platform/pipeline_main</a></li><li><a href="module-caf_platform_platform_main.html">caf_platform/platform_main</a></li><li><a href="module-caf_platform_plug_defaultCA.html">caf_platform/plug_defaultCA</a></li><li><a href="module-caf_platform_plug_lease.html">caf_platform/plug_lease</a></li><li><a href="module-caf_platform_plug_nodes.html">caf_platform/plug_nodes</a></li><li><a href="module-caf_platform_plug_paas.html">caf_platform/plug_paas</a></li><li><a href="module-caf_platform_plug_registry.html">caf_platform/plug_registry</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="external-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="external-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a></li><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li></ul><h3><a href="global.html">Global</a></h3>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:04 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:42 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

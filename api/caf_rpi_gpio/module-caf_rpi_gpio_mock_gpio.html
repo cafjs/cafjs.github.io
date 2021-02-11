@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Module: caf_rpi_gpio/mock_gpio</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>caf_rpi_gpio/mock_gpio - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Module: caf_rpi_gpio/mock_gpio</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_rpi_gpio_main.html">caf_rpi_gpio/main</a></li><li><a href="module-caf_rpi_gpio_mock_gpio.html">caf_rpi_gpio/mock_gpio</a></li><li><a href="module-caf_rpi_gpio_mock_gpio-shim.html">caf_rpi_gpio/mock_gpio-shim</a></li><li><a href="module-caf_rpi_gpio_plug_iot_gpio.html">caf_rpi_gpio/plug_iot_gpio</a></li><li><a href="module-caf_rpi_gpio_proxy_iot_gpio.html">caf_rpi_gpio/proxy_iot_gpio</a><ul class='methods'><li data-type='method'><a href="module-caf_rpi_gpio_proxy_iot_gpio.html#getPinConfig">getPinConfig</a></li><li data-type='method'><a href="module-caf_rpi_gpio_proxy_iot_gpio.html#readAll">readAll</a></li><li data-type='method'><a href="module-caf_rpi_gpio_proxy_iot_gpio.html#setPinConfig">setPinConfig</a></li><li data-type='method'><a href="module-caf_rpi_gpio_proxy_iot_gpio.html#setWatcher">setWatcher</a></li><li data-type='method'><a href="module-caf_rpi_gpio_proxy_iot_gpio.html#unsetWatcher">unsetWatcher</a></li><li data-type='method'><a href="module-caf_rpi_gpio_proxy_iot_gpio.html#writeMany">writeMany</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_iot_gen_plug_iot.html">caf_iot/gen_plug_iot</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">caf_rpi_gpio/mock_gpio</h1>
+    
 
     
 
@@ -35,10 +51,11 @@
 </header>
 
 <article>
-    <div class="container-overview">
     
+        <div class="container-overview">
         
-            <div class="description"><p>Mocks GPIO pins of a Raspberry PI.</p>
+            
+                <div class="description usertext"><p>Mocks GPIO pins of a Raspberry PI.</p>
 <p>It uses two directories:</p>
 <pre><code>/tmp/gpio/in    //pins that are exported as inputs
 /tmp/gpio/out   //pins written by the app
@@ -49,21 +66,10 @@
 <p>Files use names <code>gpio&lt;pin#&gt;</code>, i.e., <code>gpio3</code>, and contain <code>1</code> or <code>0</code>.</p>
 <p>An external app can just write files in <code>/tmp/gpio/in</code>  to trigger poll
 actions.</p></div>
-        
-
-        
             
 
-
-
-
-
-
-
-
-
-
-
+            
+                
 
 
 
@@ -71,34 +77,34 @@ actions.</p></div>
 <dl class="details">
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="mock_gpio.js.html">mock_gpio.js</a>, <a href="mock_gpio.js.html#line46">line 46</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -127,10 +133,21 @@ actions.</p></div>
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+            
         
-    
-    </div>
-
+        </div>
     
 
     
@@ -138,8 +155,10 @@ actions.</p></div>
     
 
     
-
     
+    
+
+     
 
     
 
@@ -157,19 +176,21 @@ actions.</p></div>
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_rpi_gpio_main.html">caf_rpi_gpio/main</a></li><li><a href="module-caf_rpi_gpio_mock_gpio.html">caf_rpi_gpio/mock_gpio</a></li><li><a href="module-caf_rpi_gpio_mock_gpio-shim.html">caf_rpi_gpio/mock_gpio-shim</a></li><li><a href="module-caf_rpi_gpio_plug_iot_gpio.html">caf_rpi_gpio/plug_iot_gpio</a></li><li><a href="module-caf_rpi_gpio_proxy_iot_gpio.html">caf_rpi_gpio/proxy_iot_gpio</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_iot_gen_plug_iot.html">caf_iot/gen_plug_iot</a></li></ul>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:12 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:49 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

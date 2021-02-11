@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Module: caf_components/templateUtils</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>caf_components/templateUtils - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Module: caf_components/templateUtils</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_components_containerUtils.html">caf_components/containerUtils</a><ul class='methods'><li data-type='method'><a href="module-caf_components_containerUtils.html#.utils">utils</a></li><li data-type='method'><a href="module-caf_components_containerUtils.html#checkAndRestartChild">checkAndRestartChild</a></li><li data-type='method'><a href="module-caf_components_containerUtils.html#checkChild">checkChild</a></li><li data-type='method'><a href="module-caf_components_containerUtils.html#createChild">createChild</a></li><li data-type='method'><a href="module-caf_components_containerUtils.html#ensureShutdown">ensureShutdown</a></li><li data-type='method'><a href="module-caf_components_containerUtils.html#many">many</a></li><li data-type='method'><a href="module-caf_components_containerUtils.html#shutdownChild">shutdownChild</a></li></ul></li><li><a href="module-caf_components_gen_component.html">caf_components/gen_component</a><ul class='methods'><li data-type='method'><a href="module-caf_components_gen_component.html#.create">create</a></li><li data-type='method'><a href="module-caf_components_gen_component.html#__ca_checkup__">__ca_checkup__</a></li><li data-type='method'><a href="module-caf_components_gen_component.html#__ca_getSpec__">__ca_getSpec__</a></li><li data-type='method'><a href="module-caf_components_gen_component.html#__ca_shutdown__">__ca_shutdown__</a></li></ul></li><li><a href="module-caf_components_gen_container.html">caf_components/gen_container</a><ul class='methods'><li data-type='method'><a href="module-caf_components_gen_container.html#.create">create</a></li><li data-type='method'><a href="module-caf_components_gen_container.html#__ca_getChildrenSpec__">__ca_getChildrenSpec__</a></li></ul></li><li><a href="module-caf_components_gen_cron.html">caf_components/gen_cron</a><ul class='methods'><li data-type='method'><a href="module-caf_components_gen_cron.html#.create">create</a></li><li data-type='method'><a href="module-caf_components_gen_cron.html#__ca_getInterval__">__ca_getInterval__</a></li><li data-type='method'><a href="module-caf_components_gen_cron.html#__ca_start__">__ca_start__</a></li><li data-type='method'><a href="module-caf_components_gen_cron.html#__ca_stop__">__ca_stop__</a></li></ul></li><li><a href="module-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a><ul class='methods'><li data-type='method'><a href="module-caf_components_gen_dynamic_container.html#.create">create</a></li><li data-type='method'><a href="module-caf_components_gen_dynamic_container.html#__ca_allChildren__">__ca_allChildren__</a></li><li data-type='method'><a href="module-caf_components_gen_dynamic_container.html#__ca_deleteChild__">__ca_deleteChild__</a></li><li data-type='method'><a href="module-caf_components_gen_dynamic_container.html#__ca_getChildSpec__">__ca_getChildSpec__</a></li><li data-type='method'><a href="module-caf_components_gen_dynamic_container.html#__ca_instanceChild__">__ca_instanceChild__</a></li></ul></li><li><a href="module-caf_components_gen_loader.html">caf_components/gen_loader</a><ul class='methods'><li data-type='method'><a href="module-caf_components_gen_loader.html#.create">create</a></li><li data-type='method'><a href="module-caf_components_gen_loader.html#__ca_firstModulePath__">__ca_firstModulePath__</a></li><li data-type='method'><a href="module-caf_components_gen_loader.html#__ca_getModuleIndex__">__ca_getModuleIndex__</a></li><li data-type='method'><a href="module-caf_components_gen_loader.html#__ca_loadComponent__">__ca_loadComponent__</a></li><li data-type='method'><a href="module-caf_components_gen_loader.html#__ca_loadDescription__">__ca_loadDescription__</a></li><li data-type='method'><a href="module-caf_components_gen_loader.html#__ca_loadResource__">__ca_loadResource__</a></li><li data-type='method'><a href="module-caf_components_gen_loader.html#__ca_registerLogger__">__ca_registerLogger__</a></li><li data-type='method'><a href="module-caf_components_gen_loader.html#__ca_setModules__">__ca_setModules__</a></li><li data-type='method'><a href="module-caf_components_gen_loader.html#__ca_setStaticArtifacts__">__ca_setStaticArtifacts__</a></li></ul></li><li><a href="module-caf_components_gen_plug.html">caf_components/gen_plug</a><ul class='methods'><li data-type='method'><a href="module-caf_components_gen_plug.html#.create">create</a></li></ul></li><li><a href="module-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a><ul class='methods'><li data-type='method'><a href="module-caf_components_gen_plug_ca.html#.create">create</a></li><li data-type='method'><a href="module-caf_components_gen_plug_ca.html#__ca_getCAName__">__ca_getCAName__</a></li></ul></li><li><a href="module-caf_components_gen_proxy.html">caf_components/gen_proxy</a><ul class='methods'><li data-type='method'><a href="module-caf_components_gen_proxy.html#.create">create</a></li><li data-type='method'><a href="module-caf_components_gen_proxy.html#__ca_getCAName__">__ca_getCAName__</a></li></ul></li><li><a href="module-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a><ul class='methods'><li data-type='method'><a href="module-caf_components_gen_supervisor.html#.create">create</a></li><li data-type='method'><a href="module-caf_components_gen_supervisor.html#__ca_start__">__ca_start__</a></li><li data-type='method'><a href="module-caf_components_gen_supervisor.html#__ca_stop__">__ca_stop__</a></li></ul></li><li><a href="module-caf_components_gen_transactional.html">caf_components/gen_transactional</a><ul class='methods'><li data-type='method'><a href="module-caf_components_gen_transactional.html#.create">create</a></li><li data-type='method'><a href="module-caf_components_gen_transactional.html#__ca_abort__">__ca_abort__</a></li><li data-type='method'><a href="module-caf_components_gen_transactional.html#__ca_begin__">__ca_begin__</a></li><li data-type='method'><a href="module-caf_components_gen_transactional.html#__ca_commit__">__ca_commit__</a></li><li data-type='method'><a href="module-caf_components_gen_transactional.html#__ca_init__">__ca_init__</a></li><li data-type='method'><a href="module-caf_components_gen_transactional.html#__ca_lazyApply__">__ca_lazyApply__</a></li><li data-type='method'><a href="module-caf_components_gen_transactional.html#__ca_prepare__">__ca_prepare__</a></li><li data-type='method'><a href="module-caf_components_gen_transactional.html#__ca_resume__">__ca_resume__</a></li><li data-type='method'><a href="module-caf_components_gen_transactional.html#__ca_setLogActionsTarget__">__ca_setLogActionsTarget__</a></li></ul></li><li><a href="module-caf_components_main.html">caf_components/main</a><ul class='methods'><li data-type='method'><a href="module-caf_components_main.html">load</a></li></ul></li><li><a href="module-caf_components_myUtils.html">caf_components/myUtils</a><ul class='methods'><li data-type='method'><a href="module-caf_components_myUtils.html">callJustOnce</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">cloneAndMixin</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">deepClone</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">deepEqual</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">deleteProps</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">errToPrettyStr</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">errToStr</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">extractData</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">hashCode</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">mixin</a></li><li data-type='method'><a href="module-caf_components_myUtils.html#.clone">clone</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">onlyFun</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">promiseToCallback</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">randomString</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">retryWithDelay</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">superior</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">superiorPromisify</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">uniqueId</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">wrapAsyncFunction</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">wrapWithTimeout</a></li></ul></li><li><a href="module-caf_components_naming.html">caf_components/naming</a></li><li><a href="module-caf_components_plug_ca_log.html">caf_components/plug_ca_log</a><ul class='methods'><li data-type='method'><a href="module-caf_components_plug_ca_log.html#.newInstance">newInstance</a></li></ul></li><li><a href="module-caf_components_plug_log.html">caf_components/plug_log</a><ul class='methods'><li data-type='method'><a href="module-caf_components_plug_log.html#.newInstance">newInstance</a></li><li data-type='method'><a href="module-caf_components_plug_log.html#currentLevel">currentLevel</a></li><li data-type='method'><a href="module-caf_components_plug_log.html#debug">debug</a></li><li data-type='method'><a href="module-caf_components_plug_log.html#error">error</a></li><li data-type='method'><a href="module-caf_components_plug_log.html#fatal">fatal</a></li><li data-type='method'><a href="module-caf_components_plug_log.html#info">info</a></li><li data-type='method'><a href="module-caf_components_plug_log.html#isActive">isActive</a></li><li data-type='method'><a href="module-caf_components_plug_log.html#setLevel">setLevel</a></li><li data-type='method'><a href="module-caf_components_plug_log.html#trace">trace</a></li><li data-type='method'><a href="module-caf_components_plug_log.html#warn">warn</a></li></ul></li><li><a href="module-caf_components_proxy_log.html">caf_components/proxy_log</a><ul class='methods'><li data-type='method'><a href="module-caf_components_proxy_log.html#.newInstance">newInstance</a></li><li data-type='method'><a href="module-caf_components_proxy_log.html#debug">debug</a></li><li data-type='method'><a href="module-caf_components_proxy_log.html#error">error</a></li><li data-type='method'><a href="module-caf_components_proxy_log.html#fatal">fatal</a></li><li data-type='method'><a href="module-caf_components_proxy_log.html#info">info</a></li><li data-type='method'><a href="module-caf_components_proxy_log.html#isActive">isActive</a></li><li data-type='method'><a href="module-caf_components_proxy_log.html#trace">trace</a></li><li data-type='method'><a href="module-caf_components_proxy_log.html#warn">warn</a></li></ul></li><li><a href="module-caf_components_supervisor.html">caf_components/supervisor</a><ul class='methods'><li data-type='method'><a href="module-caf_components_supervisor.html#.newInstance">newInstance</a></li></ul></li><li><a href="module-caf_components_templateUtils.html">caf_components/templateUtils</a><ul class='methods'><li data-type='method'><a href="module-caf_components_templateUtils.html">merge</a></li><li data-type='method'><a href="module-caf_components_templateUtils.html#~mergeComponents">mergeComponents</a></li><li data-type='method'><a href="module-caf_components_templateUtils.html#~mergeEnv">mergeEnv</a></li><li data-type='method'><a href="module-caf_components_templateUtils.html#~mergeObj">mergeObj</a></li><li data-type='method'><a href="module-caf_components_templateUtils.html#~parseString">parseString</a></li><li data-type='method'><a href="module-caf_components_templateUtils.html#~patchEnv">patchEnv</a></li><li data-type='method'><a href="module-caf_components_templateUtils.html#~patchOneEnv">patchOneEnv</a></li><li data-type='method'><a href="module-caf_components_templateUtils.html">resolveEnv</a></li><li data-type='method'><a href="module-caf_components_templateUtils.html">resolveLinks</a></li></ul></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">caf_components/templateUtils</h1>
+    
 
     
 
@@ -35,10 +51,11 @@
 </header>
 
 <article>
-    <div class="container-overview">
     
+        <div class="container-overview">
         
-            <div class="description"><p>Functions to process template descriptions.</p>
+            
+                <div class="description usertext"><p>Functions to process template descriptions.</p>
 <p>A parsed description has a type <code>specType</code>:</p>
 <pre><code> { name: string, module: string | null, description=: string,
    env: Object, components=: Array.&lt;specType&gt;}
@@ -71,21 +88,10 @@ element in the array. In both cases, remember the new <code>X</code> position.</
 </li>
 </ol>
 <p>Merge always clones first, leaving the original descriptions unmodified.</p></div>
-        
-
-        
             
 
-
-
-
-
-
-
-
-
-
-
+            
+                
 
 
 
@@ -93,34 +99,34 @@ element in the array. In both cases, remember the new <code>X</code> position.</
 <dl class="details">
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line19">line 19</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -149,10 +155,21 @@ element in the array. In both cases, remember the new <code>X</code> position.</
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+            
         
-    
-    </div>
-
+        </div>
     
 
     
@@ -160,8 +177,10 @@ element in the array. In both cases, remember the new <code>X</code> position.</
     
 
     
-
     
+    
+
+     
 
     
 
@@ -175,20 +194,65 @@ element in the array. In both cases, remember the new <code>X</code> position.</
 
     
 
-    
     <h4 class="name" id="merge"><span class="type-signature"></span>merge<span class="signature">(template, delta<span class="signature-attributes">opt</span>, overrideName)</span><span class="type-signature"> &rarr; {<a href="global.html#specType">specType</a>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line206">line 206</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Patches a template description with a delta description.</p>
 <p>Merge rules are described in a module-level comment in this file.</p>
 <p>It does not modify the inputs, returning a cloned
 description with the merged results.</p>
 </div>
+
+
 
 
 
@@ -327,50 +391,6 @@ top level component, false if names in <code>template</code> and <code>delta</co
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line206">line 206</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -385,14 +405,14 @@ top level component, false if names in <code>template</code> and <code>delta</co
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         <p>if invalid inputs, or <code>overrideName</code> is false and we have
 different names for the top component.</p>
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -420,7 +440,7 @@ different names for the top component.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -436,24 +456,67 @@ different names for the top component.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="~mergeComponents"><span class="type-signature">(inner) </span>mergeComponents<span class="signature">(template, delta)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="global.html#specType">specType</a>>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line64">line 64</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Merge two component arrays of matching components.</p>
 </div>
+
+
 
 
 
@@ -539,50 +602,6 @@ different names for the top component.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line64">line 64</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -602,7 +621,7 @@ different names for the top component.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -618,24 +637,67 @@ different names for the top component.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="~mergeEnv"><span class="type-signature">(inner) </span>mergeEnv<span class="signature">(template, delta)</span><span class="type-signature"> &rarr; {Object}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line136">line 136</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Merge two environments of matching components.</p>
 </div>
+
+
 
 
 
@@ -721,50 +783,6 @@ different names for the top component.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line136">line 136</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -784,7 +802,7 @@ different names for the top component.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -800,24 +818,67 @@ different names for the top component.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="~mergeObj"><span class="type-signature">(inner) </span>mergeObj<span class="signature">(template, delta, overrideName)</span><span class="type-signature"> &rarr; {<a href="global.html#specType">specType</a>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line157">line 157</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Merge two descriptions with the same name.</p>
 </div>
+
+
 
 
 
@@ -926,50 +987,6 @@ different names for the top component.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line157">line 157</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -989,7 +1006,7 @@ different names for the top component.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1005,25 +1022,68 @@ different names for the top component.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="~parseString"><span class="type-signature">(inner) </span>parseString<span class="signature">(x)</span><span class="type-signature"> &rarr; {number|boolean|string|null|object}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line267">line 267</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Parses an string into an object or number or boolean or null...
 If we fail we just leave it as it was.</p>
 </div>
+
+
 
 
 
@@ -1086,50 +1146,6 @@ If we fail we just leave it as it was.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line267">line 267</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1149,7 +1165,7 @@ If we fail we just leave it as it was.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1177,24 +1193,67 @@ If we fail we just leave it as it was.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="~patchEnv"><span class="type-signature">(inner) </span>patchEnv<span class="signature">(desc, f)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line217">line 217</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Patches every environment in a description.</p>
 </div>
+
+
 
 
 
@@ -1280,52 +1339,6 @@ If we fail we just leave it as it was.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line217">line 217</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -1344,18 +1357,63 @@ If we fail we just leave it as it was.</p>
 
     
 
-    
     <h4 class="name" id="~patchOneEnv"><span class="type-signature">(inner) </span>patchOneEnv<span class="signature">(prefix, f)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line239">line 239</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Returns a function that filters relevant values in an environment and
 applies a transform to them.</p>
 </div>
+
+
 
 
 
@@ -1442,52 +1500,6 @@ values.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line239">line 239</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -1506,15 +1518,58 @@ values.</p></td>
 
     
 
-    
     <h4 class="name" id="resolveEnv"><span class="type-signature"></span>resolveEnv<span class="signature">(desc)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line294">line 294</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Patches in place <code>env</code> values  that link to environment properties.</p>
 <p>We use the reserved <code>process.env.</code> prefix for values that come  from
 the environment.</p>
@@ -1533,6 +1588,8 @@ requirement of quoting all strings. For example:</p>
 
 
 
+
+
     <h5>Parameters:</h5>
     
 
@@ -1586,52 +1643,6 @@ requirement of quoting all strings. For example:</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="templateUtils.js.html">templateUtils.js</a>, <a href="templateUtils.js.html#line294">line 294</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -1650,106 +1661,14 @@ requirement of quoting all strings. For example:</p>
 
     
 
-    
     <h4 class="name" id="resolveLinks"><span class="type-signature"></span>resolveLinks<span class="signature">(desc)</span><span class="type-signature"></span></h4>
-    
 
     
-
-
-
-<div class="description">
-    <p>Patches in place links to the top level environment.</p>
-<p>We use the prefix  <code>$._.env.</code>. For example:</p>
-<p><code>env: {&quot;location&quot; : &quot;$._.env.location&quot;}</code></p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>desc</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#specType">specType</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>A description to be patched.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
 
 
 
 
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
@@ -1763,8 +1682,99 @@ requirement of quoting all strings. For example:</p>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 </dl>
 
+
+
+
+
+<div class="description usertext">
+    <p>Patches in place links to the top level environment.</p>
+<p>We use the prefix  <code>$._.env.</code>. For example:</p>
+<p><code>env: {&quot;location&quot; : &quot;$._.env.location&quot;}</code></p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>desc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#specType">specType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>A description to be patched.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -1797,19 +1807,21 @@ requirement of quoting all strings. For example:</p>
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_components_containerUtils.html">caf_components/containerUtils</a></li><li><a href="module-caf_components_gen_component.html">caf_components/gen_component</a></li><li><a href="module-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="module-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="module-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a></li><li><a href="module-caf_components_gen_loader.html">caf_components/gen_loader</a></li><li><a href="module-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="module-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="module-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="module-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="module-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="module-caf_components_main.html">caf_components/main</a></li><li><a href="module-caf_components_myUtils.html">caf_components/myUtils</a></li><li><a href="module-caf_components_naming.html">caf_components/naming</a></li><li><a href="module-caf_components_plug_ca_log.html">caf_components/plug_ca_log</a></li><li><a href="module-caf_components_plug_log.html">caf_components/plug_log</a></li><li><a href="module-caf_components_proxy_log.html">caf_components/proxy_log</a></li><li><a href="module-caf_components_supervisor.html">caf_components/supervisor</a></li><li><a href="module-caf_components_templateUtils.html">caf_components/templateUtils</a></li></ul><h3><a href="global.html">Global</a></h3>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:01 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:39 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

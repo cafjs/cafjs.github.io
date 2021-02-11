@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Module: caf_transport/json_rpc</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>caf_transport/json_rpc - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Module: caf_transport/json_rpc</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_transport_json_rpc.html">caf_transport/json_rpc</a><ul class='methods'><li data-type='method'><a href="module-caf_transport_json_rpc.html">accountFrom</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">accountsURL</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">call</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">getAppReplyData</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">getAppReplyError</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">getFrom</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">getMeta</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">getMethodArgs</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">getMethodName</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">getSessionId</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">getSystemErrorCode</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">getSystemErrorData</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">getSystemErrorMsg</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">getTo</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">getToken</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">isAppReply</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">isErrorRecoverable</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">isNotAuthenticated</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">isNotAuthorized</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">isNotification</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">isQuotaExceeded</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">isRedirect</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">isRequest</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">isSystemError</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">joinName</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">joinNameArray</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">metaFreeze</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">newAppError</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">newSysError</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">notification</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">patchMeta</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">randomId</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">redirect</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">redirectDestination</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">reply</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">request</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">setFrom</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">setMeta</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">setSessionId</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">setTo</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">setToken</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">splitName</a></li><li data-type='method'><a href="module-caf_transport_json_rpc.html">systemRequest</a></li></ul></li><li><a href="module-caf_transport_main.html">caf_transport/main</a><ul class='methods'><li data-type='method'><a href="module-caf_transport_main.html">getModule</a></li></ul></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">caf_transport/json_rpc</h1>
+    
 
     
 
@@ -35,10 +51,11 @@
 </header>
 
 <article>
-    <div class="container-overview">
     
+        <div class="container-overview">
         
-            <div class="description"><p>Functions to generate messages with JSON-RPC 2.0 format.</p>
+            
+                <div class="description usertext"><p>Functions to generate messages with JSON-RPC 2.0 format.</p>
 <p>CAF uses a subset of this spec and, for example, RPC arguments are
 never passed by name, using instead an array.</p>
 <p>CAF always adds a first argument to
@@ -69,21 +86,10 @@ i.e., <code>{ &quot;error&quot;: {&quot;data&quot;: [meta, extraData]}}</code>.<
 </ul>
 <p>It is recommended to use the getters and setters in this library
 to hide this complexity.</p></div>
-        
-
-        
             
 
-
-
-
-
-
-
-
-
-
-
+            
+                
 
 
 
@@ -91,34 +97,34 @@ to hide this complexity.</p></div>
 <dl class="details">
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line18">line 18</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -147,10 +153,21 @@ to hide this complexity.</p></div>
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+            
         
-    
-    </div>
-
+        </div>
     
 
     
@@ -158,8 +175,10 @@ to hide this complexity.</p></div>
     
 
     
-
     
+    
+
+     
 
     
 
@@ -173,7 +192,52 @@ to hide this complexity.</p></div>
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line65">line 65</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Length of prefix in user characters to compute the <code>accounts</code> CA name.</p>
 </div>
 
@@ -193,37 +257,46 @@ to hide this complexity.</p></div>
 
 
 
+
+        
+            
+<h4 class="name" id="DEFAULT_FROM"><span class="type-signature"></span>DEFAULT_FROM<span class="type-signature"> :string</span></h4>
+
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line65">line 65</a>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line144">line 144</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -237,15 +310,7 @@ to hide this complexity.</p></div>
 
 
 
-
-        
-            
-<h4 class="name" id="DEFAULT_FROM"><span class="type-signature"></span>DEFAULT_FROM<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>Default source of an external request.</p>
 </div>
 
@@ -265,37 +330,46 @@ to hide this complexity.</p></div>
 
 
 
+
+        
+            
+<h4 class="name" id="DEFAULT_FROM_ID"><span class="type-signature"></span>DEFAULT_FROM_ID<span class="type-signature"> :string</span></h4>
+
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line144">line 144</a>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line122">line 122</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -309,15 +383,7 @@ to hide this complexity.</p></div>
 
 
 
-
-        
-            
-<h4 class="name" id="DEFAULT_FROM_ID"><span class="type-signature"></span>DEFAULT_FROM_ID<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>Default ID in requests that come from entities that have no proper id.</p>
 </div>
 
@@ -337,37 +403,46 @@ to hide this complexity.</p></div>
 
 
 
+
+        
+            
+<h4 class="name" id="DEFAULT_FROM_USERNAME"><span class="type-signature"></span>DEFAULT_FROM_USERNAME<span class="type-signature"> :string</span></h4>
+
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line122">line 122</a>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line133">line 133</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -381,15 +456,7 @@ to hide this complexity.</p></div>
 
 
 
-
-        
-            
-<h4 class="name" id="DEFAULT_FROM_USERNAME"><span class="type-signature"></span>DEFAULT_FROM_USERNAME<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>Default username when user is unknown.</p>
 </div>
 
@@ -409,37 +476,46 @@ to hide this complexity.</p></div>
 
 
 
+
+        
+            
+<h4 class="name" id="DEFAULT_QUOTA_ID"><span class="type-signature"></span>DEFAULT_QUOTA_ID<span class="type-signature"> :string</span></h4>
+
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line133">line 133</a>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line111">line 111</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -453,15 +529,7 @@ to hide this complexity.</p></div>
 
 
 
-
-        
-            
-<h4 class="name" id="DEFAULT_QUOTA_ID"><span class="type-signature"></span>DEFAULT_QUOTA_ID<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>Default ID targeting a quota service.</p>
 </div>
 
@@ -481,37 +549,46 @@ to hide this complexity.</p></div>
 
 
 
+
+        
+            
+<h4 class="name" id="DEFAULT_REQUEST_ID"><span class="type-signature"></span>DEFAULT_REQUEST_ID<span class="type-signature"> :string</span></h4>
+
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line111">line 111</a>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line165">line 165</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -525,15 +602,7 @@ to hide this complexity.</p></div>
 
 
 
-
-        
-            
-<h4 class="name" id="DEFAULT_REQUEST_ID"><span class="type-signature"></span>DEFAULT_REQUEST_ID<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>Default id for a response to an invalid request with no id.</p>
 </div>
 
@@ -553,37 +622,46 @@ to hide this complexity.</p></div>
 
 
 
+
+        
+            
+<h4 class="name" id="DEFAULT_SESSION"><span class="type-signature"></span>DEFAULT_SESSION<span class="type-signature"> :string</span></h4>
+
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line165">line 165</a>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line155">line 155</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -597,15 +675,7 @@ to hide this complexity.</p></div>
 
 
 
-
-        
-            
-<h4 class="name" id="DEFAULT_SESSION"><span class="type-signature"></span>DEFAULT_SESSION<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>Default external session.</p>
 </div>
 
@@ -625,37 +695,46 @@ to hide this complexity.</p></div>
 
 
 
+
+        
+            
+<h4 class="name" id="DUMMY_TOKEN"><span class="type-signature"></span>DUMMY_TOKEN<span class="type-signature"> :string</span></h4>
+
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line155">line 155</a>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line175">line 175</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -669,15 +748,7 @@ to hide this complexity.</p></div>
 
 
 
-
-        
-            
-<h4 class="name" id="DUMMY_TOKEN"><span class="type-signature"></span>DUMMY_TOKEN<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>Default token with no authentication.</p>
 </div>
 
@@ -697,37 +768,46 @@ to hide this complexity.</p></div>
 
 
 
+
+        
+            
+<h4 class="name" id="ERROR_CODES"><span class="type-signature"></span>ERROR_CODES<span class="type-signature"> :Object.&lt;string, number></span></h4>
+
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line175">line 175</a>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line82">line 82</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -741,15 +821,7 @@ to hide this complexity.</p></div>
 
 
 
-
-        
-            
-<h4 class="name" id="ERROR_CODES"><span class="type-signature"></span>ERROR_CODES<span class="type-signature"> :Object.&lt;string, number></span></h4>
-
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>Enum with error codes.</p>
 </div>
 
@@ -769,37 +841,46 @@ to hide this complexity.</p></div>
 
 
 
+
+        
+            
+<h4 class="name" id="SYSTEM_FROM"><span class="type-signature"></span>SYSTEM_FROM<span class="type-signature"> :string</span></h4>
+
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line82">line 82</a>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line215">line 215</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -813,15 +894,7 @@ to hide this complexity.</p></div>
 
 
 
-
-        
-            
-<h4 class="name" id="SYSTEM_FROM"><span class="type-signature"></span>SYSTEM_FROM<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>Reserved username_fromid for internal, local sessions.</p>
 </div>
 
@@ -841,37 +914,46 @@ to hide this complexity.</p></div>
 
 
 
+
+        
+            
+<h4 class="name" id="SYSTEM_FROM_ID"><span class="type-signature"></span>SYSTEM_FROM_ID<span class="type-signature"> :string</span></h4>
+
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line215">line 215</a>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line195">line 195</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -885,15 +967,7 @@ to hide this complexity.</p></div>
 
 
 
-
-        
-            
-<h4 class="name" id="SYSTEM_FROM_ID"><span class="type-signature"></span>SYSTEM_FROM_ID<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>Reserved from id for internal, local sessions.</p>
 </div>
 
@@ -913,37 +987,46 @@ to hide this complexity.</p></div>
 
 
 
+
+        
+            
+<h4 class="name" id="SYSTEM_SESSION_ID"><span class="type-signature"></span>SYSTEM_SESSION_ID<span class="type-signature"> :string</span></h4>
+
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line195">line 195</a>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line185">line 185</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -957,15 +1040,7 @@ to hide this complexity.</p></div>
 
 
 
-
-        
-            
-<h4 class="name" id="SYSTEM_SESSION_ID"><span class="type-signature"></span>SYSTEM_SESSION_ID<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>Session id for internal sessions. We use the DEFAULT_SESSION.</p>
 </div>
 
@@ -985,37 +1060,46 @@ to hide this complexity.</p></div>
 
 
 
+
+        
+            
+<h4 class="name" id="SYSTEM_TOKEN"><span class="type-signature"></span>SYSTEM_TOKEN<span class="type-signature"> :string</span></h4>
+
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line185">line 185</a>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line225">line 225</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -1029,15 +1113,7 @@ to hide this complexity.</p></div>
 
 
 
-
-        
-            
-<h4 class="name" id="SYSTEM_TOKEN"><span class="type-signature"></span>SYSTEM_TOKEN<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>Reserved token  for internal, local sessions.</p>
 </div>
 
@@ -1057,37 +1133,46 @@ to hide this complexity.</p></div>
 
 
 
+
+        
+            
+<h4 class="name" id="SYSTEM_USERNAME"><span class="type-signature"></span>SYSTEM_USERNAME<span class="type-signature"> :string</span></h4>
+
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line225">line 225</a>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line205">line 205</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -1101,15 +1186,7 @@ to hide this complexity.</p></div>
 
 
 
-
-        
-            
-<h4 class="name" id="SYSTEM_USERNAME"><span class="type-signature"></span>SYSTEM_USERNAME<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>Reserved username for internal, local sessions.</p>
 </div>
 
@@ -1129,37 +1206,56 @@ to hide this complexity.</p></div>
 
 
 
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="accountFrom"><span class="type-signature"></span>accountFrom<span class="signature">(caOwner)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line205">line 205</a>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line236">line 236</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -1173,29 +1269,11 @@ to hide this complexity.</p></div>
 
 
 
-
-        
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="accountFrom"><span class="type-signature"></span>accountFrom<span class="signature">(caOwner)</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>Generate a <code>from</code> field to access the <code>accounts</code> service.</p>
 </div>
+
+
 
 
 
@@ -1258,50 +1336,6 @@ to hide this complexity.</p></div>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line236">line 236</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1321,7 +1355,7 @@ to hide this complexity.</p></div>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1337,25 +1371,68 @@ to hide this complexity.</p></div>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="accountsURL"><span class="type-signature"></span>accountsURL<span class="signature">(msg)</span><span class="type-signature"> &rarr; {string|null}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line675">line 675</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Extracts the URL of a service for user authenticaton
 from a <code>notAuthenticated</code> error message.</p>
 </div>
+
+
 
 
 
@@ -1418,50 +1495,6 @@ from a <code>notAuthenticated</code> error message.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line675">line 675</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1482,7 +1515,7 @@ not a valid redirection message.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1501,25 +1534,68 @@ not a valid redirection message.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="call"><span class="type-signature"></span>call<span class="signature">(msg, target, cb)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line698">line 698</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Executes an asynchronous method in a target CA  using arguments in an
 RPC request message.</p>
 </div>
+
+
 
 
 
@@ -1630,50 +1706,6 @@ the result of the method invocation.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line698">line 698</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1693,7 +1725,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1709,24 +1741,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="getAppReplyData"><span class="type-signature"></span>getAppReplyData<span class="signature">(msg)</span><span class="type-signature"> &rarr; {<a href="global.html#jsonType">jsonType</a>|undefined}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line946">line 946</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Gets data field from application reply message.</p>
 </div>
+
+
 
 
 
@@ -1784,50 +1859,6 @@ the result of the method invocation.</p></td>
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line946">line 946</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -1852,7 +1883,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1871,24 +1902,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="getAppReplyError"><span class="type-signature"></span>getAppReplyError<span class="signature">(msg)</span><span class="type-signature"> &rarr; {<a href="global.html#jsonType">jsonType</a>|undefined}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line934">line 934</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Gets error field from application reply message.</p>
 </div>
+
+
 
 
 
@@ -1946,50 +2020,6 @@ the result of the method invocation.</p></td>
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line934">line 934</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -2014,7 +2044,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -2033,24 +2063,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="getFrom"><span class="type-signature"></span>getFrom<span class="signature">(msg)</span><span class="type-signature"> &rarr; {string|undefined}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line920">line 920</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Gets source CA  from meta-data in message.</p>
 </div>
+
+
 
 
 
@@ -2113,50 +2186,6 @@ the result of the method invocation.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line920">line 920</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -2176,7 +2205,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -2195,24 +2224,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="getMeta"><span class="type-signature"></span>getMeta<span class="signature">(msg)</span><span class="type-signature"> &rarr; {caf.meta}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line812">line 812</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Gets meta-data from message.</p>
 </div>
+
+
 
 
 
@@ -2275,50 +2347,6 @@ the result of the method invocation.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line812">line 812</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -2333,13 +2361,13 @@ the result of the method invocation.</p></td>
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         <p>when message invalid.</p>
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -2367,7 +2395,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -2383,24 +2411,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="getMethodArgs"><span class="type-signature"></span>getMethodArgs<span class="signature">(msg)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="global.html#jsonType">jsonType</a>>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line745">line 745</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Gets original method arguments from message.</p>
 </div>
+
+
 
 
 
@@ -2463,50 +2534,6 @@ the result of the method invocation.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line745">line 745</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -2521,13 +2548,13 @@ the result of the method invocation.</p></td>
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         <p>when invalid message.</p>
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -2555,7 +2582,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -2571,24 +2598,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="getMethodName"><span class="type-signature"></span>getMethodName<span class="signature">(msg)</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line764">line 764</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Gets the method name from message.</p>
 </div>
+
+
 
 
 
@@ -2651,50 +2721,6 @@ the result of the method invocation.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line764">line 764</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -2709,13 +2735,13 @@ the result of the method invocation.</p></td>
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         <p>when message is invalid.</p>
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -2743,7 +2769,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -2759,24 +2785,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="getSessionId"><span class="type-signature"></span>getSessionId<span class="signature">(msg)</span><span class="type-signature"> &rarr; {string|undefined}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line892">line 892</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Gets session id from meta-data in message.</p>
 </div>
+
+
 
 
 
@@ -2834,50 +2903,6 @@ the result of the method invocation.</p></td>
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line892">line 892</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -2902,7 +2927,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -2921,24 +2946,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="getSystemErrorCode"><span class="type-signature"></span>getSystemErrorCode<span class="signature">(msg)</span><span class="type-signature"> &rarr; {number|undefined}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line972">line 972</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Gets system error code from message.</p>
 </div>
+
+
 
 
 
@@ -2996,50 +3064,6 @@ the result of the method invocation.</p></td>
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line972">line 972</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -3064,7 +3088,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -3083,24 +3107,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="getSystemErrorData"><span class="type-signature"></span>getSystemErrorData<span class="signature">(msg)</span><span class="type-signature"> &rarr; {caf.json|undefined}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line959">line 959</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Gets system error data from message.</p>
 </div>
+
+
 
 
 
@@ -3158,50 +3225,6 @@ the result of the method invocation.</p></td>
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line959">line 959</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -3226,7 +3249,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -3245,24 +3268,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="getSystemErrorMsg"><span class="type-signature"></span>getSystemErrorMsg<span class="signature">(msg)</span><span class="type-signature"> &rarr; {string|undefined}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line984">line 984</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Gets system error msg from message.</p>
 </div>
+
+
 
 
 
@@ -3320,50 +3386,6 @@ the result of the method invocation.</p></td>
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line984">line 984</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -3388,7 +3410,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -3407,24 +3429,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="getTo"><span class="type-signature"></span>getTo<span class="signature">(msg)</span><span class="type-signature"> &rarr; {string|undefined}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line906">line 906</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Gets target CA  from meta-data in message.</p>
 </div>
+
+
 
 
 
@@ -3482,50 +3547,6 @@ the result of the method invocation.</p></td>
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line906">line 906</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -3550,7 +3571,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -3569,24 +3590,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="getToken"><span class="type-signature"></span>getToken<span class="signature">(msg)</span><span class="type-signature"> &rarr; {string|undefined}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line878">line 878</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Gets token from meta-data in message.</p>
 </div>
+
+
 
 
 
@@ -3644,50 +3708,6 @@ the result of the method invocation.</p></td>
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line878">line 878</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -3712,7 +3732,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -3731,24 +3751,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="isAppReply"><span class="type-signature"></span>isAppReply<span class="signature">(msg)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line364">line 364</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Tests if it is an application reply message.</p>
 </div>
+
+
 
 
 
@@ -3806,50 +3869,6 @@ the result of the method invocation.</p></td>
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line364">line 364</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -3874,7 +3893,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -3890,24 +3909,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="isErrorRecoverable"><span class="type-signature"></span>isErrorRecoverable<span class="signature">(msg)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line521">line 521</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Checks if it there is a recoverable error in message.</p>
 </div>
+
+
 
 
 
@@ -3965,50 +4027,6 @@ the result of the method invocation.</p></td>
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line521">line 521</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -4033,7 +4051,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -4049,24 +4067,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="isNotAuthenticated"><span class="type-signature"></span>isNotAuthenticated<span class="signature">(msg)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line659">line 659</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Checks if it is a &quot;principal not authenticated&quot; message.</p>
 </div>
+
+
 
 
 
@@ -4124,50 +4185,6 @@ the result of the method invocation.</p></td>
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line659">line 659</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -4192,7 +4209,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -4208,24 +4225,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="isNotAuthorized"><span class="type-signature"></span>isNotAuthorized<span class="signature">(msg)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line631">line 631</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Checks if it is a <code>not authorized</code> message.</p>
 </div>
+
+
 
 
 
@@ -4283,50 +4343,6 @@ the result of the method invocation.</p></td>
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line631">line 631</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -4351,7 +4367,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -4367,24 +4383,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="isNotification"><span class="type-signature"></span>isNotification<span class="signature">(msg)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line262">line 262</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Tests if it is a notification message.</p>
 </div>
+
+
 
 
 
@@ -4442,50 +4501,6 @@ the result of the method invocation.</p></td>
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line262">line 262</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -4510,7 +4525,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -4526,24 +4541,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="isQuotaExceeded"><span class="type-signature"></span>isQuotaExceeded<span class="signature">(msg)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line644">line 644</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Checks if it is a <code>quota exceeded</code> message.</p>
 </div>
+
+
 
 
 
@@ -4601,50 +4659,6 @@ the result of the method invocation.</p></td>
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line644">line 644</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -4669,7 +4683,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -4685,24 +4699,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="isRedirect"><span class="type-signature"></span>isRedirect<span class="signature">(msg)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line600">line 600</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Tests if it is a redirect message.</p>
 </div>
+
+
 
 
 
@@ -4765,50 +4822,6 @@ the result of the method invocation.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line600">line 600</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -4828,7 +4841,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -4844,24 +4857,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="isRequest"><span class="type-signature"></span>isRequest<span class="signature">(msg)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line304">line 304</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Tests if it is a request message.</p>
 </div>
+
+
 
 
 
@@ -4924,50 +4980,6 @@ the result of the method invocation.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line304">line 304</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -4987,7 +4999,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -5003,24 +5015,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="isSystemError"><span class="type-signature"></span>isSystemError<span class="signature">(msg)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line421">line 421</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Tests if it is a system error message.</p>
 </div>
+
+
 
 
 
@@ -5083,50 +5138,6 @@ the result of the method invocation.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line421">line 421</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -5146,7 +5157,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -5162,24 +5173,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="joinName"><span class="type-signature"></span>joinName<span class="signature">(&hellip;strings)</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line1085">line 1085</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Joins partial names using the standard separator</p>
 </div>
+
+
 
 
 
@@ -5254,50 +5308,6 @@ the result of the method invocation.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line1085">line 1085</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -5317,7 +5327,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -5333,24 +5343,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="joinNameArray"><span class="type-signature"></span>joinNameArray<span class="signature">(args, separator<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line1099">line 1099</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Joins partial names using a separator</p>
 </div>
+
+
 
 
 
@@ -5456,50 +5509,6 @@ the result of the method invocation.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line1099">line 1099</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -5519,7 +5528,7 @@ the result of the method invocation.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -5535,24 +5544,67 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="metaFreeze"><span class="type-signature"></span>metaFreeze<span class="signature">(msg)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line783">line 783</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Freezes meta-data in message.</p>
 </div>
+
+
 
 
 
@@ -5615,50 +5667,6 @@ the result of the method invocation.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line783">line 783</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -5673,13 +5681,13 @@ the result of the method invocation.</p></td>
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         <p>if msg is not a proper <code>msgType</code> type.</p>
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -5701,63 +5709,19 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="newAppError"><span class="type-signature"></span>newAppError<span class="signature">()</span><span class="type-signature"> &rarr; {caf.error}</span></h4>
-    
 
     
-
-
-
-<div class="description">
-    <p>Wraps an Error object of type AppError:</p>
-<p><code>{name: 'AppError', msg: msgType,  errorStr: string, error: Error}</code></p>
-</div>
-
-
-
-
-
-
-
-
-
 
 
 
 
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
@@ -5771,7 +5735,50 @@ the result of the method invocation.</p></td>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 </dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Wraps an Error object of type AppError:</p>
+<p><code>{name: 'AppError', msg: msgType,  errorStr: string, error: Error}</code></p>
+</div>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -5792,7 +5799,7 @@ the result of the method invocation.</p></td>
         
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -5808,22 +5815,63 @@ the result of the method invocation.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="newSysError"><span class="type-signature"></span>newSysError<span class="signature">()</span><span class="type-signature"> &rarr; {caf.error}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line483">line 483</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Wraps an Error object of type SystemError:</p>
 <p>{name: 'SystemError', msg: msgType, code: number, errorStr: string,
 error: Error}</p>
@@ -5841,48 +5889,6 @@ error: Error}</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line483">line 483</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
 
 
 
@@ -5900,7 +5906,7 @@ error: Error}</p>
         
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -5916,24 +5922,67 @@ error: Error}</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="notification"><span class="type-signature"></span>notification<span class="signature">(to, from, sessionId, methodName, &hellip;var_args)</span><span class="type-signature"> &rarr; {<a href="global.html#msgType">msgType</a>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line282">line 282</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Creates notification message.</p>
 </div>
+
+
 
 
 
@@ -6132,50 +6181,6 @@ error: Error}</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line282">line 282</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -6191,7 +6196,7 @@ error: Error}</p>
         
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -6207,24 +6212,67 @@ error: Error}</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="patchMeta"><span class="type-signature"></span>patchMeta<span class="signature">(msg, data)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line862">line 862</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Patches meta-data in message.</p>
 </div>
+
+
 
 
 
@@ -6310,50 +6358,6 @@ error: Error}</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line862">line 862</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -6368,13 +6372,13 @@ error: Error}</p>
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         <p>when message invalid.</p>
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -6396,62 +6400,19 @@ error: Error}</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="randomId"><span class="type-signature"></span>randomId<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
 
     
-
-
-
-<div class="description">
-    <p>Generate a random string.</p>
-</div>
-
-
-
-
-
-
-
-
-
 
 
 
 
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
@@ -6465,7 +6426,49 @@ error: Error}</p>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 </dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Generate a random string.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -6486,7 +6489,7 @@ error: Error}</p>
         
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -6502,24 +6505,67 @@ error: Error}</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="redirect"><span class="type-signature"></span>redirect<span class="signature">(request, errMsg, errOrg)</span><span class="type-signature"> &rarr; {<a href="global.html#msgType">msgType</a>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line585">line 585</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Creates a redirect message.</p>
 </div>
+
+
 
 
 
@@ -6628,50 +6674,6 @@ error: Error}</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line585">line 585</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -6687,7 +6689,7 @@ error: Error}</p>
         
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -6703,24 +6705,67 @@ error: Error}</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="redirectDestination"><span class="type-signature"></span>redirectDestination<span class="signature">(msg)</span><span class="type-signature"> &rarr; {string|null}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line615">line 615</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Extracts the destination address of a redirection message.</p>
 </div>
+
+
 
 
 
@@ -6783,50 +6828,6 @@ error: Error}</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line615">line 615</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -6847,7 +6848,7 @@ redirection message.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -6866,24 +6867,67 @@ redirection message.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="reply"><span class="type-signature"></span>reply<span class="signature">(error, request, value)</span><span class="type-signature"> &rarr; {<a href="global.html#msgType">msgType</a>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line567">line 567</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Creates a reply message.</p>
 </div>
+
+
 
 
 
@@ -6992,50 +7036,6 @@ redirection message.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line567">line 567</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -7051,7 +7051,7 @@ redirection message.</p>
         
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -7067,24 +7067,67 @@ redirection message.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="request"><span class="type-signature"></span>request<span class="signature">(token, to, from, sessionId, methodName, &hellip;var_args)</span><span class="type-signature"> &rarr; {<a href="global.html#msgType">msgType</a>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line325">line 325</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Creates a request message.</p>
 </div>
+
+
 
 
 
@@ -7314,50 +7357,6 @@ redirection message.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line325">line 325</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -7373,7 +7372,7 @@ redirection message.</p>
         
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -7389,24 +7388,67 @@ redirection message.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="setFrom"><span class="type-signature"></span>setFrom<span class="signature">(msg, from)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line996">line 996</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Sets source CA in message meta-data.</p>
 </div>
+
+
 
 
 
@@ -7492,52 +7534,6 @@ redirection message.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line996">line 996</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -7556,17 +7552,62 @@ redirection message.</p>
 
     
 
-    
     <h4 class="name" id="setMeta"><span class="type-signature"></span>setMeta<span class="signature">(msg, meta)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line837">line 837</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Sets meta-data in message.</p>
 </div>
+
+
 
 
 
@@ -7652,50 +7693,6 @@ redirection message.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line837">line 837</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -7710,13 +7707,13 @@ redirection message.</p>
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         <p>When message invalid.</p>
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -7738,24 +7735,67 @@ redirection message.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="setSessionId"><span class="type-signature"></span>setSessionId<span class="signature">(msg, sessionId)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line1025">line 1025</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Sets session id in message meta-data.</p>
 </div>
+
+
 
 
 
@@ -7841,52 +7881,6 @@ redirection message.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line1025">line 1025</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -7905,17 +7899,62 @@ redirection message.</p>
 
     
 
-    
     <h4 class="name" id="setTo"><span class="type-signature"></span>setTo<span class="signature">(msg, to)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line1010">line 1010</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Sets target CA in message meta-data.</p>
 </div>
+
+
 
 
 
@@ -8001,52 +8040,6 @@ redirection message.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line1010">line 1010</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -8065,17 +8058,62 @@ redirection message.</p>
 
     
 
-    
     <h4 class="name" id="setToken"><span class="type-signature"></span>setToken<span class="signature">(msg, token)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line1040">line 1040</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Sets token in message meta-data.</p>
 </div>
+
+
 
 
 
@@ -8161,52 +8199,6 @@ redirection message.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line1040">line 1040</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -8225,18 +8217,63 @@ redirection message.</p>
 
     
 
-    
     <h4 class="name" id="splitName"><span class="type-signature"></span>splitName<span class="signature">(name, separator<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Array.&lt;string>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line1063">line 1063</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Splits a compound name into namespace root and local name.
 The convention is to use the character '-' to separate them.</p>
 </div>
+
+
 
 
 
@@ -8342,50 +8379,6 @@ The convention is to use the character '-' to separate them.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line1063">line 1063</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -8400,13 +8393,13 @@ The convention is to use the character '-' to separate them.</p>
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         <p>Invalid compound name.</p>
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -8436,7 +8429,7 @@ qualified CA name ,i.e., <code>appPublisher-appLocalName-caOwner-caLocalName</co
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -8452,24 +8445,67 @@ qualified CA name ,i.e., <code>appPublisher-appLocalName-caOwner-caLocalName</co
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="systemRequest"><span class="type-signature"></span>systemRequest<span class="signature">(to, methodName, &hellip;var_args)</span><span class="type-signature"> &rarr; {<a href="global.html#msgType">msgType</a>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line346">line 346</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Creates a system request message.</p>
 </div>
+
+
 
 
 
@@ -8606,50 +8642,6 @@ qualified CA name ,i.e., <code>appPublisher-appLocalName-caOwner-caLocalName</co
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="json_rpc.js.html">json_rpc.js</a>, <a href="json_rpc.js.html#line346">line 346</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -8665,7 +8657,7 @@ qualified CA name ,i.e., <code>appPublisher-appLocalName-caOwner-caLocalName</co
         
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -8678,8 +8670,6 @@ qualified CA name ,i.e., <code>appPublisher-appLocalName-caOwner-caLocalName</co
 </dl>
 
     
-
-
 
 
 
@@ -8696,19 +8686,21 @@ qualified CA name ,i.e., <code>appPublisher-appLocalName-caOwner-caLocalName</co
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_transport_json_rpc.html">caf_transport/json_rpc</a></li><li><a href="module-caf_transport_main.html">caf_transport/main</a></li></ul><h3><a href="global.html">Global</a></h3>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:09 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:47 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

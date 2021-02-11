@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>plug_iot_http.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_iot_http_main.html">caf_iot_http/main</a></li><li><a href="module-caf_iot_http_plug_iot_http.html">caf_iot_http/plug_iot_http</a></li><li><a href="module-caf_iot_http_proxy_iot_http.html">caf_iot_http/proxy_iot_http</a><ul class='methods'><li data-type='method'><a href="module-caf_iot_http_proxy_iot_http.html#.newInstance">newInstance</a></li><li data-type='method'><a href="module-caf_iot_http_proxy_iot_http.html#dirtyCall">dirtyCall</a></li><li data-type='method'><a href="module-caf_iot_http_proxy_iot_http.html#dirtyCallPromise">dirtyCallPromise</a></li><li data-type='method'><a href="module-caf_iot_http_proxy_iot_http.html#startStream">startStream</a></li><li data-type='method'><a href="module-caf_iot_http_proxy_iot_http.html#stopStream">stopStream</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_iot_gen_plug_iot.html">caf_iot/gen_plug_iot</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">plug_iot_http.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// Modifications copyright 2020 Caf.js Labs and contributors
+/*!
+ Copyright 2013 Hewlett-Packard Development Company, L.P.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
+'use strict';
+/**
+ *  Provides access to HTTP services.
+ *
+ * @module caf_iot_http/plug_iot_http
+ * @augments external:caf_iot/gen_plug_iot
+ *
+ */
+const assert = require('assert');
+const request = require('request');
+const JSONStream = require('JSONStream');
+const es = require('event-stream');
+const url = require('url');
+const caf_iot = require('caf_iot');
+const myUtils = caf_iot.caf_components.myUtils;
+const genPlugIoT = caf_iot.gen_plug_iot;
+const util = require('util');
+
+
+exports.newInstance = async function($, spec) {
+    try {
+        const that = genPlugIoT.create($, spec);
+
+        assert.equal(typeof spec.env.cloudSync, 'boolean',
+                     "'spec.env.cloudSync' not a boolean");
+
+        $._.$.log &amp;&amp; $._.$.log.debug('New HTTP plug');
+
+        that.__iot_dirtyCall__ = function(targetURL, args, cb0) {
+            const f = function(cb1) {
+                try {
+                    const u = url.parse(targetURL);
+                    if (args) {
+                        u.query = args;
+                    }
+                    request.post({url: url.format(u), json: true},
+                                 function(err, response, body) {
+                                     cb1(err, body);
+                                 });
+                } catch (err) {
+                    cb1(err);
+                }
+            };
+            myUtils.retryWithDelay(f, spec.env.maxRetries, spec.env.retryDelay,
+                                   cb0);
+        };
+
+
+        that.__iot_dirtyCallPromise__ = util.promisify(that.__iot_dirtyCall__);
+
+
+        that.__iot_startStream__ = function(targetURL, args, methodName) {
+            const u = url.parse(targetURL);
+            if (args) {
+                u.query = args;
+            }
+            const r = request({url: url.format(u)});
+            r.pipe(JSONStream.parse())
+                .pipe(es.mapSync(function (data) {
+                    $._.$.queue &amp;&amp;
+                        $._.$.queue.process(methodName, [data],
+                                            {noSync: !spec.env.cloudSync});
+                    return data;
+                }));
+            return r;
+        };
+
+        that.__iot_stopStream__ = function(id) {
+            id.abort();
+        };
+
+        return [null, that];
+    } catch (err) {
+        return [err];
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:54 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

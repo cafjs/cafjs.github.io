@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Module: caf_components/myUtils</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>caf_components/myUtils - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Module: caf_components/myUtils</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_components_containerUtils.html">caf_components/containerUtils</a><ul class='methods'><li data-type='method'><a href="module-caf_components_containerUtils.html#.utils">utils</a></li><li data-type='method'><a href="module-caf_components_containerUtils.html#checkAndRestartChild">checkAndRestartChild</a></li><li data-type='method'><a href="module-caf_components_containerUtils.html#checkChild">checkChild</a></li><li data-type='method'><a href="module-caf_components_containerUtils.html#createChild">createChild</a></li><li data-type='method'><a href="module-caf_components_containerUtils.html#ensureShutdown">ensureShutdown</a></li><li data-type='method'><a href="module-caf_components_containerUtils.html#many">many</a></li><li data-type='method'><a href="module-caf_components_containerUtils.html#shutdownChild">shutdownChild</a></li></ul></li><li><a href="module-caf_components_gen_component.html">caf_components/gen_component</a><ul class='methods'><li data-type='method'><a href="module-caf_components_gen_component.html#.create">create</a></li><li data-type='method'><a href="module-caf_components_gen_component.html#__ca_checkup__">__ca_checkup__</a></li><li data-type='method'><a href="module-caf_components_gen_component.html#__ca_getSpec__">__ca_getSpec__</a></li><li data-type='method'><a href="module-caf_components_gen_component.html#__ca_shutdown__">__ca_shutdown__</a></li></ul></li><li><a href="module-caf_components_gen_container.html">caf_components/gen_container</a><ul class='methods'><li data-type='method'><a href="module-caf_components_gen_container.html#.create">create</a></li><li data-type='method'><a href="module-caf_components_gen_container.html#__ca_getChildrenSpec__">__ca_getChildrenSpec__</a></li></ul></li><li><a href="module-caf_components_gen_cron.html">caf_components/gen_cron</a><ul class='methods'><li data-type='method'><a href="module-caf_components_gen_cron.html#.create">create</a></li><li data-type='method'><a href="module-caf_components_gen_cron.html#__ca_getInterval__">__ca_getInterval__</a></li><li data-type='method'><a href="module-caf_components_gen_cron.html#__ca_start__">__ca_start__</a></li><li data-type='method'><a href="module-caf_components_gen_cron.html#__ca_stop__">__ca_stop__</a></li></ul></li><li><a href="module-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a><ul class='methods'><li data-type='method'><a href="module-caf_components_gen_dynamic_container.html#.create">create</a></li><li data-type='method'><a href="module-caf_components_gen_dynamic_container.html#__ca_allChildren__">__ca_allChildren__</a></li><li data-type='method'><a href="module-caf_components_gen_dynamic_container.html#__ca_deleteChild__">__ca_deleteChild__</a></li><li data-type='method'><a href="module-caf_components_gen_dynamic_container.html#__ca_getChildSpec__">__ca_getChildSpec__</a></li><li data-type='method'><a href="module-caf_components_gen_dynamic_container.html#__ca_instanceChild__">__ca_instanceChild__</a></li></ul></li><li><a href="module-caf_components_gen_loader.html">caf_components/gen_loader</a><ul class='methods'><li data-type='method'><a href="module-caf_components_gen_loader.html#.create">create</a></li><li data-type='method'><a href="module-caf_components_gen_loader.html#__ca_firstModulePath__">__ca_firstModulePath__</a></li><li data-type='method'><a href="module-caf_components_gen_loader.html#__ca_getModuleIndex__">__ca_getModuleIndex__</a></li><li data-type='method'><a href="module-caf_components_gen_loader.html#__ca_loadComponent__">__ca_loadComponent__</a></li><li data-type='method'><a href="module-caf_components_gen_loader.html#__ca_loadDescription__">__ca_loadDescription__</a></li><li data-type='method'><a href="module-caf_components_gen_loader.html#__ca_loadResource__">__ca_loadResource__</a></li><li data-type='method'><a href="module-caf_components_gen_loader.html#__ca_registerLogger__">__ca_registerLogger__</a></li><li data-type='method'><a href="module-caf_components_gen_loader.html#__ca_setModules__">__ca_setModules__</a></li><li data-type='method'><a href="module-caf_components_gen_loader.html#__ca_setStaticArtifacts__">__ca_setStaticArtifacts__</a></li></ul></li><li><a href="module-caf_components_gen_plug.html">caf_components/gen_plug</a><ul class='methods'><li data-type='method'><a href="module-caf_components_gen_plug.html#.create">create</a></li></ul></li><li><a href="module-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a><ul class='methods'><li data-type='method'><a href="module-caf_components_gen_plug_ca.html#.create">create</a></li><li data-type='method'><a href="module-caf_components_gen_plug_ca.html#__ca_getCAName__">__ca_getCAName__</a></li></ul></li><li><a href="module-caf_components_gen_proxy.html">caf_components/gen_proxy</a><ul class='methods'><li data-type='method'><a href="module-caf_components_gen_proxy.html#.create">create</a></li><li data-type='method'><a href="module-caf_components_gen_proxy.html#__ca_getCAName__">__ca_getCAName__</a></li></ul></li><li><a href="module-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a><ul class='methods'><li data-type='method'><a href="module-caf_components_gen_supervisor.html#.create">create</a></li><li data-type='method'><a href="module-caf_components_gen_supervisor.html#__ca_start__">__ca_start__</a></li><li data-type='method'><a href="module-caf_components_gen_supervisor.html#__ca_stop__">__ca_stop__</a></li></ul></li><li><a href="module-caf_components_gen_transactional.html">caf_components/gen_transactional</a><ul class='methods'><li data-type='method'><a href="module-caf_components_gen_transactional.html#.create">create</a></li><li data-type='method'><a href="module-caf_components_gen_transactional.html#__ca_abort__">__ca_abort__</a></li><li data-type='method'><a href="module-caf_components_gen_transactional.html#__ca_begin__">__ca_begin__</a></li><li data-type='method'><a href="module-caf_components_gen_transactional.html#__ca_commit__">__ca_commit__</a></li><li data-type='method'><a href="module-caf_components_gen_transactional.html#__ca_init__">__ca_init__</a></li><li data-type='method'><a href="module-caf_components_gen_transactional.html#__ca_lazyApply__">__ca_lazyApply__</a></li><li data-type='method'><a href="module-caf_components_gen_transactional.html#__ca_prepare__">__ca_prepare__</a></li><li data-type='method'><a href="module-caf_components_gen_transactional.html#__ca_resume__">__ca_resume__</a></li><li data-type='method'><a href="module-caf_components_gen_transactional.html#__ca_setLogActionsTarget__">__ca_setLogActionsTarget__</a></li></ul></li><li><a href="module-caf_components_main.html">caf_components/main</a><ul class='methods'><li data-type='method'><a href="module-caf_components_main.html">load</a></li></ul></li><li><a href="module-caf_components_myUtils.html">caf_components/myUtils</a><ul class='methods'><li data-type='method'><a href="module-caf_components_myUtils.html">callJustOnce</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">cloneAndMixin</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">deepClone</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">deepEqual</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">deleteProps</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">errToPrettyStr</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">errToStr</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">extractData</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">hashCode</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">mixin</a></li><li data-type='method'><a href="module-caf_components_myUtils.html#.clone">clone</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">onlyFun</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">promiseToCallback</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">randomString</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">retryWithDelay</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">superior</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">superiorPromisify</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">uniqueId</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">wrapAsyncFunction</a></li><li data-type='method'><a href="module-caf_components_myUtils.html">wrapWithTimeout</a></li></ul></li><li><a href="module-caf_components_naming.html">caf_components/naming</a></li><li><a href="module-caf_components_plug_ca_log.html">caf_components/plug_ca_log</a><ul class='methods'><li data-type='method'><a href="module-caf_components_plug_ca_log.html#.newInstance">newInstance</a></li></ul></li><li><a href="module-caf_components_plug_log.html">caf_components/plug_log</a><ul class='methods'><li data-type='method'><a href="module-caf_components_plug_log.html#.newInstance">newInstance</a></li><li data-type='method'><a href="module-caf_components_plug_log.html#currentLevel">currentLevel</a></li><li data-type='method'><a href="module-caf_components_plug_log.html#debug">debug</a></li><li data-type='method'><a href="module-caf_components_plug_log.html#error">error</a></li><li data-type='method'><a href="module-caf_components_plug_log.html#fatal">fatal</a></li><li data-type='method'><a href="module-caf_components_plug_log.html#info">info</a></li><li data-type='method'><a href="module-caf_components_plug_log.html#isActive">isActive</a></li><li data-type='method'><a href="module-caf_components_plug_log.html#setLevel">setLevel</a></li><li data-type='method'><a href="module-caf_components_plug_log.html#trace">trace</a></li><li data-type='method'><a href="module-caf_components_plug_log.html#warn">warn</a></li></ul></li><li><a href="module-caf_components_proxy_log.html">caf_components/proxy_log</a><ul class='methods'><li data-type='method'><a href="module-caf_components_proxy_log.html#.newInstance">newInstance</a></li><li data-type='method'><a href="module-caf_components_proxy_log.html#debug">debug</a></li><li data-type='method'><a href="module-caf_components_proxy_log.html#error">error</a></li><li data-type='method'><a href="module-caf_components_proxy_log.html#fatal">fatal</a></li><li data-type='method'><a href="module-caf_components_proxy_log.html#info">info</a></li><li data-type='method'><a href="module-caf_components_proxy_log.html#isActive">isActive</a></li><li data-type='method'><a href="module-caf_components_proxy_log.html#trace">trace</a></li><li data-type='method'><a href="module-caf_components_proxy_log.html#warn">warn</a></li></ul></li><li><a href="module-caf_components_supervisor.html">caf_components/supervisor</a><ul class='methods'><li data-type='method'><a href="module-caf_components_supervisor.html#.newInstance">newInstance</a></li></ul></li><li><a href="module-caf_components_templateUtils.html">caf_components/templateUtils</a><ul class='methods'><li data-type='method'><a href="module-caf_components_templateUtils.html">merge</a></li><li data-type='method'><a href="module-caf_components_templateUtils.html#~mergeComponents">mergeComponents</a></li><li data-type='method'><a href="module-caf_components_templateUtils.html#~mergeEnv">mergeEnv</a></li><li data-type='method'><a href="module-caf_components_templateUtils.html#~mergeObj">mergeObj</a></li><li data-type='method'><a href="module-caf_components_templateUtils.html#~parseString">parseString</a></li><li data-type='method'><a href="module-caf_components_templateUtils.html#~patchEnv">patchEnv</a></li><li data-type='method'><a href="module-caf_components_templateUtils.html#~patchOneEnv">patchOneEnv</a></li><li data-type='method'><a href="module-caf_components_templateUtils.html">resolveEnv</a></li><li data-type='method'><a href="module-caf_components_templateUtils.html">resolveLinks</a></li></ul></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">caf_components/myUtils</h1>
+    
 
     
 
@@ -35,25 +51,15 @@
 </header>
 
 <article>
-    <div class="container-overview">
     
-        
-            <div class="description"><p>Miscellaneous collection of functions.</p></div>
-        
-
+        <div class="container-overview">
         
             
+                <div class="description usertext"><p>Miscellaneous collection of functions.</p></div>
+            
 
-
-
-
-
-
-
-
-
-
-
+            
+                
 
 
 
@@ -61,34 +67,34 @@
 <dl class="details">
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line19">line 19</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -117,10 +123,21 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+            
         
-    
-    </div>
-
+        </div>
     
 
     
@@ -128,8 +145,10 @@
     
 
     
-
     
+    
+
+     
 
     
 
@@ -143,18 +162,63 @@
 
     
 
-    
     <h4 class="name" id="callJustOnce"><span class="type-signature"></span>callJustOnce<span class="signature">(errF<span class="signature-attributes">opt</span>, cb)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line350">line 350</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Ensures that <code>cb</code> is only called once. If not, and optional <code>errF</code> callback
 is called.</p>
 </div>
+
+
 
 
 
@@ -260,52 +324,6 @@ is called.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line350">line 350</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -324,17 +342,62 @@ is called.</p>
 
     
 
-    
     <h4 class="name" id="cloneAndMixin"><span class="type-signature"></span>cloneAndMixin<span class="signature">(dest, source, keepOld)</span><span class="type-signature"> &rarr; {Object}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line184">line 184</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Clones an object before mixin some properties from a source object.</p>
 </div>
+
+
 
 
 
@@ -444,50 +507,6 @@ defined methods, false if we allow changing existing  ones.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line184">line 184</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -507,7 +526,7 @@ defined methods, false if we allow changing existing  ones.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -523,24 +542,67 @@ defined methods, false if we allow changing existing  ones.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="deepClone"><span class="type-signature"></span>deepClone<span class="signature">(obj, filter)</span><span class="type-signature"> &rarr; {Object|Array|number|null|string|boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line91">line 91</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Deep clones nested arrays and objects (e.g., JSON like collections)</p>
 </div>
+
+
 
 
 
@@ -643,50 +705,6 @@ deep clone.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line91">line 91</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -707,7 +725,7 @@ structure.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -738,24 +756,67 @@ structure.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="deepEqual"><span class="type-signature"></span>deepEqual<span class="signature">(x, y)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line373">line 373</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Whether two objects are structurally similar.</p>
 </div>
+
+
 
 
 
@@ -841,50 +902,6 @@ structure.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line373">line 373</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -904,7 +921,7 @@ structure.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -920,24 +937,67 @@ structure.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="deleteProps"><span class="type-signature"></span>deleteProps<span class="signature">(obj)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line560">line 560</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Deletes all the enumerable properties of an object</p>
 </div>
+
+
 
 
 
@@ -1000,52 +1060,6 @@ structure.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line560">line 560</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -1064,105 +1078,14 @@ structure.</p>
 
     
 
-    
     <h4 class="name" id="errToPrettyStr"><span class="type-signature"></span>errToPrettyStr<span class="signature">(err)</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
 
     
-
-
-
-<div class="description">
-    <p>Stringifies an error object so that its stack is properly formatted in the
-console.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>err</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Error</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>An error object to log or send.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
 
 
 
 
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
@@ -1176,65 +1099,42 @@ console.</p>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 </dl>
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>A string representation of the error.</p>
+<div class="description usertext">
+    <p>Stringifies an error object so that its stack is properly formatted in the
+console.</p>
 </div>
 
 
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="errToStr"><span class="type-signature"></span>errToStr<span class="signature">(err)</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Stringifies an error object for logging or network transmission.</p>
-</div>
 
 
 
@@ -1297,31 +1197,54 @@ console.</p>
 
 
 
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A string representation of the error.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="errToStr"><span class="type-signature"></span>errToStr<span class="signature">(err)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
@@ -1335,7 +1258,98 @@ console.</p>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 </dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Stringifies an error object for logging or network transmission.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>err</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Error</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An error object to log or send.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
 
 
 
@@ -1360,7 +1374,7 @@ console.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1376,25 +1390,68 @@ console.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="extractData"><span class="type-signature"></span>extractData<span class="signature">(tuple)</span><span class="type-signature"> &rarr; {any}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line544">line 544</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Extracts the data field from a tuple <code>[error, data]</code>.</p>
 <p>Throws <code>error</code> if not null</p>
 </div>
+
+
 
 
 
@@ -1457,50 +1514,6 @@ console.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line544">line 544</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1515,13 +1528,13 @@ console.</p>
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         <p>if the <code>error</code> field is not a falsy.</p>
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -1549,7 +1562,7 @@ console.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1565,24 +1578,67 @@ console.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="hashCode"><span class="type-signature"></span>hashCode<span class="signature">(st)</span><span class="type-signature"> &rarr; {number}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line311">line 311</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Computes a  hash code for a string.</p>
 </div>
+
+
 
 
 
@@ -1645,50 +1701,6 @@ console.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line311">line 311</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1709,7 +1721,7 @@ string.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1725,24 +1737,67 @@ string.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="mixin"><span class="type-signature"></span>mixin<span class="signature">(dest, source, keepOld)</span><span class="type-signature"> &rarr; {Object}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line44">line 44</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Merges properties defined in a source map into a destination object.</p>
 </div>
+
+
 
 
 
@@ -1852,50 +1907,6 @@ defined methods, false if we allow changing existing  ones.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line44">line 44</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1915,7 +1926,7 @@ defined methods, false if we allow changing existing  ones.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1931,24 +1942,67 @@ defined methods, false if we allow changing existing  ones.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id=".clone"><span class="type-signature">(static) </span>clone<span class="signature">(obj)</span><span class="type-signature"> &rarr; {Object}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line65">line 65</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Clones arrays or objects.</p>
 </div>
+
+
 
 
 
@@ -2011,50 +2065,6 @@ defined methods, false if we allow changing existing  ones.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line65">line 65</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -2074,7 +2084,7 @@ defined methods, false if we allow changing existing  ones.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -2090,24 +2100,67 @@ defined methods, false if we allow changing existing  ones.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="onlyFun"><span class="type-signature"></span>onlyFun<span class="signature">(obj)</span><span class="type-signature"> &rarr; {Object}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line329">line 329</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Filters keys in an object that are inherited or do not have a function value.</p>
 </div>
+
+
 
 
 
@@ -2170,50 +2223,6 @@ defined methods, false if we allow changing existing  ones.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line329">line 329</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -2233,7 +2242,7 @@ defined methods, false if we allow changing existing  ones.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -2249,22 +2258,63 @@ defined methods, false if we allow changing existing  ones.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="promiseToCallback"><span class="type-signature"></span>promiseToCallback<span class="signature">(promise, cb, wrapException, wrapAppError)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line411">line 411</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Maps a promise to a callback.</p>
 <p>Assumes that the promise resolves to a <code>[error, value]</code> array, compatible
 with an standard node.js callback.</p>
@@ -2275,6 +2325,8 @@ it will propagate an error in the callback.</p>
 <p>An optional <code>wrapException</code> function can modify that error, e.g.,  to
 distinguish them from standard application errors propagated in the array.</p>
 </div>
+
+
 
 
 
@@ -2408,52 +2460,6 @@ application errors propagated in the first element of the returned array.</p></t
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line411">line 411</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -2472,55 +2478,14 @@ application errors propagated in the first element of the returned array.</p></t
 
     
 
-    
     <h4 class="name" id="randomString"><span class="type-signature"></span>randomString<span class="signature">()</span><span class="type-signature"> &rarr; {len}</span></h4>
-    
 
     
-
-
-
-<div class="description">
-    <p>Returns a random string with capital letters and digits.</p>
-</div>
-
-
-
-
-
-
-
-
-
 
 
 
 
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
@@ -2534,7 +2499,49 @@ application errors propagated in the first element of the returned array.</p></t
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 </dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Returns a random string with capital letters and digits.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2559,7 +2566,7 @@ application errors propagated in the first element of the returned array.</p></t
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -2575,25 +2582,68 @@ application errors propagated in the first element of the returned array.</p></t
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="retryWithDelay"><span class="type-signature"></span>retryWithDelay<span class="signature">(f, nTimes, delay, cb)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line202">line 202</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Retries an asynchronous function several times until it succeeds. It delays a
 retry by a fixed amount of time.</p>
 </div>
+
+
 
 
 
@@ -2727,52 +2777,6 @@ with node.js conventions.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line202">line 202</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -2791,15 +2795,58 @@ with node.js conventions.</p></td>
 
     
 
-    
     <h4 class="name" id="superior"><span class="type-signature"></span>superior<span class="signature">(target, methodName)</span><span class="type-signature"> &rarr; {function}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line134">line 134</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Captures in a closure a method of the parent class before we override it.</p>
 <p>For example:</p>
 <pre><code>const supHello = myUtils.superior(that, 'hello');
@@ -2808,6 +2855,8 @@ that.hello = function() {
    // do something else
 }</code></pre>
 </div>
+
+
 
 
 
@@ -2889,50 +2938,6 @@ to override.</p></td>
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line134">line 134</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -2958,7 +2963,7 @@ parent class.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -2974,22 +2979,63 @@ parent class.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="superiorPromisify"><span class="type-signature"></span>superiorPromisify<span class="signature">(target, methodName)</span><span class="type-signature"> &rarr; {function}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line167">line 167</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Captures in a closure a method of the parent class before we override it.
 It also transforms a callback based function into one that returns a promise.</p>
 <p>For example:</p>
@@ -3002,6 +3048,8 @@ that.hello = async function() {
       ...
 }</code></pre>
 </div>
+
+
 
 
 
@@ -3088,50 +3136,6 @@ to override.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line167">line 167</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -3152,7 +3156,7 @@ parent class, modified to return a promise.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -3168,62 +3172,19 @@ parent class, modified to return a promise.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="uniqueId"><span class="type-signature"></span>uniqueId<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
 
     
-
-
-
-<div class="description">
-    <p>Returns a unique identifier.</p>
-</div>
-
-
-
-
-
-
-
-
-
 
 
 
 
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
@@ -3237,7 +3198,49 @@ parent class, modified to return a promise.</p>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 </dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Returns a unique identifier.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3262,7 +3265,7 @@ parent class, modified to return a promise.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -3278,22 +3281,63 @@ parent class, modified to return a promise.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="wrapAsyncFunction"><span class="type-signature"></span>wrapAsyncFunction<span class="signature">(f<span class="signature-attributes">opt</span>, target<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {function}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line470">line 470</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Wraps an asynchronous function.</p>
 <p>The goal is to make it behave the same whether it uses a callback or
 returns a promise, e.g, uses the async/await pattern.</p>
@@ -3305,6 +3349,8 @@ can handle it like a callback-based function exception.</p>
 <p>It does nothing if the function is missing. It throws if called without a
 callback or something that is not a function.</p>
 </div>
+
+
 
 
 
@@ -3413,50 +3459,6 @@ of its methods. It defaults to <code>f</code>.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line470">line 470</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -3471,14 +3473,14 @@ of its methods. It defaults to <code>f</code>.</p></td>
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         <p>if <code>f</code> is provided but is not a function, or we call the
 wrapped function without a callback.</p>
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -3507,7 +3509,7 @@ callback or promise based.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -3523,24 +3525,67 @@ callback or promise based.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="wrapWithTimeout"><span class="type-signature"></span>wrapWithTimeout<span class="signature">(f, timeout<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {function}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line508">line 508</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Wraps an asynchronous function to limit its duration.</p>
 </div>
+
+
 
 
 
@@ -3646,50 +3691,6 @@ callback or promise based.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="myUtils.js.html">myUtils.js</a>, <a href="myUtils.js.html#line508">line 508</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -3711,7 +3712,7 @@ the callback if timeout expires. The error has a field <code>timeout</code> set 
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -3724,8 +3725,6 @@ the callback if timeout expires. The error has a field <code>timeout</code> set 
 </dl>
 
     
-
-
 
 
 
@@ -3742,19 +3741,21 @@ the callback if timeout expires. The error has a field <code>timeout</code> set 
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_components_containerUtils.html">caf_components/containerUtils</a></li><li><a href="module-caf_components_gen_component.html">caf_components/gen_component</a></li><li><a href="module-caf_components_gen_container.html">caf_components/gen_container</a></li><li><a href="module-caf_components_gen_cron.html">caf_components/gen_cron</a></li><li><a href="module-caf_components_gen_dynamic_container.html">caf_components/gen_dynamic_container</a></li><li><a href="module-caf_components_gen_loader.html">caf_components/gen_loader</a></li><li><a href="module-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="module-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="module-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="module-caf_components_gen_supervisor.html">caf_components/gen_supervisor</a></li><li><a href="module-caf_components_gen_transactional.html">caf_components/gen_transactional</a></li><li><a href="module-caf_components_main.html">caf_components/main</a></li><li><a href="module-caf_components_myUtils.html">caf_components/myUtils</a></li><li><a href="module-caf_components_naming.html">caf_components/naming</a></li><li><a href="module-caf_components_plug_ca_log.html">caf_components/plug_ca_log</a></li><li><a href="module-caf_components_plug_log.html">caf_components/plug_log</a></li><li><a href="module-caf_components_proxy_log.html">caf_components/proxy_log</a></li><li><a href="module-caf_components_supervisor.html">caf_components/supervisor</a></li><li><a href="module-caf_components_templateUtils.html">caf_components/templateUtils</a></li></ul><h3><a href="global.html">Global</a></h3>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:01 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:39 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

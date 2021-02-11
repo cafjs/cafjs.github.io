@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Module: caf_crossapp/proxy_crossapp</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>caf_crossapp/proxy_crossapp - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Module: caf_crossapp/proxy_crossapp</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_crossapp_main.html">caf_crossapp/main</a></li><li><a href="module-caf_crossapp_plug_ca_crossapp.html">caf_crossapp/plug_ca_crossapp</a></li><li><a href="module-caf_crossapp_plug_crossapp.html">caf_crossapp/plug_crossapp</a></li><li><a href="module-caf_crossapp_proxy_crossapp.html">caf_crossapp/proxy_crossapp</a><ul class='methods'><li data-type='method'><a href="module-caf_crossapp_proxy_crossapp.html#call">call</a></li><li data-type='method'><a href="module-caf_crossapp_proxy_crossapp.html#dirtyCall">dirtyCall</a></li><li data-type='method'><a href="module-caf_crossapp_proxy_crossapp.html#dirtyIsAppRunning">dirtyIsAppRunning</a></li><li data-type='method'><a href="module-caf_crossapp_proxy_crossapp.html#setHandleReplyMethod">setHandleReplyMethod</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">caf_crossapp/proxy_crossapp</h1>
+    
 
     
 
@@ -35,25 +51,15 @@
 </header>
 
 <article>
-    <div class="container-overview">
     
-        
-            <div class="description"><p>Proxy that allows a CA to call an external app.</p></div>
-        
-
+        <div class="container-overview">
         
             
+                <div class="description usertext"><p>Proxy that allows a CA to call an external app.</p></div>
+            
 
-
-
-
-
-
-
-
-
-
-
+            
+                
 
 
 
@@ -61,34 +67,34 @@
 <dl class="details">
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="proxy_crossapp.js.html">proxy_crossapp.js</a>, <a href="proxy_crossapp.js.html#line20">line 20</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -117,9 +123,22 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+            
         
+        </div>
     
-    </div>
 
     
         <h3 class="subsection-title">Extends</h3>
@@ -137,10 +156,10 @@
     
 
     
-
+    
     
 
-    
+     
 
     
 
@@ -154,21 +173,66 @@
 
     
 
-    
     <h4 class="name" id="call"><span class="type-signature"></span>call<span class="signature">(fqn, from<span class="signature-attributes">opt</span>, method, args, tokenStr<span class="signature-attributes">opt</span>, maxRetries<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_crossapp.js.html">proxy_crossapp.js</a>, <a href="proxy_crossapp.js.html#line105">line 105</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Calls in a transactional way a CA method of an external
 application.</p>
 <p>The action is checkpointed first, executing at least once. Calls do
 not block message processing for this CA, and responses can be
 arbitrarily interleaved with new requests.</p>
 </div>
+
+
 
 
 
@@ -409,50 +473,6 @@ The default is to retry forever.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_crossapp.js.html">proxy_crossapp.js</a>, <a href="proxy_crossapp.js.html#line105">line 105</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -467,13 +487,13 @@ The default is to retry forever.</p></td>
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         <p>When arguments are invalid.</p>
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -502,7 +522,7 @@ replies for this request.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -518,22 +538,63 @@ replies for this request.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="dirtyCall"><span class="type-signature"></span>dirtyCall<span class="signature">(fqn, from<span class="signature-attributes">opt</span>, method, args, tokenStr<span class="signature-attributes">opt</span>, maxRetries<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;Object>>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_crossapp.js.html">proxy_crossapp.js</a>, <a href="proxy_crossapp.js.html#line69">line 69</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Calls in a non-transactional way a CA method of an external
 application.</p>
 <p>There is no checkpointing for this action, and this call may never
@@ -541,6 +602,8 @@ be executed if, e.g., the server fails.</p>
 <p>Using <code>await</code> on the returned promise we can stop processing new
 messages for this CA until the response arrives.</p>
 </div>
+
+
 
 
 
@@ -781,50 +844,6 @@ The default is to retry forever.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_crossapp.js.html">proxy_crossapp.js</a>, <a href="proxy_crossapp.js.html#line69">line 69</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -839,13 +858,13 @@ The default is to retry forever.</p></td>
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         <p>When arguments are invalid.</p>
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -877,7 +896,7 @@ closed with an error, and <code>false</code> when it was an application error.</
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -893,26 +912,69 @@ closed with an error, and <code>false</code> when it was an application error.</
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="dirtyIsAppRunning"><span class="type-signature"></span>dirtyIsAppRunning<span class="signature">(app)</span><span class="type-signature"> &rarr; {Promise.&lt;boolean>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_crossapp.js.html">proxy_crossapp.js</a>, <a href="proxy_crossapp.js.html#line124">line 124</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Checks whether an app is running.</p>
 <p>The check is non-transactional and blocks the processing of the
 current message by using <code>await</code> on the returned promise.</p>
 </div>
+
+
 
 
 
@@ -975,50 +1037,6 @@ current message by using <code>await</code> on the returned promise.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_crossapp.js.html">proxy_crossapp.js</a>, <a href="proxy_crossapp.js.html#line124">line 124</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1039,7 +1057,7 @@ the app is running, <code>false</code> otherwise.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1055,22 +1073,63 @@ the app is running, <code>false</code> otherwise.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="setHandleReplyMethod"><span class="type-signature"></span>setHandleReplyMethod<span class="signature">(methodName)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_crossapp.js.html">proxy_crossapp.js</a>, <a href="proxy_crossapp.js.html#line151">line 151</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Sets the name of the method in this CA that will process
 reply call messages.</p>
 <p>To ignore replies, just set it to <code>null</code>.</p>
@@ -1084,6 +1143,8 @@ set to <code>true</code> when the session was closed with an error, and <code>fa
 when it was an application error.</li>
 </ul>
 </div>
+
+
 
 
 
@@ -1150,52 +1211,6 @@ process replies.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_crossapp.js.html">proxy_crossapp.js</a>, <a href="proxy_crossapp.js.html#line151">line 151</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -1222,19 +1237,21 @@ process replies.</p></td>
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_crossapp_main.html">caf_crossapp/main</a></li><li><a href="module-caf_crossapp_plug_ca_crossapp.html">caf_crossapp/plug_ca_crossapp</a></li><li><a href="module-caf_crossapp_plug_crossapp.html">caf_crossapp/plug_crossapp</a></li><li><a href="module-caf_crossapp_proxy_crossapp.html">caf_crossapp/proxy_crossapp</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul><h3><a href="global.html">Global</a></h3>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:02 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:40 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

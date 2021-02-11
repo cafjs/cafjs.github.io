@@ -1,23 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>Home - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_rpi_gpio_main.html">caf_rpi_gpio/main</a></li><li><a href="module-caf_rpi_gpio_mock_gpio.html">caf_rpi_gpio/mock_gpio</a></li><li><a href="module-caf_rpi_gpio_mock_gpio-shim.html">caf_rpi_gpio/mock_gpio-shim</a></li><li><a href="module-caf_rpi_gpio_plug_iot_gpio.html">caf_rpi_gpio/plug_iot_gpio</a></li><li><a href="module-caf_rpi_gpio_proxy_iot_gpio.html">caf_rpi_gpio/proxy_iot_gpio</a><ul class='methods'><li data-type='method'><a href="module-caf_rpi_gpio_proxy_iot_gpio.html#getPinConfig">getPinConfig</a></li><li data-type='method'><a href="module-caf_rpi_gpio_proxy_iot_gpio.html#readAll">readAll</a></li><li data-type='method'><a href="module-caf_rpi_gpio_proxy_iot_gpio.html#setPinConfig">setPinConfig</a></li><li data-type='method'><a href="module-caf_rpi_gpio_proxy_iot_gpio.html#setWatcher">setWatcher</a></li><li data-type='method'><a href="module-caf_rpi_gpio_proxy_iot_gpio.html#unsetWatcher">unsetWatcher</a></li><li data-type='method'><a href="module-caf_rpi_gpio_proxy_iot_gpio.html#writeMany">writeMany</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_iot_gen_plug_iot.html">caf_iot/gen_plug_iot</a></li></ul>
+</nav>
+
 <div id="main">
-
-    <h1 class="page-title">Home</h1>
+    
 
     
 
@@ -26,8 +40,9 @@
     
 
 
-    <h3>caf_rpi_gpio 0.4.0</h3>
-
+    <section class="package">
+        <h3>caf_rpi_gpio 0.4.0</h3>		
+    </section>
 
 
 
@@ -41,8 +56,7 @@
 
 
 
-
-    <section>
+    <section class="readme usertext">
         <article><h1>Caf.js</h1>
 <p>Co-design permanent, active, stateful, reliable cloud proxies with your web app or gadget.</p>
 <p>See https://www.cafjs.com</p>
@@ -54,28 +68,28 @@
 <h2>Configuration Example</h2>
 <h3>iot.json</h3>
 <p>See <a href="module-caf_rpi_gpio_plug_iot_gpio.html">module:caf_rpi_gpio/plug_iot_gpio</a></p>
-<pre><code>{
-        &quot;module&quot;: &quot;caf_rpi_gpio#plug_iot&quot;,
-        &quot;name&quot;: &quot;gpio&quot;,
-        &quot;description&quot;: &quot;Access to GPIO pins for this device.&quot;,
-        &quot;env&quot; : {
-            &quot;maxRetries&quot; : &quot;$._.env.maxRetries&quot;,
-            &quot;retryDelay&quot; : &quot;$._.env.retryDelay&quot;,
-            &quot;gpiomem&quot; : &quot;process.env.GPIO_MEM||true&quot;,
-            &quot;mapping&quot; : &quot;process.env.MAPPING||physical&quot;,
-            &quot;allowMock&quot; : &quot;process.env.ALLOW_MOCK||true&quot;,
-            &quot;mockRootDir&quot; : &quot;process.env.MOCK_ROOT_DIR||/tmp/gpio&quot;
-        },
-        &quot;components&quot; : [
-            {
-                &quot;module&quot;: &quot;caf_rpi_gpio#proxy_iot&quot;,
-                &quot;name&quot;: &quot;proxy&quot;,
-                &quot;description&quot;: &quot;Proxy to access GPIO pins&quot;,
-                &quot;env&quot; : {
+<pre class="prettyprint source"><code>    {
+            &quot;module&quot;: &quot;caf_rpi_gpio#plug_iot&quot;,
+            &quot;name&quot;: &quot;gpio&quot;,
+            &quot;description&quot;: &quot;Access to GPIO pins for this device.&quot;,
+            &quot;env&quot; : {
+                &quot;maxRetries&quot; : &quot;$._.env.maxRetries&quot;,
+                &quot;retryDelay&quot; : &quot;$._.env.retryDelay&quot;,
+                &quot;gpiomem&quot; : &quot;process.env.GPIO_MEM||true&quot;,
+                &quot;mapping&quot; : &quot;process.env.MAPPING||physical&quot;,
+                &quot;allowMock&quot; : &quot;process.env.ALLOW_MOCK||true&quot;,
+                &quot;mockRootDir&quot; : &quot;process.env.MOCK_ROOT_DIR||/tmp/gpio&quot;
+            },
+            &quot;components&quot; : [
+                {
+                    &quot;module&quot;: &quot;caf_rpi_gpio#proxy_iot&quot;,
+                    &quot;name&quot;: &quot;proxy&quot;,
+                    &quot;description&quot;: &quot;Proxy to access GPIO pins&quot;,
+                    &quot;env&quot; : {
+                    }
                 }
-            }
-        ]
-}
+            ]
+    }
 </code></pre></article>
     </section>
 
@@ -84,19 +98,21 @@
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_rpi_gpio_main.html">caf_rpi_gpio/main</a></li><li><a href="module-caf_rpi_gpio_mock_gpio.html">caf_rpi_gpio/mock_gpio</a></li><li><a href="module-caf_rpi_gpio_mock_gpio-shim.html">caf_rpi_gpio/mock_gpio-shim</a></li><li><a href="module-caf_rpi_gpio_plug_iot_gpio.html">caf_rpi_gpio/plug_iot_gpio</a></li><li><a href="module-caf_rpi_gpio_proxy_iot_gpio.html">caf_rpi_gpio/proxy_iot_gpio</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_iot_gen_plug_iot.html">caf_iot/gen_plug_iot</a></li></ul>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:12 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:49 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

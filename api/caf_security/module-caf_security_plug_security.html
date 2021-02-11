@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Module: caf_security/plug_security</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>caf_security/plug_security - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Module: caf_security/plug_security</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_security_aggregates.html">caf_security/aggregates</a><ul class='methods'><li data-type='method'><a href="module-caf_security_rules.html">computeRuleId</a></li><li data-type='method'><a href="module-caf_security_rules.html">isAuthorized</a></li><li data-type='method'><a href="module-caf_security_aggregates.html">newAggregateRule</a></li><li data-type='method'><a href="module-caf_security_rules.html">newRuleEngine</a></li></ul></li><li><a href="module-caf_security_main.html">caf_security/main</a></li><li><a href="module-caf_security_plug_ca_security.html">caf_security/plug_ca_security</a></li><li><a href="module-caf_security_plug_security.html">caf_security/plug_security</a><ul class='methods'><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_attenuateToken__">__ca_attenuateToken__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_authenticate__">__ca_authenticate__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_blockCreate__">__ca_blockCreate__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_pulse__">__ca_pulse__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_quotaCheck__">__ca_quotaCheck__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_quotaRenew__">__ca_quotaRenew__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_verifyToken__">__ca_verifyToken__</a></li></ul></li><li><a href="module-caf_security_proxy_security.html">caf_security/proxy_security</a><ul class='methods'><li data-type='method'><a href="module-caf_security_proxy_security.html#addRule">addRule</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#attenuateToken">attenuateToken</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#computeRuleId">computeRuleId</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#getAppName">getAppName</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#getCallerFrom">getCallerFrom</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#isAuthorized">isAuthorized</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#listRules">listRules</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#newAggregateRule">newAggregateRule</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#newSimpleRule">newSimpleRule</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#removeRule">removeRule</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#verifyToken">verifyToken</a></li></ul></li><li><a href="module-caf_security_rules.html">caf_security/rules</a><ul class='methods'><li data-type='method'><a href="module-caf_security_rules.html">computeRuleId</a></li><li data-type='method'><a href="module-caf_security_rules.html">isAuthorized</a></li><li data-type='method'><a href="module-caf_security_rules.html">newRuleEngine</a></li><li data-type='method'><a href="module-caf_security_rules.html">newSimpleRule</a></li></ul></li><li><a href="module-caf_security_tokens.html">caf_security/tokens</a><ul class='methods'><li data-type='method'><a href="module-caf_security_tokens.html">decode</a></li><li data-type='method'><a href="module-caf_security_tokens.html">lessOrEqual</a></li><li data-type='method'><a href="module-caf_security_tokens.html">meet</a></li><li data-type='method'><a href="module-caf_security_tokens.html">newPayload</a></li><li data-type='method'><a href="module-caf_security_tokens.html">satisfyACL</a></li><li data-type='method'><a href="module-caf_security_tokens.html">sign</a></li><li data-type='method'><a href="module-caf_security_tokens.html">similar</a></li><li data-type='method'><a href="module-caf_security_tokens.html">validate</a></li><li data-type='method'><a href="module-caf_security_tokens.html">validExtendedNobody</a></li><li data-type='method'><a href="module-caf_security_tokens.html">validUsername</a></li></ul></li><li><a href="module-caf_security_utils.html">caf_security/utils</a><ul class='methods'><li data-type='method'><a href="module-caf_security_utils.html">accountsSession</a></li><li data-type='method'><a href="module-caf_security_utils.html">loadKey</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li><li><a href="external-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">caf_security/plug_security</h1>
+    
 
     
 
@@ -35,10 +51,11 @@
 </header>
 
 <article>
-    <div class="container-overview">
     
+        <div class="container-overview">
         
-            <div class="description"><p>Security plug for authentication.</p>
+            
+                <div class="description usertext"><p>Security plug for authentication.</p>
 <p>Properties:</p>
 <pre><code>  {keysDir: string=, trustedPubKeyFile: string, privateKeyFile: string=,
    publicKeyFile: string=, accountsURL: string, allowNobodyUser: boolean,
@@ -57,21 +74,10 @@ authenticate without credentials.</li>
 <li><code>quotaApp</code>: the name of the app managing user quotas, or missing if
 service off.</li>
 </ul></div>
-        
-
-        
             
 
-
-
-
-
-
-
-
-
-
-
+            
+                
 
 
 
@@ -79,34 +85,34 @@ service off.</li>
 <dl class="details">
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line19">line 19</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -135,9 +141,22 @@ service off.</li>
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+            
         
+        </div>
     
-    </div>
 
     
         <h3 class="subsection-title">Extends</h3>
@@ -155,10 +174,10 @@ service off.</li>
     
 
     
-
+    
     
 
-    
+     
 
     
 
@@ -172,18 +191,70 @@ service off.</li>
 
     
 
-    
     <h4 class="name" id="__ca_attenuateToken__"><span class="type-signature"></span>__ca_attenuateToken__<span class="signature">(megaTokenStr, constraints, cb0)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line343">line 343</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="module-caf_security_proxy_security.html#attenuateToken">module:caf_security/proxy_security#attenuateToken</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Weakens an authentication token generating generating one (or many)
 token(s).</p>
 </div>
+
+
 
 
 
@@ -293,59 +364,6 @@ error.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line343">line 343</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="module-caf_security_proxy_security.html#attenuateToken">module:caf_security/proxy_security#attenuateToken</a></li>
-        </ul>
-    </dd>
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -364,17 +382,62 @@ error.</p></td>
 
     
 
-    
     <h4 class="name" id="__ca_authenticate__"><span class="type-signature"></span>__ca_authenticate__<span class="signature">(from, tokenStr, cb0)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line203">line 203</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Authenticates the incoming request.</p>
 </div>
+
+
 
 
 
@@ -484,52 +547,6 @@ token.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line203">line 203</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -548,19 +565,64 @@ token.</p></td>
 
     
 
-    
     <h4 class="name" id="__ca_blockCreate__"><span class="type-signature"></span>__ca_blockCreate__<span class="signature">(from, to)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line262">line 262</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Whether we should block attempts to create a missing CA.</p>
 <p>Only the owner should be allowed to create new CAs, i.e.,
 <code>from === to</code>.</p>
 </div>
+
+
 
 
 
@@ -646,50 +708,6 @@ token.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line262">line 262</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -710,7 +728,7 @@ to an existing CA.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -726,25 +744,68 @@ to an existing CA.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="__ca_pulse__"><span class="type-signature"></span>__ca_pulse__<span class="signature">(cb0)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line130">line 130</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Cleans up token caches.</p>
 <p>Called by <code>cron_security</code> periodically to force token re-validation.</p>
 </div>
+
+
 
 
 
@@ -807,52 +868,6 @@ to an existing CA.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line130">line 130</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -871,17 +886,62 @@ to an existing CA.</p>
 
     
 
-    
     <h4 class="name" id="__ca_quotaCheck__"><span class="type-signature"></span>__ca_quotaCheck__<span class="signature">(caId, cb0)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line420">line 420</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Checks the quota of a CA with the <em>Quota</em> service.</p>
 </div>
+
+
 
 
 
@@ -970,52 +1030,6 @@ accessed the quota service and there was no balance, the error field
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line420">line 420</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -1034,17 +1048,62 @@ accessed the quota service and there was no balance, the error field
 
     
 
-    
     <h4 class="name" id="__ca_quotaRenew__"><span class="type-signature"></span>__ca_quotaRenew__<span class="signature">(tokenStr, cb0)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line394">line 394</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Registers a new CA with the <em>Quota</em> service.</p>
 </div>
+
+
 
 
 
@@ -1134,52 +1193,6 @@ accessed the quota service and there was no balance, the error field
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line394">line 394</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -1198,17 +1211,62 @@ accessed the quota service and there was no balance, the error field
 
     
 
-    
     <h4 class="name" id="__ca_verifyToken__"><span class="type-signature"></span>__ca_verifyToken__<span class="signature">(tokenStr)</span><span class="type-signature"> &rarr; {<a href="global.html#tokenType">tokenType</a>|null}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line188">line 188</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Verifies the provided serialized token is trusted</p>
 </div>
+
+
 
 
 
@@ -1271,50 +1329,6 @@ accessed the quota service and there was no balance, the error field
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="plug_security.js.html">plug_security.js</a>, <a href="plug_security.js.html#line188">line 188</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1335,7 +1349,7 @@ token invalid.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1354,8 +1368,6 @@ token invalid.</p>
 
 
 
-
-
         
     
 
@@ -1369,19 +1381,21 @@ token invalid.</p>
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_security_aggregates.html">caf_security/aggregates</a></li><li><a href="module-caf_security_main.html">caf_security/main</a></li><li><a href="module-caf_security_plug_ca_security.html">caf_security/plug_ca_security</a></li><li><a href="module-caf_security_plug_security.html">caf_security/plug_security</a></li><li><a href="module-caf_security_proxy_security.html">caf_security/proxy_security</a></li><li><a href="module-caf_security_rules.html">caf_security/rules</a></li><li><a href="module-caf_security_tokens.html">caf_security/tokens</a></li><li><a href="module-caf_security_utils.html">caf_security/utils</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li><li><a href="external-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li></ul><h3><a href="global.html">Global</a></h3>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:07 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:45 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

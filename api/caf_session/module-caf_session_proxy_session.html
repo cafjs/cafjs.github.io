@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Module: caf_session/proxy_session</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>caf_session/proxy_session - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Module: caf_session/proxy_session</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_session_backchannel.html">caf_session/backchannel</a></li><li><a href="module-caf_session_main.html">caf_session/main</a></li><li><a href="module-caf_session_plug_ca_session.html">caf_session/plug_ca_session</a></li><li><a href="module-caf_session_proxy_session.html">caf_session/proxy_session</a><ul class='methods'><li data-type='method'><a href="module-caf_session_proxy_session.html#begin">begin</a></li><li data-type='method'><a href="module-caf_session_proxy_session.html#end">end</a></li><li data-type='method'><a href="module-caf_session_proxy_session.html#getAllSessionIds">getAllSessionIds</a></li><li data-type='method'><a href="module-caf_session_proxy_session.html#getSessionId">getSessionId</a></li><li data-type='method'><a href="module-caf_session_proxy_session.html#limitQueue">limitQueue</a></li><li data-type='method'><a href="module-caf_session_proxy_session.html#notify">notify</a></li><li data-type='method'><a href="module-caf_session_proxy_session.html#outq">outq</a></li><li data-type='method'><a href="module-caf_session_proxy_session.html#remember">remember</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">caf_session/proxy_session</h1>
+    
 
     
 
@@ -35,25 +51,15 @@
 </header>
 
 <article>
-    <div class="container-overview">
     
-        
-            <div class="description"><p>Proxy to access session information and output message queues.</p></div>
-        
-
+        <div class="container-overview">
         
             
+                <div class="description usertext"><p>Proxy to access session information and output message queues.</p></div>
+            
 
-
-
-
-
-
-
-
-
-
-
+            
+                
 
 
 
@@ -61,34 +67,34 @@
 <dl class="details">
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="proxy_session.js.html">proxy_session.js</a>, <a href="proxy_session.js.html#line19">line 19</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -117,9 +123,22 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+            
         
+        </div>
     
-    </div>
 
     
         <h3 class="subsection-title">Extends</h3>
@@ -137,10 +156,10 @@
     
 
     
-
+    
     
 
-    
+     
 
     
 
@@ -154,15 +173,58 @@
 
     
 
-    
     <h4 class="name" id="begin"><span class="type-signature"></span>begin<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#sessionBeginType">sessionBeginType</a>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_session.js.html">proxy_session.js</a>, <a href="proxy_session.js.html#line154">line 154</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Starts a persistent session associated with the current logical
 session.</p>
 <p><code>begin()</code> creates a fresh nonce to tie together all the interactions
@@ -189,48 +251,6 @@ of failures.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_session.js.html">proxy_session.js</a>, <a href="proxy_session.js.html#line154">line 154</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
 
 
 
@@ -254,7 +274,7 @@ previous session was not properly ended.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -270,26 +290,69 @@ previous session was not properly ended.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="end"><span class="type-signature"></span>end<span class="signature">(nonce)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_session.js.html">proxy_session.js</a>, <a href="proxy_session.js.html#line173">line 173</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Ends a persistent session associated with the current logical
 session.</p>
 <p>It deletes the memento associated with this logical session.</p>
 </div>
+
+
 
 
 
@@ -352,50 +415,6 @@ session.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_session.js.html">proxy_session.js</a>, <a href="proxy_session.js.html#line173">line 173</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -417,7 +436,7 @@ did not match.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -433,62 +452,19 @@ did not match.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="getAllSessionIds"><span class="type-signature"></span>getAllSessionIds<span class="signature">()</span><span class="type-signature"> &rarr; {Array.&lt;string>}</span></h4>
-    
 
     
-
-
-
-<div class="description">
-    <p>Gets the names of all the logical sessions of this CA.</p>
-</div>
-
-
-
-
-
-
-
-
-
 
 
 
 
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
@@ -502,7 +478,49 @@ did not match.</p>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 </dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Gets the names of all the logical sessions of this CA.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -527,7 +545,7 @@ did not match.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -543,62 +561,19 @@ did not match.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="getSessionId"><span class="type-signature"></span>getSessionId<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
 
     
-
-
-
-<div class="description">
-    <p>Gets the name of the current logical session.</p>
-</div>
-
-
-
-
-
-
-
-
-
 
 
 
 
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
@@ -612,7 +587,49 @@ did not match.</p>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 </dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Gets the name of the current logical session.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -637,7 +654,7 @@ did not match.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -653,27 +670,70 @@ did not match.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="limitQueue"><span class="type-signature"></span>limitQueue<span class="signature">(maxMsgs, optSessionId<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_session.js.html">proxy_session.js</a>, <a href="proxy_session.js.html#line101">line 101</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Bounds the length of the output queue by discarding old messages.</p>
 <p>If no session name is provided we use the current session.</p>
 <p>By convention we reserve <code>default</code> as the name of the unnamed
 logical session.</p>
 </div>
+
+
 
 
 
@@ -780,52 +840,6 @@ identifying the output queue.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_session.js.html">proxy_session.js</a>, <a href="proxy_session.js.html#line101">line 101</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -844,20 +858,65 @@ identifying the output queue.</p></td>
 
     
 
-    
     <h4 class="name" id="notify"><span class="type-signature"></span>notify<span class="signature">(argsArray, optSessionId<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_session.js.html">proxy_session.js</a>, <a href="proxy_session.js.html#line124">line 124</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Queues a notification message.</p>
 <p>If no session name is provided we use the current session.</p>
 <p>The type of a notification, <code>caf.notif</code> is:</p>
 <pre><code>   Array.&lt;caf.json&gt;</code></pre>
 </div>
+
+
 
 
 
@@ -965,52 +1024,6 @@ identifying the output queue.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_session.js.html">proxy_session.js</a>, <a href="proxy_session.js.html#line124">line 124</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -1029,15 +1042,58 @@ identifying the output queue.</p></td>
 
     
 
-    
     <h4 class="name" id="outq"><span class="type-signature"></span>outq<span class="signature">(optSessionId<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="global.html#notificationType">notificationType</a>>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_session.js.html">proxy_session.js</a>, <a href="proxy_session.js.html#line55">line 55</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Gets a read-only snapshot of the output notification queue.</p>
 <p>If no session name is provided we use the current session.</p>
 <p>By convention we reserve <code>default</code> as the name of an
@@ -1045,6 +1101,8 @@ unnamed logical session.</p>
 <p>The type of an entry in the notification queue, <code>caf.notif</code> is:</p>
 <pre><code>   Array.&lt;caf.json&gt;</code></pre>
 </div>
+
+
 
 
 
@@ -1120,50 +1178,6 @@ identifying the output queue. Defaults to the current session.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_session.js.html">proxy_session.js</a>, <a href="proxy_session.js.html#line55">line 55</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1184,7 +1198,7 @@ of the output queue.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1200,22 +1214,63 @@ of the output queue.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="remember"><span class="type-signature"></span>remember<span class="signature">(nonce, memento)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_session.js.html">proxy_session.js</a>, <a href="proxy_session.js.html#line204">line 204</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Replaces a memento associated with this logical session.</p>
 <p>Mementos can maintain client state across failures. This is
 important for clients that want to switch devices, or cannot
@@ -1229,6 +1284,8 @@ starting a new persistent session. When they call <code>begin()</code> they
 will learn the last successful action (and/or its own state)
 before the failure.</p>
 </div>
+
+
 
 
 
@@ -1314,50 +1371,6 @@ before the failure.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_session.js.html">proxy_session.js</a>, <a href="proxy_session.js.html#line204">line 204</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1379,7 +1392,7 @@ of the message by returning an application error.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1392,8 +1405,6 @@ of the message by returning an application error.</p>
 </dl>
 
     
-
-
 
 
 
@@ -1410,19 +1421,21 @@ of the message by returning an application error.</p>
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_session_backchannel.html">caf_session/backchannel</a></li><li><a href="module-caf_session_main.html">caf_session/main</a></li><li><a href="module-caf_session_plug_ca_session.html">caf_session/plug_ca_session</a></li><li><a href="module-caf_session_proxy_session.html">caf_session/proxy_session</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_ca.html">caf_ca</a></li><li><a href="external-caf_cli.html">caf_cli</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul><h3><a href="global.html">Global</a></h3>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:08 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:46 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

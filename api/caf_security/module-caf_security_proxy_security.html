@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Module: caf_security/proxy_security</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>caf_security/proxy_security - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Module: caf_security/proxy_security</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_security_aggregates.html">caf_security/aggregates</a><ul class='methods'><li data-type='method'><a href="module-caf_security_rules.html">computeRuleId</a></li><li data-type='method'><a href="module-caf_security_rules.html">isAuthorized</a></li><li data-type='method'><a href="module-caf_security_aggregates.html">newAggregateRule</a></li><li data-type='method'><a href="module-caf_security_rules.html">newRuleEngine</a></li></ul></li><li><a href="module-caf_security_main.html">caf_security/main</a></li><li><a href="module-caf_security_plug_ca_security.html">caf_security/plug_ca_security</a></li><li><a href="module-caf_security_plug_security.html">caf_security/plug_security</a><ul class='methods'><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_attenuateToken__">__ca_attenuateToken__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_authenticate__">__ca_authenticate__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_blockCreate__">__ca_blockCreate__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_pulse__">__ca_pulse__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_quotaCheck__">__ca_quotaCheck__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_quotaRenew__">__ca_quotaRenew__</a></li><li data-type='method'><a href="module-caf_security_plug_security.html#__ca_verifyToken__">__ca_verifyToken__</a></li></ul></li><li><a href="module-caf_security_proxy_security.html">caf_security/proxy_security</a><ul class='methods'><li data-type='method'><a href="module-caf_security_proxy_security.html#addRule">addRule</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#attenuateToken">attenuateToken</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#computeRuleId">computeRuleId</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#getAppName">getAppName</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#getCallerFrom">getCallerFrom</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#isAuthorized">isAuthorized</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#listRules">listRules</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#newAggregateRule">newAggregateRule</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#newSimpleRule">newSimpleRule</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#removeRule">removeRule</a></li><li data-type='method'><a href="module-caf_security_proxy_security.html#verifyToken">verifyToken</a></li></ul></li><li><a href="module-caf_security_rules.html">caf_security/rules</a><ul class='methods'><li data-type='method'><a href="module-caf_security_rules.html">computeRuleId</a></li><li data-type='method'><a href="module-caf_security_rules.html">isAuthorized</a></li><li data-type='method'><a href="module-caf_security_rules.html">newRuleEngine</a></li><li data-type='method'><a href="module-caf_security_rules.html">newSimpleRule</a></li></ul></li><li><a href="module-caf_security_tokens.html">caf_security/tokens</a><ul class='methods'><li data-type='method'><a href="module-caf_security_tokens.html">decode</a></li><li data-type='method'><a href="module-caf_security_tokens.html">lessOrEqual</a></li><li data-type='method'><a href="module-caf_security_tokens.html">meet</a></li><li data-type='method'><a href="module-caf_security_tokens.html">newPayload</a></li><li data-type='method'><a href="module-caf_security_tokens.html">satisfyACL</a></li><li data-type='method'><a href="module-caf_security_tokens.html">sign</a></li><li data-type='method'><a href="module-caf_security_tokens.html">similar</a></li><li data-type='method'><a href="module-caf_security_tokens.html">validate</a></li><li data-type='method'><a href="module-caf_security_tokens.html">validExtendedNobody</a></li><li data-type='method'><a href="module-caf_security_tokens.html">validUsername</a></li></ul></li><li><a href="module-caf_security_utils.html">caf_security/utils</a><ul class='methods'><li data-type='method'><a href="module-caf_security_utils.html">accountsSession</a></li><li data-type='method'><a href="module-caf_security_utils.html">loadKey</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li><li><a href="external-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">caf_security/proxy_security</h1>
+    
 
     
 
@@ -35,25 +51,15 @@
 </header>
 
 <article>
-    <div class="container-overview">
     
-        
-            <div class="description"><p>Proxy to manage security policies from application code.</p></div>
-        
-
+        <div class="container-overview">
         
             
+                <div class="description usertext"><p>Proxy to manage security policies from application code.</p></div>
+            
 
-
-
-
-
-
-
-
-
-
-
+            
+                
 
 
 
@@ -61,34 +67,34 @@
 <dl class="details">
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line19">line 19</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -117,9 +123,22 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+            
         
+        </div>
     
-    </div>
 
     
         <h3 class="subsection-title">Extends</h3>
@@ -137,10 +156,10 @@
     
 
     
-
+    
     
 
-    
+     
 
     
 
@@ -154,7 +173,52 @@
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line121">line 121</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>A symbol representing the local name of this CA, i.e., <code>&quot;!CA_LOCAL&quot;</code>.</p>
 </div>
 
@@ -174,37 +238,46 @@
 
 
 
+
+        
+            
+<h4 class="name" id="SELF"><span class="type-signature"></span>SELF<span class="type-signature"> :string</span></h4>
+
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line121">line 121</a>
+        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line112">line 112</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -218,15 +291,7 @@
 
 
 
-
-        
-            
-<h4 class="name" id="SELF"><span class="type-signature"></span>SELF<span class="type-signature"> :string</span></h4>
-
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>A symbol representing the owner of this CA, i.e., <code>&quot;!SELF&quot;</code>.</p>
 </div>
 
@@ -246,37 +311,56 @@
 
 
 
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="addRule"><span class="type-signature"></span>addRule<span class="signature">(newRule)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line112">line 112</a>
+        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line195">line 195</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -290,27 +374,7 @@
 
 
 
-
-        
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="addRule"><span class="type-signature"></span>addRule<span class="signature">(newRule)</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>Adds a rule that allows a principal to invoke certain methods.</p>
 <p>The type can be <code>simpleRuleType</code> or  <code>aggregateRuleType</code></p>
 <p>The type of <code>ruleType</code> when the rule type is <code>simpleRuleType</code>:</p>
@@ -342,6 +406,8 @@ CA. This is a sensible default.</p>
 context. See <a href="external-caf_sharing.html">external:caf_sharing</a>.</p>
 <p>For example, if <code>alias</code> is <code>foo</code>, the map is <code>this.$.sharing.$.foo</code>.</p>
 </div>
+
+
 
 
 
@@ -404,50 +470,6 @@ context. See <a href="external-caf_sharing.html">external:caf_sharing</a>.</p>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line195">line 195</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -467,7 +489,7 @@ context. See <a href="external-caf_sharing.html">external:caf_sharing</a>.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -483,22 +505,63 @@ context. See <a href="external-caf_sharing.html">external:caf_sharing</a>.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="attenuateToken"><span class="type-signature"></span>attenuateToken<span class="signature">(megaToken, tokenDesc, cb0)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line290">line 290</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Weakens an authentication token generating one (or many) token(s).</p>
 <p>type of <code>tokenDescriptionType</code> is</p>
 <pre><code> {appPublisher: (string|null)=, appLocalName: (string|null)=,
@@ -508,6 +571,8 @@ context. See <a href="external-caf_sharing.html">external:caf_sharing</a>.</p>
 <p>A <code>null</code> value in the token description means force the current value.</p>
 <p>An <code>undefined</code> value means remove the constraint.</p>
 </div>
+
+
 
 
 
@@ -620,52 +685,6 @@ description  of the new token(s).</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line290">line 290</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -684,17 +703,62 @@ description  of the new token(s).</p></td>
 
     
 
-    
     <h4 class="name" id="computeRuleId"><span class="type-signature"></span>computeRuleId<span class="signature">(rule)</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line228">line 228</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Computes a content-based identifier for a rule.</p>
 </div>
+
+
 
 
 
@@ -757,50 +821,6 @@ description  of the new token(s).</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line228">line 228</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -815,13 +835,13 @@ description  of the new token(s).</p></td>
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         <p>Invalid rule.</p>
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -849,7 +869,7 @@ description  of the new token(s).</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -865,62 +885,19 @@ description  of the new token(s).</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="getAppName"><span class="type-signature"></span>getAppName<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
 
     
-
-
-
-<div class="description">
-    <p>Gets the application name.</p>
-</div>
-
-
-
-
-
-
-
-
-
 
 
 
 
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
@@ -934,7 +911,49 @@ description  of the new token(s).</p></td>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 </dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Gets the application name.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -959,7 +978,7 @@ description  of the new token(s).</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -975,22 +994,63 @@ description  of the new token(s).</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="getCallerFrom"><span class="type-signature"></span>getCallerFrom<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line58">line 58</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Gets the authenticated caller's name.</p>
 <p>It matches the <code>from</code> field of the message that we are currently
 processing, i.e., <code>&lt;caOwner&gt;-&lt;caLocalName&gt;</code>.</p>
@@ -1005,48 +1065,6 @@ processing, i.e., <code>&lt;caOwner&gt;-&lt;caLocalName&gt;</code>.</p>
 
 
 
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line58">line 58</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -1071,7 +1089,7 @@ processing, i.e., <code>&lt;caOwner&gt;-&lt;caLocalName&gt;</code>.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1087,27 +1105,70 @@ processing, i.e., <code>&lt;caOwner&gt;-&lt;caLocalName&gt;</code>.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="isAuthorized"><span class="type-signature"></span>isAuthorized<span class="signature">(caller, method, ignoreInternal<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line141">line 141</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Checks whether a caller is authorized to invoke certain method.</p>
 <p>This explicit check is typically not needed because the framework
 enforces access policy, but it can be useful for debugging or to validate
 application-level checks.</p>
 </div>
+
+
 
 
 
@@ -1245,50 +1306,6 @@ with <code>__ca_</code>, as external ones while checking authorization.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line141">line 141</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1308,7 +1325,7 @@ with <code>__ca_</code>, as external ones while checking authorization.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1324,63 +1341,19 @@ with <code>__ca_</code>, as external ones while checking authorization.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="listRules"><span class="type-signature"></span>listRules<span class="signature">()</span><span class="type-signature"> &rarr; {Object.&lt;string, <a href="global.html#ruleType">ruleType</a>>}</span></h4>
-    
 
     
-
-
-
-<div class="description">
-    <p>Lists current active rules.</p>
-<p>It returns a deep frozen copy of the current rules.</p>
-</div>
-
-
-
-
-
-
-
-
-
 
 
 
 
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
@@ -1394,7 +1367,50 @@ with <code>__ca_</code>, as external ones while checking authorization.</p></td>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 </dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Lists current active rules.</p>
+<p>It returns a deep frozen copy of the current rules.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1420,7 +1436,7 @@ rule contents as values.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1436,27 +1452,77 @@ rule contents as values.</p>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="newAggregateRule"><span class="type-signature"></span>newAggregateRule<span class="signature">(methods<span class="signature-attributes">opt</span>, aggregateMapAlias)</span><span class="type-signature"> &rarr; {<a href="global.html#ruleType">ruleType</a>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line101">line 101</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="module-caf_security_proxy_security.html#addRule">module:caf_security/proxy_security#addRule</a>.</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Constructor for a rule that uses an <code>AggregateMap</code> to represent a linked
 local namespace.</p>
 <p>Note that aggregate rules are only active if the corresponding
 <code>AggregateMap</code> has been added using the <code>caf_sharing</code> plugin.</p>
 </div>
+
+
 
 
 
@@ -1567,37 +1633,84 @@ instantiate the AggregateMap.</p></td>
 
 
 
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>An authorization  rule.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="global.html#ruleType">ruleType</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="newSimpleRule"><span class="type-signature"></span>newSimpleRule<span class="signature">(methods<span class="signature-attributes">opt</span>, caOwner<span class="signature-attributes">opt</span>, caLocalName<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="global.html#ruleType">ruleType</a>}</span></h4>
+
+    
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line101">line 101</a>
+        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line78">line 78</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -1618,59 +1731,11 @@ instantiate the AggregateMap.</p></td>
 
 
 
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>An authorization  rule.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="global.html#ruleType">ruleType</a></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="newSimpleRule"><span class="type-signature"></span>newSimpleRule<span class="signature">(methods<span class="signature-attributes">opt</span>, caOwner<span class="signature-attributes">opt</span>, caLocalName<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="global.html#ruleType">ruleType</a>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
+<div class="description usertext">
     <p>Constructor for a simple rule, i.e., of type <code>&quot;caf.simpleRule&quot;</code>.</p>
 </div>
+
+
 
 
 
@@ -1815,57 +1880,6 @@ to all.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line78">line 78</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="module-caf_security_proxy_security.html#addRule">module:caf_security/proxy_security#addRule</a>.</li>
-        </ul>
-    </dd>
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1885,7 +1899,7 @@ to all.</p></td>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1901,24 +1915,67 @@ to all.</p></td>
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="removeRule"><span class="type-signature"></span>removeRule<span class="signature">(ruleId)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line242">line 242</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Removes a rule.</p>
 </div>
+
+
 
 
 
@@ -1981,52 +2038,6 @@ to all.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line242">line 242</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -2045,20 +2056,65 @@ to all.</p></td>
 
     
 
-    
     <h4 class="name" id="verifyToken"><span class="type-signature"></span>verifyToken<span class="signature">(tokenStr)</span><span class="type-signature"> &rarr; {<a href="global.html#tokenType">tokenType</a>|null}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line264">line 264</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     <p>Checks that a serialized token is trusted by this app.</p>
 <p>The type of <code>tokenType</code> is</p>
 <pre><code>  {appPublisher: string=, appLocalName:string=, caOwner: string=,
    caLocalName: string=, expiresAfter: string=}</code></pre>
 </div>
+
+
 
 
 
@@ -2121,50 +2177,6 @@ to all.</p></td>
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_security.js.html">proxy_security.js</a>, <a href="proxy_security.js.html#line264">line 264</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -2185,7 +2197,7 @@ invalid.</p>
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -2204,8 +2216,6 @@ invalid.</p>
 
 
 
-
-
         
     
 
@@ -2219,19 +2229,21 @@ invalid.</p>
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_security_aggregates.html">caf_security/aggregates</a></li><li><a href="module-caf_security_main.html">caf_security/main</a></li><li><a href="module-caf_security_plug_ca_security.html">caf_security/plug_ca_security</a></li><li><a href="module-caf_security_plug_security.html">caf_security/plug_security</a></li><li><a href="module-caf_security_proxy_security.html">caf_security/proxy_security</a></li><li><a href="module-caf_security_rules.html">caf_security/rules</a></li><li><a href="module-caf_security_tokens.html">caf_security/tokens</a></li><li><a href="module-caf_security_utils.html">caf_security/utils</a></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li><li><a href="external-caf_sharing.html">caf_sharing</a></li><li><a href="external-caf_sharing_AggregateMap.html">caf_sharing/AggregateMap</a></li></ul><h3><a href="global.html">Global</a></h3>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Mon Feb 01 2021 15:33:07 GMT-0800 (Pacific Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:45 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

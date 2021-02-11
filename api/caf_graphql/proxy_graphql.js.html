@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>proxy_graphql.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_graphql_main.html">caf_graphql/main</a></li><li><a href="module-caf_graphql_plug_ca_graphql.html">caf_graphql/plug_ca_graphql</a></li><li><a href="module-caf_graphql_plug_graphql.html">caf_graphql/plug_graphql</a></li><li><a href="module-caf_graphql_proxy_graphql.html">caf_graphql/proxy_graphql</a><ul class='methods'><li data-type='method'><a href="module-caf_graphql_proxy_graphql.html#dirtyEvalQuery">dirtyEvalQuery</a></li><li data-type='method'><a href="module-caf_graphql_proxy_graphql.html#dirtyReset">dirtyReset</a></li><li data-type='method'><a href="module-caf_graphql_proxy_graphql.html#setQuery">setQuery</a></li><li data-type='method'><a href="module-caf_graphql_proxy_graphql.html#setResolverMethod">setResolverMethod</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">proxy_graphql.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ *  Proxy that allows a CA to perform GraphQL queries.
+ *
+ * @module caf_graphql/proxy_graphql
+ * @augments external:caf_components/gen_proxy
+ */
+// @ts-ignore: augments not attached to a class
+const caf_comp = require('caf_components');
+const genProxy = caf_comp.gen_proxy;
+
+exports.newInstance = async function($, spec) {
+    try {
+        const that = genProxy.create($, spec);
+
+        /**
+         * Evaluates the GraphQL query.
+         *
+         * This is a "dirty" call, i.e., it returns a promise so that the CA
+         * can block waiting for completion before processing the next message,
+         * and it may externalize internal state before checkpointing.
+         *
+         * @param {Object} self The object reference for the CA, i.e., `this`.
+         *
+         * @return {Promise&lt;Object>}  A promise that we can `await` to
+         * block further message processing. It resolves to `null` if the query
+         * result has not changed since the last call. Otherwise, it returns
+         * the query result or an error if it cannot be evaluated.
+         *
+         * @memberof! module:caf_graphql/proxy_graphql#
+         * @alias dirtyEvalQuery
+         */
+        that.dirtyEvalQuery = function(self) {
+            return $._.dirtyEvalQuery(self);
+        };
+
+        /**
+         * Sets a new GraphQL query or resets a previous one.
+         *
+         * @param {string|null} query A new query or null to reset.
+         *
+         * @memberof! module:caf_graphql/proxy_graphql#
+         * @alias setQuery
+         */
+        that.setQuery = function(query) {
+            return $._.setQuery(query);
+        };
+
+        /**
+         * Sets the name of the method that returns a resolver object.
+         *
+         * When this method name is not set, a default resolver that look up
+         * properties using `this.state` as root object will be used.
+         *
+         * The resolver method should have a signature like:
+         *
+         *        async  __ca_resolver__() : [err, ResolverObject]
+         *
+         * The returned Resolver object methods use the standard GraphQL
+         * signature:
+         *
+         *        whatever(obj, args, context, info) {...}
+         *
+         * and `context` has a key `self` with value the `this` reference in the
+         * current CA. For top level objects `obj` is always `this.state`, as
+         * mentioned above. See `GraphGL` documentation for details.
+         *
+         * @param {string|null} methodName The name of a CA method that
+         * returns a resolver object or `null` to reset.
+         *
+         * @memberof! module:caf_graphql/proxy_graphql#
+         * @alias setResolverMethod
+         */
+        that.setResolverMethod = function(methodName) {
+            return $._.setResolverMethod(methodName);
+        };
+
+        /**
+         * Forgets the value of the previous query.
+         *
+         * The CA always resets after a resume, i.e., the previous value is
+         * never checkpointed.
+         *
+         * It is a "dirty" call because the reset is visible immediately.
+         * By calling `dirtyReset` before `dirtyEvalQuery`
+         * the query will always returns a value.
+
+         *
+         * @memberof! module:caf_graphql/proxy_graphql#
+         * @alias dirtyReset
+         */
+        that.dirtyReset = function() {
+            return $._.dirtyReset();
+        };
+
+        Object.freeze(that);
+
+        return [null, that];
+    } catch (err) {
+        return [err];
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:53 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
