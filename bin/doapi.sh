@@ -23,7 +23,7 @@ popd #main
 
 #extra dir
 pushd ../../../extra
-ALL_EXTRA_FILES="caf_forward/ caf_sms/ caf_rpi/ caf_rpi_gpio/ caf_react/ caf_deploy/ caf_bloom/ caf_iot_gatt/ caf_paypal/ caf_graphql/ caf_smtp/ caf_iot_http/"
+ALL_EXTRA_FILES="caf_forward/ caf_sms/ caf_rpi/ caf_rpi_gpio/ caf_react/ caf_deploy/ caf_iot_gatt/ caf_paypal/ caf_graphql/ caf_smtp/ caf_iot_http/"
 for mod in ${ALL_EXTRA_FILES}; do
     pushd ${mod}
     yarn run docs
