@@ -68,10 +68,14 @@ limitations under the License.
  *
  * Properties:
  *
- *        {backchannelTimeout: number}
+ *        {backchannelTimeout: number, maxSessions: number, maxMessages: number}
  *
- * `backchannelTimeout` is a timeout in msec that resets the backchannel. It is
- * expected that the client will immediately retry.
+ * * `backchannelTimeout` is a timeout in msec that resets the backchannel. It
+ * is expected that the client will immediately retry.
+ * * `maxSessions` is the target maximum number of open sessions. Only offline
+ * sessions can be garbage collected, and this value may be exceeded.
+ * * `maxMessages` is a default limit on the maximum number of pending messages
+ * per queue.
  *
  * This enables a reliable path for notifications, even when the client is
  * behind a firewall, or http proxies timeout idle connections. It also
@@ -84,7 +88,7 @@ limitations under the License.
 // @ts-ignore: augments not attached to a class
 const caf_comp = require('caf_components');
 const genPlugCA = caf_comp.gen_plug_ca;
-const assert = require('assert');
+const assert = /**@ignore @type {typeof import('assert')} */(require('assert'));
 const myUtils = caf_comp.myUtils;
 const json_rpc = require('caf_transport').json_rpc;
 const backchannel = require('./backchannel');
@@ -98,6 +102,15 @@ exports.newInstance = async function($, spec) {
         assert.equal(typeof(spec.env.backchannelTimeout), 'number',
                      "'spec.env.backchannelTimeout' is not a number");
         const bcTimeout = spec.env.backchannelTimeout;
+
+        assert.equal(typeof(spec.env.maxMessages), 'number',
+                     "'spec.env.maxMessages' is not a number");
+        const maxMessages = spec.env.maxMessages;
+
+        assert.equal(typeof(spec.env.maxSessions), 'number',
+                     "'spec.env.maxSessions' is not a number");
+        const maxSessions = spec.env.maxSessions;
+
 
         var currentSessionId = null;
 
@@ -113,14 +126,35 @@ exports.newInstance = async function($, spec) {
             return sessions[that.getSessionId(optSessionId)];
         };
 
+        const gcSessions = (n) => {
+            if (n > 0) {
+                // do not GC active sessions, or those with custom limits
+                const victims = Object.keys(sessions)
+                    .filter((x) => sessions[x].messages &amp;&amp;
+                            (sessions[x].messages.length > 0) &amp;&amp;
+                            (sessions[x].limit === maxMessages));
+                // pick the ones with more messages to reduce memory waste
+                victims.sort((one, two) => sessions[one].messages.length -
+                             sessions[two].messages.length);
+                victims.slice(-n).forEach((x) => {
+                    $._.$.log &amp;&amp; $._.$.log.debug(`GC session ${x}`);
+                    delete sessions[x];
+                });
+            }
+        };
+
         const instanceSession = function(optSessionId) {
             const newSession = function() {
+                const extraSessions = Object.keys(sessions).length + 1 -
+                      maxSessions;
+                (extraSessions > 0) &amp;&amp; gcSessions(extraSessions);
+
                 return {
                     'messages': [], // pending notifications
                     'nonce': null, // session id, refreshed with each begin()
                     'memento': null, // client info persisted with checkpoint
                     'bc': null, // backchannel
-                    'limit': -1 // max number of pending notifications.
+                    'limit': maxMessages // max number of pending notifications.
                 };
             };
             var session = that.getSession(optSessionId);
@@ -169,8 +203,15 @@ exports.newInstance = async function($, spec) {
 
 
         that.notify = function(argsArray, optSessionId) {
-            that.__ca_lazyApply__('notifyImpl',
-                                  [that.getSessionId(optSessionId), argsArray]);
+            if (optSessionId &amp;&amp; (optSessionId instanceof RegExp)) {
+                const targets = Object.keys(sessions)
+                    .filter((x) => !!x.match(optSessionId));
+                targets.forEach((x) => that.notify(argsArray, x));
+            } else {
+                that.__ca_lazyApply__(
+                    'notifyImpl', [that.getSessionId(optSessionId), argsArray]
+                );
+            }
         };
 
         that.limitQueue = function(maxMsgs, optSessionId) {
@@ -248,6 +289,8 @@ exports.newInstance = async function($, spec) {
             const sessionId = json_rpc.getSessionId(msg);
             if (sessionId) {
                 currentSessionId = sessionId;
+                // ensure it is in `sessions` to enable notify with regexp
+                instanceSession(sessionId);
                 super__ca_begin__(msg, cb0);
             } else {
                 const err = new Error('Error: no session ID in msg');
@@ -298,7 +341,7 @@ exports.newInstance = async function($, spec) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:45 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Thu Apr 29 2021 13:47:47 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

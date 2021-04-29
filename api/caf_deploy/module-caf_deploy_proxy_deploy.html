@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_deploy_main.html">caf_deploy/main</a></li><li><a href="module-caf_deploy_plug_ca_deploy.html">caf_deploy/plug_ca_deploy</a></li><li><a href="module-caf_deploy_plug_deploy.html">caf_deploy/plug_deploy</a></li><li><a href="module-caf_deploy_plug_deploy_kubernetes.html">caf_deploy/plug_deploy_kubernetes</a></li><li><a href="module-caf_deploy_plug_deploy_util_k8s.html">caf_deploy/plug_deploy_util_k8s</a></li><li><a href="module-caf_deploy_proxy_deploy.html">caf_deploy/proxy_deploy</a><ul class='methods'><li data-type='method'><a href="module-caf_deploy_proxy_deploy.html#createApp">createApp</a></li><li data-type='method'><a href="module-caf_deploy_proxy_deploy.html#deleteApp">deleteApp</a></li><li data-type='method'><a href="module-caf_deploy_proxy_deploy.html#flexApp">flexApp</a></li><li data-type='method'><a href="module-caf_deploy_proxy_deploy.html#restartApp">restartApp</a></li><li data-type='method'><a href="module-caf_deploy_proxy_deploy.html#setHandleReplyMethod">setHandleReplyMethod</a></li><li data-type='method'><a href="module-caf_deploy_proxy_deploy.html#statApps">statApps</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul><h3><a href="global.html">Global</a></h3>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_deploy_main.html">caf_deploy/main</a></li><li><a href="module-caf_deploy_plug_ca_deploy.html">caf_deploy/plug_ca_deploy</a></li><li><a href="module-caf_deploy_plug_deploy.html">caf_deploy/plug_deploy</a></li><li><a href="module-caf_deploy_plug_deploy_kubernetes.html">caf_deploy/plug_deploy_kubernetes</a></li><li><a href="module-caf_deploy_plug_deploy_util_k8s.html">caf_deploy/plug_deploy_util_k8s</a></li><li><a href="module-caf_deploy_proxy_deploy.html">caf_deploy/proxy_deploy</a><ul class='methods'><li data-type='method'><a href="module-caf_deploy_proxy_deploy.html#changeImage">changeImage</a></li><li data-type='method'><a href="module-caf_deploy_proxy_deploy.html#createApp">createApp</a></li><li data-type='method'><a href="module-caf_deploy_proxy_deploy.html#deleteApp">deleteApp</a></li><li data-type='method'><a href="module-caf_deploy_proxy_deploy.html#flexApp">flexApp</a></li><li data-type='method'><a href="module-caf_deploy_proxy_deploy.html#restartApp">restartApp</a></li><li data-type='method'><a href="module-caf_deploy_proxy_deploy.html#setHandleReplyMethod">setHandleReplyMethod</a></li><li data-type='method'><a href="module-caf_deploy_proxy_deploy.html#statApps">statApps</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <div id="main">
@@ -167,6 +167,187 @@
 
     
         <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="changeImage"><span class="type-signature"></span>changeImage<span class="signature">(id, image)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line128">line 128</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Changes the docker image of an app.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An instance identifier.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>image</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The new image.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>A request identifier.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
 
         
             
@@ -725,7 +906,7 @@ i.e., alphanumeric or <code>_</code> only, and starting with a character.</p></t
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line131">line 131</a>
+        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line144">line 144</a>
     </li></ul></dd>
     
 
@@ -766,7 +947,6 @@ i.e., alphanumeric or <code>_</code> only, and starting with a character.</p></t
 
 <div class="description usertext">
     <p>Changes the number of instances for this app.</p>
-<p>A zero value suspends the app without losing its state.</p>
 </div>
 
 
@@ -1237,7 +1417,7 @@ process reply messages.</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line148">line 148</a>
+        <a href="proxy_deploy.js.html">proxy_deploy.js</a>, <a href="proxy_deploy.js.html#line161">line 161</a>
     </li></ul></dd>
     
 
@@ -1400,7 +1580,7 @@ in the array means missing app.</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Wed Feb 10 2021 16:53:51 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Thu Apr 29 2021 13:47:53 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
