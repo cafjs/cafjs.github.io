@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>proxy_fsm.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_fsm_main.html">caf_fsm/main</a></li><li><a href="module-caf_fsm_plug_ca_fsm.html">caf_fsm/plug_ca_fsm</a></li><li><a href="module-caf_fsm_proxy_fsm.html">caf_fsm/proxy_fsm</a><ul class='methods'><li data-type='method'><a href="module-caf_fsm_proxy_fsm.html#getState">getState</a></li><li data-type='method'><a href="module-caf_fsm_proxy_fsm.html#reset">reset</a></li><li data-type='method'><a href="module-caf_fsm_proxy_fsm.html#send">send</a></li><li data-type='method'><a href="module-caf_fsm_proxy_fsm.html#setCreateMachineMethod">setCreateMachineMethod</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">proxy_fsm.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ *  Proxy that allows a CA to implement a FSM.
+ *
+ * @module caf_fsm/proxy_fsm
+ * @augments external:caf_components/gen_proxy
+ */
+// @ts-ignore: augments not attached to a class
+const caf_comp = require('caf_components');
+const genProxy = caf_comp.gen_proxy;
+
+exports.newInstance = async function($, spec) {
+    try {
+        const that = genProxy.create($, spec);
+
+        /**
+         * Changes the current state.
+         *
+         * After that it triggers the transition actions, and the state
+         * listeners functions, all in the same request when we `await` the
+         * `send()`.
+         *
+         * In this way, if there is an error, or a failure before
+         * checkpointing, both the state change and the actions are ignored.
+         *
+         * When the failure is after checkpointing, we always retry the external
+         * side-effects of actions and listeners, by using safe transactional
+         * plugins.
+         *
+         * @param {Object} self The object reference for the CA, i.e., `this`.
+         * @param {string} eventName The name of the event.
+         *
+         * @return {Promise&lt;string>} The key for the next state, or throws if
+         * the `createMachineMethod` has not been set.
+         *
+         * @memberof! module:caf_fsm/proxy_fsm#
+         * @alias send
+         */
+        that.send = function(self, eventName) {
+            return $._.send(self, eventName);
+        };
+
+        /**
+         * Sets the name of the method that returns a machine description.
+         *
+         * The method should have this signature :
+         *
+         *        async  __ca_whatever__() : [err, fsmDescType]
+         *
+         * `fsmDescType` is an object described in types.js, and refers to the
+         * @xstate/fsm documentation  in
+         * https://xstate.js.org/docs/packages/xstate-fsm/#api
+         *
+         * This object can also provide an state listener function that will
+         * be called whenever the state changes.
+         *
+         * Actions and listener calls are synchronous, i.e.,
+         * within the scope of the request, and therefore, will be part of the
+         * same transaction. They are triggered by a `send` operation that
+         * changes the state in the same request.
+         *
+         * @param {string} methodName The name of a CA method that
+         * returns a machine description.
+         *
+         * @memberof! module:caf_fsm/proxy_fsm#
+         * @alias setCreateMachineMethod
+         */
+        that.setCreateMachineMethod = function(methodName) {
+            return $._.setCreateMachineMethod(methodName);
+        };
+
+        /**
+         * Resets the FSM to its initial state.
+         *
+         *
+         * @memberof! module:caf_fsm/proxy_fsm#
+         * @alias reset
+         */
+        that.reset = function() {
+            return $._.reset();
+        };
+
+        /**
+         * Returns the current state.
+         *
+         * @return {string} The current state.
+         *
+         * @memberof! module:caf_fsm/proxy_fsm#
+         * @alias getState
+         */
+        that.getState = function() {
+            return $._.getState();
+        };
+
+        Object.freeze(that);
+
+        return [null, that];
+    } catch (err) {
+        return [err];
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Thu Dec 16 2021 15:52:56 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

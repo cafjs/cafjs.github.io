@@ -41,7 +41,7 @@
 
 
     <section class="package">
-        <h3>caf 0.4.11</h3>		
+        <h3>caf 0.4.18</h3>		
     </section>
 
 
@@ -58,14 +58,57 @@
 
     <section class="readme usertext">
         <article><h1>Caf.js</h1>
+<p><a href="https://www.cafjslabs.com"><img src="https://raw.githubusercontent.com/cafjs/caf/master/assets/logosquare.svg?sanitize=true" alt="Caf.js" width="200"></a></p>
 <p>Co-design cloud assistants with your web app and IoT devices.</p>
-<p>See http://www.cafjs.com</p>
-<h2>Introduction</h2>
-<p><a href="https://travis-ci.org/cafjs/caf"><img src="https://travis-ci.org/cafjs/caf.svg?branch=master" alt="Build Status"></a></p>
-<p>This repository is managed as a monorepo using Yarn workspaces. It contains a consistent snapshot of all the other <code>Caf.js</code> sub-projects, included as git submodules.</p>
-<p>Write your app in a subdirectory of <code>caf/playground/app</code>, and yarn workspaces will also manage your app dependencies. This is recommended because it guarantees that all your <code>Caf.js</code> dependencies have been tested together. Ditto with your modules under <code>caf/playground</code>, i.e., they are part of the workspace and do not need to be published during development.</p>
-<h2>Getting Started</h2>
-<p>Install <code>node</code> &gt;=10 and <code>yarn</code> &gt;=1.3.2. Our development is mostly on Linux. Note that <code>npm</code> does not understand Yarn workspaces, you need to use <code>yarn</code>.</p>
+<p><a href="http://www.cafjslabs.com">Website</a> |
+<a href="https://www.cafjslabs.com/docs/documentation">Documentation</a> |
+<a href="https://www.cafjslabs.com/docs/documentation#install">Installation Guide</a> |
+<a href="https://root-launcher.cafjs.com">Caf.js Cloud</a> |
+<a href="https://twitter.com/cafjs">Twitter</a></p>
+<p><a href="https://github.com/cafjs/caf/actions/workflows/push.yml"><img src="https://github.com/cafjs/caf/actions/workflows/push.yml/badge.svg" alt="Build Status"></a></p>
+<h2>Overview</h2>
+<p>A Cloud Assistant (CA) has</p>
+<ul>
+<li>some private and reliable state,</li>
+<li>a public URL that exposes authenticated methods,</li>
+<li>a queue that serializes requests, eliminating races,</li>
+<li>and the ability to run autonomously for years with minimal cost (85 cents per year, Gold plan <a href="https://www.cafjslabs.com/hosting">Caf.js Cloud</a>).</li>
+</ul>
+<p>CAs are implemented with the Actor Model.</p>
+<p>A billion CAs can be hosted with a few thousand servers. Every IoT device or Web App instance could have one. Why do you want one?</p>
+<h4>Permanent Presence</h4>
+<p>Devices and app instances are sometimes off-line, or hard to reach behind a firewall, or suffer from long or unpredictable network latencies.</p>
+<p>This makes it very difficult to share them safely across the Internet, or integrate them in VR or AR using an avatar.</p>
+<p>A CA solves the connectivity problem by implementing a Reverse Service Worker (RSW), which represents the device or app instance at all times.</p>
+<h4>Proactive Programming</h4>
+<p>We all have heard of reactive programming, where your code process a stream of events.</p>
+<p>The dual to reactive is proactive. Compute without waiting for an event to arrive.</p>
+<p>What can you do with proactive programming?</p>
+<ul>
+<li>Hide latency with a push model, as in PSSR (Proactive Server Side Rendering),</li>
+<li>or create a GraphQL subscription source from legacy services,</li>
+<li>or upload background tasks to the Cloud with cloud-based multi-tasking.</li>
+</ul>
+<h4>Reliable Orchestration</h4>
+<p>Jamstack is all the rage, but the reality is that you still need a backend to orchestrate service API calls, because doing that in the browser is unreliable and not very safe.</p>
+<p>Micro-services are all the rage, but now the complexity has been shifted to tracking requests among thousands of micro-services. If something fails, can you safely retry? If the state is distributed across many micro-services, who is responsible to clean up the mess?</p>
+<p>You can view a CA as a reliable state machine, which always checkpoints before externalizing state changes. Or a smart card for your API credentials. Or a reverse proxy that caches dynamic content, keeping your clients in sync.</p>
+<h4>Collaborative Multi-Tenancy</h4>
+<p>CAs interact with each other safely using the trusted bus. High level communication primitives ensure that these interactions scale to millions. Fast datacenter networks provide predictable low latency.</p>
+<p>When devices or apps want to interact, they can use their CAs to guarantee secure, scalable, and fast communication. This gives them superpowers:</p>
+<ul>
+<li>Coordinate actions with global time on millions of devices across the World,</li>
+<li>or bootstrap trust between strangers,</li>
+<li>or control thousands of Web App Backgrounds (WABs) in your next Zoom-like meeting,</li>
+<li>or provide a twitter-like service for devices with a hundred lines of Javascript.</li>
+</ul>
+<p>But this is just the tip of the iceberg of what CAs can do. Learn more in our <a href="https://www.cafjslabs.com">website</a></p>
+<h2>About this repo</h2>
+<p>This repository is managed as a monorepo using yarn workspaces. It contains a consistent snapshot of all the other <code>Caf.js</code> sub-projects, included as git submodules. To create a <code>Caf.js</code> release, we test them all together.</p>
+<p>It is recommended that you create your app within this monorepo, in a subdirectory of <code>caf/playground/app</code>, and then yarn workspaces will also manage your app dependencies.</p>
+<p>Ditto with your modules. Just create them under <code>caf/playground</code> and they are part of the common workspace. No need to publish them during development!</p>
+<h2>Install</h2>
+<p>Install <code>node</code> LTS &gt;=12 and <code>yarn</code> &gt;=1.3.2. Our development is mostly on Linux. Note that <code>npm</code> does not understand Yarn workspaces, you need to use <code>yarn</code>.</p>
 <p>Clone this repository (<code>git clone https://github.com/cafjs/caf.git</code>) and update submodules:</p>
 <pre class="prettyprint source"><code>    cd caf; git submodule update --init
 </code></pre>
@@ -75,11 +118,13 @@
 <p>add to your path the <code>cafjs</code> tool path:</p>
 <pre class="prettyprint source"><code>    export PATH=&lt;your_install_directory>/caf/bin:$PATH
 </code></pre>
+<p>download the Docker images</p>
+<pre class="prettyprint source"><code>    cafjs update
+</code></pre>
 <p>and now let's build and run locally a simple app:</p>
 <pre class="prettyprint source"><code>    cd apps/caf_helloworld; cafjs build; cafjs run helloworld
 </code></pre>
-<p>The first call to <code>cafjs run</code> may take a few minutes because it downloads the core Docker images. If your connection is slow you may see timeout exceptions, which can be ignored because it continues with the download.</p>
-<p>The app server URL is http://root-launcher.vcap.me (DNS always resolves <code>*.vcap.me</code> to <code>127.0.0.1</code>, i.e., the local loop). With your browser, login with user <code>foo</code> and password <code>bar</code>, and then click the <code>+</code> icon to add a <code>helloworld</code> CA. A CA (Cloud Assistant) is a cloud proxy instance for your app. Fill the form as follows:</p>
+<p>The app server URL is http://root-launcher.vcap.me (DNS always resolves <code>*.vcap.me</code> to <code>127.0.0.1</code>, i.e., the local loop). With your browser, login with user <code>foo</code> and password <code>bar</code>, and then click the <code>+</code> icon to add a <code>helloworld</code> CA. Fill the form as follows:</p>
 <ul>
 <li>Application publisher: <code>root</code></li>
 <li>Application name: <code>helloworld</code></li>
@@ -88,7 +133,10 @@
 <p>and a <code>counter</code> example should appear. Use the <code>+</code> again to create other CAs, and then select the menu on the top left to switch between them.</p>
 <p>To stop it, a single <code>Control-C</code> will initiate a gentle container shutdown but, for the impatient, a second <code>Control-C</code> will brute force a clean-up.</p>
 <p>In both cases we should be able to restart without losing the CA's state. This state is checkpointed using a Redis container that mounts a host volume (log file in <code>/tmp/redis/appendonly.aof</code>, host port 6380). To start from scratch, delete the log file in the host.</p>
-<p>With the <code>cafjs</code> command we can also create apps from templates, simulate devices, build container images to publish in our cloud service, i.e., https://root-launcher.cafjs.com, or reset after a hang. See <a href="external-caf_dcinabox.html">external:caf_dcinabox</a> (https://cafjs.github.io/api/caf_dcinabox) for details.</p></article>
+<h2>Documentation</h2>
+<p>The Caf.js documentation is now in our  <a href="https://www.cafjslabs.com/docs/documentation">website</a></p>
+<h2>Contributing</h2>
+<p>We welcome contributions to Caf.js of any kind. See <a href="CONTRIBUTING.md">Contribution Guide</a> for details.</p></article>
     </section>
 
 
@@ -103,7 +151,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on Thu Apr 29 2021 14:33:23 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Thu Dec 16 2021 15:53:12 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

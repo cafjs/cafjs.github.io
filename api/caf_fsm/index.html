@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Home - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_fsm_main.html">caf_fsm/main</a></li><li><a href="module-caf_fsm_plug_ca_fsm.html">caf_fsm/plug_ca_fsm</a></li><li><a href="module-caf_fsm_proxy_fsm.html">caf_fsm/proxy_fsm</a><ul class='methods'><li data-type='method'><a href="module-caf_fsm_proxy_fsm.html#getState">getState</a></li><li data-type='method'><a href="module-caf_fsm_proxy_fsm.html#reset">reset</a></li><li data-type='method'><a href="module-caf_fsm_proxy_fsm.html#send">send</a></li><li data-type='method'><a href="module-caf_fsm_proxy_fsm.html#setCreateMachineMethod">setCreateMachineMethod</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+    <section class="package">
+        <h3>caf_fsm 0.4.0</h3>		
+    </section>
+
+
+
+
+
+
+
+
+
+    
+
+
+
+    <section class="readme usertext">
+        <article><h1>Caf.js</h1>
+<p>Co-design cloud assistants with your web app and IoT devices.</p>
+<p>See https://www.cafjs.com</p>
+<h2>Create Finite State Machines (FSM) with xstate and Caf.js</h2>
+<p><a href="https://github.com/cafjs/caf_fsm/actions/workflows/push.yml"><img src="https://github.com/cafjs/caf_fsm/actions/workflows/push.yml/badge.svg" alt="Build Status"></a></p>
+<p>Caf.js plugin to integrate the great FSM library <code>@xstate/fsm</code> (see https://github.com/statelyai/xstate/tree/main/packages/xstate-fsm)</p>
+<p>When we combine state machines with our autonomous cloud assistants we make it easier to remotely control IoT devices, make them feel alive, or synchronize actions on hundreds of thousands of them across the world.</p>
+<p>And that's not all. The internal state of a cloud assistant is always externally consistent. If the server crashes and restarts, the recovered state is always what everybody expects.</p>
+<p>This means that our state machines are also reliable, and we can count on them to, for example, safely orchestrate service API calls, or track the progress of a request in a sea of microservices.</p>
+<p>You can learn more about external consistency in Caf.js <a href="https://www.cafjslabs.com/orchestration">here</a></p>
+<h2>API</h2>
+<p>See <a href="module-caf_fsm_proxy_fsm.html">module:caf_fsm/proxy_fsm</a> and the docs in https://xstate.js.org/docs/packages/xstate-fsm</p>
+<p>An example that configures a traffic light state machine from https://github.com/cafjs/caf_hellofsm.git :</p>
+<pre class="prettyprint source"><code>    async __ca_init__() {
+        ...
+        this.$.fsm.setCreateMachineMethod('__ca_createMachine__');
+        ...
+    },
+    async __ca_createMachine__() {
+        const updateImpl = (newLight) => {
+            this.state.light = newLight;
+            ...
+            this.$.pubsub.publish(this.state.myChannel, newLight);
+        };
+        const config = {
+            id: 'semaphore',
+            initial: LIGHTS.RED,
+            states: {
+                RED: {
+                    on: {
+                        TICK: {
+                            target: LIGHTS.GREEN,
+                            actions: () => updateImpl(LIGHTS.GREEN)
+                        }
+                    }
+                },
+                GREEN: {
+                    on: {
+                        TICK: {
+                            target: LIGHTS.YELLOW,
+                            actions: () => updateImpl(LIGHTS.YELLOW)
+                        }
+                    }
+                },
+                YELLOW: {
+                    on: {
+                        TICK: {
+                            target: LIGHTS.RED,
+                            actions: () => updateImpl(LIGHTS.RED)
+                        }
+                    }
+                }
+            }
+        };
+        return [null, {config}];
+    },
+    async __ca_pulse__() {
+        ...
+        await this.tick();
+        ...
+    },
+    async tick() {
+        await this.$.fsm.send(this, TICK);
+        return [null, this.state];
+    },
+</code></pre>
+<p>By using <code>await</code> in <code>this.$.fsm.send</code> we force state transition actions to be part of the transaction processing the pulse request.</p>
+<p>But this also means that the transition action <code>updateImpl()</code> cannot be an <code>async</code> function, to ensure it completes within the transaction (<code>xstate</code> does not internally <code>await</code> actions).</p>
+<p>This is not a big concern because actions can always call transactional plugins, like <code>this.$.pubsub</code>, or modify CA state.</p>
+<h2>Configuration</h2>
+<h3>ca.json</h3>
+<p>See <a href="module-caf_fsm_plug_ca_fsm.html">module:caf_fsm/plug_ca_fsm</a></p></article>
+    </section>
+
+
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Thu Dec 16 2021 15:52:56 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

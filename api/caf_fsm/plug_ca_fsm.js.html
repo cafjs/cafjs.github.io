@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>plug_ca_fsm.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_fsm_main.html">caf_fsm/main</a></li><li><a href="module-caf_fsm_plug_ca_fsm.html">caf_fsm/plug_ca_fsm</a></li><li><a href="module-caf_fsm_proxy_fsm.html">caf_fsm/proxy_fsm</a><ul class='methods'><li data-type='method'><a href="module-caf_fsm_proxy_fsm.html#getState">getState</a></li><li data-type='method'><a href="module-caf_fsm_proxy_fsm.html#reset">reset</a></li><li data-type='method'><a href="module-caf_fsm_proxy_fsm.html#send">send</a></li><li data-type='method'><a href="module-caf_fsm_proxy_fsm.html#setCreateMachineMethod">setCreateMachineMethod</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">plug_ca_fsm.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * Implements a FSM using xstate
+ *
+ *
+ * @module caf_fsm/plug_ca_fsm
+ * @augments external:caf_components/gen_plug_ca
+ */
+// @ts-ignore: augments not attached to a class
+const caf_comp = require('caf_components');
+const myUtils = caf_comp.myUtils;
+const genPlugCA = caf_comp.gen_plug_ca;
+
+const xstate = require('@xstate/fsm');
+
+exports.newInstance = async function($, spec) {
+    try {
+        let fsm = null;
+
+        const that = genPlugCA.create($, spec);
+
+        /*
+         * The contents of this variable are always checkpointed before
+         * any state externalization (see `gen_transactional`).
+         */
+        that.state = {}; // currentState:string, machineMethod:string
+
+        // transactional ops
+        const target = {
+        };
+
+        that.__ca_setLogActionsTarget__(target);
+
+        that.setCreateMachineMethod = function(methodName) {
+            that.state.machineMethod = methodName;
+        };
+
+        const createService = async function(self) {
+            const m = that.state.machineMethod;
+            const [err, machineConf] = await self[m].apply(self, []);
+            if (err) {
+                throw err;
+            }
+            const {config, options, stateListener} = machineConf;
+            if (that.state.currentState) {
+                // recover after crash
+                config.initial = that.state.currentState;
+            }
+            const machine = xstate.createMachine(config, options || {});
+            const service = xstate.interpret(machine);
+            if (stateListener) {
+                // filter initial state to make `restore` transparent
+                const f = (state) => state &amp;&amp; state.changed &amp;&amp;
+                      stateListener(state);
+                service.subscribe(f);
+            }
+            service.start();
+            return service;
+        };
+
+        that.send = async function(self, eventName) {
+            if (!fsm &amp;&amp; that.state.machineMethod) {
+                fsm = await createService(self);
+            }
+            if (fsm) {
+                fsm.send(eventName);
+                that.state.currentState = fsm.state.value;
+                return fsm.state.value;
+            } else {
+                throw new Error('createMachineMethod not set');
+            }
+        };
+
+        that.reset = function() {
+            fsm = null;
+            delete that.state.currentState;
+        };
+
+        that.getState = function() {
+            return fsm ? fsm.state.value : that.state.currentState;
+        };
+
+        const super__ca_abort__ =
+            myUtils.superiorPromisify(that, '__ca_abort__');
+        that.__ca_abort__ = async function() {
+            try {
+                const data = await super__ca_abort__();
+                fsm = null;
+                return [null, data];
+            } catch (err) {
+                return [err];
+            }
+        };
+
+        return [null, that];
+    } catch (err) {
+        return [err];
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Thu Dec 16 2021 15:52:56 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
