@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>plug_ca_delay.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_delay_main.html">caf_delay/main</a></li><li><a href="module-caf_delay_plug_ca_delay.html">caf_delay/plug_ca_delay</a></li><li><a href="module-caf_delay_plug_delay.html">caf_delay/plug_delay</a></li><li><a href="module-caf_delay_proxy_delay.html">caf_delay/proxy_delay</a><ul class='methods'><li data-type='method'><a href="module-caf_delay_proxy_delay.html#cancel">cancel</a></li><li data-type='method'><a href="module-caf_delay_proxy_delay.html#list">list</a></li><li data-type='method'><a href="module-caf_delay_proxy_delay.html#newRepeater">newRepeater</a></li><li data-type='method'><a href="module-caf_delay_proxy_delay.html#schedule">schedule</a></li><li data-type='method'><a href="module-caf_delay_proxy_delay.html#scheduleWithOffset">scheduleWithOffset</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">plug_ca_delay.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*!
+Copyright 2022 Caf.js Labs and contributors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+'use strict';
+
+/**
+ * Delays methods for this CA.
+ *
+ *
+ * @module caf_delay/plug_ca_delay
+ * @augments external:caf_components/gen_plug_ca
+ */
+// @ts-ignore: augments not attached to a class
+
+const caf_comp = require('caf_components');
+const myUtils = caf_comp.myUtils;
+const genPlugCA = caf_comp.gen_plug_ca;
+const json_rpc = require('caf_transport').json_rpc;
+const assert = /**@ignore @type {typeof import('assert')} */(require('assert'));
+
+exports.newInstance = async function($, spec) {
+    try {
+        const that = genPlugCA.create($, spec);
+
+        /*
+         * The contents of this variable are always checkpointed before
+         * any state externalization (see `gen_transactional`).
+         */
+        that.state = {}; // pendingMethods:Object&lt;string, pendingMethodType>
+
+        const handlerF = function(id) {
+            /** @type {Object.&lt;string, pendingMethodType>}*/
+            const pendingMethods = that.state.pendingMethods || {};
+
+            if (!that.__ca_isShutdown__ &amp;&amp; pendingMethods[id]) {
+                const {method, args} = pendingMethods[id];
+
+                /* Response processed in a separate transaction, i.e.,
+                   using a fresh message */
+                const m = json_rpc.systemRequest($.ca.__ca_getName__(),
+                                                 method, ...args);
+                $.ca.__ca_process__(m, function(err) {
+                    /* Note that this is NOT transactional. We could execute
+                     * the delayed method, checkpoint, and do not delete the
+                     * pending method because we crashed. But this just means
+                     * that we execute it multiple times, something that
+                     * is ok because we don't guarantee at-most-once semantics.
+                     */
+                    if (pendingMethods[id]) {
+                        const {when, repeater} = pendingMethods[id];
+                        if (repeater) {
+                            repeater.whenLastCompleted = Date.now();
+                            repeater.completed++;
+                            if (repeater.completed >= repeater.maxTimes) {
+                                delete pendingMethods[id];
+                            } else {
+                                const newWhen = 1000*repeater.interval + when;
+                                pendingMethods[id].when = newWhen;
+                                $._.$.delay.schedule({id, when: newWhen,
+                                                      handlerF});
+                                $.ca.$.log &amp;&amp; $.ca.$.log.trace(
+                                    `Rescheduling id:${id} when: ${newWhen} ` +
+                                        ` ${JSON.stringify(repeater)}`
+                                );
+                            }
+                        } else {
+                            delete pendingMethods[id];
+                        }
+                    }
+
+                    err &amp;&amp; $.ca.$.log &amp;&amp; $.ca.$.log.error(
+                        `Ignoring exception in delayed method ${method} ` +
+                            `with args ${args}: ${myUtils.errToPrettyStr(err)}`
+                    );
+                });
+            } else {
+                $.ca.$.log &amp;&amp; $.ca.$.log.debug(
+                    `Ignoring delayed method ${id} with isShutdown ` +
+                        `${!!that.__ca_isShutdown__}`
+                );
+            }
+        };
+
+        // transactional ops
+        const target = {
+            async scheduleImpl(id, when) {
+                $._.$.delay.schedule({id, when, handlerF});
+                return [];
+            },
+            async cancelImpl(id) {
+                $._.$.delay.cancel(id);
+                return [];
+            }
+        };
+
+        that.__ca_setLogActionsTarget__(target);
+
+        that.schedule = function(when, method, args, repeater, addId) {
+            assert(typeof when === 'number', 'Invalid delay');
+            assert(typeof method === 'string', 'Invalid method');
+            assert(Array.isArray(args), 'Invalid arguments');
+            if (repeater) {
+                assert(typeof repeater.interval === 'number',
+                       'Invalid repeater');
+                repeater.maxTimes &amp;&amp; // ignore 0
+                    assert(typeof repeater.maxTimes === 'number',
+                           'Invalid repeater');
+                repeater = {
+                    interval: repeater.interval,
+                    completed: 0,
+                    maxTimes: repeater.maxTimes || Number.MAX_SAFE_INTEGER
+                };
+            } else {
+                repeater = null;
+            }
+            const id = myUtils.uniqueId();
+            (typeof addId === 'boolean') &amp;&amp; args.push(id);
+            /** @type {Object.&lt;string, pendingMethodType>}*/
+            const pendingMethods = that.state.pendingMethods || {};
+            pendingMethods[id] = {id, when, method, args, repeater};
+            that.state.pendingMethods = pendingMethods;
+            that.__ca_lazyApply__('scheduleImpl', [id, when]);
+
+            return id;
+        };
+
+        that.getPending = function() {
+            return myUtils.deepClone(that.state.pendingMethods || {});
+        };
+
+        that.cancel = function(id) {
+            that.state.pendingMethods &amp;&amp; delete that.state.pendingMethods[id];
+            that.__ca_lazyApply__('cancelImpl', [id]);
+        };
+
+        const super__ca_shutdown__ =
+            myUtils.superiorPromisify(that, '__ca_shutdown__');
+        that.__ca_shutdown__ = async function(data) {
+            try {
+                const res = await super__ca_shutdown__(data);
+                const pendingMethods = that.state.pendingMethods || {};
+                Object.keys(pendingMethods).forEach((id) => {
+                    // remove handlers
+                    $._.$.delay.cancel(id);
+                });
+                return [null, res];
+            } catch (err) {
+                return [err];
+            }
+        };
+
+        const super__ca_resume__ =
+            myUtils.superiorPromisify(that, '__ca_resume__');
+        that.__ca_resume__ = async function(cp) {
+            try {
+                const data = await super__ca_resume__(cp);
+                const pendingMethods = that.state.pendingMethods || {};
+                Object.values(pendingMethods).forEach(({id, when}) => {
+                    // restore handlers
+                    $._.$.delay.schedule({id, when, handlerF});
+                });
+                return [null, data];
+            } catch (err) {
+                return [err];
+            }
+        };
+
+
+        return [null, that];
+    } catch (err) {
+        return [err];
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Thu Feb 17 2022 19:25:10 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

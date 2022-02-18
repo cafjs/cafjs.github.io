@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>plug_delay.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-caf_delay_main.html">caf_delay/main</a></li><li><a href="module-caf_delay_plug_ca_delay.html">caf_delay/plug_ca_delay</a></li><li><a href="module-caf_delay_plug_delay.html">caf_delay/plug_delay</a></li><li><a href="module-caf_delay_proxy_delay.html">caf_delay/proxy_delay</a><ul class='methods'><li data-type='method'><a href="module-caf_delay_proxy_delay.html#cancel">cancel</a></li><li data-type='method'><a href="module-caf_delay_proxy_delay.html#list">list</a></li><li data-type='method'><a href="module-caf_delay_proxy_delay.html#newRepeater">newRepeater</a></li><li data-type='method'><a href="module-caf_delay_proxy_delay.html#schedule">schedule</a></li><li data-type='method'><a href="module-caf_delay_proxy_delay.html#scheduleWithOffset">scheduleWithOffset</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-caf_components_gen_plug.html">caf_components/gen_plug</a></li><li><a href="external-caf_components_gen_plug_ca.html">caf_components/gen_plug_ca</a></li><li><a href="external-caf_components_gen_proxy.html">caf_components/gen_proxy</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">plug_delay.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*!
+Copyright 2022 Caf.js Labs and contributors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+'use strict';
+/**
+ * Plug to delay requests.
+ *
+ *
+ * @module caf_delay/plug_delay
+ * @augments external:caf_components/gen_plug
+ *
+ */
+// @ts-ignore: augments not attached to a class
+
+const assert = /**@ignore @type {typeof import('assert')} */(require('assert'));
+const caf_comp = require('caf_components');
+const myUtils = caf_comp.myUtils;
+const genPlug = caf_comp.gen_plug;
+const genCron = caf_comp.gen_cron;
+const {Heap} = require('heap-js');
+
+exports.newInstance = async function($, spec) {
+    try {
+        // a,b are of type scheduledTaskType
+        const isEqualTaskF = (a, b) => a.id === b.id;
+        const heap = new Heap((a, b) => a.when - b.when);
+
+        const that = genPlug.create($, spec);
+
+        $._.$.log &amp;&amp; $._.$.log.debug('New delay plug');
+
+        assert.equal(typeof spec.env.delayIntervalCheckInSec, 'number',
+                     "'spec.env.delayIntervalCheckInSec' is not a number");
+
+        assert.equal(typeof spec.env.ignoreAfterInSec, 'number',
+                     "'spec.env.ignoreAfterInSec' is not a number");
+
+        const cronSpec = {
+            name: spec.name + '_cron__',
+            module: 'gen_cron', // module ignored
+            env: {interval: spec.env.delayIntervalCheckInSec*1000}
+        };
+        const schedulerCron = genCron.create(null, cronSpec);
+
+        // task is scheduledTaskType
+        that.schedule = function(task) {
+            //TODO: this is O(N) in this heap implementation, combine with a set
+            heap.remove(task, isEqualTaskF); // no duplicates...
+            heap.push(task);
+        };
+
+        that.cancel = function(id) {
+            heap.remove({id}, isEqualTaskF);
+        };
+
+        that.dispatchTasks = function() {
+            try {
+                if (heap.size() > 0) {
+                    const now = Date.now();
+                    let top = heap.peek();
+                    while (top &amp;&amp; (top.when &lt; now)) {
+                        top = heap.pop();
+                        const lastChance = top.when +
+                              spec.env.ignoreAfterInSec * 1000;
+                        if (now &lt; lastChance) {
+                            $._.$.log &amp;&amp; $._.$.log.trace(
+                                `Dispatch ${top.id} when: ${top.when} ` +
+                                    `now: ${now}`
+                            );
+                            top.handlerF(top.id);
+                        } else {
+                            $._.$.log &amp;&amp; $._.$.log.warn(
+                                `Ignoring late task ${top.id} now: ${now} ` +
+                                    `when: ${top.when}`
+                            );
+                        }
+                        top = heap.peek();
+                    }
+                }
+            } catch (err) {
+                $._.$.log &amp;&amp; $._.$.log.warn(
+                    `Ignoring in delay cron ${myUtils.errToPrettyStr(err)}`
+                );
+            }
+        };
+
+        const super__ca_shutdown__ =
+              myUtils.superiorPromisify(that, '__ca_shutdown__');
+        that.__ca_shutdown__ = async function(data) {
+            try {
+                schedulerCron &amp;&amp; schedulerCron.__ca_stop__();
+                const res = await super__ca_shutdown__(data);
+                return [null, res];
+            } catch (err) {
+                return [err];
+            }
+        };
+
+        schedulerCron.__ca_start__(that.dispatchTasks);
+
+        return [null, that];
+    } catch (err) {
+        return [err];
+    }
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Thu Feb 17 2022 19:25:10 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
